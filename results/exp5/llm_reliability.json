@@ -1,0 +1,283 @@
+{
+  "5": {
+    "run_a": {
+      "final_ok": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "ok": false,
+          "missing": [],
+          "duplicate": [
+            22,
+            27,
+            29,
+            38
+          ],
+          "K_actual": 5,
+          "usage": {
+            "prompt_tokens": 9442,
+            "completion_tokens": 329
+          }
+        },
+        {
+          "attempt": 2,
+          "ok": false,
+          "missing": [
+            3,
+            18
+          ],
+          "duplicate": [],
+          "K_actual": 5,
+          "usage": {
+            "prompt_tokens": 9491,
+            "completion_tokens": 312
+          }
+        },
+        {
+          "attempt": 3,
+          "ok": false,
+          "missing": [
+            1
+          ],
+          "duplicate": [
+            0,
+            29
+          ],
+          "K_actual": 5,
+          "usage": {
+            "prompt_tokens": 9485,
+            "completion_tokens": 335
+          }
+        },
+        {
+          "attempt": 4,
+          "ok": false,
+          "missing": [
+            18
+          ],
+          "duplicate": [],
+          "K_actual": 5,
+          "usage": {
+            "prompt_tokens": 9487,
+            "completion_tokens": 311
+          }
+        }
+      ]
+    },
+    "run_b": {
+      "final_ok": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "ok": false,
+          "missing": [],
+          "duplicate": [
+            27
+          ],
+          "K_actual": 5,
+          "usage": {
+            "prompt_tokens": 9442,
+            "completion_tokens": 320
+          }
+        },
+        {
+          "attempt": 2,
+          "ok": false,
+          "missing": [
+            1
+          ],
+          "duplicate": [],
+          "K_actual": 5,
+          "usage": {
+            "prompt_tokens": 9482,
+            "completion_tokens": 335
+          }
+        },
+        {
+          "attempt": 3,
+          "ok": false,
+          "missing": [
+            8,
+            18
+          ],
+          "duplicate": [],
+          "K_actual": 5,
+          "usage": {
+            "prompt_tokens": 9482,
+            "completion_tokens": 311
+          }
+        },
+        {
+          "attempt": 4,
+          "ok": false,
+          "missing": [
+            26
+          ],
+          "duplicate": [],
+          "K_actual": 5,
+          "usage": {
+            "prompt_tokens": 9485,
+            "completion_tokens": 262
+          }
+        }
+      ]
+    },
+    "reproducibility": {
+      "same_partition": null,
+      "note": "one or both runs failed"
+    }
+  },
+  "8": {
+    "run_a": {
+      "final_ok": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "ok": false,
+          "missing": [
+            9,
+            10
+          ],
+          "duplicate": [
+            29
+          ],
+          "K_actual": 8,
+          "usage": {
+            "prompt_tokens": 9442,
+            "completion_tokens": 287
+          }
+        },
+        {
+          "attempt": 2,
+          "ok": false,
+          "missing": [],
+          "duplicate": [
+            0,
+            2,
+            16,
+            19,
+            24,
+            29,
+            36
+          ],
+          "K_actual": 8,
+          "usage": {
+            "prompt_tokens": 9487,
+            "completion_tokens": 431
+          }
+        },
+        {
+          "attempt": 3,
+          "ok": false,
+          "missing": [
+            10,
+            11,
+            28
+          ],
+          "duplicate": [
+            29
+          ],
+          "K_actual": 8,
+          "usage": {
+            "prompt_tokens": 9500,
+            "completion_tokens": 424
+          }
+        },
+        {
+          "attempt": 4,
+          "ok": false,
+          "missing": [
+            1,
+            6
+          ],
+          "duplicate": [],
+          "K_actual": 8,
+          "usage": {
+            "prompt_tokens": 9490,
+            "completion_tokens": 397
+          }
+        }
+      ]
+    },
+    "run_b": {
+      "final_ok": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "ok": false,
+          "missing": [
+            1,
+            18
+          ],
+          "duplicate": [],
+          "K_actual": 8,
+          "usage": {
+            "prompt_tokens": 9442,
+            "completion_tokens": 408
+          }
+        },
+        {
+          "attempt": 2,
+          "ok": false,
+          "missing": [
+            9,
+            26,
+            28
+          ],
+          "duplicate": [
+            22,
+            29
+          ],
+          "K_actual": 8,
+          "usage": {
+            "prompt_tokens": 9485,
+            "completion_tokens": 327
+          }
+        },
+        {
+          "attempt": 3,
+          "ok": false,
+          "missing": [
+            1
+          ],
+          "duplicate": [
+            31,
+            32
+          ],
+          "K_actual": 8,
+          "usage": {
+            "prompt_tokens": 9493,
+            "completion_tokens": 423
+          }
+        },
+        {
+          "attempt": 4,
+          "ok": false,
+          "missing": [
+            18
+          ],
+          "duplicate": [
+            0,
+            2,
+            16,
+            19,
+            20,
+            29,
+            31,
+            32,
+            36
+          ],
+          "K_actual": 8,
+          "usage": {
+            "prompt_tokens": 9487,
+            "completion_tokens": 426
+          }
+        }
+      ]
+    },
+    "reproducibility": {
+      "same_partition": null,
+      "note": "one or both runs failed"
+    }
+  }
+}

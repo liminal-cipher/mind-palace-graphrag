@@ -1,0 +1,118 @@
+{
+  "method": "emb_ward_K10",
+  "K": 10,
+  "linkage_method": "ward",
+  "silhouette": 0.09789280593395233,
+  "merged_rooms": [
+    {
+      "new_id": 0,
+      "members": [
+        25,
+        31,
+        32,
+        36
+      ],
+      "llm_suggested_title": null,
+      "silhouette": 0.09789280593395233
+    },
+    {
+      "new_id": 1,
+      "members": [
+        0,
+        7
+      ],
+      "llm_suggested_title": null,
+      "silhouette": 0.09789280593395233
+    },
+    {
+      "new_id": 2,
+      "members": [
+        16,
+        18,
+        19
+      ],
+      "llm_suggested_title": null,
+      "silhouette": 0.09789280593395233
+    },
+    {
+      "new_id": 3,
+      "members": [
+        2,
+        14,
+        15,
+        28,
+        35,
+        38
+      ],
+      "llm_suggested_title": null,
+      "silhouette": 0.09789280593395233
+    },
+    {
+      "new_id": 4,
+      "members": [
+        1,
+        12,
+        20
+      ],
+      "llm_suggested_title": null,
+      "silhouette": 0.09789280593395233
+    },
+    {
+      "new_id": 5,
+      "members": [
+        8,
+        26
+      ],
+      "llm_suggested_title": null,
+      "silhouette": 0.09789280593395233
+    },
+    {
+      "new_id": 6,
+      "members": [
+        10,
+        24,
+        27
+      ],
+      "llm_suggested_title": null,
+      "silhouette": 0.09789280593395233
+    },
+    {
+      "new_id": 7,
+      "members": [
+        4,
+        5,
+        9,
+        13,
+        17,
+        23,
+        29,
+        30,
+        33,
+        34
+      ],
+      "llm_suggested_title": null,
+      "silhouette": 0.09789280593395233
+    },
+    {
+      "new_id": 8,
+      "members": [
+        3,
+        6,
+        11,
+        21,
+        22,
+        37
+      ],
+      "llm_suggested_title": null,
+      "silhouette": 0.09789280593395233
+    },
+    {
+      "new_id": 9,
+      "members": [
+        39
+      ],
+      "llm_suggested_title": null,
+      "silhouette": 0.09789280593395233
+    }
+  ]
+}
