@@ -1,4 +1,21 @@
-"""실험 5 경로 1: LLM 병합. K=5, K=8."""
+"""실험 5 stage2 LLM 경로 v1 (partition 방식). gpt-4.1-mini에 방 40개를 한꺼번에 주고
+"정확히 K개 그룹으로 완전 분할하고 각 그룹의 members를 다 나열하라"고 시켜 MergeResult를 만든다.
+
+파이프라인 단계: stage2(병합). stage1 페이로드(format_for_llm)를 그대로 입력으로 받는다.
+
+K=5, K=8 각각에 대해 run_a/run_b 두 번 호출하고, 검증 실패 시 같은 호출 안에서 피드백을 붙여
+최대 4회까지 재시도한다. 두 run이 모두 성공하면 partition_signature로 분할이 동일한지 비교한다.
+
+핵심 입출력:
+- 입력: results/snapshots/repro_run3/ (stage1을 거쳐 만든 텍스트 페이로드).
+- 출력: results/exp5/stage2_llm_K{K}_{run_a,run_b}.json (검증 통과 시), llm_reliability.json
+  (K별 두 런의 시도 로그와 재현성 결과). 또한 같은 디렉터리에 input_payload.txt와
+  stage1_payloads.json도 감사용으로 남긴다.
+
+관찰된 한계: 이 방식은 모든 시도(K=5/8 × run_a/run_b × 최대 4회)에서 누락·중복이 발생해
+실제로는 stage2 산출이 만들어지지 않았다. 같은 페이로드를 assignment 방식으로 다시 푸는
+경로는 exp5_llm_v2.py 참고.
+"""
 from __future__ import annotations
 import os, sys, io, json
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
@@ -12,6 +29,9 @@ DEPLOYMENT = "gpt-4.1-mini"
 
 
 def make_prompt(payload_text, K, all_cnums, feedback=None):
+    """partition 방식 system+user 프롬프트 생성. feedback이 주어지면 user 메시지 끝에
+    이전 시도의 누락/중복 정보를 덧붙인다. 같은 호출의 재시도에서 prompt가 매번
+    바뀌기 때문에 temperature=0이어도 응답이 흔들릴 수 있다."""
     cnum_list_str = ', '.join(str(c) for c in sorted(all_cnums))
     sys_prompt = f"""당신은 한국사 교과서 분석가다. 주어진 방(그래프 커뮤니티) 목록을
 의미가 가까운 것끼리 묶어 **정확히 {K}개**의 새 그룹으로 만든다.
@@ -79,11 +99,15 @@ def call_llm(client, payload_text, K, all_cnums, max_retry=4):
 
 
 def partition_signature(merged_rooms):
-    """그룹 id·이름 무시, 멤버 집합으로만 분할 비교."""
+    """분할 비교용 정규화. 그룹 id와 LLM 제안 이름은 무시하고 멤버 community 집합의
+    집합(frozenset of frozensets)으로만 비교한다. 두 run의 그룹 라벨 순서가 달라도
+    같은 분할이면 같은 signature가 된다."""
     return frozenset(frozenset(g['members']) for g in merged_rooms)
 
 
 def compare_partitions(rooms_a, rooms_b):
+    """run_a, run_b의 merged_rooms를 받아 같은 분할인지 비교.
+    {'same_partition': bool, 'only_in_a': [...], 'only_in_b': [...]} 반환."""
     pa = partition_signature(rooms_a)
     pb = partition_signature(rooms_b)
     return {
@@ -94,6 +118,9 @@ def compare_partitions(rooms_a, rooms_b):
 
 
 def build_stage2(K, llm_success, run_label='run_a'):
+    """검증을 통과한 LLM 응답을 stage2 MergeResult 스키마로 정규화.
+    LLM이 제안한 new_title은 llm_suggested_title 필드에만 저장하고 정식 네이밍에는
+    쓰지 않는다(설계 결정에 따라 네이밍은 stage3 borrow_name이 별도로 수행)."""
     return {
         'method': f'llm_K{K}_{run_label}',
         'K': K,

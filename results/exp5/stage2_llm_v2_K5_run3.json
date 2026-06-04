@@ -1,0 +1,82 @@
+{
+  "method": "llm_v2",
+  "run": 3,
+  "K": 5,
+  "merged_rooms": [
+    {
+      "new_id": 0,
+      "members": [
+        2,
+        5,
+        14,
+        15,
+        22,
+        28,
+        35,
+        37,
+        38,
+        39
+      ],
+      "new_title": null,
+      "silhouette": null
+    },
+    {
+      "new_id": 1,
+      "members": [
+        0,
+        7,
+        18
+      ],
+      "new_title": null,
+      "silhouette": null
+    },
+    {
+      "new_id": 2,
+      "members": [
+        8,
+        11,
+        16,
+        19,
+        20,
+        25,
+        26,
+        31,
+        32,
+        36
+      ],
+      "new_title": null,
+      "silhouette": null
+    },
+    {
+      "new_id": 3,
+      "members": [
+        1
+      ],
+      "new_title": null,
+      "silhouette": null
+    },
+    {
+      "new_id": 4,
+      "members": [
+        3,
+        4,
+        6,
+        9,
+        10,
+        12,
+        13,
+        17,
+        21,
+        23,
+        24,
+        27,
+        29,
+        30,
+        33,
+        34
+      ],
+      "new_title": null,
+      "silhouette": null
+    }
+  ]
+}
