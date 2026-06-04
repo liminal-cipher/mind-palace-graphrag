@@ -1,6 +1,6 @@
 # exp9 rechunk: semantic vs pagesplit 비교
 
-목적: 같은 한국사 자료를 (1) 시언 의미 청크 105개와 (2) 경민 페이지 청크 50쪽으로 각각 인덱싱한 결과를, 같은 모델 설정(gpt-4.1-mini + text-embedding-3-small)으로 비교한다. `create_community_reports` 제외, 그 외 모든 워크플로 통과.
+목적: 같은 한국사 자료를 (1) 의미 단위(semantic) 청크 105개와 (2) 페이지 단위(pagesplit) 청크 50쪽으로 각각 인덱싱한 결과를, 같은 모델 설정(gpt-4.1-mini + text-embedding-3-small)으로 비교한다. `create_community_reports` 제외, 그 외 모든 워크플로 통과.
 
 입력 스냅샷: `results/snapshots/semantic_run1`, `results/snapshots/pagesplit_run1`. 평가 산출: `eval_semantic_run1.json`, `eval_pagesplit_run1.json`. ward K=10은 lancedb의 `entity_description` 벡터(1536-dim, L2 정규화)에 scipy ward linkage 적용.
 

@@ -1,5 +1,5 @@
 """exp9 입력 준비. input/ 의 원천을 GraphRAG가 그대로 먹는 JSON 객체 배열로 변환.
-semantic은 시언 export d['documents'] 그대로 꺼냄, pagesplit은 '--- page N ---'로 잘라
+semantic은 의미 단위(semantic) export d['documents'] 그대로 꺼냄, pagesplit은 '--- page N ---'로 잘라
 {text, page} 객체 배열로. 빈/짧은(<10) text 객체 제외.
 입출력: input/* (원천, 읽기) → proj_semantic/input/semantic_docs.json,
        proj_pagesplit/input/pagesplit_docs.json (생성, gitignore에 걸려 결과만 따로 보관).

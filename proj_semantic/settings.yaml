@@ -31,7 +31,7 @@ embedding_models:
     retry:
       type: exponential_backoff
 
-### 입력: 시언 의미 청크 105개 (chunk = 1 document)
+### 입력: 의미 단위(semantic) 청크 105개 (chunk = 1 document)
 input:
   type: json
   text_column: text

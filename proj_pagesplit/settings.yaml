@@ -31,7 +31,7 @@ embedding_models:
     retry:
       type: exponential_backoff
 
-### 입력: 경민 페이지 청크 50쪽 (page = 1 document)
+### 입력: 페이지 단위(pagesplit) 청크 50쪽 (page = 1 document)
 input:
   type: json
   text_column: text
