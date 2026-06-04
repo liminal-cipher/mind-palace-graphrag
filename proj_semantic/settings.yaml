@@ -12,6 +12,12 @@ completion_models:
     api_key: ${GRAPHRAG_API_KEY}
     retry:
       type: exponential_backoff
+    ### Azure 배포 RPM/TPM 모르니 보수적으로. 추출은 청크당 토큰 무거워 TPM이 실병목.
+    rate_limit:
+      type: sliding_window
+      requests_per_period: 60
+      tokens_per_period: 100000
+      period_in_seconds: 60
 
 embedding_models:
   default_embedding_model:
@@ -60,6 +66,12 @@ cache:
 vector_store:
   type: lancedb
   db_uri: "../output/semantic_run1/lancedb"
+  ### graphrag_vectors의 DEFAULT_VECTOR_SIZE는 3072(text-embedding-3-large 기준)이라
+  ### text-embedding-3-small(1536)과 mismatch → ArrowInvalid. 우리가 쓰는 임베딩만 명시.
+  index_schema:
+    entity_description:
+      index_name: entity_description    # IndexSchema 기본 index_name이 'vector_index'이라 명시 안 하면 lancedb 테이블이 잘못된 이름으로 생성됨
+      vector_size: 1536
 
 ### 워크플로 allowlist: Standard에서 create_community_reports만 제외
 workflows:
