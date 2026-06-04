@@ -1,0 +1,232 @@
+{
+  "entities": 357,
+  "relationships": 379,
+  "communities_total": 73,
+  "level_counts": {
+    "0": 40,
+    "1": 31,
+    "2": 2
+  },
+  "level0_titles": [
+    {
+      "community": 0,
+      "title": "조선 농촌과 가난한 농민의 관계망 분석",
+      "size": 2
+    },
+    {
+      "community": 1,
+      "title": "조선 왕조 세곡 운송 및 보관망",
+      "size": 4
+    },
+    {
+      "community": 2,
+      "title": "임진왜란과 정유재란: 왜군, 이순신, 및 주요 전투 네트워크 분석",
+      "size": 25
+    },
+    {
+      "community": 3,
+      "title": "세조와 단종 시기 조선 왕권 강화 및 이주 정책 네트워크",
+      "size": 16
+    },
+    {
+      "community": 4,
+      "title": "광해군 시대 조선 왕조 권력 네트워크",
+      "size": 12
+    },
+    {
+      "community": 5,
+      "title": "조선 후기 의병 조직과 주요 지도자 네트워크",
+      "size": 12
+    },
+    {
+      "community": 6,
+      "title": "세종과 조선 초기 국방 및 학문 네트워크",
+      "size": 10
+    },
+    {
+      "community": 7,
+      "title": "조선 농업과 주요 농업 기술, 경제 계층 및 시장 네트워크",
+      "size": 8
+    },
+    {
+      "community": 8,
+      "title": "조선의 관청과 기술 교육 기관 관계망",
+      "size": 2
+    },
+    {
+      "community": 9,
+      "title": "정조와 조선 후기 왕권 강화 및 사회·경제 개혁 네트워크",
+      "size": 18
+    },
+    {
+      "community": 10,
+      "title": "조선 붕당과 사림·훈구 세력 네트워크 분석",
+      "size": 23
+    },
+    {
+      "community": 11,
+      "title": "세종 대왕과 훈민정음 기반 조선 초기 국문학 네트워크",
+      "size": 5
+    },
+    {
+      "community": 12,
+      "title": "조선 군역 제도와 수도 및 지방 군사 지휘 체계",
+      "size": 7
+    },
+    {
+      "community": 13,
+      "title": "조선 후기 성리학과 실학자 네트워크: 중상·중농 학파와 국학 연구",
+      "size": 27
+    },
+    {
+      "community": 14,
+      "title": "권율과 행주 산성: 임진왜란 중 조선의 군사 지휘와 국방 거점",
+      "size": 2
+    },
+    {
+      "community": 15,
+      "title": "김시민과 진주성 전투 네트워크 분석",
+      "size": 2
+    },
+    {
+      "community": 16,
+      "title": "김정호와 대동여지도: 조선 후기 지리학 네트워크",
+      "size": 2
+    },
+    {
+      "community": 17,
+      "title": "조선 초대 국왕 이성계와 건국 기반 세력 네트워크",
+      "size": 5
+    },
+    {
+      "community": 18,
+      "title": "조선 후기 도시 상공업 네트워크와 대상인 및 영세 상인 관계 분석",
+      "size": 3
+    },
+    {
+      "community": 19,
+      "title": "조선 후기 정상기와 동국지도 네트워크 분석",
+      "size": 2
+    },
+    {
+      "community": 20,
+      "title": "조선 역원 제도와 교통 네트워크",
+      "size": 7
+    },
+    {
+      "community": 21,
+      "title": "조선 초기 왕권 강화와 정책 네트워크: 태조, 태종, 호패법을 중심으로",
+      "size": 6
+    },
+    {
+      "community": 22,
+      "title": "효종과 북벌 운동 네트워크: 군사력 강화와 국방 체계",
+      "size": 5
+    },
+    {
+      "community": 23,
+      "title": "조선 후기 붕당 정치와 영조의 탕평책 중심 네트워크",
+      "size": 20
+    },
+    {
+      "community": 24,
+      "title": "조선 삼사와 관료 인사권을 중심으로 한 권력 네트워크",
+      "size": 9
+    },
+    {
+      "community": 25,
+      "title": "이제마와 사상의학 네트워크 분석",
+      "size": 2
+    },
+    {
+      "community": 26,
+      "title": "조선시대 서당-향교-사서 교육 네트워크",
+      "size": 3
+    },
+    {
+      "community": 27,
+      "title": "왕의 외척과 사화: 조선 정치 권력구조의 무대",
+      "size": 2
+    },
+    {
+      "community": 28,
+      "title": "임진왜란 시기 선조와 의주의 정치적 피난 네트워크",
+      "size": 2
+    },
+    {
+      "community": 29,
+      "title": "조선 왕조 양반과 지방 행정 네트워크",
+      "size": 24
+    },
+    {
+      "community": 30,
+      "title": "숙종과 조선 후기 환국 정치 네트워크",
+      "size": 2
+    },
+    {
+      "community": 31,
+      "title": "신경준과 훈민정음운해: 조선 후기 한글 음운학 네트워크",
+      "size": 2
+    },
+    {
+      "community": 32,
+      "title": "조선 후기 국어학자 유희와 한글 연구서 '언문지'",
+      "size": 2
+    },
+    {
+      "community": 33,
+      "title": "조선 건국과 초기 권력 네트워크: 정도전과 관료 체계",
+      "size": 38
+    },
+    {
+      "community": 34,
+      "title": "현종과 예송 사건의 정치적 네트워크",
+      "size": 2
+    },
+    {
+      "community": 35,
+      "title": "이괄의 난과 정묘호란의 연결망",
+      "size": 2
+    },
+    {
+      "community": 36,
+      "title": "이중환과 택리지: 조선 후기 지리학과 지역 연구의 중심",
+      "size": 2
+    },
+    {
+      "community": 37,
+      "title": "조선 전기 군사 체계 네트워크 분석: 중앙군, 지방군, 잡색군",
+      "size": 3
+    },
+    {
+      "community": 38,
+      "title": "조선 정부와 임진왜란 시 충주 방어선 네트워크",
+      "size": 2
+    },
+    {
+      "community": 39,
+      "title": "포르투갈 상인과 조총의 일본 전파 네트워크",
+      "size": 4
+    }
+  ],
+  "tokens": {
+    "llm_calls": 495,
+    "llm_input_tokens": 1194774,
+    "llm_output_tokens": 282506,
+    "embed_calls": 41,
+    "embed_input_tokens": 157368
+  },
+  "cost_usd": {
+    "llm_input": 0.4779,
+    "llm_output": 0.452,
+    "embed": 0.0031,
+    "total": 0.9331
+  },
+  "timing": {
+    "total_runtime": 387.78817534446716,
+    "extract_graph": 197.69396328926086,
+    "create_communities": 1.005176305770874,
+    "create_community_reports": 143.4660782814026,
+    "generate_text_embeddings": 39.53485035896301
+  }
+}

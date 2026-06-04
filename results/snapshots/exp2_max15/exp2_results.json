@@ -1,0 +1,182 @@
+{
+  "entities": 408,
+  "relationships": 453,
+  "communities_total": 80,
+  "level_counts": {
+    "0": 30,
+    "1": 48,
+    "2": 2
+  },
+  "level0_titles": [
+    {
+      "community": 0,
+      "title": "조선 왕조 조운 제도와 세곡 운송망 네트워크",
+      "size": 5
+    },
+    {
+      "community": 1,
+      "title": "조선 전기 주요 왕과 사림 및 훈구 세력 네트워크 분석",
+      "size": 16
+    },
+    {
+      "community": 2,
+      "title": "조선 수군과 임진왜란 해전 네트워크",
+      "size": 8
+    },
+    {
+      "community": 3,
+      "title": "조선 농업과 경제적 기반 네트워크 분석",
+      "size": 9
+    },
+    {
+      "community": 4,
+      "title": "조선 전기부터 후기까지 주요 세력과 국방 위기 네트워크",
+      "size": 18
+    },
+    {
+      "community": 5,
+      "title": "조선 역원 제도와 공무 여행자 네트워크 분석",
+      "size": 6
+    },
+    {
+      "community": 6,
+      "title": "조선 지방 행정 조직과 수령 중심의 권력 네트워크",
+      "size": 19
+    },
+    {
+      "community": 7,
+      "title": "국가 행정 질서와 유교 사회 질서의 연결 고리",
+      "size": 2
+    },
+    {
+      "community": 8,
+      "title": "조선시대 양반 사회와 군역 제도의 관계망 분석",
+      "size": 2
+    },
+    {
+      "community": 9,
+      "title": "사명대사와 금강산 유점사: 조선 임진왜란 의병 조직의 중심지",
+      "size": 2
+    },
+    {
+      "community": 10,
+      "title": "김시민과 진주 전투 네트워크 분석",
+      "size": 2
+    },
+    {
+      "community": 11,
+      "title": "김육과 대동법의 조선 후기 네트워크 분석",
+      "size": 2
+    },
+    {
+      "community": 12,
+      "title": "조선 초기 권력 네트워크와 주요 인물 분석",
+      "size": 14
+    },
+    {
+      "community": 13,
+      "title": "병자호란과 북벌 운동 네트워크 분석",
+      "size": 9
+    },
+    {
+      "community": 14,
+      "title": "임진왜란과 정유재란 네트워크 분석 보고서: 이순신, 류성룡, 의병과 조선 방어 체계",
+      "size": 39
+    },
+    {
+      "community": 15,
+      "title": "조선 왕조의 통치 체계와 대외 관계 네트워크",
+      "size": 32
+    },
+    {
+      "community": 16,
+      "title": "조선 인재 등용 제도: 문음과 천거의 관계망 분석",
+      "size": 2
+    },
+    {
+      "community": 17,
+      "title": "조선 후기사 주요 통치자와 관료·학자 권력 네트워크: 영조와 정조를 중심으로",
+      "size": 30
+    },
+    {
+      "community": 18,
+      "title": "조선 초기 서원 네트워크: 주세붕, 안향, 백운동 서원, 소수 서원",
+      "size": 4
+    },
+    {
+      "community": 19,
+      "title": "조선 중상학파 및 북학파 네트워크와 청 문물 수용",
+      "size": 7
+    },
+    {
+      "community": 20,
+      "title": "조선 중앙 정치 제도와 삼사 및 6조 관계망 분석",
+      "size": 10
+    },
+    {
+      "community": 21,
+      "title": "조선시대 서당과 향교의 유교 교육망 분석",
+      "size": 3
+    },
+    {
+      "community": 22,
+      "title": "조선 왕조 내 왕의 외척과 사화 갈등 관계망",
+      "size": 2
+    },
+    {
+      "community": 23,
+      "title": "조선 후기 권력 구조 및 붕당 정치 네트워크 분석: 광해군과 서인 세력 중심",
+      "size": 34
+    },
+    {
+      "community": 24,
+      "title": "조선 초기 훈구 세력과 사림 세력의 정치 갈등 및 네트워크 분석",
+      "size": 16
+    },
+    {
+      "community": 25,
+      "title": "세종과 태종 중심의 조선 초기 정치·학문 네트워크",
+      "size": 17
+    },
+    {
+      "community": 26,
+      "title": "조선 왕조 국학과 실학의 지식인 네트워크 분석",
+      "size": 45
+    },
+    {
+      "community": 27,
+      "title": "조선 초기 학문과 과학기술 발전 네트워크",
+      "size": 6
+    },
+    {
+      "community": 28,
+      "title": "조선 양반과 유향소 중심의 정치 및 교육 네트워크",
+      "size": 13
+    },
+    {
+      "community": 29,
+      "title": "조선 초기 군사 조직 및 지방 방어망 네트워크",
+      "size": 3
+    }
+  ],
+  "tokens": {
+    "llm_calls": 371,
+    "llm_input_tokens": 1182801,
+    "llm_output_tokens": 278548,
+    "embed_calls": 45,
+    "embed_input_tokens": 163065
+  },
+  "cost_usd": {
+    "llm_input": 0.4731,
+    "llm_output": 0.4457,
+    "embed": 0.0033,
+    "total": 0.9221
+  },
+  "timing": {
+    "total_runtime": 386.506502866745,
+    "extract_graph": 148.61441349983215,
+    "create_communities": 1.1680994033813477,
+    "create_community_reports": 171.94985485076904,
+    "generate_text_embeddings": 56.00354337692261
+  }
+}

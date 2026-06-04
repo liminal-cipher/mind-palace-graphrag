@@ -8,8 +8,5 @@ __pycache__/
 output/
 logs/
 
-# 베이스 스냅샷 (용량 큼, git-lfs/공유드라이브로 별도 공유)
-results/snapshots/
-
 # 입력 자료 (저작물)
 input/

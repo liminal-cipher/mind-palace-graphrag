@@ -1,0 +1,112 @@
+{
+  "entities": 357,
+  "relationships": 379,
+  "communities_total": 45,
+  "level_counts": {
+    "0": 16,
+    "1": 27,
+    "2": 2
+  },
+  "level0_titles": [
+    {
+      "community": 0,
+      "title": "조선 붕당과 사림·훈구 세력 네트워크 분석",
+      "size": 23
+    },
+    {
+      "community": 1,
+      "title": "세조와 단종 시기 조선 왕권 강화 및 이주 정책 네트워크",
+      "size": 16
+    },
+    {
+      "community": 2,
+      "title": "조선 농업과 주요 농업 기술, 경제 계층 및 시장 네트워크",
+      "size": 8
+    },
+    {
+      "community": 3,
+      "title": "조선 초대 국왕 이성계와 건국 기반 세력 네트워크",
+      "size": 5
+    },
+    {
+      "community": 4,
+      "title": "정조와 조선 후기 왕권 강화 및 사회·경제 개혁 네트워크",
+      "size": 18
+    },
+    {
+      "community": 5,
+      "title": "조선 양반과 과거 시험을 중심으로 한 관료 및 신분 네트워크",
+      "size": 11
+    },
+    {
+      "community": 6,
+      "title": "세종과 조선 초기 국방 및 학문 네트워크",
+      "size": 10
+    },
+    {
+      "community": 7,
+      "title": "조선 후기 성리학과 실학자 네트워크: 중상·중농 학파와 국학 연구",
+      "size": 27
+    },
+    {
+      "community": 8,
+      "title": "임진왜란 왜군과 조선 초기 방어 지휘관 네트워크",
+      "size": 7
+    },
+    {
+      "community": 9,
+      "title": "조선 초기 왕권 강화와 정책 네트워크: 태조, 태종, 호패법을 중심으로",
+      "size": 6
+    },
+    {
+      "community": 10,
+      "title": "조선 후기 붕당 정치와 영조의 탕평책 네트워크",
+      "size": 24
+    },
+    {
+      "community": 11,
+      "title": "조선 삼사와 관료 인사권을 중심으로 한 권력 네트워크",
+      "size": 9
+    },
+    {
+      "community": 12,
+      "title": "조선 왕조 초기 핵심 인물과 통치 체계 네트워크 분석",
+      "size": 41
+    },
+    {
+      "community": 13,
+      "title": "조선 임진왜란 및 광해군 시기 주요 인물과 전쟁 네트워크",
+      "size": 23
+    },
+    {
+      "community": 14,
+      "title": "포르투갈 상인과 조총의 일본 전파 네트워크",
+      "size": 4
+    },
+    {
+      "community": 15,
+      "title": "조선 지방 행정과 향촌 사회 네트워크",
+      "size": 13
+    }
+  ],
+  "tokens": {
+    "llm_calls": 527,
+    "llm_input_tokens": 1338936,
+    "llm_output_tokens": 309318,
+    "embed_calls": 51,
+    "embed_input_tokens": 228704
+  },
+  "cost_usd": {
+    "llm_input": 0.5356,
+    "llm_output": 0.4949,
+    "embed": 0.0046,
+    "total": 1.0351
+  },
+  "timing": {
+    "total_runtime": 186.09611058235168,
+    "extract_graph": 64.33849334716797,
+    "create_communities": 0.9510793685913086,
+    "create_community_reports": 82.4506242275238,
+    "generate_text_embeddings": 31.14953112602234
+  }
+}

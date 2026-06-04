@@ -1,0 +1,191 @@
+{
+  "entities": 390,
+  "relationships": 380,
+  "communities_total": 73,
+  "level_counts": {
+    "0": 32,
+    "1": 41
+  },
+  "level0_titles": [
+    {
+      "community": 0,
+      "title": "조운 및 경창을 중심으로 한 조선 후기 서울 행정과 군사 네트워크",
+      "size": 8
+    },
+    {
+      "community": 1,
+      "title": "임진왜란과 조선의 주요 인물 및 군사 네트워크 분석",
+      "size": 34
+    },
+    {
+      "community": 2,
+      "title": "정조와 조선 후기사회의 정치개혁 및 권력구조 네트워크",
+      "size": 23
+    },
+    {
+      "community": 3,
+      "title": "임진왜란 의병 네트워크: 곽재우, 조헌, 고경명 중심으로",
+      "size": 10
+    },
+    {
+      "community": 4,
+      "title": "광해군 시대 중립 외교와 국정 강화를 중심으로 한 조선 왕조 네트워크 분석",
+      "size": 12
+    },
+    {
+      "community": 5,
+      "title": "조선 과거 시험과 관료 선발 네트워크",
+      "size": 4
+    },
+    {
+      "community": 6,
+      "title": "조선 왕조 초기 권력 구조와 교육 기관 네트워크",
+      "size": 12
+    },
+    {
+      "community": 7,
+      "title": "조선 초기 농업과 과학기술 발전 네트워크",
+      "size": 7
+    },
+    {
+      "community": 8,
+      "title": "조선 후기 주권과 실학 네트워크: 인조, 효종, 청 그리고 중상 학파",
+      "size": 22
+    },
+    {
+      "community": 9,
+      "title": "조선 후기 유득공과 발해 연구 네트워크",
+      "size": 5
+    },
+    {
+      "community": 10,
+      "title": "조선시대 양인과 군역 의무의 관계망 분석",
+      "size": 2
+    },
+    {
+      "community": 11,
+      "title": "조선 후기 붕당과 영조의 탕평책 네트워크",
+      "size": 16
+    },
+    {
+      "community": 12,
+      "title": "임진왜란 시기 김시민과 진주 대첩 네트워크 분석",
+      "size": 2
+    },
+    {
+      "community": 13,
+      "title": "김정호와 대동여지도: 조선 후기 지리학 네트워크",
+      "size": 2
+    },
+    {
+      "community": 14,
+      "title": "조선 초기~중기 권력 구조와 주요 인물 네트워크",
+      "size": 26
+    },
+    {
+      "community": 15,
+      "title": "조선 왕권과 의정부 중심 조선 왕조 네트워크 분석",
+      "size": 25
+    },
+    {
+      "community": 16,
+      "title": "조선 실학과 중농 학파 네트워크: 이수광, 김육, 안정복 중심",
+      "size": 30
+    },
+    {
+      "community": 17,
+      "title": "정상기와 동국지도: 조선 실학과 지도제작 혁신",
+      "size": 2
+    },
+    {
+      "community": 18,
+      "title": "조선 초기 권력투쟁과 정치 세력: 훈구 세력, 사림 세력, 연산군과 무오사화",
+      "size": 5
+    },
+    {
+      "community": 19,
+      "title": "신경준과 유희의 한글 연구 및 문화적 자아 의식",
+      "size": 6
+    },
+    {
+      "community": 20,
+      "title": "조선 건국과 초기 권력 구조 및 지방 행정 네트워크 분석",
+      "size": 30
+    },
+    {
+      "community": 21,
+      "title": "백운동 서원과 조선 초기 유학자 네트워크",
+      "size": 4
+    },
+    {
+      "community": 22,
+      "title": "조선 병마절도사와 지방군의 군사 네트워크",
+      "size": 2
+    },
+    {
+      "community": 23,
+      "title": "조선 사림 세력과 성종의 유교 정치 네트워크",
+      "size": 15
+    },
+    {
+      "community": 24,
+      "title": "조선-일본 교역과 임진왜란: 도요토미 히데요시와 3포 개항 네트워크",
+      "size": 13
+    },
+    {
+      "community": 25,
+      "title": "숙종과 환국: 조선 붕당 정치의 동역학",
+      "size": 2
+    },
+    {
+      "community": 26,
+      "title": "조선 육로 교통망과 역원 제도 네트워크 분석",
+      "size": 5
+    },
+    {
+      "community": 27,
+      "title": "현종과 예송 논쟁: 조선 후기 붕당 정치의 분열",
+      "size": 2
+    },
+    {
+      "community": 28,
+      "title": "조선 초기 국문학 발전과 훈민정음 기반 문학작품 분석",
+      "size": 4
+    },
+    {
+      "community": 29,
+      "title": "이중환과 『택리지』: 조선 후기 실학자의 지리 및 사회 연구",
+      "size": 2
+    },
+    {
+      "community": 30,
+      "title": "조선 수군의 제해권 확보와 전라도 곡창 지대 및 황해안 방어 네트워크",
+      "size": 3
+    },
+    {
+      "community": 31,
+      "title": "조선 시대 한문학과 문집 관계망 분석",
+      "size": 4
+    }
+  ],
+  "tokens": {
+    "llm_calls": 377,
+    "llm_input_tokens": 1144739,
+    "llm_output_tokens": 261134,
+    "embed_calls": 43,
+    "embed_input_tokens": 153497
+  },
+  "cost_usd": {
+    "llm_input": 0.4579,
+    "llm_output": 0.4178,
+    "embed": 0.0031,
+    "total": 0.8788
+  },
+  "timing": {
+    "total_runtime": 320.18439412117004,
+    "extract_graph": 148.9968602657318,
+    "create_communities": 1.1696619987487793,
+    "create_community_reports": 111.5699679851532,
+    "generate_text_embeddings": 52.252039194107056
+  }
+}
