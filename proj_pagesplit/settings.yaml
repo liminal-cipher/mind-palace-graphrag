@@ -1,0 +1,139 @@
+### exp9 pagesplit rechunk — repro_run3 모델 설정 그대로, 청킹·입력만 다름.
+### 차이점: input.type=json, 청크 분할 0(페이지당 1 unit), community_reports 워크플로 제외.
+
+completion_models:
+  default_completion_model:
+    model_provider: azure
+    model: gpt-4.1-mini
+    azure_deployment_name: gpt-4.1-mini
+    api_base: ${GRAPHRAG_API_BASE}
+    api_version: 2024-12-01-preview
+    auth_method: api_key
+    api_key: ${GRAPHRAG_API_KEY}
+    retry:
+      type: exponential_backoff
+
+embedding_models:
+  default_embedding_model:
+    model_provider: azure
+    model: text-embedding-3-small
+    azure_deployment_name: text-embedding-3-small
+    api_base: ${GRAPHRAG_API_BASE}
+    api_version: 2024-12-01-preview
+    auth_method: api_key
+    api_key: ${GRAPHRAG_API_KEY}
+    retry:
+      type: exponential_backoff
+
+### 입력: 경민 페이지 청크 50쪽 (page = 1 document)
+input:
+  type: json
+  text_column: text
+  file_pattern: ".*\\.json$$"
+  encoding: utf-8
+
+### 청킹: 문서 자르지 않게 size를 max(861) 훨씬 넘게, overlap 0
+chunking:
+  type: tokens
+  size: 2000
+  overlap: 0
+  encoding_model: o200k_base
+
+input_storage:
+  type: file
+  base_dir: "input"
+
+output_storage:
+  type: file
+  base_dir: "../output/pagesplit_run1"
+
+reporting:
+  type: file
+  base_dir: "../logs/pagesplit_run1"
+
+cache:
+  type: json
+  storage:
+    type: file
+    base_dir: "../cache/pagesplit_run1"
+
+vector_store:
+  type: lancedb
+  db_uri: "../output/pagesplit_run1/lancedb"
+
+### 워크플로 allowlist: Standard에서 create_community_reports만 제외
+workflows:
+  - load_input_documents
+  - create_base_text_units
+  - create_final_documents
+  - extract_graph
+  - finalize_graph
+  - extract_covariates
+  - create_communities
+  - create_final_text_units
+  - generate_text_embeddings
+
+### 임베딩 타깃: 엔티티 설명만. report·text_unit 임베딩은 끔
+embed_text:
+  embedding_model_id: default_embedding_model
+  names:
+    - entity_description
+
+extract_graph:
+  completion_model_id: default_completion_model
+  prompt: "../prompts/extract_graph.txt"
+  entity_types: [인물, 사건, 정책, 문물, 서적, 기관, 장소]
+  max_gleanings: 2
+
+summarize_descriptions:
+  completion_model_id: default_completion_model
+  prompt: "../prompts/summarize_descriptions.txt"
+  max_length: 500
+
+extract_graph_nlp:
+  text_analyzer:
+    extractor_type: regex_english
+
+cluster_graph:
+  max_cluster_size: 15
+  use_lcc: true
+
+extract_claims:
+  enabled: false
+  completion_model_id: default_completion_model
+  prompt: "../prompts/extract_claims.txt"
+  description: "Any claims or facts that could be relevant to information discovery."
+  max_gleanings: 1
+
+community_reports:
+  completion_model_id: default_completion_model
+  graph_prompt: "../prompts/community_report_graph.txt"
+  text_prompt: "../prompts/community_report_text.txt"
+  max_length: 2000
+  max_input_length: 8000
+
+snapshots:
+  graphml: false
+  embeddings: false
+
+local_search:
+  completion_model_id: default_completion_model
+  embedding_model_id: default_embedding_model
+  prompt: "../prompts/local_search_system_prompt.txt"
+
+global_search:
+  completion_model_id: default_completion_model
+  map_prompt: "../prompts/global_search_map_system_prompt.txt"
+  reduce_prompt: "../prompts/global_search_reduce_system_prompt.txt"
+  knowledge_prompt: "../prompts/global_search_knowledge_system_prompt.txt"
+
+drift_search:
+  completion_model_id: default_completion_model
+  embedding_model_id: default_embedding_model
+  prompt: "../prompts/drift_search_system_prompt.txt"
+  reduce_prompt: "../prompts/drift_search_reduce_prompt.txt"
+
+basic_search:
+  completion_model_id: default_completion_model
+  embedding_model_id: default_embedding_model
+  prompt: "../prompts/basic_search_system_prompt.txt"
