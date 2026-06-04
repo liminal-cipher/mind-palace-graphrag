@@ -1,0 +1,27 @@
+{
+  "room_name": "조선 북방 군사와 교통",
+  "coherence": "coherent",
+  "coherence_reason": "북방 국경 방어와 조선시대 교통·통신 제도 관련 인물, 제도, 시설, 장소로 구성됨",
+  "members": [
+    {"title": "압록강 (지리, 자연환경)", "classification": "demote"},
+    {"title": "두만강 (지리, 자연환경)", "classification": "demote"},
+    {"title": "최윤덕 (인물, 장군)", "classification": "keep"},
+    {"title": "김종서 (인물, 장군)", "classification": "keep"},
+    {"title": "4군 (군사 조직)", "classification": "keep"},
+    {"title": "6진 (군사 조직)", "classification": "keep"},
+    {"title": "조운 (교통, 물류 제도)", "classification": "keep"},
+    {"title": "강창 (시설)", "classification": "demote"},
+    {"title": "해창 (시설)", "classification": "demote"},
+    {"title": "경창 (시설, 장소)", "classification": "demote"},
+    {"title": "역원 제도 (교통, 행정 제도)", "classification": "keep"},
+    {"title": "역 (시설)", "classification": "demote"},
+    {"title": "역졸 (인물 직위)", "classification": "demote"},
+    {"title": "마패 (공문서, 교통 수단)", "classification": "keep"},
+    {"title": "원 (시설)", "classification": "demote"},
+    {"title": "장호원 (지명, 장소)", "classification": "demote"},
+    {"title": "사리원 (지명, 장소)", "classification": "demote"},
+    {"title": "봉수 제도 (통신, 군사 제도)", "classification": "keep"},
+    {"title": "조선 정부 (조직, 국가 기관)", "classification": "demote"},
+    {"title": "충주 방어선 (군사 시설)", "classification": "keep"}
+  ]
+}

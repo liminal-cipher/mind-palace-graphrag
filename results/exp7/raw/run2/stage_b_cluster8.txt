@@ -1,0 +1,31 @@
+{
+  "room_name": "조선 행정 조직과 제도",
+  "coherence": "coherent",
+  "coherence_reason": "조선 시대 지방 및 중앙 행정 조직과 제도, 관직, 자치기구 등 행정 운영 관련 구체적 대상들로 구성됨",
+  "members": [
+    {"title": "호패법 (제도)", "classification": "keep"},
+    {"title": "전국 (지리적 단위)", "classification": "demote"},
+    {"title": "6조 (조직, 행정기관)", "classification": "keep"},
+    {"title": "판서 (인물, 공무원)", "classification": "keep"},
+    {"title": "사헌부 (조직, 감찰 기관)", "classification": "keep"},
+    {"title": "춘추관 (조직, 역사 편찬 기관)", "classification": "keep"},
+    {"title": "한성부 (조직, 행정 기관)", "classification": "keep"},
+    {"title": "전국 8도 (지역 행정 구역)", "classification": "keep"},
+    {"title": "군·현 (지역 행정 구역)", "classification": "keep"},
+    {"title": "수령 (인물, 행정 관료)", "classification": "keep"},
+    {"title": "향리 (인물, 공무원)", "classification": "keep"},
+    {"title": "6방 (조직, 행정 부서)", "classification": "keep"},
+    {"title": "유향소(향청) (조직, 지방 자치 기구)", "classification": "keep"},
+    {"title": "유향소 (기관, 조직)", "classification": "keep"},
+    {"title": "향회 (행사, 조직)", "classification": "keep"},
+    {"title": "지방 양반 (사회 계층)", "classification": "demote"},
+    {"title": "읍성 (군사 시설)", "classification": "keep"},
+    {"title": "지방 행정 (제도, 행정)", "classification": "demote"},
+    {"title": "지역 (장소, 행정 구역)", "classification": "demote"},
+    {"title": "관청 (기관)", "classification": "keep"},
+    {"title": "향약 (사회제도, 자치기구)", "classification": "demote"},
+    {"title": "향약 4대 덕목 (사회규범, 윤리)", "classification": "demote"},
+    {"title": "계 (사회조직, 자치기구)", "classification": "demote"},
+    {"title": "향토 방위 (군사 활동, 전략)", "classification": "demote"}
+  ]
+}

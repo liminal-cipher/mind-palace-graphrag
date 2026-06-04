@@ -1,0 +1,27 @@
+{
+  "room_name": "조선 북방 방어와 교통 제도",
+  "coherence": "coherent",
+  "coherence_reason": "북방 국경 방어와 조선시대 교통·통신 제도 관련 구체적 인물, 조직, 시설, 제도 중심으로 구성됨",
+  "members": [
+    {"title": "압록강", "classification": "keep"},
+    {"title": "두만강", "classification": "keep"},
+    {"title": "최윤덕", "classification": "keep"},
+    {"title": "김종서", "classification": "keep"},
+    {"title": "4군", "classification": "keep"},
+    {"title": "6진", "classification": "keep"},
+    {"title": "조운", "classification": "keep"},
+    {"title": "강창", "classification": "keep"},
+    {"title": "해창", "classification": "keep"},
+    {"title": "경창", "classification": "keep"},
+    {"title": "역원 제도", "classification": "keep"},
+    {"title": "역", "classification": "keep"},
+    {"title": "역졸", "classification": "keep"},
+    {"title": "마패", "classification": "keep"},
+    {"title": "원", "classification": "keep"},
+    {"title": "장호원", "classification": "keep"},
+    {"title": "사리원", "classification": "keep"},
+    {"title": "봉수 제도", "classification": "keep"},
+    {"title": "조선 정부", "classification": "demote"},
+    {"title": "충주 방어선", "classification": "keep"}
+  ]
+}

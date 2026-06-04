@@ -1,0 +1,30 @@
+{
+  "room_name": "조선 제도와 인물",
+  "coherence": "coherent",
+  "coherence_reason": "조선시대 제도, 관직, 시험, 인물 등 구체적 암기 대상 중심으로 구성됨",
+  "members": [
+    {"title": "과전법", "classification": "keep"},
+    {"title": "직전법", "classification": "keep"},
+    {"title": "의정부", "classification": "keep"},
+    {"title": "의금부", "classification": "keep"},
+    {"title": "과거 시험", "classification": "keep"},
+    {"title": "문과", "classification": "keep"},
+    {"title": "무과", "classification": "keep"},
+    {"title": "잡과", "classification": "keep"},
+    {"title": "문음", "classification": "keep"},
+    {"title": "천거", "classification": "keep"},
+    {"title": "국방비", "classification": "demote"},
+    {"title": "사신 접대비", "classification": "demote"},
+    {"title": "인지의", "classification": "keep"},
+    {"title": "중국 논농사 기술", "classification": "demote"},
+    {"title": "모내기법", "classification": "demote"},
+    {"title": "탕평비", "classification": "keep"},
+    {"title": "김육", "classification": "keep"},
+    {"title": "대동법", "classification": "keep"},
+    {"title": "중농 학파", "classification": "demote"},
+    {"title": "유형원", "classification": "keep"},
+    {"title": "이익", "classification": "keep"},
+    {"title": "정약용", "classification": "keep"},
+    {"title": "토지 제도", "classification": "demote"}
+  ]
+}

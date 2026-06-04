@@ -1,0 +1,25 @@
+{
+  "room_name": "조선-일본 교역과 외교",
+  "coherence": "coherent",
+  "coherence_reason": "조선과 일본 및 동남아시아와의 교역, 외교, 임진왜란 관련 인물과 장소, 무기, 외교 사절단 등으로 한 주제에 집중됨",
+  "members": [
+    {"title": "일본 (국가)", "classification": "demote"},
+    {"title": "제포(진해)", "classification": "keep"},
+    {"title": "부산포", "classification": "keep"},
+    {"title": "염포(울산)", "classification": "keep"},
+    {"title": "류큐", "classification": "demote"},
+    {"title": "시암(타이)", "classification": "demote"},
+    {"title": "자와(자바)", "classification": "demote"},
+    {"title": "대외 관계", "classification": "demote"},
+    {"title": "교역", "classification": "demote"},
+    {"title": "도요토미 히데요시", "classification": "keep"},
+    {"title": "포르투갈 상인", "classification": "demote"},
+    {"title": "조총", "classification": "keep"},
+    {"title": "포르투갈", "classification": "demote"},
+    {"title": "철포", "classification": "keep"},
+    {"title": "도쿠가와 막부", "classification": "keep"},
+    {"title": "통신사", "classification": "keep"},
+    {"title": "조선인 포로", "classification": "demote"},
+    {"title": "에도(도쿄)", "classification": "keep"}
+  ]
+}

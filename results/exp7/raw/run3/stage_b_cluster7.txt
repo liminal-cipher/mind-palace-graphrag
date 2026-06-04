@@ -1,0 +1,30 @@
+{
+  "room_name": "조선 제도와 인물",
+  "coherence": "coherent",
+  "coherence_reason": "조선 시대의 제도, 법률, 관직, 시험, 인물 등 구체적 명칭과 역할을 중심으로 구성됨",
+  "members": [
+    {"title": "과전법 (제도, 법률)", "classification": "keep"},
+    {"title": "직전법 (제도, 법률)", "classification": "keep"},
+    {"title": "의정부 (조직, 행정기관)", "classification": "keep"},
+    {"title": "의금부 (조직, 사법 기관)", "classification": "keep"},
+    {"title": "과거 시험 (제도)", "classification": "keep"},
+    {"title": "문과 (시험 종류)", "classification": "keep"},
+    {"title": "무과 (시험 종류)", "classification": "keep"},
+    {"title": "잡과 (시험 종류)", "classification": "keep"},
+    {"title": "문음 (인물 추천 제도)", "classification": "keep"},
+    {"title": "천거 (인물 추천 제도)", "classification": "keep"},
+    {"title": "국방비 (재정)", "classification": "demote"},
+    {"title": "사신 접대비 (재정)", "classification": "demote"},
+    {"title": "인지의 (과학기기, 측량기기)", "classification": "demote"},
+    {"title": "중국 논농사 기술 (농업기술)", "classification": "demote"},
+    {"title": "모내기법 (농업기술)", "classification": "demote"},
+    {"title": "탕평비 (기념물, 정치 상징)", "classification": "keep"},
+    {"title": "김육 (인물_정치가_실학자)", "classification": "keep"},
+    {"title": "대동법 (정책_법제)", "classification": "keep"},
+    {"title": "중농 학파 (학문 집단_사상파)", "classification": "demote"},
+    {"title": "유형원 (인물_학자)", "classification": "keep"},
+    {"title": "이익 (인물_학자)", "classification": "keep"},
+    {"title": "정약용 (인물_학자_실학자)", "classification": "keep"},
+    {"title": "토지 제도 (제도_사회 구조)", "classification": "demote"}
+  ]
+}

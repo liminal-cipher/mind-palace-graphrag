@@ -1,0 +1,25 @@
+{
+  "room_name": "조선-일본 교역과 외교",
+  "coherence": "coherent",
+  "coherence_reason": "조선과 일본 및 동남아, 서양과의 교역과 외교 관계 및 관련 인물, 장소, 제도 중심으로 구성됨",
+  "members": [
+    {"title": "일본 (국가)", "classification": "demote"},
+    {"title": "제포(진해) (장소, 항구)", "classification": "keep"},
+    {"title": "부산포 (장소, 항구)", "classification": "keep"},
+    {"title": "염포(울산) (장소, 항구)", "classification": "keep"},
+    {"title": "류큐 (국가, 지역)", "classification": "demote"},
+    {"title": "시암(타이) (국가, 지역)", "classification": "demote"},
+    {"title": "자와(자바) (국가, 지역)", "classification": "demote"},
+    {"title": "대외 관계 (정책, 활동)", "classification": "demote"},
+    {"title": "교역 (경제 활동, 대외 관계)", "classification": "demote"},
+    {"title": "도요토미 히데요시 (인물, 군주)", "classification": "keep"},
+    {"title": "포르투갈 상인 (인물, 집단)", "classification": "demote"},
+    {"title": "조총 (무기, 군사물자)", "classification": "keep"},
+    {"title": "포르투갈 (국가)", "classification": "demote"},
+    {"title": "철포 (무기, 군사 물자)", "classification": "keep"},
+    {"title": "도쿠가와 막부 (조직, 정치 기관)", "classification": "keep"},
+    {"title": "통신사 (조직, 외교단)", "classification": "keep"},
+    {"title": "조선인 포로 (사람, 집단)", "classification": "demote"},
+    {"title": "에도(도쿄) (지역, 도시)", "classification": "keep"}
+  ]
+}
