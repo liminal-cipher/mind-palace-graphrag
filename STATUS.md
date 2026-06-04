@@ -94,5 +94,5 @@ level 0 커뮤니티를 "건물"로 써서 1인칭 3D 기억의 궁전으로 만
 - exp4_lcc_true: use_lcc=true 테스트. 핵심 31% 소실로 탈락. 스냅샷 `snapshots/exp4_lcc_true`.
 - repro_run2 / repro_run3: 재현성 확인 런. run3 = 실험 5 베이스(357 ent, 40방).
 - snap_max10 / snap_max20: max_cluster_size 스냅샷.
-- exp5: 방 병합 실험 (현재). 코드는 루트의 `exp5_lib.py` / `exp5_embed.py` / `exp5_llm.py`.
+- exp5: 방 병합 실험 (현재). 코드는 `results/exp5/` 아래 `exp5_lib.py` / `exp5_embed.py` / `exp5_llm.py` / `exp5_llm_v2.py` / `type_select_test.py`.
 - 리포트(`results/reports/`): `00_baseline`, `01_max15`, `02_snap_max10`, `02_snap_max20`, `03_repro_step{1_snapshot, 2_variance, 3_summary}`, `04_use_lcc`, `05_exp5_data_contract`. 규약과 매핑은 `REPORT_TEMPLATE.md`, `INDEX.md`.
