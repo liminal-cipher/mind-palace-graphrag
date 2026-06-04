@@ -1,7 +1,7 @@
 ---
 type: spec
 id: 05_exp5_data_contract
-date: 2026-06-02
+date: 2026-06-03
 ---
 
 # 실험 5 데이터 계약서 (팀 공유용)
@@ -12,10 +12,10 @@ date: 2026-06-02
 
 ```
 [graphrag output]                [exp5 단계 1]              [exp5 단계 2]                [exp5 단계 3]
-                                                                                      
-entities.parquet         ┐                                                            
-  (357 rows)             │                                                            
-relationships.parquet    │                                                            
+
+entities.parquet         ┐
+  (357 rows)             │
+relationships.parquet    │
   (379 rows)             │   ┌──────────────────────┐   ┌──────────────────────┐   ┌──────────────────────┐
 communities.parquet      ├──▶│  build_room_payloads │──▶│  LLM 병합 (3회 호출) │──▶│   build_slot_json    │
   (73 rows, level 0=40)  │   │                      │   │     (또는)            │   │                      │
@@ -37,13 +37,13 @@ lancedb/                 │   └───────────────�
 
 ### `RoomPayload` 필드
 
-| 필드 | 타입 | 출처 (file.column) | 왜 필요한가 |
-|---|---|---|---|
-| `community` | int | `community_reports.community` (= `communities.community`로 join 키와 동일) | LLM 출력에서 어느 방을 가리키는지 식별 ID. 0~72 사이 정수 |
-| `title` | str | `community_reports.title` | LLM이 의미 묶음 판단의 1차 단서 (압축 26자) |
-| `summary` | str | `community_reports.summary` | title이 못 담는 뉘앙스. 의미 묶음의 ★ 핵심 (중간 268자) |
-| `size` | int | `communities.size` (= `len(entity_ids)`) | 작은 방 흡수 판단의 단서. 슈퍼 방 size 분포 계산에도 사용 |
-| `members` | List[str] | `entities.title` (`communities.entity_ids[i]`로 조회) | 도메인 고유명사. title이 추상적일 때 결정타 (예: 광해군·서인·동의보감) |
+| 필드        | 타입      | 출처 (file.column)                                                         | 왜 필요한가                                                            |
+| ----------- | --------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `community` | int       | `community_reports.community` (= `communities.community`로 join 키와 동일) | LLM 출력에서 어느 방을 가리키는지 식별 ID. 0~72 사이 정수              |
+| `title`     | str       | `community_reports.title`                                                  | LLM이 의미 묶음 판단의 1차 단서 (압축 26자)                            |
+| `summary`   | str       | `community_reports.summary`                                                | title이 못 담는 뉘앙스. 의미 묶음의 ★ 핵심 (중간 268자)                |
+| `size`      | int       | `communities.size` (= `len(entity_ids)`)                                   | 작은 방 흡수 판단의 단서. 슈퍼 방 size 분포 계산에도 사용              |
+| `members`   | List[str] | `entities.title` (`communities.entity_ids[i]`로 조회)                      | 도메인 고유명사. title이 추상적일 때 결정타 (예: 광해군·서인·동의보감) |
 
 ### `members` 선택 규칙
 
@@ -65,7 +65,18 @@ members = top_members['title'].tolist()
   "title": "광해군 시대 조선 왕조 권력 네트워크",
   "summary": "본 보고서는 임진왜란 이후부터 병자호란에 이르기까지 광해군과 인조를 중심으로 조선 전기부터 후기에 걸친 주요 왕족, 관료, 외교 세력 간의 관계망을 분석한다. 광해군은 전후 국토 복구와 국방력 강화를 주도하며 동의보감 편찬과 후금과의 중립 외교 정책을 실행하였다. 서인 붕당은 광해군 말기에서 인조 즉위에 이르는 정치적 영향력을 보였으며, 인조는 서인의 지지를 바탕으로 후금을 적대시하고 청과의 병자호란을 맞이한다. ...",
   "size": 12,
-  "members": ["광해군", "서인", "청", "동의보감", "러시아", "허준", "병자호란", "후금", "인조", "강홍립"]
+  "members": [
+    "광해군",
+    "서인",
+    "청",
+    "동의보감",
+    "러시아",
+    "허준",
+    "병자호란",
+    "후금",
+    "인조",
+    "강홍립"
+  ]
 }
 ```
 
@@ -90,21 +101,21 @@ LLM과 임베딩 두 경로의 출력을 **공통 형태로 통일**해서 단�
 
 ### `MergeResult` 통일 스키마
 
-| 필드 | 타입 | 누가 채우나 | 왜 필요한가 |
-|---|---|---|---|
-| `method` | str | "llm" / "embed_K10" 등 | 어느 경로의 결과인지 (비교용) |
-| `run` | int | 1~3 (LLM 재현성용), 임베딩은 항상 1 | 같은 method의 회차 |
-| `K` | int | 결과 그룹 수 (LLM=10 강제, 임베딩=K_target) | 검증·비교용 |
-| `merged_rooms` | List[MergedRoom] | 핵심 출력 | 각 슈퍼 방 정의 |
+| 필드           | 타입             | 누가 채우나                                 | 왜 필요한가                   |
+| -------------- | ---------------- | ------------------------------------------- | ----------------------------- |
+| `method`       | str              | "llm" / "embed_K10" 등                      | 어느 경로의 결과인지 (비교용) |
+| `run`          | int              | 1~3 (LLM 재현성용), 임베딩은 항상 1         | 같은 method의 회차            |
+| `K`            | int              | 결과 그룹 수 (LLM=10 강제, 임베딩=K_target) | 검증·비교용                   |
+| `merged_rooms` | List[MergedRoom] | 핵심 출력                                   | 각 슈퍼 방 정의               |
 
 ### `MergedRoom` 필드
 
-| 필드 | 타입 | LLM 출력 | 임베딩 출력 | 왜 필요한가 |
-|---|---|---|---|---|
-| `new_id` | int (0~K-1) | LLM이 매김 | scipy fcluster label - 1 | 슈퍼 방 식별자 |
-| `new_title` | str \| null | LLM이 생성 (20자 이내) | **null** (임베딩은 의미 추론 못 함) | 단계 3에서 building.name으로 사용 |
-| `members` | List[int] | LLM이 매김 (community 번호) | label==new_id+1인 community 번호 list | 단계 3에서 entity_ids 펼침 |
-| `silhouette` | float \| null | null | sklearn silhouette_score (전체 K에 대한 1개 값) | 임베딩 품질 metric |
+| 필드         | 타입          | LLM 출력                    | 임베딩 출력                                     | 왜 필요한가                       |
+| ------------ | ------------- | --------------------------- | ----------------------------------------------- | --------------------------------- |
+| `new_id`     | int (0~K-1)   | LLM이 매김                  | scipy fcluster label - 1                        | 슈퍼 방 식별자                    |
+| `new_title`  | str \| null   | LLM이 생성 (20자 이내)      | **null** (임베딩은 의미 추론 못 함)             | 단계 3에서 building.name으로 사용 |
+| `members`    | List[int]     | LLM이 매김 (community 번호) | label==new_id+1인 community 번호 list           | 단계 3에서 entity_ids 펼침        |
+| `silhouette` | float \| null | null                        | sklearn silhouette_score (전체 K에 대한 1개 값) | 임베딩 품질 metric                |
 
 **임베딩 결과의 `new_title` 처리**: null로 두고, 단계 3에서 멤버 방 중 size 최대인 방의 `community_reports.title`을 빌려 옴 (가장 큰 묶음의 이름을 대표로).
 
@@ -166,36 +177,36 @@ SlotPackage
 
 ### `SlotPackage` (최상위) 필드
 
-| 필드 | 타입 | 출처 | 왜 필요한가 |
-|---|---|---|---|
-| `version` | str | 고정 "1.0" | 3D팀이 스키마 버전 관리 |
-| `source.snapshot` | str | "repro_run3" 등 | 어느 베이스에서 만들어졌는지 |
-| `source.method` | str | "llm_run1" / "embed_K10" 등 | 어느 병합 방법 결과인지 |
-| `source.entities_total` | int | `len(entities.parquet)` | 검증용 (loci 총합 == 이 값?) |
-| `generated_at` | str (ISO) | datetime.now() | 캐시·디버깅 |
-| `buildings` | List[Building] | 단계 3에서 빌드 | 본체 |
+| 필드                    | 타입           | 출처                        | 왜 필요한가                  |
+| ----------------------- | -------------- | --------------------------- | ---------------------------- |
+| `version`               | str            | 고정 "1.0"                  | 3D팀이 스키마 버전 관리      |
+| `source.snapshot`       | str            | "repro_run3" 등             | 어느 베이스에서 만들어졌는지 |
+| `source.method`         | str            | "llm_run1" / "embed_K10" 등 | 어느 병합 방법 결과인지      |
+| `source.entities_total` | int            | `len(entities.parquet)`     | 검증용 (loci 총합 == 이 값?) |
+| `generated_at`          | str (ISO)      | datetime.now()              | 캐시·디버깅                  |
+| `buildings`             | List[Building] | 단계 3에서 빌드             | 본체                         |
 
 ### `Building` 필드
 
-| 필드 | 타입 | 출처 | 왜 필요한가 |
-|---|---|---|---|
-| `id` | int (0~9) | MergedRoom.new_id | 3D 씬에서 건물 식별 |
-| `name` | str | LLM: MergedRoom.new_title / 임베딩: 멤버 방 중 size 최대인 방의 `community_reports.title` | 건물 라벨. UX에 표시 |
-| `summary` | str | ⚠️ **결정 필요** (옵션 ↓) | 건물 안내문. UX에 표시 |
-| `size` | int | `sum(len(communities.entity_ids[c]) for c in source_rooms)` | 건물 크기 (loci 수와 같음). UX에서 크기 시각화에 사용 |
-| `source_rooms` | List[int] | MergedRoom.members | 추적성 — 원래 어느 level 0 방들이 합쳐졌는지 |
-| `loci` | List[Locus] | 아래 규칙으로 빌드 | 건물 안 entity 목록 |
+| 필드           | 타입        | 출처                                                                                      | 왜 필요한가                                           |
+| -------------- | ----------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `id`           | int (0~9)   | MergedRoom.new_id                                                                         | 3D 씬에서 건물 식별                                   |
+| `name`         | str         | LLM: MergedRoom.new_title / 임베딩: 멤버 방 중 size 최대인 방의 `community_reports.title` | 건물 라벨. UX에 표시                                  |
+| `summary`      | str         | ⚠️ **결정 필요** (옵션 ↓)                                                                 | 건물 안내문. UX에 표시                                |
+| `size`         | int         | `sum(len(communities.entity_ids[c]) for c in source_rooms)`                               | 건물 크기 (loci 수와 같음). UX에서 크기 시각화에 사용 |
+| `source_rooms` | List[int]   | MergedRoom.members                                                                        | 추적성 — 원래 어느 level 0 방들이 합쳐졌는지          |
+| `loci`         | List[Locus] | 아래 규칙으로 빌드                                                                        | 건물 안 entity 목록                                   |
 
 ### `Locus` 필드 (entity 1개 = 1 locus)
 
-| 필드 | 타입 | 출처 | 왜 필요한가 |
-|---|---|---|---|
-| `order` | int (1~N) | ⚠️ **결정 필요** (옵션 ↓) | 동선 순서 |
-| `concept` | str | `entities.title` | 3D에서 표시할 개념 이름 ("측우기", "광해군") |
-| `desc` | str | `entities.description` | 3D 슬롯의 핵심 텍스트. 16~329자 (중간 49자) → 3D 단서로 적당 |
-| `entity_id` | str (UUID) | `entities.id` | 추적성 + 3D팀이 디버깅 시 원본 조회 |
-| `type` | str | `entities.type` | UX 색상 분류용 ("인물, 군주" / "사건, 전쟁" 등) |
-| `degree` | int | `entities.degree` | UX 크기/강조 (중심성 큰 entity는 강조) |
+| 필드        | 타입       | 출처                      | 왜 필요한가                                                  |
+| ----------- | ---------- | ------------------------- | ------------------------------------------------------------ |
+| `order`     | int (1~N)  | ⚠️ **결정 필요** (옵션 ↓) | 동선 순서                                                    |
+| `concept`   | str        | `entities.title`          | 3D에서 표시할 개념 이름 ("측우기", "광해군")                 |
+| `desc`      | str        | `entities.description`    | 3D 슬롯의 핵심 텍스트. 16~329자 (중간 49자) → 3D 단서로 적당 |
+| `entity_id` | str (UUID) | `entities.id`             | 추적성 + 3D팀이 디버깅 시 원본 조회                          |
+| `type`      | str        | `entities.type`           | UX 색상 분류용 ("인물, 군주" / "사건, 전쟁" 등)              |
+| `degree`    | int        | `entities.degree`         | UX 크기/강조 (중심성 큰 entity는 강조)                       |
 
 ### 실제 예시 (community=4 베이스의 "광해군 시대" 건물 단독)
 
@@ -250,22 +261,22 @@ SlotPackage
 
 ### A) `Building.summary` 어떻게 채울까
 
-| 옵션 | 결과 | 비용 | 추천 |
-|---|---|---|---|
-| **A1**: 멤버 방의 summary 이어붙이기 (`\n\n`으로) | 매우 정보 풍부, 1000~2000자 | 0 | UX가 긴 텍스트 OK라면 |
-| **A2**: 멤버 방의 title을 list로 ("이 건물에는: 임진왜란 의병, 광해군 외교, ...") | 짧고 깔끔 (~100자) | 0 | ★ 추천 — 빠르고 충분 |
-| **A3**: 합쳐진 멤버 방들을 LLM으로 한 줄 재요약 | 자연스러운 안내문 (~200자) | +$0.05 추가 호출 | 시연 품질 우선이면 |
-| **A4**: 비워둠 ("") | UX에 안내문 없음 | 0 | 비추천 |
+| 옵션                                                                              | 결과                        | 비용             | 추천                  |
+| --------------------------------------------------------------------------------- | --------------------------- | ---------------- | --------------------- |
+| **A1**: 멤버 방의 summary 이어붙이기 (`\n\n`으로)                                 | 매우 정보 풍부, 1000~2000자 | 0                | UX가 긴 텍스트 OK라면 |
+| **A2**: 멤버 방의 title을 list로 ("이 건물에는: 임진왜란 의병, 광해군 외교, ...") | 짧고 깔끔 (~100자)          | 0                | ★ 추천 — 빠르고 충분  |
+| **A3**: 합쳐진 멤버 방들을 LLM으로 한 줄 재요약                                   | 자연스러운 안내문 (~200자)  | +$0.05 추가 호출 | 시연 품질 우선이면    |
+| **A4**: 비워둠 ("")                                                               | UX에 안내문 없음            | 0                | 비추천                |
 
 ### B) `Locus.order` (동선) 어떻게 정할까
 
-| 옵션 | 결과 | 비고 |
-|---|---|---|
-| **B1**: `degree` 내림차순 | 중심 인물·개념 먼저, 주변 entity 뒤 | ★ 추천 — 도메인 무관, 깔끔 |
-| **B2**: 같은 building 내 entity끼리 그래프 거리 traversal (DFS) | 의미적 인접 entity가 연달아 | relationships.parquet 추가 처리 필요. 복잡 |
-| **B3**: `frequency` 내림차순 | 자주 등장한 entity 먼저 | 텍스트 노출 빈도 기준 |
-| **B4**: 임베딩 유사도로 가까운 것 연달아 (TSP-style) | 의미 흐름이 부드러움 | 추가 계산. 효과 검증 안 됨 |
-| **B5**: 임의 (`entity_ids` 원래 순서) | 의미 없음 (확인: 광해군 방에서 강홍립·광해군·동의보감 섞여 있음) | 비추천 |
+| 옵션                                                            | 결과                                                             | 비고                                       |
+| --------------------------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------ |
+| **B1**: `degree` 내림차순                                       | 중심 인물·개념 먼저, 주변 entity 뒤                              | ★ 추천 — 도메인 무관, 깔끔                 |
+| **B2**: 같은 building 내 entity끼리 그래프 거리 traversal (DFS) | 의미적 인접 entity가 연달아                                      | relationships.parquet 추가 처리 필요. 복잡 |
+| **B3**: `frequency` 내림차순                                    | 자주 등장한 entity 먼저                                          | 텍스트 노출 빈도 기준                      |
+| **B4**: 임베딩 유사도로 가까운 것 연달아 (TSP-style)            | 의미 흐름이 부드러움                                             | 추가 계산. 효과 검증 안 됨                 |
+| **B5**: 임의 (`entity_ids` 원래 순서)                           | 의미 없음 (확인: 광해군 방에서 강홍립·광해군·동의보감 섞여 있음) | 비추천                                     |
 
 ### C) `Locus`에 relationship 노출할까
 
@@ -277,21 +288,19 @@ SlotPackage
 
 K=10이면 평균 building.size=36, 큰 건물은 50+ 가능. 3D 슬롯이 50개 이상 들어가면 시연 UX가 무너질 수 있음.
 
-| 옵션 | 결과 |
-|---|---|
-| **D1**: 그대로 (모든 entity 노출) | 보존 100%, UX 부담 |
-| **D2**: 큰 building 안에서 degree 상위 N개만 노출, 나머지는 별도 필드 `dim_loci`로 | UX 깔끔, 정보 일부 숨김 |
-| **D3**: K를 자동 조절 (silhouette/자연 cut 기준) → building 평균 size를 20 안쪽으로 | "정확히 10개" 포기 |
+| 옵션                                                                                | 결과                    |
+| ----------------------------------------------------------------------------------- | ----------------------- |
+| **D1**: 그대로 (모든 entity 노출)                                                   | 보존 100%, UX 부담      |
+| **D2**: 큰 building 안에서 degree 상위 N개만 노출, 나머지는 별도 필드 `dim_loci`로  | UX 깔끔, 정보 일부 숨김 |
+| **D3**: K를 자동 조절 (silhouette/자연 cut 기준) → building 평균 size를 20 안쪽으로 | "정확히 10개" 포기      |
 
 ---
 
 ## 결정 받을 게 4가지
 
-| 항목 | 옵션 | 내 추천 |
-|---|---|---|
-| A) Building.summary | A1/A2/A3/A4 | **A2** (멤버 방 title list, 빠르고 충분) |
-| B) Locus.order | B1/B2/B3/B4/B5 | **B1** (degree 내림차순, 도메인 무관) |
-| C) relationship 노출 | yes/no | **no** (1.0에서는 점만, 추후 1.1에서 점+선) |
-| D) size 폭증 처리 | D1/D2/D3 | **D1** (그대로 노출, UX는 3D팀이 판단) |
-
-이 4개 결정해주면 단계 3 코드까지 완성된 계약서로 실험 5 들어갈게.
+| 항목                 | 옵션           | 추천                                        |
+| -------------------- | -------------- | ------------------------------------------- |
+| A) Building.summary  | A1/A2/A3/A4    | **A2** (멤버 방 title list, 빠르고 충분)    |
+| B) Locus.order       | B1/B2/B3/B4/B5 | **B1** (degree 내림차순, 도메인 무관)       |
+| C) relationship 노출 | yes/no         | **no** (1.0에서는 점만, 추후 1.1에서 점+선) |
+| D) size 폭증 처리    | D1/D2/D3       | **D1** (그대로 노출, UX는 3D팀이 판단)      |

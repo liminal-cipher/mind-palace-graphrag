@@ -1,4 +1,16 @@
-"""실험 5 경로 2: 임베딩 병합. scipy hierarchical. ward/average 비교, K=5,8,10."""
+"""실험 5 stage2 임베딩 경로. level 0 community_full_content 벡터(40, 1536)를 scipy
+hierarchical clustering으로 묶어 K=5/8/10 MergeResult를 만든다.
+
+파이프라인 단계: stage2(병합). stage1 페이로드와 lancedb 벡터를 함께 입력으로 받는다.
+
+방법: ward와 average 두 linkage를 다 돌려 K=8 silhouette이 더 좋은 쪽을 winner로 고르고,
+같은 입력으로 두 번 돌려 결과가 동일한지(재현성) 확인한 뒤 저장한다.
+
+핵심 입출력:
+- 입력: results/snapshots/repro_run3/ (lancedb 포함).
+- 출력: results/exp5/stage2_emb_K{K}.json (winner 채택), stage2_emb_K8_alt_{loser}.json (비교용),
+  embed_silhouette_summary.json (ward/average × K 매트릭스).
+"""
 from __future__ import annotations
 import sys, io, json
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
@@ -10,7 +22,9 @@ from exp5_lib import (load_base, build_room_payloads, load_level0_vectors,
 
 
 def compute_linkage(mat, method):
-    # ward는 euclidean 강제, average는 cosine 권장
+    """입력 행렬에 대해 linkage 행렬 Z를 만들어 반환한다.
+    method는 'ward' 또는 'average'만 허용."""
+    # ward는 알고리즘상 euclidean만 받는다. average는 코사인을 쓰는 게 임베딩에선 자연스럽다.
     if method == 'ward':
         return linkage(mat, method='ward', metric='euclidean')
     elif method == 'average':
@@ -19,6 +33,9 @@ def compute_linkage(mat, method):
 
 
 def labels_to_groups(labels, cnums, K):
+    """fcluster가 뱉은 (labels, cnums) 페어를 stage2 MergeResult 형식
+    (merged_rooms 리스트)으로 변환한다. scipy 라벨은 1부터 시작하고 비연속일 수 있으니
+    new_id 0..K-1로 재매핑한다."""
     groups = {}
     for cnum, lab in zip(cnums, labels):
         groups.setdefault(int(lab), []).append(int(cnum))
@@ -35,11 +52,15 @@ def labels_to_groups(labels, cnums, K):
 
 
 def evaluate_method(mat, cnums, method, K_list, all_cnums):
+    """주어진 linkage 방법으로 K_list 각각에 대해 fcluster를 돌려
+    K별 {silhouette, merged_rooms, validation, linkage_method} 딕셔너리를 만든다.
+    linkage는 한 번만 계산하고 K별로 fcluster를 잘라 K_list 전체를 한 번에 평가한다."""
     Z = compute_linkage(mat, method)
     out = {}
     for K in K_list:
         labels = fcluster(Z, t=K, criterion='maxclust')
-        # silhouette는 항상 cosine (벡터가 normalized라 의미 일관)
+        # silhouette는 linkage 방법과 무관하게 cosine으로 통일. 입력 벡터가 L2 정규화돼 있어서
+        # 코사인 거리 해석이 일관된다.
         sil = float(silhouette_score(mat, labels, metric='cosine'))
         merged_rooms = labels_to_groups(labels, cnums, K)
         v = validate_grouping(merged_rooms, all_cnums, K)
