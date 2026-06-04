@@ -1,0 +1,919 @@
+{
+  "label": "semantic_run1",
+  "snapshot": "results/snapshots/semantic_run1",
+  "entities": 1038,
+  "orphan_count": 109,
+  "orphan_pct": 10.5,
+  "ward_K": 10,
+  "cluster_sizes": [
+    82,
+    114,
+    82,
+    35,
+    243,
+    85,
+    106,
+    193,
+    65,
+    33
+  ],
+  "clusters": [
+    {
+      "cluster": 1,
+      "size": 82,
+      "top": [
+        {
+          "title": "읍성",
+          "type": "건축물, 군사시설",
+          "degree": 7
+        },
+        {
+          "title": "동남아시아 여러 나라",
+          "type": "지역집합,국가집합",
+          "degree": 5
+        },
+        {
+          "title": "스페인",
+          "type": "국가, 왕국",
+          "degree": 5
+        },
+        {
+          "title": "모스크바 공국",
+          "type": "국가, 정치 단체",
+          "degree": 4
+        },
+        {
+          "title": "신성 로마 제국",
+          "type": "국가, 정치 단체",
+          "degree": 3
+        },
+        {
+          "title": "오스만 제국",
+          "type": "국가, 정치 단체",
+          "degree": 3
+        },
+        {
+          "title": "화의 교섭 실패",
+          "type": "사건, 정치행위",
+          "degree": 3
+        },
+        {
+          "title": "금",
+          "type": "장소, 정치체계, 국가",
+          "degree": 2
+        },
+        {
+          "title": "멕시코",
+          "type": "국가",
+          "degree": 2
+        },
+        {
+          "title": "병법",
+          "type": "문서, 지식",
+          "degree": 2
+        },
+        {
+          "title": "서남 해안",
+          "type": "지역, 장소",
+          "degree": 2
+        },
+        {
+          "title": "아메리카 합중국",
+          "type": "국가",
+          "degree": 2
+        },
+        {
+          "title": "영국",
+          "type": "국가, 제국",
+          "degree": 2
+        },
+        {
+          "title": "이중환",
+          "type": "인물, 지리학자",
+          "degree": 2
+        },
+        {
+          "title": "잉글랜드 왕국",
+          "type": "국가, 정치 단체",
+          "degree": 2
+        }
+      ]
+    },
+    {
+      "cluster": 2,
+      "size": 114,
+      "top": [
+        {
+          "title": "한양",
+          "type": "장소, 도시, 수도",
+          "degree": 11
+        },
+        {
+          "title": "여진족",
+          "type": "민족, 집단",
+          "degree": 10
+        },
+        {
+          "title": "서울",
+          "type": "장소, 도시",
+          "degree": 7
+        },
+        {
+          "title": "김정호",
+          "type": "인물, 지도제작자",
+          "degree": 5
+        },
+        {
+          "title": "평양",
+          "type": "지명",
+          "degree": 5
+        },
+        {
+          "title": "문경 새재",
+          "type": "지리, 군사 요충지",
+          "degree": 4
+        },
+        {
+          "title": "의주",
+          "type": "장소,지역",
+          "degree": 4
+        },
+        {
+          "title": "제승당",
+          "type": "장소,유적",
+          "degree": 4
+        },
+        {
+          "title": "지지대고개",
+          "type": "지형지물, 장소",
+          "degree": 4
+        },
+        {
+          "title": "해미 읍성",
+          "type": "건축물, 군사시설",
+          "degree": 4
+        },
+        {
+          "title": "거중기",
+          "type": "과학기기, 도구, 건축기계",
+          "degree": 3
+        },
+        {
+          "title": "상주",
+          "type": "지명",
+          "degree": 3
+        },
+        {
+          "title": "정 옥산 서원",
+          "type": "장소, 문화재",
+          "degree": 3
+        },
+        {
+          "title": "한산도",
+          "type": "장소",
+          "degree": 3
+        },
+        {
+          "title": "강화",
+          "type": "지명",
+          "degree": 2
+        }
+      ]
+    },
+    {
+      "cluster": 3,
+      "size": 82,
+      "top": [
+        {
+          "title": "임진왜란",
+          "type": "역사적 사건",
+          "degree": 49
+        },
+        {
+          "title": "일본",
+          "type": "국가, 지역",
+          "degree": 13
+        },
+        {
+          "title": "의병",
+          "type": "사회집단, 군사집단, 민간군",
+          "degree": 10
+        },
+        {
+          "title": "유정",
+          "type": "인물",
+          "degree": 8
+        },
+        {
+          "title": "문화재",
+          "type": "물건, 문화유산",
+          "degree": 7
+        },
+        {
+          "title": "선조",
+          "type": "인물, 왕, 군주",
+          "degree": 6
+        },
+        {
+          "title": "왜군",
+          "type": "군사 집단, 외부 세력",
+          "degree": 6
+        },
+        {
+          "title": "통신사",
+          "type": "조직,집단,외교단",
+          "degree": 6
+        },
+        {
+          "title": "일본인",
+          "type": "민족,집단",
+          "degree": 5
+        },
+        {
+          "title": "정유재란",
+          "type": "전쟁, 역사적 사건, 외침",
+          "degree": 5
+        },
+        {
+          "title": "중국",
+          "type": "국가, 정치체",
+          "degree": 5
+        },
+        {
+          "title": "화성",
+          "type": "건축물, 역사적 장소, 성곽",
+          "degree": 5
+        },
+        {
+          "title": "권율",
+          "type": "인물, 장군, 군인",
+          "degree": 4
+        },
+        {
+          "title": "유성룡",
+          "type": "인물, 정치인, 역사인물",
+          "degree": 4
+        },
+        {
+          "title": "곽재우",
+          "type": "인물, 군사 지도자",
+          "degree": 3
+        }
+      ]
+    },
+    {
+      "cluster": 4,
+      "size": 35,
+      "top": [
+        {
+          "title": "병자호란",
+          "type": "군사 사건, 전쟁",
+          "degree": 12
+        },
+        {
+          "title": "청",
+          "type": "국가,왕조,국제 세력",
+          "degree": 10
+        },
+        {
+          "title": "정묘호란",
+          "type": "사건, 전쟁",
+          "degree": 5
+        },
+        {
+          "title": "조선군",
+          "type": "군사 조직, 국가 조직, 군대",
+          "degree": 4
+        },
+        {
+          "title": "척화파 김상헌",
+          "type": "인물, 정치인",
+          "degree": 4
+        },
+        {
+          "title": "호란",
+          "type": "군사 사건, 전쟁",
+          "degree": 4
+        },
+        {
+          "title": "항복 문서",
+          "type": "문서, 기록",
+          "degree": 3
+        },
+        {
+          "title": "강화도",
+          "type": "지리적 장소, 섬, 군사적 피난처",
+          "degree": 2
+        },
+        {
+          "title": "임경업",
+          "type": "인물, 군인, 의병장",
+          "degree": 2
+        },
+        {
+          "title": "청 침입",
+          "type": "군사 사건, 침략",
+          "degree": 2
+        },
+        {
+          "title": "김준용",
+          "type": "인물, 군인, 제주도 관련 인물",
+          "degree": 1
+        },
+        {
+          "title": "모문룡",
+          "type": "인물, 군인, 지휘관",
+          "degree": 1
+        },
+        {
+          "title": "백마산성",
+          "type": "지리적 장소, 군사 요새, 역사적 유적",
+          "degree": 1
+        },
+        {
+          "title": "삼전도",
+          "type": "지리적 장소,장소",
+          "degree": 1
+        },
+        {
+          "title": "삼전도 굴욕",
+          "type": "역사 사건, 굴욕적 사건",
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "cluster": 5,
+      "size": 243,
+      "top": [
+        {
+          "title": "조선",
+          "type": "국가, 역사, 왕조",
+          "degree": 82
+        },
+        {
+          "title": "정조",
+          "type": "인물, 왕, 군주",
+          "degree": 32
+        },
+        {
+          "title": "붕당",
+          "type": "사회 현상, 정치 집단, 역사 현상",
+          "degree": 27
+        },
+        {
+          "title": "영조",
+          "type": "인물, 왕, 군주",
+          "degree": 26
+        },
+        {
+          "title": "사림",
+          "type": "집단, 사회집단",
+          "degree": 24
+        },
+        {
+          "title": "붕당 정치",
+          "type": "정치 체계, 사회 현상",
+          "degree": 20
+        },
+        {
+          "title": "성종",
+          "type": "인물",
+          "degree": 20
+        },
+        {
+          "title": "광해군",
+          "type": "인물, 왕",
+          "degree": 17
+        },
+        {
+          "title": "백성",
+          "type": "사회 구성원, 일반인",
+          "degree": 17
+        },
+        {
+          "title": "조선 후기",
+          "type": "시대, 역사 기간",
+          "degree": 16
+        },
+        {
+          "title": "서인",
+          "type": "집단, 정치 세력, 사회 집단",
+          "degree": 14
+        },
+        {
+          "title": "조선 왕조",
+          "type": "국가, 역사",
+          "degree": 14
+        },
+        {
+          "title": "이성계",
+          "type": "인물, 지도자, 정치인",
+          "degree": 13
+        },
+        {
+          "title": "인조반정",
+          "type": "정치 사건, 쿠데타",
+          "degree": 13
+        },
+        {
+          "title": "양반",
+          "type": "사회 계층, 인물 집단",
+          "degree": 12
+        }
+      ]
+    },
+    {
+      "cluster": 6,
+      "size": 85,
+      "top": [
+        {
+          "title": "훈민정음",
+          "type": "문화, 제도",
+          "degree": 12
+        },
+        {
+          "title": "교육 기관",
+          "type": "조직, 제도",
+          "degree": 9
+        },
+        {
+          "title": "김종직",
+          "type": "인물, 유학자",
+          "degree": 8
+        },
+        {
+          "title": "유교",
+          "type": "사상, 체계",
+          "degree": 8
+        },
+        {
+          "title": "세종 대왕",
+          "type": "인물, 왕, 문화 지도자",
+          "degree": 7
+        },
+        {
+          "title": "세종대왕",
+          "type": "인물, 역사인물",
+          "degree": 7
+        },
+        {
+          "title": "향약",
+          "type": "제도, 사회제도",
+          "degree": 7
+        },
+        {
+          "title": "서원",
+          "type": "장소, 기관",
+          "degree": 6
+        },
+        {
+          "title": "성종실록",
+          "type": "문서, 역사 기록, 왕조 실록",
+          "degree": 6
+        },
+        {
+          "title": "안정복",
+          "type": "사람, 인물, 학자",
+          "degree": 6
+        },
+        {
+          "title": "국문학",
+          "type": "학문, 문학, 문화",
+          "degree": 5
+        },
+        {
+          "title": "김홍도",
+          "type": "인물, 예술가",
+          "degree": 5
+        },
+        {
+          "title": "백운동 서원",
+          "type": "교육 기관, 문화 시설",
+          "degree": 5
+        },
+        {
+          "title": "역사책",
+          "type": "문서, 출판물",
+          "degree": 5
+        },
+        {
+          "title": "민족 문화",
+          "type": "문화, 사회 현상, 유산",
+          "degree": 4
+        }
+      ]
+    },
+    {
+      "cluster": 7,
+      "size": 106,
+      "top": [
+        {
+          "title": "성리학",
+          "type": "사상, 철학",
+          "degree": 25
+        },
+        {
+          "title": "실학",
+          "type": "사상, 학문, 사회운동",
+          "degree": 22
+        },
+        {
+          "title": "실학자",
+          "type": "사람들, 학자 집단",
+          "degree": 22
+        },
+        {
+          "title": "학자",
+          "type": "인물, 직업 집단",
+          "degree": 11
+        },
+        {
+          "title": "중상 학파",
+          "type": "사상, 학문, 경제학파",
+          "degree": 10
+        },
+        {
+          "title": "중농 학파",
+          "type": "사상, 학문, 경제학파",
+          "degree": 9
+        },
+        {
+          "title": "수레",
+          "type": "교통수단, 도구",
+          "degree": 8
+        },
+        {
+          "title": "중상학파",
+          "type": "사상 집단, 학파, 실학자 집단",
+          "degree": 7
+        },
+        {
+          "title": "박지원",
+          "type": "인물, 학자, 작가, 실학자",
+          "degree": 6
+        },
+        {
+          "title": "선택",
+          "type": "개념, 행위",
+          "degree": 6
+        },
+        {
+          "title": "이익",
+          "type": "사람, 학자",
+          "degree": 6
+        },
+        {
+          "title": "공론",
+          "type": "사회 현상, 정치적 여론 대립",
+          "degree": 5
+        },
+        {
+          "title": "조선 사회",
+          "type": "사회, 문화 집단",
+          "degree": 5
+        },
+        {
+          "title": "중농학파",
+          "type": "사상집단, 학파",
+          "degree": 5
+        },
+        {
+          "title": "개혁안",
+          "type": "개념, 제도",
+          "degree": 4
+        }
+      ]
+    },
+    {
+      "cluster": 8,
+      "size": 193,
+      "top": [
+        {
+          "title": "과거 제도",
+          "type": "시험제도, 인재 선발 시스템",
+          "degree": 13
+        },
+        {
+          "title": "토지",
+          "type": "자원, 재산, 자산",
+          "degree": 12
+        },
+        {
+          "title": "세종",
+          "type": "인물, 군주",
+          "degree": 11
+        },
+        {
+          "title": "농업",
+          "type": "경제활동, 산업",
+          "degree": 9
+        },
+        {
+          "title": "천거",
+          "type": "등용 제도",
+          "degree": 8
+        },
+        {
+          "title": "국내",
+          "type": "장소, 지역",
+          "degree": 7
+        },
+        {
+          "title": "농민",
+          "type": "사회 집단",
+          "degree": 7
+        },
+        {
+          "title": "측우기",
+          "type": "도구, 과학 기구",
+          "degree": 7
+        },
+        {
+          "title": "역원 제도",
+          "type": "제도, 서비스",
+          "degree": 6
+        },
+        {
+          "title": "가묘의 법",
+          "type": "법률, 제도",
+          "degree": 5
+        },
+        {
+          "title": "농사직설",
+          "type": "문서, 농서",
+          "degree": 5
+        },
+        {
+          "title": "농지 분배 정책",
+          "type": "정책, 법규",
+          "degree": 5
+        },
+        {
+          "title": "무과",
+          "type": "시험 종류",
+          "degree": 5
+        },
+        {
+          "title": "사족",
+          "type": "사회집단, 신분계층",
+          "degree": 5
+        },
+        {
+          "title": "장영실",
+          "type": "인물, 과학자",
+          "degree": 5
+        }
+      ]
+    },
+    {
+      "cluster": 9,
+      "size": 65,
+      "top": [
+        {
+          "title": "관리",
+          "type": "사회적 역할, 인물",
+          "degree": 11
+        },
+        {
+          "title": "수령",
+          "type": "행정관, 공무원",
+          "degree": 11
+        },
+        {
+          "title": "의정부",
+          "type": "정부 기관, 조직",
+          "degree": 10
+        },
+        {
+          "title": "6조",
+          "type": "정부 기관, 조직",
+          "degree": 9
+        },
+        {
+          "title": "중앙정치기구",
+          "type": "조직, 관청",
+          "degree": 8
+        },
+        {
+          "title": "홍문관",
+          "type": "정부 기관, 조직",
+          "degree": 7
+        },
+        {
+          "title": "사헌부",
+          "type": "정부 기관, 조직",
+          "degree": 6
+        },
+        {
+          "title": "삼사",
+          "type": "중앙정치기구, 감찰기관",
+          "degree": 6
+        },
+        {
+          "title": "8도",
+          "type": "행정구역, 지역",
+          "degree": 4
+        },
+        {
+          "title": "관리 임용 부서",
+          "type": "조직, 행정기관",
+          "degree": 4
+        },
+        {
+          "title": "사간원",
+          "type": "정부 기관, 조직",
+          "degree": 4
+        },
+        {
+          "title": "어전(조정)",
+          "type": "기관, 정치 조직",
+          "degree": 4
+        },
+        {
+          "title": "지방 각 도",
+          "type": "행정 구역, 장소",
+          "degree": 4
+        },
+        {
+          "title": "왕실문서기구",
+          "type": "조직, 행정기관, 기록관리",
+          "degree": 3
+        },
+        {
+          "title": "이조 전랑",
+          "type": "관직, 권력 기관, 행정직",
+          "degree": 3
+        }
+      ]
+    },
+    {
+      "cluster": 10,
+      "size": 33,
+      "top": [
+        {
+          "title": "조운",
+          "type": "운송, 제도",
+          "degree": 32
+        },
+        {
+          "title": "조창",
+          "type": "시설, 장소",
+          "degree": 23
+        },
+        {
+          "title": "진주",
+          "type": "장소, 지역",
+          "degree": 5
+        },
+        {
+          "title": "한성",
+          "type": "지명, 장소",
+          "degree": 3
+        },
+        {
+          "title": "강창",
+          "type": "시설, 장소",
+          "degree": 2
+        },
+        {
+          "title": "안주",
+          "type": "지명, 장소",
+          "degree": 2
+        },
+        {
+          "title": "해창",
+          "type": "시설, 장소",
+          "degree": 2
+        },
+        {
+          "title": "가흥창",
+          "type": "기관, 장소",
+          "degree": 1
+        },
+        {
+          "title": "공진창",
+          "type": "기관, 장소",
+          "degree": 1
+        },
+        {
+          "title": "금곡포창",
+          "type": "시설, 장소",
+          "degree": 1
+        },
+        {
+          "title": "나주",
+          "type": "장소, 지역",
+          "degree": 1
+        },
+        {
+          "title": "남원",
+          "type": "장소, 지역",
+          "degree": 1
+        },
+        {
+          "title": "대구",
+          "type": "장소, 지역",
+          "degree": 1
+        },
+        {
+          "title": "덕성창",
+          "type": "기관, 장소",
+          "degree": 1
+        },
+        {
+          "title": "배천",
+          "type": "지명, 장소",
+          "degree": 1
+        }
+      ]
+    }
+  ],
+  "anchors_should_show": [
+    {
+      "name": "측우기",
+      "status": "present",
+      "cluster": 8,
+      "degree": 7,
+      "type": "도구, 과학 기구"
+    },
+    {
+      "name": "자격루",
+      "status": "present",
+      "cluster": 8,
+      "degree": 1,
+      "type": "도구, 과학 기구"
+    },
+    {
+      "name": "앙부일구",
+      "status": "present",
+      "cluster": 8,
+      "degree": 1,
+      "type": "도구, 과학 기구"
+    },
+    {
+      "name": "혼천의",
+      "status": "present",
+      "cluster": 8,
+      "degree": 2,
+      "type": "과학기구"
+    },
+    {
+      "name": "곽재우",
+      "status": "present",
+      "cluster": 3,
+      "degree": 3,
+      "type": "인물, 군사 지도자"
+    },
+    {
+      "name": "이순신",
+      "status": "present",
+      "cluster": 5,
+      "degree": 12,
+      "type": "인물,군사 지도자"
+    },
+    {
+      "name": "거북선",
+      "status": "present",
+      "cluster": 5,
+      "degree": 1,
+      "type": "군사 장비, 군함"
+    },
+    {
+      "name": "훈민정음",
+      "status": "present",
+      "cluster": 6,
+      "degree": 12,
+      "type": "문화, 제도"
+    }
+  ],
+  "anchors_should_demote": [
+    {
+      "name": "조선",
+      "status": "present",
+      "cluster": 5,
+      "degree": 82,
+      "type": "국가, 역사, 왕조"
+    },
+    {
+      "name": "백성",
+      "status": "present",
+      "cluster": 5,
+      "degree": 17,
+      "type": "사회 구성원, 일반인"
+    },
+    {
+      "name": "성리학",
+      "status": "present",
+      "cluster": 7,
+      "degree": 25,
+      "type": "사상, 철학"
+    },
+    {
+      "name": "붕당정치",
+      "status": "missing"
+    }
+  ],
+  "anchors_show_present_pct": 100.0,
+  "anchors_demote_present_pct": 75.0
+}
