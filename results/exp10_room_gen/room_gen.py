@@ -696,6 +696,22 @@ def assign_rooms(
     return rooms
 
 
+def make_azure_client():
+    """Build Azure OpenAI client from GRAPHRAG_API_KEY / GRAPHRAG_API_BASE env."""
+    from openai import AzureOpenAI
+    api_key = os.environ.get('GRAPHRAG_API_KEY')
+    if not api_key:
+        raise SystemExit('GRAPHRAG_API_KEY not set')
+    api_base = os.environ.get('GRAPHRAG_API_BASE')
+    if not api_base:
+        raise SystemExit('GRAPHRAG_API_BASE not set')
+    return AzureOpenAI(
+        azure_endpoint=api_base,
+        api_key=api_key,
+        api_version='2024-12-01-preview',
+    )
+
+
 def generate_rooms(
     snapshot_path: str | Path,
     K: int,
@@ -706,9 +722,147 @@ def generate_rooms(
     node_budget: int,
     domain: str,
     model: str,
-    output_path: str | Path,
+    output_dir: str | Path,
+    run_id: str,
+    llm_client=None,
+    rubric_cache_path: str | Path | None = None,
+    sample_size: int = 60,
+    sample_seed: int = 42,
 ) -> dict:
-    raise NotImplementedError('generate_rooms: wired in final commit')
+    """End-to-end. Returns the JSON spec dict and also writes:
+        <output_dir>/<run_id>.json   (room spec, schema below)
+        <output_dir>/<run_id>.md     (run summary, human-readable)
+
+    Pipeline: load -> base_cluster -> split_oversized -> merge_to_k
+        -> derive_rubric -> assign_rooms -> check_invariants -> emit.
+
+    rubric_cache_path: if provided, rubric is read from / written to this
+    file. Same path across runs reuses the rubric (1 LLM call total).
+    """
+    if K > HARD_CAP_K:
+        raise ValueError(f'K={K} exceeds hard cap {HARD_CAP_K}')
+    if k_base < K:
+        raise ValueError(f'k_base ({k_base}) must be >= K ({K})')
+
+    entities, snap_meta = load_snapshot(snapshot_path)
+
+    base = base_cluster(entities, k_base)
+    after_split = split_oversized(base, entities, max_cluster_size)
+
+    # Track lineage: post-split cluster id per entity index.
+    entity_to_split_cid: dict[int, int] = {}
+    for split_cid, cluster in enumerate(after_split):
+        for ei in cluster:
+            entity_to_split_cid[ei] = split_cid
+
+    if llm_client is None and (merge_strategy == 'llm' or True):
+        # Rubric always needs an LLM. Assignments always need one.
+        llm_client = make_azure_client()
+
+    merged = merge_to_k(
+        after_split, entities, K, merge_strategy,
+        llm_client=llm_client, model=model,
+    )
+
+    # Reconstruct source_ids (post-split cluster ids per merged room).
+    source_ids: list[list[int]] = []
+    for room_cluster in merged:
+        src = sorted({entity_to_split_cid[ei] for ei in room_cluster})
+        source_ids.append(src)
+
+    # Rubric (Stage A) once.
+    import random
+    rng = random.Random(sample_seed)
+    sample = rng.sample(entities, min(sample_size, len(entities)))
+    rubric = derive_rubric(
+        domain, sample, llm_client, model, cache_path=rubric_cache_path,
+    )
+
+    # Stage B per room.
+    rooms = assign_rooms(
+        merged, entities, domain, rubric, n_runs, node_budget,
+        llm_client, model, source_ids=source_ids,
+    )
+
+    check_invariants(rooms, len(entities), K, node_budget)
+
+    spec = {
+        'meta': {
+            'run_id': run_id,
+            'snapshot': str(snapshot_path),
+            'K': K,
+            'k_base': k_base,
+            'max_cluster_size': max_cluster_size,
+            'merge_strategy': merge_strategy,
+            'n_runs': n_runs,
+            'node_budget': node_budget,
+            'domain': domain,
+            'model': model,
+            'ts': datetime.now(timezone.utc).isoformat(),
+            'snapshot_meta': snap_meta,
+            'pipeline': {
+                'k_base_sizes': sorted([len(c) for c in base], reverse=True),
+                'after_split_sizes': sorted([len(c) for c in after_split], reverse=True),
+                'final_sizes': sorted([len(c) for c in merged], reverse=True),
+            },
+        },
+        'rooms': rooms,
+        'unassigned': [],  # invariant: must be empty
+    }
+
+    out_dir = Path(output_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    json_path = out_dir / f'{run_id}.json'
+    json_path.write_text(
+        json.dumps(spec, ensure_ascii=False, indent=2), encoding='utf-8'
+    )
+    md_path = out_dir / f'{run_id}.md'
+    md_path.write_text(_summarize(spec), encoding='utf-8')
+
+    return spec
+
+
+def _summarize(spec: dict) -> str:
+    m = spec['meta']
+    lines = [
+        f'# {m["run_id"]}',
+        '',
+        f'snapshot: `{m["snapshot"]}` | K={m["K"]} k_base={m["k_base"]} '
+        f'max_cluster_size={m["max_cluster_size"]} | '
+        f'merge={m["merge_strategy"]} n_runs={m["n_runs"]} budget={m["node_budget"]}',
+        f'domain: {m["domain"]} | model: {m["model"]} | ts: {m["ts"]}',
+        '',
+        '## pipeline 크기',
+        '',
+        f'- k_base ({m["k_base"]}): {m["pipeline"]["k_base_sizes"]}',
+        f'- after split (max={m["max_cluster_size"]}): {m["pipeline"]["after_split_sizes"]}',
+        f'- final K={m["K"]}: {m["pipeline"]["final_sizes"]}',
+        '',
+        '## 방',
+        '',
+        '| id | name | size | kept | demoted | coherence | source | forced |',
+        '|---|---|---|---|---|---|---|---|',
+    ]
+    total_entities = 0
+    for r in spec['rooms']:
+        size = len(r['kept']) + len(r['demoted'])
+        total_entities += size
+        forced = r.get('_meta', {}).get('n_forced_demote', 0)
+        src = ','.join(str(s) for s in r['source_clusters'])
+        lines.append(
+            f'| {r["room_id"]} | {r["name"]} | {size} | {len(r["kept"])} | '
+            f'{len(r["demoted"])} | {r["coherence_flag"]} | {src} | {forced} |'
+        )
+    lines.append('')
+    lines.append(f'총 엔티티: {total_entities} (snapshot {m["snapshot_meta"]["n_entities"]}) — 전수보존 {"OK" if total_entities == m["snapshot_meta"]["n_entities"] else "FAIL"}')
+    lines.append('')
+    lines.append('## 방별 kept (중요도 내림차순)')
+    lines.append('')
+    for r in spec['rooms']:
+        kept_titles = ', '.join(k['title'] for k in r['kept'])
+        lines.append(f'**{r["room_id"]} · {r["name"]}** ({len(r["kept"])}): {kept_titles}')
+        lines.append('')
+    return '\n'.join(lines)
 
 
 # ---------------------------------------------------------------------------
