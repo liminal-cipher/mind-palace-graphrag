@@ -176,8 +176,216 @@ def merge_to_k(
     strategy: str,
     llm_client=None,
     model: str | None = None,
+    representatives_per_cluster: int = 10,
 ) -> list[list[int]]:
-    raise NotImplementedError('merge_to_k: added in next commit')
+    """Reduce `clusters` to exactly K by merging.
+
+    strategy="embedding": deterministic. Compute each cluster's L2-normalized
+        centroid, repeatedly merge the pair with highest cosine similarity
+        until K remain. Centroid is re-normalized after each merge.
+
+    strategy="llm": one LLM call. Each cluster is summarized by
+        `representatives_per_cluster` entities chosen by degree-desc with
+        type round-robin (so a few high-degree generic terms don't drown
+        out the topic signal). LLM returns a mapping of cluster indices
+        into K groups; validated for full coverage and no duplicates.
+        Fallback to embedding merge on contract violation.
+    """
+    if len(clusters) < K:
+        raise ValueError(f'cannot merge {len(clusters)} clusters down to K={K}')
+    if len(clusters) == K:
+        return [list(c) for c in clusters]
+
+    if strategy == 'embedding':
+        return _merge_embedding(clusters, entities, K)
+    if strategy == 'llm':
+        if llm_client is None or model is None:
+            raise ValueError('strategy="llm" requires llm_client and model')
+        return _merge_llm(
+            clusters, entities, K, llm_client, model,
+            representatives_per_cluster,
+        )
+    raise ValueError(f'unknown strategy: {strategy!r}')
+
+
+def _cluster_centroid(entities: list[dict], idx: list[int]) -> np.ndarray:
+    mat_n = _stack_normalized(entities, idx)
+    c = mat_n.mean(axis=0)
+    n = np.linalg.norm(c)
+    return c / max(n, 1e-12)
+
+
+def _merge_embedding(
+    clusters: list[list[int]],
+    entities: list[dict],
+    K: int,
+) -> list[list[int]]:
+    """Apply ward linkage on cluster centroids (cheap: len(clusters) points
+    in 1536-D) and cut to K. Avoids chaining that a greedy nearest-centroid
+    merger produces, and matches the variance-minimization objective used
+    for base_cluster on the entity level.
+    """
+    if len(clusters) == K:
+        return [list(c) for c in clusters]
+
+    centroids = np.stack([_cluster_centroid(entities, g) for g in clusters])
+    Z = linkage(centroids, method='ward', metric='euclidean')
+    labels = fcluster(Z, t=K, criterion='maxclust')
+
+    by_label: dict[int, list[int]] = defaultdict(list)
+    for src_idx, lab in enumerate(labels):
+        by_label[int(lab)].extend(clusters[src_idx])
+    return [by_label[lab] for lab in sorted(by_label.keys())]
+
+
+def representatives(
+    cluster_idx: list[int],
+    entities: list[dict],
+    n: int,
+) -> list[dict]:
+    """Pick up to n entities to summarize a cluster.
+
+    Strategy: degree-desc base order, then round-robin across `type` so a
+    few high-degree generic terms (which often share one type) don't
+    crowd out topic-bearing entities of other types. No type-keyword
+    table, no domain assumptions; only the type *string* as a diversity
+    bucket.
+    """
+    rows = [entities[i] for i in cluster_idx]
+    rows.sort(key=lambda e: (-e['degree'], e['title']))
+    by_type: dict[str, list[dict]] = defaultdict(list)
+    for r in rows:
+        by_type[r['type']].append(r)
+
+    picked: list[dict] = []
+    type_order = list(dict.fromkeys(r['type'] for r in rows))  # first-seen order
+    while len(picked) < n and any(by_type[t] for t in type_order):
+        for t in type_order:
+            if by_type[t]:
+                picked.append(by_type[t].pop(0))
+                if len(picked) >= n:
+                    break
+    return picked
+
+
+def _merge_llm(
+    clusters: list[list[int]],
+    entities: list[dict],
+    K: int,
+    llm_client,
+    model: str,
+    reps_per_cluster: int,
+) -> list[list[int]]:
+    summaries = []
+    for i, c in enumerate(clusters):
+        reps = representatives(c, entities, reps_per_cluster)
+        titles = ', '.join(r['title'] for r in reps)
+        summaries.append(f'cluster {i} (size={len(c)}): {titles}')
+
+    sys_p = (
+        '주어진 클러스터 목록을 의미적으로 가까운 것끼리 정확히 K개 그룹으로 묶어라. '
+        '각 cluster id는 정확히 한 그룹에만 속해야 한다. 누락·중복 금지. '
+        '그룹 라벨이나 이름은 출력하지 마라. 매핑만.'
+    )
+    user_p = (
+        f'클러스터 {len(clusters)}개를 K={K}개 그룹으로 묶어라.\n\n'
+        + '\n'.join(summaries)
+        + '\n\n출력 JSON:\n'
+        '{\n'
+        '  "groups": [\n'
+        '    {"new_id": 0, "source_clusters": [0, 3]},\n'
+        '    ...\n'
+        '  ]\n'
+        '}'
+    )
+
+    raw, _usage = call_json(llm_client, model, sys_p, user_p)
+    try:
+        obj = json.loads(raw)
+        groups_spec = obj.get('groups', [])
+        merged: list[list[int]] = []
+        assigned: set[int] = set()
+        for g in groups_spec:
+            src = [int(s) for s in g.get('source_clusters', [])]
+            members: list[int] = []
+            for s in src:
+                if 0 <= s < len(clusters) and s not in assigned:
+                    members.extend(clusters[s])
+                    assigned.add(s)
+            if members:
+                merged.append(members)
+
+        missing = [i for i in range(len(clusters)) if i not in assigned]
+        if missing or len(merged) != K:
+            # Fold any unassigned clusters into nearest existing group via
+            # centroid cosine, then if still wrong K, finish with embedding merge.
+            for s in missing:
+                # find nearest merged group
+                src_c = _cluster_centroid(entities, clusters[s])
+                best_j, best_sim = -1, -np.inf
+                for j, m in enumerate(merged):
+                    sim = float(np.dot(src_c, _cluster_centroid(entities, m)))
+                    if sim > best_sim:
+                        best_sim, best_j = sim, j
+                if best_j >= 0:
+                    merged[best_j].extend(clusters[s])
+                else:
+                    merged.append(clusters[s])
+            if len(merged) > K:
+                merged = _merge_embedding(merged, entities, K)
+            elif len(merged) < K:
+                # LLM collapsed too aggressively; cannot un-merge.
+                # Last resort: re-run embedding merge from scratch.
+                merged = _merge_embedding(clusters, entities, K)
+        return merged
+    except (json.JSONDecodeError, KeyError, TypeError, ValueError):
+        return _merge_embedding(clusters, entities, K)
+
+
+# ---------------------------------------------------------------------------
+# LLM transport (used by merge_llm, derive_rubric, assign_rooms).
+# Exponential backoff on rate-limit errors. No deployment quota assumptions.
+# ---------------------------------------------------------------------------
+
+
+def call_json(
+    client,
+    model: str,
+    sys_p: str,
+    user_p: str,
+    max_retries: int = 6,
+) -> tuple[str, dict]:
+    """Azure OpenAI JSON-mode chat. temp=0. On rate-limit / transient errors,
+    exponential backoff starting at 2s (2,4,8,16,32,60). Other errors raise.
+    """
+    delay = 2.0
+    last_err: Exception | None = None
+    for attempt in range(max_retries):
+        try:
+            resp = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {'role': 'system', 'content': sys_p},
+                    {'role': 'user', 'content': user_p},
+                ],
+                temperature=0,
+                response_format={'type': 'json_object'},
+            )
+            return resp.choices[0].message.content, {
+                'prompt_tokens': resp.usage.prompt_tokens,
+                'completion_tokens': resp.usage.completion_tokens,
+            }
+        except Exception as e:
+            last_err = e
+            msg = str(e).lower()
+            transient = any(
+                tok in msg for tok in ('429', 'rate', 'timeout', '503', '500')
+            )
+            if not transient or attempt == max_retries - 1:
+                raise
+            time.sleep(delay)
+            delay = min(delay * 2, 60.0)
+    raise last_err  # pragma: no cover
 
 
 def derive_rubric(
