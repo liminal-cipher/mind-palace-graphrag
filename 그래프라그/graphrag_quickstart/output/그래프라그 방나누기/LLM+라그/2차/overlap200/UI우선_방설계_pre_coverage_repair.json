@@ -1,0 +1,2988 @@
+{
+  "created_at": "2026-06-05T11:18:31",
+  "source": "C:\\Users\\USER\\Desktop\\3차 프로젝트\\3cha-project\\그래프라그\\graphrag_quickstart\\output\\그래프라그 방나누기\\LLM+라그\\2차\\overlap200\\graphrag_root\\output",
+  "model": "gpt-5.4-mini",
+  "deployment_name": "gpt-5.4-mini",
+  "usage": {
+    "completion_tokens": 10502,
+    "prompt_tokens": 91429,
+    "total_tokens": 101931,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 90880
+    },
+    "latency_checkpoint": {
+      "engine_tbt_ms": 4,
+      "engine_ttft_ms": 79,
+      "engine_ttlt_ms": 43452,
+      "pre_inference_ms": 337,
+      "service_tbt_ms": 4,
+      "service_ttft_ms": 539,
+      "service_ttlt_ms": 43897,
+      "total_duration_ms": 43574,
+      "user_visible_ttft_ms": 202
+    }
+  },
+  "policy": "UI-first rooms; GraphRAG remains backend answer evidence.",
+  "validation": {
+    "valid": false,
+    "missing_community_ids": [
+      0,
+      2,
+      3,
+      6,
+      8,
+      12,
+      21
+    ],
+    "duplicate_community_ids": [
+      7,
+      16,
+      18,
+      19,
+      30
+    ],
+    "unknown_community_ids": [],
+    "duplicate_entity_ids": [],
+    "room_counts": [
+      {
+        "room_no": 1,
+        "title": "조선 건국과 왕권 강화",
+        "core_count": 7,
+        "supporting_count": 8,
+        "search_only_count": 8,
+        "visible_community_count": 4,
+        "background_community_count": 2
+      },
+      {
+        "room_no": 2,
+        "title": "사림과 붕당 정치",
+        "core_count": 8,
+        "supporting_count": 16,
+        "search_only_count": 16,
+        "visible_community_count": 3,
+        "background_community_count": 2
+      },
+      {
+        "room_no": 3,
+        "title": "임진왜란과 병자호란",
+        "core_count": 8,
+        "supporting_count": 13,
+        "search_only_count": 23,
+        "visible_community_count": 4,
+        "background_community_count": 2
+      },
+      {
+        "room_no": 4,
+        "title": "세종의 문화·과학 혁신",
+        "core_count": 2,
+        "supporting_count": 9,
+        "search_only_count": 1,
+        "visible_community_count": 2,
+        "background_community_count": 2
+      },
+      {
+        "room_no": 5,
+        "title": "조선 후기 실학과 경제 개혁",
+        "core_count": 5,
+        "supporting_count": 14,
+        "search_only_count": 10,
+        "visible_community_count": 4,
+        "background_community_count": 4
+      },
+      {
+        "room_no": 6,
+        "title": "조선 후기 역사·지리·국어학",
+        "core_count": 6,
+        "supporting_count": 8,
+        "search_only_count": 0,
+        "visible_community_count": 7,
+        "background_community_count": 2
+      }
+    ],
+    "overloaded_ui_rooms": [],
+    "density_policy": {
+      "max_core_share": 0.3,
+      "max_supporting_share": 0.3
+    }
+  },
+  "semantic_alignment": {
+    "policy": "Relative title-visible-community alignment. Flags items at or below half the median token overlap.",
+    "median_alignment_score": 0.0404,
+    "relative_cutoff": 0.0202,
+    "low_alignment_candidates": [
+      {
+        "room_no": 3,
+        "room_title": "임진왜란과 병자호란",
+        "community_id": 23,
+        "community_title": "조선 후기 임경업과 백마산성 항쟁",
+        "alignment_score": 0.0109
+      },
+      {
+        "room_no": 3,
+        "room_title": "임진왜란과 병자호란",
+        "community_id": 30,
+        "community_title": "조선 초기 세종의 해상 방어와 수군 강화",
+        "alignment_score": 0.0127
+      },
+      {
+        "room_no": 6,
+        "room_title": "조선 후기 역사·지리·국어학",
+        "community_id": 18,
+        "community_title": "조선 후기 정상기와 동국지도를 통한 지도 제작 기술 발전",
+        "alignment_score": 0.0116
+      }
+    ],
+    "all_scores": [
+      {
+        "room_no": 1,
+        "room_title": "조선 건국과 왕권 강화",
+        "community_id": 5,
+        "community_title": "조선 건국과 초기 중앙집권 체제 확립",
+        "alignment_score": 0.0855
+      },
+      {
+        "room_no": 1,
+        "room_title": "조선 건국과 왕권 강화",
+        "community_id": 17,
+        "community_title": "조선 전기 계유정난과 세조 집권의 정치 변화",
+        "alignment_score": 0.0404
+      },
+      {
+        "room_no": 1,
+        "room_title": "조선 건국과 왕권 강화",
+        "community_id": 36,
+        "community_title": "조선 태종의 호패법과 왕권 강화",
+        "alignment_score": 0.0581
+      },
+      {
+        "room_no": 1,
+        "room_title": "조선 건국과 왕권 강화",
+        "community_id": 10,
+        "community_title": "조선 중기 세조의 왕권 강화와 직전법을 통한 재정 및 국방 체제 정비",
+        "alignment_score": 0.0714
+      },
+      {
+        "room_no": 2,
+        "room_title": "사림과 붕당 정치",
+        "community_id": 24,
+        "community_title": "조선 시대 사림 세력과 서원 교육 체계",
+        "alignment_score": 0.0472
+      },
+      {
+        "room_no": 2,
+        "room_title": "사림과 붕당 정치",
+        "community_id": 25,
+        "community_title": "조선 후기 붕당 정치와 권력 변동",
+        "alignment_score": 0.0543
+      },
+      {
+        "room_no": 2,
+        "room_title": "사림과 붕당 정치",
+        "community_id": 27,
+        "community_title": "조선 시대 유학 교육과 국립 교육 기관의 체계",
+        "alignment_score": 0.0238
+      },
+      {
+        "room_no": 3,
+        "room_title": "임진왜란과 병자호란",
+        "community_id": 4,
+        "community_title": "임진왜란과 조선의 항전: 수군·의병·외교",
+        "alignment_score": 0.0333
+      },
+      {
+        "room_no": 3,
+        "room_title": "임진왜란과 병자호란",
+        "community_id": 14,
+        "community_title": "조선 중기 병자호란과 북벌 운동을 중심으로 한 국방과 외교 변화",
+        "alignment_score": 0.0388
+      },
+      {
+        "room_no": 3,
+        "room_title": "임진왜란과 병자호란",
+        "community_id": 23,
+        "community_title": "조선 후기 임경업과 백마산성 항쟁",
+        "alignment_score": 0.0109
+      },
+      {
+        "room_no": 3,
+        "room_title": "임진왜란과 병자호란",
+        "community_id": 30,
+        "community_title": "조선 초기 세종의 해상 방어와 수군 강화",
+        "alignment_score": 0.0127
+      },
+      {
+        "room_no": 4,
+        "room_title": "세종의 문화·과학 혁신",
+        "community_id": 29,
+        "community_title": "조선 세종 대왕과 훈민정음 중심 문화·과학 혁신",
+        "alignment_score": 0.0887
+      },
+      {
+        "room_no": 4,
+        "room_title": "세종의 문화·과학 혁신",
+        "community_id": 30,
+        "community_title": "조선 초기 세종의 해상 방어와 수군 강화",
+        "alignment_score": 0.0395
+      },
+      {
+        "room_no": 5,
+        "room_title": "조선 후기 실학과 경제 개혁",
+        "community_id": 11,
+        "community_title": "조선 후기 실학과 노론 장기 집권에 따른 사회 변화",
+        "alignment_score": 0.0488
+      },
+      {
+        "room_no": 5,
+        "room_title": "조선 후기 실학과 경제 개혁",
+        "community_id": 13,
+        "community_title": "조선 후기 중상학파와 북학파의 경제 개혁과 청 문물 수용",
+        "alignment_score": 0.0678
+      },
+      {
+        "room_no": 5,
+        "room_title": "조선 후기 실학과 경제 개혁",
+        "community_id": 15,
+        "community_title": "조선 후기 김육과 대동법 세제 개혁",
+        "alignment_score": 0.075
+      },
+      {
+        "room_no": 5,
+        "room_title": "조선 후기 실학과 경제 개혁",
+        "community_id": 35,
+        "community_title": "조선 후기 중농학파의 농업 개혁과 사회 안정 사상",
+        "alignment_score": 0.068
+      },
+      {
+        "room_no": 6,
+        "room_title": "조선 후기 역사·지리·국어학",
+        "community_id": 20,
+        "community_title": "조선 후기 안정복과 동사강목을 통한 민족 사관 확립",
+        "alignment_score": 0.0235
+      },
+      {
+        "room_no": 6,
+        "room_title": "조선 후기 역사·지리·국어학",
+        "community_id": 22,
+        "community_title": "조선 후기 유득공과 발해고의 북방 민족론",
+        "alignment_score": 0.0241
+      },
+      {
+        "room_no": 6,
+        "room_title": "조선 후기 역사·지리·국어학",
+        "community_id": 33,
+        "community_title": "조선 후기 이중환의 택리지와 실학적 지리 연구",
+        "alignment_score": 0.0556
+      },
+      {
+        "room_no": 6,
+        "room_title": "조선 후기 역사·지리·국어학",
+        "community_id": 16,
+        "community_title": "조선 후기 김정호의 대동여지도와 실용적 지리학",
+        "alignment_score": 0.0404
+      },
+      {
+        "room_no": 6,
+        "room_title": "조선 후기 역사·지리·국어학",
+        "community_id": 18,
+        "community_title": "조선 후기 정상기와 동국지도를 통한 지도 제작 기술 발전",
+        "alignment_score": 0.0116
+      },
+      {
+        "room_no": 6,
+        "room_title": "조선 후기 역사·지리·국어학",
+        "community_id": 31,
+        "community_title": "조선 후기 신경준과 훈민정음 음운 연구 발전",
+        "alignment_score": 0.038
+      },
+      {
+        "room_no": 6,
+        "room_title": "조선 후기 역사·지리·국어학",
+        "community_id": 32,
+        "community_title": "조선 후기 유희와 한글 연구의 발전",
+        "alignment_score": 0.026
+      }
+    ]
+  },
+  "room_count_decision": {
+    "selected_room_count": 6,
+    "reason": "문서 전체가 조선 전기-중기-후기의 흐름을 따라 정치·제도·전쟁·실학·문화/교육으로 크게 나뉘며, major_visible_candidate가 여러 축에 분산되어 있어 6개 방이 가장 자연스럽습니다. 4개로 줄이면 주제가 과밀해지고, 5개로는 전기 제도와 후기 문화/지리/국어학을 깔끔하게 분리하기 어렵습니다. 6개는 학습자가 시대 흐름과 주제 전환을 한눈에 이해하기 좋습니다."
+  },
+  "rooms": [
+    {
+      "room_no": 1,
+      "title": "조선 건국과 왕권 강화",
+      "learning_flow": "위화도 회군과 조선 건국을 출발점으로, 태조·태종·세조의 왕권 강화와 중앙집권 정비를 따라가며 조선 초기 국가 체제를 이해한다.",
+      "ui_design_reason": "건국-왕권-제도 정비라는 큰 줄기가 명확해 학습자가 시대 초반의 국가 형성 과정을 한 방에서 연속적으로 볼 수 있다. 정치 사건과 핵심 제도가 자연스럽게 연결되어 UI가 단정하다.",
+      "visible_communities": [
+        5,
+        17,
+        36,
+        10
+      ],
+      "background_communities": [
+        {
+          "community_id": 7,
+          "reason": "『고려사』·『고려사절요』는 조선 초기의 역사 인식 자료로 의미가 있지만, 방 제목을 흐릴 정도로 핵심 전면 주제는 아니어서 배경 근거로 보존한다."
+        },
+        {
+          "community_id": 19,
+          "reason": "동문선과 한문학은 조선 초기 문화 맥락을 보강하지만, 이 방의 중심인 왕권 강화 흐름보다 부차적이므로 background로 둔다."
+        }
+      ],
+      "source_communities": [
+        5,
+        17,
+        36,
+        7,
+        19,
+        10
+      ],
+      "subzones": [
+        {
+          "title": "조선 건국의 출발",
+          "source_communities": [
+            5,
+            17
+          ],
+          "entity_ids": [
+            1,
+            12,
+            13,
+            20,
+            7,
+            199,
+            200,
+            201,
+            202,
+            203,
+            208
+          ]
+        },
+        {
+          "title": "왕권 강화와 통치 장치",
+          "source_communities": [
+            36,
+            10
+          ],
+          "entity_ids": [
+            25,
+            26,
+            29,
+            30,
+            33,
+            35,
+            47,
+            48,
+            53,
+            54,
+            56,
+            106,
+            107
+          ]
+        },
+        {
+          "title": "초기 역사 인식과 기록",
+          "source_communities": [
+            7,
+            19
+          ],
+          "entity_ids": [
+            91,
+            92,
+            104,
+            105
+          ]
+        }
+      ],
+      "entities": [
+        {
+          "entity_id": 1,
+          "title": "조선 건국",
+          "type": "사건",
+          "visibility": "core",
+          "reason": "방의 시작점이자 전체 학습 흐름의 중심 사건이라 core이다.",
+          "frequency": 3,
+          "degree": 8,
+          "description": "조선 건국은 1392년 이성계를 중심으로 신진 사대부 세력과 신흥 무인 세력이 연합하여 고려 말의 혼란을 종식시키고 새로운 왕조인 조선을 세운 역사적 사건이다. 조선은 성리학을 바탕으로 한 중앙집권적 관료제 사회를 출범시켰으며, 성리학적 덕치주의를 통해 왕권 강화를 도모하였다. 이 과정에서 정치 체제를 정비하고 수도를 한양으로 천도하여 국가의 기틀을 확립하였다. 조선 건국은 14세기 말 기존 고려 왕조의 쇠퇴와 혼란을 극복하고, 새로운 이념과 정치 기반을 마련함으로써 조선 시대의 장기적 안정과 발전을 가능하게 한 중요한 전환점이었다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 12,
+          "title": "태조 이성계",
+          "type": "인물",
+          "visibility": "core",
+          "reason": "건국의 주체로서 조선 성립을 직접 설명하므로 core이다.",
+          "frequency": 1,
+          "degree": 4,
+          "description": "태조 이성계는 14세기 말 고려 말 신흥 무인 세력을 이끌어 조선을 건국한 초대 왕으로, 새로운 정치 질서와 중앙집권 국가 체제를 확립하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 13,
+          "title": "정도전",
+          "type": "인물",
+          "visibility": "core",
+          "reason": "조선 국가 이념과 제도 설계를 이끈 핵심 인물이라 core이다.",
+          "frequency": 4,
+          "degree": 3,
+          "description": "정도전은 고려 말에서 조선 초기에 활동한 문신이자 학자이며, 조선 건국의 핵심 주역으로 평가받는 신진 사대부 출신의 정치가이자 사상가이다. 그는 조선 국가 체제와 법전 설계에 중요한 역할을 하였으며, 성리학 이념을 바탕으로 한 국가 기틀 마련과 왕권 강화를 위해 힘썼다. 정도전은 전제 개혁과 과전법 시행을 통해 조선 초기의 정치·경제 토대를 튼튼히 다졌으며, 군사 훈련과 군량미 비축을 추진하면서 명나라를 공격하려는 군사 계획도 세웠다. 그러나 제1차 왕자의 난 당시 이방원과의 권력 다툼에서 제거되어 생을 마감하였다. 그의 정치적 이론과 실천은 조선 건국과 초기 국가 운영에 지대한 영향을 끼쳤다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 20,
+          "title": "이성계",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "태조 이성계와 같은 인물 맥락을 보강하지만 중복 설명 성격이 있어 supporting이다.",
+          "frequency": 1,
+          "degree": 2,
+          "description": "이성계는 고려 말 조선을 개국한 왕으로, 1392년 조선을 건국하고 1394년 도읍을 한양으로 천도하여 중앙집권체제의 기초를 다졌다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 7,
+          "title": "위화도 회군",
+          "type": "사건",
+          "visibility": "supporting",
+          "reason": "건국의 전환점으로 흐름을 여는 사건이라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "위화도 회군은 1388년 이성계가 군사를 이끌고 환도하여 우왕과 최영 세력을 몰아내고 정권을 장악한 사건으로, 조선 건국의 전환점이 되었다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 199,
+          "title": "조선 제1차 왕자의 난",
+          "type": "사건",
+          "visibility": "supporting",
+          "reason": "초기 왕권 재편을 설명하는 핵심 사건이라 supporting이다.",
+          "frequency": 1,
+          "degree": 2,
+          "description": "조선 제1차 왕자의 난은 1398년 이방원이 정도전 등 신진 세력을 제거하고 왕위 계승 문제를 해결한 사건으로, 조선 초 왕권 확립의 중요한 전환점이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 25,
+          "title": "태종 이방원",
+          "type": "인물",
+          "visibility": "core",
+          "reason": "왕권 강화와 호패법의 주체로 초기 국가 운영을 대표하므로 core이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "태종 이방원은 태조 이성계의 아들이자 조선의 제3대 왕으로, 사병 혁파와 호패법 시행 등 왕권 강화를 통해 조선의 기틀을 다졌다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 26,
+          "title": "호패법",
+          "type": "정책",
+          "visibility": "core",
+          "reason": "왕권 강화와 인구 통제의 대표 제도라 방 학습 목표에 직접 맞는다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "호패법은 태종이 전국 인구 동태를 파악하고 조세와 군역 부과를 체계화하기 위해 실시한 신분 증명 제도로, 중앙 정부의 통치력 강화에 이바지하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 29,
+          "title": "세조",
+          "type": "인물",
+          "visibility": "core",
+          "reason": "직전법과 왕권 강화의 핵심 국왕이라 core이다.",
+          "frequency": 2,
+          "degree": 1,
+          "description": "세조는 조선 중기의 제7대 국왕으로, 왕권 강화를 중심으로 여러 통치 제도를 정비하고 조선의 문물과 정책 발전에 크게 기여한 인물이다. 그는 왕위 계승 과정에서 단종을 폐위시켰으며, 이를 통해 자신의 권력을 확고히 하는 한편 사림파 인물들을 제거하여 정치적 기반을 강화하였다. 또한 세조는 직전법 시행과 군사력 강화를 포함한 재정 및 국방 체제의 체계적인 정비에 힘쓰며 국가 운영의 효율성을 높이고 안정된 통치 체제를 구축하는 데 중요한 역할을 하였다. 이러한 업적들은 세조가 조선 시대의 정치적 변혁과 국력 강화에 결정적인 영향을 미쳤음을 보여준다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 30,
+          "title": "직전법",
+          "type": "정책",
+          "visibility": "core",
+          "reason": "세조의 재정 정비를 상징하는 제도라 core이다.",
+          "frequency": 2,
+          "degree": 2,
+          "description": "직전법은 조선 전기 세조 때 실시된 토지 제도로, 관료제 운영의 기반을 확립하고 왕권의 재정 기반을 강화하기 위해 고안되었다. 이 제도는 현직 관료에게만 과전을 지급하는 방식을 채택하여, 과전의 세습으로 인해 발생한 관료들의 토지 부족 문제를 해결하고자 하였다. 이를 통해 관료들에게 일정한 토지 수입을 보장함으로써 관료제의 안정적인 운영과 국가 재정의 강화에 중요한 역할을 하였다. 결과적으로 직전법은 관료들의 생활 기반을 확고히 하여 중앙집권 체제와 왕권 강화에 기여한 토지 제도라 할 수 있다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 33,
+          "title": "국방 강화",
+          "type": "정책",
+          "visibility": "supporting",
+          "reason": "왕권 강화의 결과로 이어지는 정책 방향을 보강하므로 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "국방 강화는 조선 초기 국방력을 튼튼히 하여 국가 안보를 확립하려 한 정책으로, 군사력을 증강하고 군량미를 비축하는 것을 포함한다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 35,
+          "title": "이방원",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "태종의 개인명으로 맥락상 중요하지만 이미 태종 이방원으로 충분히 드러나므로 supporting이다.",
+          "frequency": 2,
+          "degree": 3,
+          "description": "이방원은 조선의 제3대 왕으로, 조선 초기 왕족 출신이다. 그는 제1차 왕자의 난을 통해 권력을 장악하며 왕위에 올랐으며, 이를 통해 조선 왕조 내 권력 구도에 큰 변화를 일으켰다. 이방원은 정도전을 죽이고 태조 이성계가 왕위에서 물러나게 만든 인물로, 이 과정에서 자신의 정치적 입지를 확고히 했다. 왕위에 오른 후에는 사병을 없애고 의정부를 설치하는 등 관제 개혁을 단행하여 왕권 강화를 이루었다. 이러한 일련의 조치들은 조선 초기 중앙집권적 체제 확립과 왕권 강화에 크게 기여하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 47,
+          "title": "의정부",
+          "type": "기관",
+          "visibility": "supporting",
+          "reason": "중앙집권 체제를 설명하는 핵심 기관이지만 방 제목보다 보조적이라 supporting이다.",
+          "frequency": 3,
+          "degree": 5,
+          "description": "의정부는 조선 초기 설치된 최고 통치 기관이자 중앙 정치 기구로서, 조선 정치 체제의 중심 역할을 하였다. 의정부는 3정승의 합의에 따라 국가의 중요한 정책을 결정하였으며, 6조의 업무를 조정하는 기능을 통해 왕권 강화와 중앙 집권 체제 확립에 크게 기여하였다. 이로 인해 의정부는 조선시대 최고의 중앙 통치 기관으로 자리매김하였으며, 국가 운영과 정치적 의사 결정에 핵심적인 역할을 수행하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 48,
+          "title": "6조",
+          "type": "기관",
+          "visibility": "supporting",
+          "reason": "의정부와 함께 중앙 행정 체계를 완성하는 요소라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "6조는 조선시대 국가 행정을 분담한 중앙행정 조직으로, 이조, 호조, 예조, 병조, 형조, 공조의 6개 부서로 구성되어 국가 운영의 핵심 기능을 담당하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 53,
+          "title": "의금부",
+          "type": "기관",
+          "visibility": "search_only",
+          "reason": "왕권 수호와 관련되지만 이 방의 핵심 흐름에서는 주변 제도 수준이라 search_only이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "의금부는 조선시대 국가의 큰 죄인을 다스리는 사법 기관으로, 왕권 수호와 법질서 유지에 중요한 역할을 담당하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 54,
+          "title": "춘추관",
+          "type": "기관",
+          "visibility": "search_only",
+          "reason": "역사 편찬 기관으로 의미는 있으나 왕권 강화 흐름과 직접성은 약해 search_only이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "춘추관은 조선시대 역사 편찬을 담당한 기관으로, 국가의 공식 사료와 역사를 기록하여 후대에 전하였으며 역사 연구에 필수적이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 56,
+          "title": "한성부",
+          "type": "기관",
+          "visibility": "search_only",
+          "reason": "수도 행정 기관이지만 방의 중심 서사와는 거리가 있어 search_only이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "한성부는 조선시대 서울의 행정을 맡은 중앙 관청으로, 수도의 치안과 행정 업무를 담당하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 106,
+          "title": "신흥 무인 세력",
+          "type": "기관",
+          "visibility": "search_only",
+          "reason": "건국 배경 설명에는 유용하지만 핵심 클릭 포인트로는 약해 search_only이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "신흥 무인 세력은 조선 건국기에 권력 형성에 중요한 역할을 한 군사 기반 세력이다.>",
+          "aliases": []
+        },
+        {
+          "entity_id": 107,
+          "title": "신진 사대부",
+          "type": "기관",
+          "visibility": "supporting",
+          "reason": "조선 건국의 이념적 기반을 설명하므로 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "신진 사대부는 조선 건국기에 성리학을 주도하며 왕권 강화와 정치 개혁을 주도한 학문·정치 세력이다.>",
+          "aliases": []
+        },
+        {
+          "entity_id": 91,
+          "title": "고려사",
+          "type": "문물",
+          "visibility": "search_only",
+          "reason": "역사서로서 배경 자료이지만 이 방의 핵심 학습 흐름은 아니다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "고려사는 고려 시대의 역사를 기록한 공식 역사서로, 조선 시대에 편찬되어 고려 시대 역사 연구와 이해의 기본 자료가 되었다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 92,
+          "title": "고려사절요",
+          "type": "문물",
+          "visibility": "search_only",
+          "reason": "고려사와 동일하게 배경 자료 성격이 강해 search_only이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "고려사절요는 고려사에서 주요 사실만 간추린 역사서로, 조선 초기 고려 역사 인식을 돕는 중요한 문헌이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 104,
+          "title": "한문학",
+          "type": "문물",
+          "visibility": "search_only",
+          "reason": "문화사 맥락은 있으나 왕권 강화 방의 중심 주제는 아니다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "한문학은 조선 시대 사대부 사회에서 중심이 된 문학 장르로, 유교적 가치와 학문적 전통을 반영하였다.>",
+          "aliases": []
+        },
+        {
+          "entity_id": 105,
+          "title": "동문선",
+          "type": "문물",
+          "visibility": "search_only",
+          "reason": "문학 자료로서 보존은 필요하지만 이 방에서는 주변 정보다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "동문선은 삼국 시대부터 조선 시대에 이르는 유명한 한시와 시문을 엮은 책으로, 한국 고전 문학 연구의 중요한 자료이다.>",
+          "aliases": []
+        }
+      ],
+      "risk_flags": [
+        "태종 이방원/이방원, 태조 이성계/이성계처럼 동일 인물의 표기 변형이 있어 중복 인식 위험이 있다.",
+        "세조-직전법-국방 강화는 한 묶음으로 보이지만 세부 설명이 과도하면 정치/재정/군사로 분산될 수 있다."
+      ],
+      "visibility_summary": {
+        "core": 7,
+        "supporting": 8,
+        "search_only": 8
+      },
+      "entity_count": 23
+    },
+    {
+      "room_no": 2,
+      "title": "사림과 붕당 정치",
+      "learning_flow": "사림의 성장과 서원·향약을 바탕으로 붕당 정치가 형성되고, 예송·환국·비변사·이조 전랑을 거치며 권력 구조가 어떻게 흔들렸는지 살펴본다.",
+      "ui_design_reason": "사림-붕당-정치 갈등이라는 큰 축이 분명해 학습자가 정치사 흐름을 단계적으로 이해하기 좋다. 교육 기관과 감찰 기관은 보조 축으로 정리해 화면이 복잡해지지 않는다.",
+      "visible_communities": [
+        24,
+        25,
+        27
+      ],
+      "background_communities": [
+        {
+          "community_id": 26,
+          "reason": "여성 윤리 규범은 조선 사회의 가치관을 보강하지만 붕당 정치의 핵심 서사와는 직접성이 낮아 background로 둔다."
+        },
+        {
+          "community_id": 19,
+          "reason": "한문학과 동문선은 사림 문화권의 배경이지만 정치 갈등의 중심은 아니므로 숨긴다."
+        }
+      ],
+      "source_communities": [
+        24,
+        25,
+        27,
+        26,
+        19
+      ],
+      "subzones": [
+        {
+          "title": "사림의 성장과 향촌 기반",
+          "source_communities": [
+            24
+          ],
+          "entity_ids": [
+            2,
+            9,
+            10,
+            20,
+            22,
+            23,
+            31,
+            32,
+            59,
+            70,
+            90,
+            93,
+            95,
+            105,
+            113,
+            114,
+            115,
+            121,
+            122,
+            123,
+            127,
+            132,
+            134,
+            135
+          ]
+        },
+        {
+          "title": "붕당 정치의 전개",
+          "source_communities": [
+            25
+          ],
+          "entity_ids": [
+            49,
+            50,
+            51,
+            60,
+            117,
+            118,
+            120,
+            125,
+            126,
+            223,
+            225,
+            226,
+            228
+          ]
+        },
+        {
+          "title": "교육과 정치의 연결",
+          "source_communities": [
+            27
+          ],
+          "entity_ids": [
+            55,
+            61,
+            67,
+            68,
+            72,
+            73,
+            231
+          ]
+        }
+      ],
+      "entities": [
+        {
+          "entity_id": 127,
+          "title": "사림",
+          "type": "기관",
+          "visibility": "core",
+          "reason": "방의 출발점이자 정치·교육 기반의 핵심 세력이라 core이다.",
+          "frequency": 2,
+          "degree": 9,
+          "description": "사림은 16세기 이후 조선 사회에서 중소 지주로 성장하며 성리학을 중심으로 학문과 교육, 지방 행정을 주도한 세력이다. 이들은 조선 전기부터 중앙 정계에 진출하여 훈구 세력과 대립한 신진 유학자 집단으로, 도덕과 의리를 중시하였다. 사림은 주로 지방에서 학문 연구와 제자 양성에 힘쓰며, 성리학을 기반으로 한 학문적 전통을 이어갔고, 이러한 활동은 붕당 정치의 기반이 되었다. 그 결과, 사림은 조선 사회의 문화적·정치적 변화에 중요한 역할을 수행하였으며, 지방 사회의 행정과 교육 발전에도 크게 기여하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 2,
+          "title": "사림 세력",
+          "type": "기관",
+          "visibility": "supporting",
+          "reason": "사림의 형성과 성격을 보강하지만 127과 의미가 겹쳐 supporting이다.",
+          "frequency": 2,
+          "degree": 6,
+          "description": "사림 세력은 15세기 말부터 조선 중앙 정치 무대에 등장한 유학자 집단으로, 초기에는 훈구 세력과 대립하며 성리학적 정치 이념을 바탕으로 공론 정치를 주도하였다. 이들은 향촌의 서원과 향약을 기반으로 학문과 교육을 발전시키며 조선 사회의 학문적 토대를 마련하였다. 조선 중기에 이르러 사림 세력은 정치적 영향력을 크게 확대하였으며, 유교적 이념을 중심으로 학문과 풍속 교화에 힘쓰는 집단으로 자리잡았다. 특히 서원 설립과 교육 활동을 통해 조선 사회와 문화 발전에 중요한 기여를 하였으며, 성리학적 가치관을 바탕으로 한 도덕성과 정치적 이상을 실현하는 데 주력하였다. 결과적으로 사림 세력은 조선 후기 정치·사회·문화 전반에 깊은 영향을 미친 유교 지식인 집단으로 평가받고 있다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 123,
+          "title": "서원",
+          "type": "기관",
+          "visibility": "core",
+          "reason": "사림의 학문·결집 공간으로 방 학습 흐름에 직접적이라 core이다.",
+          "frequency": 3,
+          "degree": 3,
+          "description": "서원은 조선 시대에 지방 향촌에 세워진 교육 기관으로, 성리학 교육과 제사를 중심으로 기능하였다. 주로 영남 지방을 중심으로 전국에 확산되었으며, 유학자 교육과 사림 세력의 학문 및 교화를 담당하는 역할을 하였다. 서원은 사림 세력의 학문적 성장과 정치적 결속을 강화하는 기반이 되었고, 그 결과 향촌 사회의 발전에도 크게 기여하였다. 그러나 한편으로는 정치적 붕당의 토대로 작용하기도 하여 조선 후기 정치 분열의 원인이 되기도 하였다. 이처럼 서원은 학문과 교육 발전에 중요한 역할을 한 동시에 조선 사회의 정치적 변화와 연관된 복합적인 교육 기관이었다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 132,
+          "title": "향약",
+          "type": "정책",
+          "visibility": "supporting",
+          "reason": "향촌 자치와 사림의 기반을 설명하는 중요한 보조 개념이라 supporting이다.",
+          "frequency": 2,
+          "degree": 1,
+          "description": "향약은 조선 시대 사림 세력이 보급하고 활용한 향촌 자치 규약으로, 주로 지방의 향촌 사회에서 자치와 도덕 질서 유지를 목적으로 시행되었다. 이 규약은 도덕적 교화와 상호 부조를 강조하여 향촌 사회의 질서와 공동체 의식을 강화하는 데 기여하였다. 사림 세력은 향약을 통해 향촌 사회를 통제하고 지배하는 한편, 지역사회의 안정과 규범 확립을 도모하였다. 따라서 향약은 조선 시대 향촌 공동체 내에서 사회 질서 유지와 자치 기능 수행에 중요한 역할을 한 지방 자치 규약이었다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 59,
+          "title": "유향소",
+          "type": "기관",
+          "visibility": "supporting",
+          "reason": "향촌 지배 구조를 보여주지만 서원보다 부차적이라 supporting이다.",
+          "frequency": 3,
+          "degree": 2,
+          "description": "유향소는 조선 시대 향촌 사회에서 지방 양반들, 특히 사림 세력이 중심이 되어 운영한 자치 기구이다. 이 기관은 지방 사회에서 백성 교화와 행정 자문 역할을 수행하며, 지방 여론을 수렴하고 수령에게 자문을 제공하는 등 지방 행정과 사회 통합에 중요한 역할을 담당하였다. 또한, 비행 행위에 대한 고발 기능을 통해 지방 질서 유지에 기여하였다. 유향소를 통해 사림 세력은 향촌에서 정치적·사회적 영향력을 행사하며 우월한 지위를 유지하였고, 이를 바탕으로 향촌 지배 기반을 확고히 하였다. 이러한 역할로 유향소는 조선 시대 향촌 사회의 자치와 통합을 이끄는 핵심 기구로 기능하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 22,
+          "title": "성리학",
+          "type": "정책",
+          "visibility": "core",
+          "reason": "사림과 서원의 사상적 기반이므로 core이다.",
+          "frequency": 2,
+          "degree": 7,
+          "description": "성리학은 조선 사회의 통치 이념이자 학문 체계로서, 도덕과 사회 질서 확립에 중요한 영향을 끼쳤다. 조선 초기 사대부들이 중시한 유교의 학문 체계이자 정치 이념으로 자리 잡은 성리학은 덕치주의와 유교적 이상 정치 실현의 근간이 되었으며, 조선 지배 이데올로기의 중심적인 역할을 담당하였다. 이를 통해 성리학은 조선 사회 전반에 걸쳐 도덕적 가치와 사회 질서 유지에 깊은 영향을 미쳤으며, 국가 운영과 사회 규범의 기본 원칙이 되었다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 114,
+          "title": "조광조",
+          "type": "인물",
+          "visibility": "core",
+          "reason": "사림 개혁 정치의 대표 인물이라 core이다.",
+          "frequency": 2,
+          "degree": 4,
+          "description": "조광조는 조선 중기 사림 세력을 대표하는 개혁 정치가로, 중종반정 이후 등용되어 유교적 이상 정치와 도덕 정치를 실천하고자 노력하였다. 그는 인재 등용을 중시하여 현량과와 효렴과 같은 인재 선발 제도를 적극 활용함으로써 유능하고 도덕적인 인재를 널리 등용하려 했다. 이러한 개혁적 시도는 조선 중기 정치사에 중요한 변화를 가져왔으나, 훈구 세력의 강한 반발을 불러일으켰다. 결국 조광조는 훈구 세력과의 정치적 갈등 속에서 사화에 희생되어 비극적인 죽음을 맞이하였다. 그럼에도 불구하고 조광조는 사림파의 이상과 개혁 정신을 대표하는 인물로서 역사에 깊은 영향을 끼쳤다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 115,
+          "title": "김종직",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "사림의 학통과 형성을 설명하는 핵심 인물이지만 조광조보다 배경성이 강해 supporting이다.",
+          "frequency": 3,
+          "degree": 3,
+          "description": "김종직은 고려 말에서 조선 초기에 활동한 경상도 출신의 유학자로, 도학(성리학) 사상을 계승하고 발전시켜 조선 초기 사림 세력의 중추적 역할을 한 인물이다. 그는 고려 말의 유학자 정몽주와 길재의 학통을 이어받아 성리학을 심화시켰으며, 조선 초 정치와 학문에 큰 영향을 끼쳤다. 특히 성종 때 사림 세력의 등용과 공론 정치의 발전에 기여하였으며, 경상도 지역 사림 세력의 정신적 지주로서 많은 제자를 양성하며 그 학문과 덕행으로 높은 평가를 받았다. 김종직의 문학과 사상은 이후 조선시대 학문과 정치 문화 형성에 중요한 토대가 되었다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 113,
+          "title": "사화",
+          "type": "사건",
+          "visibility": "supporting",
+          "reason": "사림이 정치적으로 타격받는 과정을 설명하므로 supporting이다.",
+          "frequency": 2,
+          "degree": 3,
+          "description": "사화는 조선 전기부터 중기에 걸쳐 발생한 정치적 사건들로, 관료나 선비들이 정치적 반대파에 의해 참혹한 피해를 입은 것을 말한다. 이 사건들은 주로 사림 세력과 훈구 세력 간의 정치적 갈등에서 비롯되었으며, 네 차례에 걸쳐 큰 규모로 발생하였다. 대표적인 예로 무오사화가 있으며, 이러한 사화들은 사림 세력에게 큰 타격을 주었으나 사림이 완전히 몰락하지 않고 오히려 성장하는 계기가 되었다. 따라서 사화는 조선 초기 정치 투쟁의 격렬함과 함께 권력 구조 변화에 중요한 역할을 한 역사적 사건으로 평가된다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 31,
+          "title": "경국대전",
+          "type": "문물",
+          "visibility": "search_only",
+          "reason": "조선 통치 질서의 배경이지만 이 방의 중심 갈등 서사와는 거리가 있어 search_only이다.",
+          "frequency": 3,
+          "degree": 2,
+          "description": "경국대전은 조선 성종 때 완성된 조선의 기본 법전으로, 국가 통치 조직과 법률 체계를 체계적으로 정비하여 조선 통치 질서 확립에 중요한 역할을 하였다. 이 법전은 조선 건국 후 약 100여 년간 국가의 통치 규범을 집대성한 법전으로, 조선의 정치와 사회의 기틀을 형성하는 데 중추적인 역할을 담당하였다. 경국대전은 조선을 다스리는 기본 법전이자 왕조 통치 체제 확립의 근간이 되는 법전으로, 조선 왕조의 통치 질서와 법률 체계를 통합하고 정비하여 이후 조선 사회 전반의 안정과 발전에 크게 기여하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 32,
+          "title": "성종",
+          "type": "인물",
+          "visibility": "search_only",
+          "reason": "사림 등용의 시대 배경으로는 유용하지만 핵심 클릭 항목은 아니다.",
+          "frequency": 3,
+          "degree": 4,
+          "description": "성종은 조선 전기의 제9대 국왕으로, 그의 통치 기간은 사림 세력이 중앙 정치에 본격적으로 진출하여 기존의 훈구 세력과 대립하기 시작한 중요한 시기였다. 그는 경국대전 편찬을 완성하여 조선의 통치 기틀을 법제화함으로써 안정된 정치 체제를 구축하는 데 크게 기여하였고, 이를 통해 국가의 행정 질서를 확립하는 데 중추적인 역할을 하였다. 또한 성종은 지리 관련 서적 편찬을 주도하여 조선 중기의 문물과 제도의 발전을 촉진하였으며, 이러한 업적들은 조선 사회의 제도적 기반 강화와 국가 운영의 효율성 증대에 중요한 밑거름이 되었다. 이와 같이 성종은 조선 초기 정치, 법제, 문화 전반에 걸쳐 깊은 영향을 끼친 군주로 평가받는다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 10,
+          "title": "백운동 서원",
+          "type": "기관",
+          "visibility": "supporting",
+          "reason": "서원 제도의 출발점으로 학습 흐름을 구체화하므로 supporting이다.",
+          "frequency": 3,
+          "degree": 4,
+          "description": "백운동 서원은 조선 초기 영주 지역에 세워진 최초의 서원으로, 16세기 중엽에 설립되어 조선 사림 세력의 학문과 교육 중심지 역할을 하였다. 이 서원은 유학자 주세붕이 안향을 기리기 위해 창립하였으며, 이후 유학자 이황의 건의를 받아 '소수 서원'이라는 현판을 하사받아 공식적인 학문과 교육 기관으로 자리매김하였다. 백운동 서원은 학문 연구와 교육뿐만 아니라 제사 기능도 수행하며 조선 후기 후진 양성에 크게 기여하였다. 또한 서원의 토지, 노비, 서적 지급과 면세 특권 등 국가의 지원을 받아 운영되었으며, 이러한 지원을 바탕으로 지역 사림 세력의 중심지로서 중요한 역할을 담당하였다. 현재 경북 영주에 위치한 백운동 서원은 조선 시대 유교 교육과 사림 문화의 상징적 장소로 평가받고 있다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 136,
+          "title": "소수 서원",
+          "type": "기관",
+          "visibility": "search_only",
+          "reason": "서원 제도 사례이지만 백운동 서원보다 더 세부 사례라 search_only이다.",
+          "frequency": 1,
+          "degree": 2,
+          "description": "소수 서원은 백운동 서원을 왕이 '소수 서원' 현판을 하사하며 정식 인정한 서원으로, 조선 서원 제도의 시발점이자 사림 교육의 중심지였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 137,
+          "title": "소수 서원 현판",
+          "type": "문물",
+          "visibility": "search_only",
+          "reason": "상징적 문물로 흥미는 있으나 학습 흐름상 부차적이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "소수 서원 현판은 이황의 건의로 왕이 하사한 현판으로, '이미 무너진 교학을 다시 닦게 하였음'이라는 뜻을 담아 서원의 정체성과 존립 근거를 상징한다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 134,
+          "title": "이황",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "사림 성리학의 대표 학자로 서원·교육 흐름을 보강하므로 supporting이다.",
+          "frequency": 1,
+          "degree": 3,
+          "description": "이황은 조선 성리학을 크게 발전시킨 학자로, 조선 중기 사림 세력의 대표적 학자이자 유학자이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 135,
+          "title": "이이",
+          "type": "인물",
+          "visibility": "search_only",
+          "reason": "성리학 맥락은 있으나 이 방의 핵심 갈등 축과 직접성은 약하다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "이이는 조선 성리학을 발전시킨 대표적 학자로, 이황과 함께 성리학 연구와 교육에 큰 영향을 끼친 사림 계열 유학자이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 9,
+          "title": "도산서원",
+          "type": "기관",
+          "visibility": "search_only",
+          "reason": "서원 사례이지만 대표성은 있으나 방 제목을 흐릴 수 있어 search_only이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "도산서원은 조선 중기 사림 세력이 설립한 서원으로, 학문 연구와 유교 교육을 통해 조선 유학 발전에 기여한 기관이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 70,
+          "title": "무과",
+          "type": "정책",
+          "visibility": "search_only",
+          "reason": "과거 제도 설명의 일부로만 등장해 핵심성이 낮다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "무과는 조선 시대 관리 등용을 위한 과거 시험 중 하나로, 군사 관리를 선발하는 시험이며 양반, 향리, 상민 자제가 응시하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 90,
+          "title": "동국통감",
+          "type": "문물",
+          "visibility": "search_only",
+          "reason": "역사서 편찬은 배경 자료로만 유효하다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "동국통감은 성종 때 등에게 명하여 편찬한 역사책으로, 우리 역사를 체계적으로 정리하여 조선 초기 역사 인식에 중요한 역할을 하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 93,
+          "title": "동국여지승람",
+          "type": "문물",
+          "visibility": "search_only",
+          "reason": "지리서로서 주변 정보이며 방의 핵심 주제와는 약하다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "동국여지승람은 성종 때 노사신, 강희맹, 서거정 등이 편찬한 조선의 지리서로, 지방 행정과 지리에 관한 중요한 정보를 담고 있다.>",
+          "aliases": []
+        },
+        {
+          "entity_id": 95,
+          "title": "국조오례의",
+          "type": "문물",
+          "visibility": "search_only",
+          "reason": "의례 정비는 배경 지식이지만 이 방의 중심은 아니다.",
+          "frequency": 1,
+          "degree": 0,
+          "description": "국조오례의는 조선 시대 국가 의례와 예법을 정리한 책으로, 유교 질서 확립과 궁중 의례 정비에 중요한 역할을 하였다.>",
+          "aliases": []
+        },
+        {
+          "entity_id": 49,
+          "title": "사간원",
+          "type": "기관",
+          "visibility": "supporting",
+          "reason": "붕당 정치의 감찰 구조를 보여주므로 supporting이다.",
+          "frequency": 2,
+          "degree": 1,
+          "description": "사간원은 조선 시대에 설치된 중앙 정치 감찰 기관으로, 국왕의 정치 행위를 감시하고 잘못된 점을 지적하며 올바른 정치를 바로잡는 임무를 수행하였다. 이 기관은 왕이 행하는 정치에 대해 감시자의 역할을 하였으며, 국왕에게 바른 정치 방향을 일깨워 주어 국정 운영의 건전성과 공정성을 유지하는 데 기여하였다. 사간원은 조선 시대 중앙 정부 내에서 정치적 견제와 균형의 중요한 기능을 담당하였으며, 이를 통해 국왕의 권력이 남용되지 않도록 감시하는 역할을 지속적으로 수행하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 50,
+          "title": "사헌부",
+          "type": "기관",
+          "visibility": "supporting",
+          "reason": "정치 감찰과 견제 기능을 설명하는 핵심 기관이라 supporting이다.",
+          "frequency": 2,
+          "degree": 1,
+          "description": "사헌부는 조선시대의 삼사(三司) 중 하나로, 관리들의 비행을 감찰하고 조정의 관원을 검찰하는 역할을 담당한 감찰 기관이다. 이 기관은 왕권 강화를 도모하고 청렴한 정치 유지를 목표로 하였으며, 사회 풍속 교정과 부정 행위 감시에 집중하여 국가의 질서를 바로잡는 데 기여하였다. 사헌부는 조선 시대 관료들의 부정과 비리를 엄중히 감시함으로써 공정한 정치 환경 조성에 중요한 역할을 수행하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 51,
+          "title": "홍문관",
+          "type": "기관",
+          "visibility": "supporting",
+          "reason": "삼사 체계의 일부로 정치 운영을 보강하므로 supporting이다.",
+          "frequency": 3,
+          "degree": 1,
+          "description": "홍문관은 조선 시대의 중요한 학문 기관이자 삼사 중 하나로, 국가 정책 논의와 학문 연구의 중심 역할을 담당하였다. 이 기관은 관리들이 모여 국가 정책에 대해 토론하고 의견을 제시하는 장소로 기능했으며, 동시에 조선 왕의 정치적 자문 역할을 수행하였다. 홍문관은 경서와 사적을 관리하며, 왕명의 대필과 문장 업무를 맡아 국왕과 정책 결정 과정에 깊이 관여하였다. 이러한 역할을 통해 홍문관은 조선 왕실의 학문적 지원과 정책적 조언을 통합하여 국가 운영에 중요한 기여를 한 기관이었다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 60,
+          "title": "삼사",
+          "type": "기관",
+          "visibility": "core",
+          "reason": "붕당 정치의 공론·감찰 구조를 대표하는 핵심 기관 묶음이라 core이다.",
+          "frequency": 3,
+          "degree": 5,
+          "description": "삼사는 조선 시대 중앙 정치에서 중요한 역할을 한 언론 기관으로, 사헌부, 사간원, 홍문관으로 구성되어 있었다. 이들은 이조 전랑을 지원하며 붕당 정치 속에서 공론 형성과 정치 비판, 감시 기능을 수행하였다. 삼사는 국왕을 보좌하고 정치 상황을 감시하며 자문 역할을 통해 조선 중앙 정치의 균형 유지에 기여하였다. 이를 통해 삼사는 조선 시대 정치 권력 내에서 견제와 균형을 담당하며 공적인 의견을 형성하는 데 중심적인 역할을 하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 117,
+          "title": "붕당",
+          "type": "기관",
+          "visibility": "core",
+          "reason": "방 제목과 직접 맞는 핵심 개념이라 core이다.",
+          "frequency": 2,
+          "degree": 4,
+          "description": "붕당은 조선 시대에 사림 집단이 정치 세력으로 조직된 형태를 의미한다. 이들은 내부 결속과 상호 비판 및 견제를 통해 조선 정치사에서 중요한 역할을 수행하였다. 특히 조선 중기 이후로 붕당은 정치권 내에서 같은 학통과 성향을 바탕으로 형성된 사림 세력의 여러 집단, 예를 들어 동인과 서인과 같은 정치적 세력 집단을 포함하였다. 이러한 붕당은 조선 정치의 중요한 축으로 작동하며, 정치적 영향력과 권력 투쟁에서 중심적인 역할을 담당하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 118,
+          "title": "동인",
+          "type": "기관",
+          "visibility": "supporting",
+          "reason": "붕당 분화의 대표 세력으로 이해를 돕는다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "동인은 조선 중기 붕당 정치 초기에 김효원을 비롯한 신진 관료들이 중심이 되어 형성된 붕당으로, 사림 신진 세력의 입장을 대변하며 서인과 대립하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 223,
+          "title": "남인",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "붕당 구도를 구체화하는 세력이라 supporting이다.",
+          "frequency": 1,
+          "degree": 2,
+          "description": "남인은 조선 후기 붕당 정치의 한 당파로, 이황의 학통을 계승하였으며 서인과 더불어 정치적 경쟁을 벌였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 225,
+          "title": "예송",
+          "type": "사건",
+          "visibility": "core",
+          "reason": "붕당 갈등이 의례 논쟁으로 표출된 대표 사건이라 core이다.",
+          "frequency": 2,
+          "degree": 2,
+          "description": "예송은 조선 후기 왕실 의례 중 상복 착용 기간을 둘러싸고 발생한 학문적·정치적 논쟁이다. 이 논쟁은 상복 착용 기간의 적절한 길이에 관한 의견 차이로 인해 붕당 간 갈등이 심화되었으며, 결과적으로 환국(換局)이라는 정치적 권력 교체의 배경이 되었다. 예송은 단순한 의례상의 문제가 아니라 당시 조선 사회의 당파 간 세력 다툼을 반영하는 중요한 정치적 사건으로, 조선 후기 정치적 긴장과 변화를 이해하는 데 핵심적인 역할을 하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 226,
+          "title": "환국",
+          "type": "사건",
+          "visibility": "core",
+          "reason": "붕당 정치의 권력 교체 양상을 보여주는 핵심 사건이라 core이다.",
+          "frequency": 2,
+          "degree": 2,
+          "description": "환국은 조선 시대 숙종 때 여러 차례 일어난 집권 세력 교체 사건을 가리키며, 붕당 간의 권력 다툼과 정권 교체를 의미한다. 조선 후기 정치 상황에서 환국은 집권 세력이 급격히 교체되는 변동을 나타내며, 이는 붕당 간의 갈등과 경쟁으로 촉발된 정치적 변화들을 포함한다. 이러한 환국 현상은 당시 조선 정치의 불안정성과 당쟁의 심화 과정을 반영하며, 집권 세력의 교체를 통해 정권 구성과 정책 방향에 큰 영향을 미쳤다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 120,
+          "title": "이조 전랑",
+          "type": "기관",
+          "visibility": "supporting",
+          "reason": "인사권 갈등의 핵심이지만 방 제목보다 세부 제도라 supporting이다.",
+          "frequency": 2,
+          "degree": 3,
+          "description": "이조 전랑은 조선 시대 붕당 정치 시기에 중요한 역할을 수행한 관직으로, 이조 산하에서 관리 임명 권한을 가진 직위이다. 이 관직은 특히 붕당 간 대립의 중심 대상이 되었으며, 공론 형성 과정에서 핵심적 역할을 담당했다. 이조 전랑은 단순히 이조 내 관리 임명뿐만 아니라 삼사(삼사의 관리 임명)에도 큰 영향력을 행사하여, 조선시대 정치 권력과 인사권을 좌우하는 중요한 위치에 있었다. 따라서 이조 전랑은 조선 시대 붕당 정치에서 인사권 행사를 통해 권력 분쟁과 정치적 공론 형성에 직접적으로 기여한 관직으로 평가받는다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 125,
+          "title": "언론 기관",
+          "type": "기관",
+          "visibility": "search_only",
+          "reason": "삼사와 중복되는 일반 개념이라 search_only이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "언론 기관은 조선 시대 정치에서 여론 형성과 정보 전달에 중요한 역할을 한 조직으로, 붕당 정치의 경쟁과 대립에 영향을 미쳤다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 228,
+          "title": "비변사",
+          "type": "기관",
+          "visibility": "supporting",
+          "reason": "임진왜란 이후 정치 권력의 이동을 설명하는 중요한 기관이라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "비변사는 조선 후기 임진왜란 이후 국방 문제를 의논하는 임시 기구에서 최고 정치 기구로 발전한 기관으로, 붕당 정치 전개와 함께 중앙 정치 권력을 장악하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 55,
+          "title": "성균관",
+          "type": "기관",
+          "visibility": "supporting",
+          "reason": "교육과 정치의 연결을 보여주는 핵심 기관이라 supporting이다.",
+          "frequency": 3,
+          "degree": 5,
+          "description": "성균관은 조선 시대 최고의 국립 유학 교육 기관이자 학문 기관으로, 유학 교육의 중심지였다. 소과 합격자인 생원과 진사를 입학시켜 심도 있는 유교 교육을 제공하였으며, 국가 인재를 양성하는 중요한 역할을 맡았다. 또한, 성균관은 단순한 교육 기관을 넘어 조선 시대의 학문과 정치적 사상의 중심지로 기능하였다. 특히 영조가 탕평비를 세워 탕평책의 정신을 알리는 장소로 활용되면서 국가의 화합과 균형 있는 정치 이념을 전파하는 데 기여하였다. 이처럼 성균관은 유생을 교육하고 학문 연구를 장려함으로써 조선 사회의 학문적·정치적 발전에 중요한 영향을 끼친 기관이었다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 61,
+          "title": "과거 제도",
+          "type": "정책",
+          "visibility": "supporting",
+          "reason": "인재 선발과 교육 체계를 연결하므로 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "과거 제도는 조선시대 인재 선발을 위해 문·무관을 대상으로 시행한 시험 제도로, 관료 임용과 사회적 신분 향상에 중요한 역할을 하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 67,
+          "title": "생원과",
+          "type": "정책",
+          "visibility": "search_only",
+          "reason": "성균관 입학 자격의 세부 시험으로서 부차적이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "생원과는 조선 시대 과거 시험의 한 종류로, 향교와 성균관 입학 자격을 주는 소과 시험 중 하나이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 68,
+          "title": "진사과",
+          "type": "정책",
+          "visibility": "search_only",
+          "reason": "생원과와 동일하게 세부 제도라 search_only이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "진사과는 조선 시대 과거 시험의 한 종류로, 향교와 성균관 입학 자격을 제공하는 소과 시험 중 하나이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 72,
+          "title": "서당",
+          "type": "기관",
+          "visibility": "search_only",
+          "reason": "기초 교육 기관으로 배경성은 있으나 핵심은 아니다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "서당은 조선 시대 초등 교육 기관으로, 문자를 배우고 기본적인 유학 지식과 한문을 익히는 곳이었다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 73,
+          "title": "향교",
+          "type": "기관",
+          "visibility": "search_only",
+          "reason": "교육 체계의 일부지만 방의 중심 갈등 서사와는 거리가 있다.",
+          "frequency": 1,
+          "degree": 2,
+          "description": "향교는 조선 시대 지방에 설치된 국립 교육 기관으로, 유학 경전인 소학과 사서를 가르쳐 지방 유학 인재를 양성하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 231,
+          "title": "탕평비",
+          "type": "문물",
+          "visibility": "search_only",
+          "reason": "탕평책의 상징물로 의미는 있으나 붕당 정치의 핵심 사건보다 부차적이다.",
+          "frequency": 1,
+          "degree": 2,
+          "description": "탕평비는 영조가 한양 성균관에 세운 비석으로, 붕당 간 다툼 금지와 탕평책의 원리를 알리기 위해 설치된 상징적 문물이다.",
+          "aliases": []
+        }
+      ],
+      "risk_flags": [
+        "사림/사림 세력, 붕당/붕당 정치처럼 유사 표기가 많아 중복 정리 필요성이 있다.",
+        "교육 기관과 정치 기관이 함께 있어 방이 과밀해질 수 있으므로 supporting을 엄격히 유지했다.",
+        "로컬 검증기가 중복 엔티티 [20, 105]를 다른 주 방에 남기고 이 방에서는 제거함"
+      ],
+      "visibility_summary": {
+        "core": 8,
+        "supporting": 16,
+        "search_only": 16
+      },
+      "entity_count": 40
+    },
+    {
+      "room_no": 3,
+      "title": "임진왜란과 병자호란",
+      "learning_flow": "임진왜란에서 수군·의병·외교가 어떻게 전개되었는지 보고, 이어 병자호란과 북벌 운동으로 이어지는 조선 중기의 대외 위기 대응을 비교한다.",
+      "ui_design_reason": "전쟁사라는 큰 축이 분명해 사건 중심 UI로 구성하기 좋다. 임진왜란과 병자호란을 분리하지 않고 연속 서사로 묶어 시대적 긴장감을 살릴 수 있다.",
+      "visible_communities": [
+        4,
+        14,
+        23,
+        30
+      ],
+      "background_communities": [
+        {
+          "community_id": 9,
+          "reason": "광해군의 중립 외교와 인조반정은 병자호란의 배경이지만, 전쟁 방의 제목을 흐리지 않도록 배경으로 둔다."
+        },
+        {
+          "community_id": 1,
+          "reason": "북방 국경 정책은 국방사 배경으로는 유용하지만 전쟁 서사의 중심은 아니므로 background로 보존한다."
+        }
+      ],
+      "source_communities": [
+        4,
+        14,
+        23,
+        30,
+        9,
+        1
+      ],
+      "subzones": [
+        {
+          "title": "임진왜란의 전개",
+          "source_communities": [
+            4
+          ],
+          "entity_ids": [
+            3,
+            14,
+            15,
+            16,
+            144,
+            145,
+            153,
+            154,
+            155,
+            156,
+            157,
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165,
+            166,
+            167,
+            168,
+            169,
+            170,
+            171,
+            172,
+            173
+          ]
+        },
+        {
+          "title": "병자호란과 북벌",
+          "source_communities": [
+            14,
+            23
+          ],
+          "entity_ids": [
+            146,
+            149,
+            150,
+            151,
+            152,
+            183,
+            184,
+            185,
+            187,
+            188,
+            189,
+            190,
+            191,
+            192,
+            209,
+            210
+          ]
+        },
+        {
+          "title": "해상·국경 방어의 보조 축",
+          "source_communities": [
+            30,
+            1
+          ],
+          "entity_ids": [
+            40,
+            41,
+            42,
+            43
+          ]
+        }
+      ],
+      "entities": [
+        {
+          "entity_id": 16,
+          "title": "임진왜란",
+          "type": "사건",
+          "visibility": "core",
+          "reason": "방의 첫 번째 핵심 전쟁으로 전체 흐름을 여는 사건이라 core이다.",
+          "frequency": 6,
+          "degree": 13,
+          "description": "임진왜란은 1592년부터 1598년까지 조선 중기에 일본의 도요토미 히데요시가 조선을 침략하여 벌어진 대규모 전쟁이다. 이 전쟁에서 조선과 명나라가 연합하여 일본군인 왜군에 맞서 싸웠으며, 조선 수군과 민중 의병의 활약이 두드러졌다. 임진왜란은 단순한 군사 충돌을 넘어 동아시아 국제 질서의 변화와 조선 사회 및 문화에 깊은 영향을 미친 중요한 역사적 사건이다.\n\n전쟁은 조선이 국가적 위기에 처한 시점에서 발생하였으며, 이 과정에서 조선의 방어 체계와 군사 전략에 큰 변화가 일어났다. 특히 조선 수군은 이순신 장군을 비롯한 지도자들의 활약으로 해상에서 일본군을 효과적으로 견제하며 전쟁의 국면을 바꾸는 데 결정적인 역할을 했다. 동시에 전국 각지에서 조직된 의병과 승병들이 일본군에 대항하여 민족적 저항을 이어갔으며, 이는 조선 국민들의 단결과 저항 의지를 보여주는 중요한 부분이었다.\n\n임진왜란은 동아시아의 국제외교 관계에도 영향을 끼쳐 명나라와 조선 간의 군사적 협력뿐만 아니라 일본의 대외 정책과 야망에 대한 국제적 반응을 이해하는 데 필수적이다. 전쟁 이후 조선은 군사 조직과 국방 체계를 재정비하고, 사회·문화 전반에 걸쳐 변화가 나타났다.\n\n결과적으로 임진왜란은 16세기 말부터 17세기 초에 걸쳐 동아시아 지역의 군사, 외교, 사회 구조에 중대한 영향을 미친 전쟁으로 평가되며, 조선과 명의 연합 전선, 조선 수군과 민중 의병의 저항, 그리고 국제 질서의 변화라는 세 가지 중요한 측면에서 그 의미를 되새길 수 있는 역사적 사건이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 3,
+          "title": "이순신",
+          "type": "인물",
+          "visibility": "core",
+          "reason": "임진왜란의 대표 인물로 전쟁 학습의 중심축이라 core이다.",
+          "frequency": 3,
+          "degree": 5,
+          "description": "이순신은 조선 시대 임진왜란과 정유재란 당시 조선 수군을 지휘한 명장으로, 국가 위기 극복과 해상 방어에 큰 공헌을 한 인물이다. 그는 옥포 해전, 사천 해전, 당포 해전, 한산도 대첩, 명량 해전, 노량 해전 등 여러 해전에서 뛰어난 전략과 전술을 바탕으로 일본군을 연이어 격파하며 조선 해상의 제해권 확보에 결정적인 역할을 수행하였다. 특히 한산도 대첩은 조선 수군의 결정적 승리로 평가받으며, 이순신의 탁월한 지휘 능력을 상징하는 전투이다. 마지막 전투인 노량 해전에서 전사하였으나, 그의 리더십과 불굴의 정신은 조선 해상 방어의 상징으로 남아 오늘날까지도 존경받고 있다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 14,
+          "title": "조선 수군",
+          "type": "기관",
+          "visibility": "core",
+          "reason": "해상 방어의 핵심 주체라 core이다.",
+          "frequency": 4,
+          "degree": 5,
+          "description": "조선 수군은 조선시대의 해상 방어와 전쟁 수행을 담당한 군사 조직으로, 특히 임진왜란과 정유재란 시기에 핵심적인 역할을 하였다. 이 수군은 이순신 장군의 탁월한 지휘 아래 여러 해전에서 왜군을 격퇴하고, 해상에서 조선을 방어하며 적군의 보급로를 차단하는 데 결정적인 임무를 수행하였다. 또한 임진왜란뿐만 아니라 나선 정벌과 같은 다른 군사 작전에서도 활약하였다. 조선 수군은 전투력과 전략적 중요성 면에서 뛰어난 성과를 보이며 조선 왕조의 해상 권위를 확립하는 데 크게 기여하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 156,
+          "title": "의병",
+          "type": "기관",
+          "visibility": "core",
+          "reason": "민중 저항과 전쟁 대응을 대표하므로 core이다.",
+          "frequency": 2,
+          "degree": 8,
+          "description": "의병은 임진왜란 당시 농민, 유학자, 전직 관료, 승려 등 다양한 사회 집단이 자발적으로 조직하고 참여한 민간 군사 집단이다. 이들은 지역 방어와 일본군 격퇴에 중요한 역할을 하였으며, 전쟁 기간 동안 지역 사회를 중심으로 결성된 민병대로 활동하였다. 의병에는 김시민, 곽재우, 사명대사와 같은 저명한 인물들이 참여하여 일본군에 대항하는 데 크게 기여하였으며, 이들의 헌신과 활약은 임진왜란 극복에 중요한 힘이 되었다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 145,
+          "title": "행주 대첩",
+          "type": "사건",
+          "visibility": "supporting",
+          "reason": "육상 방어의 대표 승리로 전쟁 전개를 구체화하므로 supporting이다.",
+          "frequency": 2,
+          "degree": 1,
+          "description": "행주 대첩은 임진왜란 시기 조선군이 권율 장군의 지휘 아래 행주산성에서 일본군(왜군)을 상대로 크게 승리한 중요한 전투이다. 이 전투는 조선군의 강력한 저항과 국토 방어 의지를 상징하며, 전쟁의 국면을 전환하는 데 중요한 역할을 하였다. 행주 대첩은 민심을 결집시키고 조선 내부의 단합을 촉진함으로써 임진왜란 중 조선의 전략적 상황에 긍정적인 영향을 미친 대표적인 승리로 평가받는다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 15,
+          "title": "한산도 대첩",
+          "type": "사건",
+          "visibility": "supporting",
+          "reason": "이순신과 조선 수군의 결정적 승리를 보여주는 핵심 전투라 supporting이다.",
+          "frequency": 1,
+          "degree": 2,
+          "description": "한산도 대첩은 임진왜란 중 이순신이 이끄는 조선 수군이 큰 승리를 거둔 해전으로, 임진왜란 전환의 계기가 되었다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 171,
+          "title": "통신사 파견",
+          "type": "사건",
+          "visibility": "supporting",
+          "reason": "전쟁 이후 외교 회복을 설명하는 중요한 후속 흐름이라 supporting이다.",
+          "frequency": 1,
+          "degree": 2,
+          "description": "통신사 파견은 임진왜란 후 조선과 일본 간의 외교 관계 회복과 문화 교류를 위한 외교 사절단의 파견 사건으로, 200여 년간 이어진 조선의 적극적 외교 활동과 일본 내 조선 문화 전파에 기여하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 172,
+          "title": "통신사",
+          "type": "기관",
+          "visibility": "search_only",
+          "reason": "통신사 파견의 제도적 주체로 중복성이 있어 search_only이다.",
+          "frequency": 1,
+          "degree": 2,
+          "description": "통신사는 조선이 일본에 파견한 공식 외교 사절단으로, 일본의 에도 막부와 직접 교섭하며 양국 간의 문화 교류와 외교 관계를 유지하는 역할을 하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 162,
+          "title": "정유재란",
+          "type": "사건",
+          "visibility": "search_only",
+          "reason": "임진왜란의 연장선으로 전쟁의 연속성을 보여주므로 supporting이다. / supporting quality gate: weak learner-facing signal; preserved as search_only evidence",
+          "frequency": 1,
+          "degree": 1,
+          "description": "정유재란은 임진왜란의 후반부인 1597년에 일어난 일본의 재침략 전쟁으로, 조선군과 명군이 협력하여 왜군을 격퇴한 전쟁이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 154,
+          "title": "진주성 전투",
+          "type": "사건",
+          "visibility": "supporting",
+          "reason": "의병과 관군의 협력을 보여주는 대표 전투라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "진주성 전투는 임진왜란 때 김시민 장군이 진주성을 지키며 왜군을 격퇴한 전투로, 의병과 관군의 협력으로 국토 방어에 중요한 역할을 하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 163,
+          "title": "진주대첩",
+          "type": "사건",
+          "visibility": "search_only",
+          "reason": "진주성 전투와 의미가 겹쳐 중복 설명이므로 search_only이다.",
+          "frequency": 1,
+          "degree": 2,
+          "description": "진주대첩은 임진왜란 중 김시민이 지휘한 조선군이 진주에서 일본군을 크게 물리친 전투로, 조선 수군과 의병의 활약이 돋보인 대표적 승리이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 164,
+          "title": "행주산성 전투",
+          "type": "사건",
+          "visibility": "search_only",
+          "reason": "행주 대첩과 사실상 같은 맥락이라 중복성이 높다.",
+          "frequency": 1,
+          "degree": 2,
+          "description": "행주산성 전투는 임진왜란 당시 권율 장군이 지휘하여 행주산성에서 일본군의 공격을 성공적으로 방어한 전투이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 144,
+          "title": "권율",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "행주 대첩의 지휘자로 전쟁 서사를 보강하므로 supporting이다.",
+          "frequency": 3,
+          "degree": 3,
+          "description": "권율은 임진왜란 당시 조선의 장군으로, 행주산성 전투(행주 대첩)에서 일본군을 격파하며 조선을 승리로 이끈 중요한 인물이다. 그는 조선의 국토 방어와 전쟁 승리에 크게 기여하였으며, 민중의 결집과 국방력 강화에도 중요한 역할을 하였다. 또한 권율은 조선군뿐만 아니라 명군과 협력하여 왜군을 효과적으로 퇴치하는 데 결정적인 공헌을 하였다. 이러한 활약을 통해 권율은 임진왜란 중 조선의 국방과 민족의 단합에 크게 기여한 영웅적인 장군으로 평가받는다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 155,
+          "title": "김시민",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "진주성 방어의 핵심 인물이라 supporting이다.",
+          "frequency": 2,
+          "degree": 4,
+          "description": "김시민은 임진왜란 당시 조선의 장군으로, 진주 대첩에서 일본군을 격파하며 국토 방어에 크게 기여한 인물이다. 그는 의병과 관군을 이끌어 여러 전투에서 활약했으며, 특히 진주성 전투에서 조선군을 지휘하여 왜군의 호남 진출을 막아 큰 승리를 거두었다. 김시민의 뛰어난 지휘력과 용기는 조선의 방어에 중요한 역할을 하였으며, 그의 업적은 임진왜란 중 조선의 군사적 저항을 상징하는 대표적인 사례로 평가받고 있다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 157,
+          "title": "곽재우",
+          "type": "인물",
+          "visibility": "search_only",
+          "reason": "의병 활동의 상징적 인물이라 supporting이다. / supporting quality gate: weak learner-facing signal; preserved as search_only evidence",
+          "frequency": 1,
+          "degree": 1,
+          "description": "곽재우는 임진왜란 초기에 경상도에서 의병을 조직하여 왜군과 싸운 대표적 장군이며, 의병 활동의 상징적인 인물이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 158,
+          "title": "조헌",
+          "type": "인물",
+          "visibility": "search_only",
+          "reason": "의병의 대표 사례이지만 다른 의병 인물과 중복되어 search_only이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "조헌은 임진왜란 때 의병을 이끌며 왜군과 싸운 유학자 출신 장군으로, 국토 방어와 민중 동원의 중요한 역할을 하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 159,
+          "title": "고경명",
+          "type": "인물",
+          "visibility": "search_only",
+          "reason": "의병 사례로 의미는 있으나 핵심 클릭 항목은 아니다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "고경명은 임진왜란 중 의병장으로 활동하며 왜군에 대항한 인물로, 민중과 함께 국토 방어에 기여하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 160,
+          "title": "정문부",
+          "type": "인물",
+          "visibility": "search_only",
+          "reason": "의병의 지역 사례로서 보조적이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "정문부는 임진왜란 때 의병을 조직하여 향토 방어에 힘쓴 지도자로, 민간 군사 조직의 대표적 인물이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 161,
+          "title": "유정(사명대사)",
+          "type": "인물",
+          "visibility": "search_only",
+          "reason": "승병과 외교 회복을 함께 설명하는 인물이라 supporting이다. / supporting quality gate: weak learner-facing signal; preserved as search_only evidence",
+          "frequency": 1,
+          "degree": 1,
+          "description": "유정(사명대사)은 임진왜란 때 승려 출신으로 의병 활동을 지도하며 민중의 정신적 지주 역할을 한 인물이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 167,
+          "title": "사명대사 유정",
+          "type": "인물",
+          "visibility": "search_only",
+          "reason": "유정과 중복되는 표기 변형이라 search_only이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "사명대사 유정은 임진왜란 때 승려로 금강산 유점사에서 승병을 모아 의병을 일으켰으며, 전후에는 일본에 파견되어 강화를 체결하여 포로 3500명을 데리고 귀국하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 153,
+          "title": "거북선",
+          "type": "문물",
+          "visibility": "search_only",
+          "reason": "임진왜란 해상 전투의 상징적 문물이라 supporting이다. / supporting quality gate: weak learner-facing signal; preserved as search_only evidence",
+          "frequency": 1,
+          "degree": 1,
+          "description": "거북선은 임진왜란 때 조선 수군이 사용한 한반도 전통의 철갑 전투선으로, 뛰어난 군사 기술과 전술적 우위를 상징하는 문물이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 168,
+          "title": "불국사",
+          "type": "문물",
+          "visibility": "search_only",
+          "reason": "전쟁 피해의 문화재 사례로 의미는 있으나 중심 서사에서 벗어난다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "불국사는 임진왜란 중 일본군 침략으로 파괴된 조선의 대표적인 사찰 건축물로, 전쟁 전후 문화재 파괴와 보존 문제의 상징적 사례이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 169,
+          "title": "사고(조선의 사고)",
+          "type": "문물",
+          "visibility": "search_only",
+          "reason": "문화재 피해 배경으로만 등장해 search_only이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "사고는 조선 시대에 국가의 중요 문서와 기록을 보관한 기관이며, 임진왜란 중 불에 타 문화재 및 기록의 큰 손실을 입었다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 166,
+          "title": "노량 해전",
+          "type": "사건",
+          "visibility": "supporting",
+          "reason": "전쟁 종결과 이순신의 최후를 보여주는 핵심 전투라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "노량 해전은 임진왜란 말기에 이순신이 지휘하여 퇴각하는 왜군을 격멸한 해전으로, 이순신이 전사한 전투이다. 전쟁을 종결하는 중요한 전투였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 170,
+          "title": "유정",
+          "type": "인물",
+          "visibility": "search_only",
+          "reason": "사명대사와 동일 맥락의 표기 변형이라 search_only이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "유정은 조선 시대의 승려로, 임진왜란 당시 승병을 모아 의병을 일으켰으며, 1604년에 일본에 건너가 도쿠가와를 만나 강화 협상을 벌여 조선인 포로 3500명을 데려온 인물이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 173,
+          "title": "일본 에도 막부",
+          "type": "기관",
+          "visibility": "search_only",
+          "reason": "통신사 맥락의 배경 국가로서만 필요하다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "일본 에도 막부는 17세기부터 19세기까지 일본을 통치한 군사 정권으로, 조선과 통신사를 통해 외교와 통상을 전개하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 146,
+          "title": "남한산성",
+          "type": "기관",
+          "visibility": "core",
+          "reason": "병자호란의 상징적 항전 장소로 방의 후반 핵심이라 core이다.",
+          "frequency": 4,
+          "degree": 3,
+          "description": "남한산성은 임진왜란 이후 조선이 외적의 침략에 대비하여 쌓은 군사 방어시설이자 산성으로, 국방력 강화와 수도 방어에 중요한 역할을 한 군사적 요충지이다. 이 산성은 조선 중기 병자호란 때 인조 임금과 신하들이 항전하며 피신한 장소로서, 조선의 국방 역사와 항전의 상징적 의미를 지닌 중요한 성곽이다. 남한산성은 국난 극복과 외세의 침략에 맞선 조선의 굳건한 의지를 보여주는 대표적인 유적으로 평가받는다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 149,
+          "title": "인조",
+          "type": "인물",
+          "visibility": "core",
+          "reason": "병자호란과 친명 배금 정책의 주체라 core이다.",
+          "frequency": 2,
+          "degree": 4,
+          "description": "인조는 조선 중기의 국왕으로, 인조반정을 통해 왕위에 올랐다. 그의 재위 기간 동안 조선은 청나라와의 복잡한 외교 및 군사적 위기 상황을 겪었으며, 특히 정묘호란(1627년)과 병자호란(1636년) 두 차례의 큰 전쟁을 경험하였다. 인조는 명나라를 배경으로 하는 친명(親明) 배금(排金) 정책을 추진하며 조선의 정체성과 외교 노선을 명확히 하였다. 이러한 정책은 청과의 갈등을 심화시키는 원인 중 하나가 되었고, 결국 조선은 청나라의 침입을 받게 되었다. 병자호란 이후 인조는 북벌 운동을 적극적으로 추진하며 청나라에 대한 군사적 대응과 조선의 자주성을 회복하고자 하였다. 이처럼 인조는 조선 조정의 내외적 위기 속에서 복잡한 외교 관계를 조율하고 국방 강화에 힘썼던 국왕으로 평가받는다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 150,
+          "title": "친명 배금 정책",
+          "type": "정책",
+          "visibility": "search_only",
+          "reason": "병자호란의 외교 배경을 설명하므로 supporting이다. / supporting quality gate: weak learner-facing signal; preserved as search_only evidence",
+          "frequency": 1,
+          "degree": 1,
+          "description": "친명 배금 정책은 인조 시기에 조선이 명 나라를 우대하고 후금을 배척하는 정책으로, 청과의 갈등 심화와 병자호란 발생의 배경이 되었다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 151,
+          "title": "병자호란",
+          "type": "사건",
+          "visibility": "core",
+          "reason": "방의 두 번째 핵심 전쟁으로 core이다.",
+          "frequency": 4,
+          "degree": 8,
+          "description": "병자호란은 1636년에 청나라가 조선을 침략하여 벌어진 전쟁으로, 조선 중기 외교와 군사 전략에 큰 변화를 초래한 중요한 역사적 사건이다. 이 전쟁에서 청나라는 한양을 점령하였고, 조선의 인조는 남한산성에서 항전하였다. 결국 조선은 삼전도에서 청나라와 굴욕적인 강화 조약을 체결하게 되었으며, 이는 조선의 군사적 패배와 함께 당시 국제관계의 변화를 상징한다. 병자호란은 조선 내부에서도 김상헌과 최명길 간의 대립을 통해 당시 정치 상황과 대응 방식의 갈등을 보여주었으며, 조선이 외교 정책과 군사 전략 전반에서 위기를 맞았음을 드러낸다. 이 사건은 17세기 초 청나라의 군사적 팽창과 이에 대응하는 조선의 복합적인 외교·군사적 변화를 이해하는 데 핵심적인 역사적 전환점이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 152,
+          "title": "북벌 운동",
+          "type": "사건",
+          "visibility": "core",
+          "reason": "병자호란 이후의 대표 대응이므로 core이다.",
+          "frequency": 2,
+          "degree": 4,
+          "description": "북벌 운동은 병자호란 이후 조선 내부에서 청나라에 대한 복수심에 기반하여 추진된 대청 적대 정책이자 군사력 강화 운동이다. 이 운동은 청나라에 당한 치욕을 씻고 원수를 갚기 위해 조선이 청나라를 정벌하고자 계획한 군사적 재정비와 북쪽 정벌을 목표로 하였다. 북벌 운동은 단순한 군사 작전 계획을 넘어 조선 사회 내에서 정치적 의의가 큰 운동으로 자리 잡았다. 그러나 여러 어려움과 현실적인 제약으로 인해 실제로 북벌을 실행하는 데에는 성공하지 못하였다. 그럼에도 불구하고 북벌 운동은 조선이 청나라에 맞서 자주권을 회복하고자 했던 의지를 대변하는 중요한 역사적 사건으로 평가된다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 183,
+          "title": "정묘호란",
+          "type": "사건",
+          "visibility": "supporting",
+          "reason": "병자호란의 전사(前史)를 설명하는 중요한 사건이라 supporting이다.",
+          "frequency": 2,
+          "degree": 4,
+          "description": "정묘호란은 1627년에 후금이 조선을 침공하여 벌어진 전쟁으로, 후금군은 압록강과 황해도 지역까지 진격하였다. 이 전쟁은 후금과 조선 간의 긴장 관계를 드러낸 중요한 군사적 충돌이었으며, 이후의 병자호란에 이르는 전초적 사건으로 평가된다. 정묘호란은 조선의 국방과 외교 정책에 큰 변화를 초래하였는데, 전쟁 이후 조선은 후금과 화의를 맺고 후금군이 철수함으로써 일시적인 평화를 이루었다. 이 사건은 조선이 후금에 대한 대응 방식을 재고하고, 내부적으로 군사력을 강화하는 계기가 되었으며, 이후 동아시아 정세에 중요한 영향을 미쳤다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 184,
+          "title": "삼전도 강화",
+          "type": "사건",
+          "visibility": "search_only",
+          "reason": "병자호란의 결과를 상징하는 사건이라 supporting이다. / supporting quality gate: weak learner-facing signal; preserved as search_only evidence",
+          "frequency": 1,
+          "degree": 1,
+          "description": "삼전도 강화는 병자호란 종전 후 청과 조선이 맺은 강화로, 조선이 청에 굴욕적인 예를 갖추고 화의를 맺은 역사적 사건이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 185,
+          "title": "효종",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "북벌 운동의 추진 주체로 핵심이지만 병자호란보다 한 단계 보조적이다.",
+          "frequency": 2,
+          "degree": 1,
+          "description": "효종은 조선 중기에서 후기 사이에 재위한 조선의 국왕으로, 인조의 아들이다. 병자호란 이후 조선이 입은 민족적 수치를 씻기 위해 국가 정책의 중심으로 북벌 운동을 추진하였다. 이를 위해 군사력 증강과 산성 수축에 힘쓰며 준비를 진행했으나, 실제로 북벌을 실행하지는 못했다. 효종은 이러한 북벌 운동을 통해 외적에 대한 복수와 국가의 자주권 회복을 목표로 삼았으며, 그의 통치는 조선이 국방력 강화를 시도한 중요한 시기로 평가된다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 187,
+          "title": "이괄의 난",
+          "type": "사건",
+          "visibility": "supporting",
+          "reason": "정묘호란과 병자호란의 배경 혼란을 설명하므로 supporting이다.",
+          "frequency": 2,
+          "degree": 3,
+          "description": "이괄의 난은 1624년, 조선 인조 2년에 이괄이 주도한 반란으로, 인조반정 이후 2등 공신의 지위에 대해 불만을 품고 일으킨 내란 사건이다. 이 괄은 자신이 기대한 권력과 지위를 충분히 받지 못했다고 판단하여 반란을 계획하였고, 이로 인해 당시 국정이 크게 혼란에 빠졌다. 이러한 내란은 조선 내부의 혼란을 심화시켜 후금의 조선 침략, 즉 정묘호란의 기회를 제공하는 결과를 낳았다. 결국 이괄의 난은 조선 초기 왕권 안정과 외교 안보에 중대한 위협이 되었던 사건으로 평가된다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 188,
+          "title": "북한산성",
+          "type": "기관",
+          "visibility": "search_only",
+          "reason": "북벌과 국방 강화의 상징적 요새라 supporting이다. / supporting quality gate: weak learner-facing signal; preserved as search_only evidence",
+          "frequency": 2,
+          "degree": 1,
+          "description": "북한산성은 조선 시대에 축조된 산성으로, 군사적 방어와 국토 방어에 중요한 역할을 한 역사적 요새이다. 특히 조선 중기인 효종 시기에 북벌 운동과 군사력 강화를 위해 수축되었으며, 이는 조선의 국방 체계 강화를 목적으로 한 중요한 군사 전략의 일환이었다. 북한산성은 이러한 배경 속에서 조선의 국토를 보호하고 외적의 침입에 대응하는 데 중심적인 역할을 수행하였다. 따라서 북한산성은 조선 시대 군사 및 국방사에서 중요한 위치를 차지하는 산성으로 평가된다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 189,
+          "title": "임경업",
+          "type": "인물",
+          "visibility": "search_only",
+          "reason": "병자호란 이후 항쟁의 상징 인물이라 supporting이다. / supporting quality gate: weak learner-facing signal; preserved as search_only evidence",
+          "frequency": 1,
+          "degree": 1,
+          "description": "임경업은 조선 후기의 명장으로, 병자호란 및 그 이후 항쟁에서 활약한 군인이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 190,
+          "title": "백마산성 항쟁",
+          "type": "사건",
+          "visibility": "search_only",
+          "reason": "임경업 관련 세부 항쟁으로, 핵심 전쟁 서사보다 부차적이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "백마산성 항쟁은 조선과 청의 갈등 상황에서 벌어진 군사적 충돌로, 조선의 저항과 국방 의지를 보여주는 사건이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 191,
+          "title": "나선 정벌",
+          "type": "사건",
+          "visibility": "search_only",
+          "reason": "병자호란 이후 국방 활동이지만 전쟁 방의 중심 사건은 아니다.",
+          "frequency": 1,
+          "degree": 2,
+          "description": "나선 정벌은 17세기 중반에 조선이 청과 함께 만주 북부에서 러시아의 침입을 막기 위해 벌인 군사 작전이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 192,
+          "title": "청나라",
+          "type": "기관",
+          "visibility": "supporting",
+          "reason": "병자호란과 북벌의 상대 세력으로 직접적이므로 supporting이다.",
+          "frequency": 1,
+          "degree": 2,
+          "description": "청나라는 17세기 동아시아에서 강력한 세력으로 부상한 국가로, 조선과 외교 및 군사적 관계를 맺으며 동아시아 국제 질서에 중요한 영향을 끼쳤다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 209,
+          "title": "김상헌",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "항전론을 대표하는 인물로 병자호란의 정치적 의미를 보강한다.",
+          "frequency": 1,
+          "degree": 4,
+          "description": "김상헌은 조선 중기의 문신으로, 정묘호란과 병자호란 때 강경한 북벌과 항전론을 주장하며 후금과 청에 굴복하지 않으려 하였다. 대사헌, 예조판서 등을 역임하였으며 남한산성에서 인조를 호위하는 등 항쟁의 상징적 인물이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 210,
+          "title": "최명길",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "강화론을 대표해 병자호란의 선택지를 대비시키므로 supporting이다.",
+          "frequency": 1,
+          "degree": 2,
+          "description": "최명길은 조선 중기의 문신으로, 후금과 청에 대해 상대적으로 유연한 외교 정책을 주장하였다. 병자호란 때 강화론을 내세우며 현실적 대응을 시도한 인물이고, 항복문서 작성과 관련하여 김상헌과 대립하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 40,
+          "title": "4군과 6진",
+          "type": "기관",
+          "visibility": "search_only",
+          "reason": "북방 국경 정책의 배경이지만 전쟁 방의 중심은 아니다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "4군과 6진은 세종 때 북방 여진족 방어 및 영토 확장을 위해 설치한 군사 조직으로, 조선의 북방 국경을 확정하는 데 기여하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 41,
+          "title": "여진족 포섭·회유 정책",
+          "type": "정책",
+          "visibility": "search_only",
+          "reason": "북방 정책의 세부로서 배경 자료 수준이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "조선이 북방 여진족을 토벌하는 한편 포섭과 회유를 함께 추진하여 안정적 관계를 유지한 정책이다.",
+          "aliases": []
+        }
+      ],
+      "risk_flags": [
+        "임진왜란과 병자호란이 모두 큰 전쟁이라 방이 과도하게 커질 수 있어, supporting과 search_only를 엄격히 나눴다.",
+        "통신사/유정/사명대사처럼 표기 변형이 많아 중복 정리가 필요하다.",
+        "로컬 검증기가 중복 엔티티 [42, 43]를 다른 주 방에 남기고 이 방에서는 제거함",
+        "supporting quality gate: weak supporting 8개를 search_only로 낮춤"
+      ],
+      "visibility_summary": {
+        "core": 8,
+        "supporting": 13,
+        "search_only": 23
+      },
+      "entity_count": 44
+    },
+    {
+      "room_no": 4,
+      "title": "세종의 문화·과학 혁신",
+      "learning_flow": "세종의 훈민정음 창제와 집현전 운영을 중심으로, 과학 기구·기록 사업·해상 방어까지 이어지는 조선 전기 문화 혁신을 체험한다.",
+      "ui_design_reason": "세종이라는 강한 중심축이 있어 학습자가 한 인물의 업적을 입체적으로 이해하기 좋다. 문자·과학·기록·국방이 모두 세종으로 수렴되어 시각적으로도 정돈된다.",
+      "visible_communities": [
+        29,
+        30
+      ],
+      "background_communities": [
+        {
+          "community_id": 7,
+          "reason": "조선 초기 역사서 편찬은 세종의 기록 사업과 연결되지만, 방 제목을 흐리지 않도록 배경으로 둔다."
+        },
+        {
+          "community_id": 19,
+          "reason": "한문학과 동문선은 세종 문화권의 주변 맥락이지만 핵심 학습 흐름은 아니다."
+        }
+      ],
+      "source_communities": [
+        29,
+        30,
+        7,
+        19
+      ],
+      "subzones": [
+        {
+          "title": "문자와 학문",
+          "source_communities": [
+            29
+          ],
+          "entity_ids": [
+            0,
+            8,
+            11,
+            27,
+            28,
+            88,
+            89,
+            97,
+            100,
+            102
+          ]
+        },
+        {
+          "title": "해상 방어와 군사 기술",
+          "source_communities": [
+            30
+          ],
+          "entity_ids": [
+            42,
+            43
+          ]
+        },
+        {
+          "title": "기록과 문학의 배경",
+          "source_communities": [
+            7,
+            19
+          ],
+          "entity_ids": [
+            91,
+            92,
+            104,
+            105
+          ]
+        }
+      ],
+      "entities": [
+        {
+          "entity_id": 27,
+          "title": "세종",
+          "type": "인물",
+          "visibility": "core",
+          "reason": "방의 중심 인물로 모든 학습 흐름이 세종에게 수렴한다.",
+          "frequency": 2,
+          "degree": 5,
+          "description": "세종은 조선 전기의 제4대 국왕으로, 조선 사회의 문화와 학문, 과학 기술 발전에 지대한 공헌을 한 인물이다. 그는 훈민정음을 창제하여 백성들이 쉽게 배우고 사용할 수 있는 글자를 마련함으로써 한글의 토대를 닦았으며, 이는 조선뿐만 아니라 한국 문화 전반에 깊은 영향을 끼쳤다. 또한 세종은 집현전을 설치하여 학문 연구를 체계적으로 지원하고 장려하였으며, 이를 통해 다양한 학문 분야와 과학 기술이 크게 발전할 수 있는 기반을 마련했다. 그는 농업 진흥에도 힘써 국가 경제를 안정시키고 백성들의 삶의 질을 향상시키는 데 기여하였다. 세종은 유교 정치 이념을 바탕으로 문화의 융성을 이루었고, 이를 통해 조선 사회의 문화적 기틀을 확립함으로써 조선 왕조의 중흥기에 중심 역할을 수행하였다. 그러한 그의 업적들은 조선 전기 역사에서 가장 중요한 왕 중 하나로 평가받게 하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 8,
+          "title": "훈민정음",
+          "type": "문물",
+          "visibility": "core",
+          "reason": "세종 혁신의 대표 성과이므로 core이다.",
+          "frequency": 3,
+          "degree": 2,
+          "description": "훈민정음은 조선 세종 대왕이 1446년에 창제·반포한 과학적이고 독창적인 문자 체계이다. 세종 대왕은 모든 백성이 쉽게 배우고 익힐 수 있도록 훈민정음을 고안하여, 당시 어려웠던 문자 교육의 접근성을 크게 향상시켰다. 이러한 특징 덕분에 훈민정음은 조선 초기 민족 문화와 국문학 발전에 지대한 영향을 끼쳤으며, 조선 시대 민족 문화 발전의 중요한 기반이 되었다. 훈민정음은 단순한 문자 체계를 넘어 조선 백성들의 의사소통과 문화적 자립을 가능하게 한 중요한 성과로 평가받고 있다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 28,
+          "title": "집현전",
+          "type": "기관",
+          "visibility": "supporting",
+          "reason": "훈민정음과 학문 연구를 뒷받침하는 핵심 기관이라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "집현전은 세종 시대에 설치된 학문 연구 기관으로, 젊은 학자들을 모아 국가 정책 보좌와 문화 발전에 기여하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 11,
+          "title": "해시계(앙부일구)",
+          "type": "문물",
+          "visibility": "supporting",
+          "reason": "세종 과학 혁신의 대표 기구로 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "해시계(앙부일구)는 세종 때 만들어진 과학 기구로, 시간을 측정하여 백성들이 일상 생활에 편리하도록 한 조선 전기의 문물이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 97,
+          "title": "측우기",
+          "type": "문물",
+          "visibility": "supporting",
+          "reason": "과학 기술 발전을 보여주는 핵심 사례라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "측우기는 조선 전기에 제작된 강우량 측정 기구로, 세계적으로도 앞선 농업과 과학 기술 발전의 상징이다.>",
+          "aliases": []
+        },
+        {
+          "entity_id": 100,
+          "title": "혼천의",
+          "type": "문물",
+          "visibility": "supporting",
+          "reason": "천문 관측 기술의 대표 사례라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "혼천의는 조선 시대 천체의 운행을 관측하는 천문 기구로, 과학 기술과 천문학의 발전을 상징한다.>",
+          "aliases": []
+        },
+        {
+          "entity_id": 102,
+          "title": "물시계(자격루)",
+          "type": "문물",
+          "visibility": "supporting",
+          "reason": "시간 측정 기술의 상징으로 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "자격루는 조선 시대 자동으로 시간을 알려주는 물시계로, 시간 측정 기술과 공공 시간 관리를 가능하게 한 과학 기구이다.>",
+          "aliases": []
+        },
+        {
+          "entity_id": 88,
+          "title": "용비어천가",
+          "type": "문물",
+          "visibility": "supporting",
+          "reason": "훈민정음 활용과 조선 왕조 문화의 성과를 보여주므로 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "용비어천가는 세종 때 훈민정음으로 편찬된 조선 왕조 창업을 기리는 서사시로, 우리 국문학의 첫 출발이 된 중요한 문학 작품이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 89,
+          "title": "조선왕조실록",
+          "type": "문물",
+          "visibility": "supporting",
+          "reason": "기록 사업의 핵심 결과물이라 supporting이다.",
+          "frequency": 2,
+          "degree": 2,
+          "description": "조선왕조실록은 조선 시대의 공식 역사 기록물로, 조선 왕조의 정치, 문화, 사회 상황을 상세히 기록한 중요한 사서이다. 이 실록은 조선 시대의 역사와 문화를 이해하는 데 기본이 되는 역사서로서, 국가의 공식 연대기 역할을 수행하였다. 조선왕조실록은 왕조의 통치 과정과 주요 사건들을 체계적으로 담아내어 당시의 사회적·정치적 배경을 잘 보여주며, 한국 역사 연구 및 학습의 핵심 자료로 널리 활용되고 있다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 0,
+          "title": "국사편찬위원회",
+          "type": "기관",
+          "visibility": "search_only",
+          "reason": "실록 편찬의 현대적 맥락으로만 연결되어 핵심성이 낮다.",
+          "frequency": 5,
+          "degree": 2,
+          "description": "국사편찬위원회는 대한민국의 국가 기관으로, 한국사의 역사 연구와 교과서 편찬을 담당하며 국학 연구와 역사 체계화에 중추적인 역할을 수행한다. 이 기관은 우리 역사에 대한 사실적 이해를 높이고 교육 발전에 기여하기 위해 역사 교과서 및 다양한 학습 자료를 제작한다. 또한, 조선 시대의 역사와 문화를 체계적으로 정리하고 보존하는 작업을 맡아 조선왕조실록과 같은 중요한 사서의 편찬에도 참여해 왔다. 국사편찬위원회는 한국사의 연구와 교육에 있어 핵심적인 역할을 하며, 역사적 자료의 보존과 체계적 정리를 통해 한국 역사학 발전에 크게 이바지하고 있다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 42,
+          "title": "조선 수군 강화",
+          "type": "정책",
+          "visibility": "supporting",
+          "reason": "세종의 해상 방어 정책을 직접 설명하므로 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "조선이 해상에서 왜구의 침략을 막기 위해 수군을 강화하고 군사력을 확충한 정책이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 43,
+          "title": "세종의 쓰시마 섬 토벌",
+          "type": "사건",
+          "visibility": "supporting",
+          "reason": "해상 방어 성과를 보여주는 사건이라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "세종 때 왜구의 근거지였던 쓰시마 섬을 조선 수군이 토벌한 사건으로, 왜구 방어에 중요한 역할을 했다.",
+          "aliases": []
+        }
+      ],
+      "risk_flags": [
+        "훈민정음과 과학 기구가 함께 있어 방이 '문화·과학'으로 넓어 보일 수 있으나 세종이라는 중심축으로 정리했다.",
+        "국사편찬위원회는 현대 기관이라 학습자에게 시대 혼동을 줄 수 있어 search_only로 낮췄다.",
+        "로컬 검증기가 중복 엔티티 [91, 92, 104, 105]를 다른 주 방에 남기고 이 방에서는 제거함"
+      ],
+      "visibility_summary": {
+        "core": 2,
+        "supporting": 9,
+        "search_only": 1
+      },
+      "entity_count": 12
+    },
+    {
+      "room_no": 5,
+      "title": "조선 후기 실학과 경제 개혁",
+      "learning_flow": "실학의 문제의식에서 출발해 중농학파와 중상학파의 개혁안을 비교하고, 대동법·상공업 진흥·기술 개발로 이어지는 조선 후기 변화상을 살핀다.",
+      "ui_design_reason": "실학을 중심으로 경제·사회 개혁을 묶으면 후기 조선의 변화가 한눈에 들어온다. 농업 개혁과 상공업 개혁을 분리된 하위 구역으로 두어 학습자가 비교하기 쉽다.",
+      "visible_communities": [
+        11,
+        13,
+        15,
+        35
+      ],
+      "background_communities": [
+        {
+          "community_id": 34,
+          "reason": "농민 봉기는 사회 모순의 결과로 중요하지만, 이 방에서는 개혁 사상의 결과/배경으로만 보존한다."
+        },
+        {
+          "community_id": 28,
+          "reason": "서학 금지와 신유박해는 후기 사회 갈등이지만 경제 개혁 방의 중심은 아니므로 background로 둔다."
+        },
+        {
+          "community_id": 16,
+          "reason": "김정호와 대동여지도는 실학의 지리학적 확장으로 연결되지만 별도 방이 더 적합해 배경으로 둔다."
+        },
+        {
+          "community_id": 18,
+          "reason": "동국지도는 지도 제작의 세부 사례로, 실학 방의 핵심 경제 개혁 흐름을 흐릴 수 있어 background로 둔다."
+        }
+      ],
+      "source_communities": [
+        11,
+        13,
+        15,
+        35,
+        34,
+        28,
+        16,
+        18
+      ],
+      "subzones": [
+        {
+          "title": "실학의 문제의식",
+          "source_communities": [
+            11
+          ],
+          "entity_ids": [
+            245,
+            246,
+            247,
+            251,
+            252,
+            278,
+            283,
+            284,
+            285
+          ]
+        },
+        {
+          "title": "중상학파와 청 문물 수용",
+          "source_communities": [
+            13
+          ],
+          "entity_ids": [
+            256,
+            260,
+            261,
+            262,
+            263,
+            264,
+            265,
+            266,
+            267,
+            287
+          ]
+        },
+        {
+          "title": "중농학파와 토지 개혁",
+          "source_communities": [
+            35,
+            15
+          ],
+          "entity_ids": [
+            253,
+            254,
+            255,
+            257,
+            258,
+            259,
+            286
+          ]
+        },
+        {
+          "title": "사회 변화와 갈등",
+          "source_communities": [
+            34,
+            28
+          ],
+          "entity_ids": [
+            217,
+            218,
+            215,
+            216
+          ]
+        }
+      ],
+      "entities": [
+        {
+          "entity_id": 245,
+          "title": "실학",
+          "type": "사건",
+          "visibility": "core",
+          "reason": "방 전체를 관통하는 핵심 사상이라 core이다.",
+          "frequency": 3,
+          "degree": 9,
+          "description": "실학은 조선 후기 성리학 중심 사회의 한계를 극복하고 현실 사회 문제를 해결하고자 등장한 실증적이고 실용적인 학문 운동이다. 이 사상은 정치·사회 개혁을 목표로 현실 문제를 연구하였으며, 경제, 사회, 역사, 과학 등 광범위한 분야에 영향을 끼쳤다. 실학은 현실 문제 해결과 개혁을 중시하며 학문을 사회에 적극적으로 적용하려 한 근대 지향적 사상으로, 당시 조선 사회의 발전과 변화를 도모하는 데 중요한 역할을 하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 278,
+          "title": "실사구시",
+          "type": "정책",
+          "visibility": "supporting",
+          "reason": "실학의 방법론을 설명하는 핵심 개념이라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "실사구시는 18세기 청 고증학파가 내세운 \"사실에 토대를 두고 진리를 탐구한다\"는 학문 태도로, 조선 실학 사상의 기초가 되었고 객관적·실증적 연구 방법을 강조하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 247,
+          "title": "노론 장기 집권",
+          "type": "사건",
+          "visibility": "supporting",
+          "reason": "실학 등장 배경을 설명하는 중요한 정치 맥락이라 supporting이다.",
+          "frequency": 1,
+          "degree": 2,
+          "description": "노론 장기 집권은 조선 후기 정치 붕당 분열 심화와 일부 노론 가문의 정권 독점을 의미하며, 사회 모순과 양반 몰락을 초래했다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 251,
+          "title": "실학자",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "실학을 대표하는 인물군을 묶어 주므로 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "실학자는 조선 후기 현실 개혁과 학문적 연구에 참여한 지식인 집단으로, 정치·경제·사회 문제 해결 방안을 제시하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 252,
+          "title": "이수광",
+          "type": "인물",
+          "visibility": "search_only",
+          "reason": "실학의 선구자로서 흐름을 여는 인물이라 supporting이다. / supporting quality gate: weak learner-facing signal; preserved as search_only evidence",
+          "frequency": 1,
+          "degree": 1,
+          "description": "이수광은 조선 후기 실학의 선구자로, '지봉유설'을 저술하여 우리나라와 중국의 문화 전통을 폭넓게 정리하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 283,
+          "title": "이제마",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "실학의 확장된 의학적 성과를 보여주므로 supporting이다.",
+          "frequency": 2,
+          "degree": 1,
+          "description": "이제마는 조선 후기의 의학자로서, 사람의 체질에 따라 처방을 달리해야 한다는 사상의학(사상의설)을 발전시켜 한의학 발전에 크게 기여한 인물이다. 그는 전통 의학에 체계적인 이론을 보태어 체질에 따른 맞춤형 치료 방식을 강조함으로써 기존의 의료 체계에 새로운 관점을 제시하였다. 이제마의 사상의학은 개인의 체질 유형을 구분하여 각각에 적합한 약물과 치료법을 적용하는 방식을 기반으로 하며, 이로 인해 한의학에서 환자 개개인에 맞춘 보다 정밀한 진료가 가능하도록 하는 데 중요한 역할을 하였다. 이러한 그의 업적은 조선 후기 의학 발전에 지대한 영향을 미쳤으며, 오늘날까지도 한의학 이론과 임상에 큰 영향을 끼치고 있다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 284,
+          "title": "중농 학파",
+          "type": "인물",
+          "visibility": "search_only",
+          "reason": "중농학파의 변형 표기이지만 학습 비교에 유용해 supporting이다. / supporting quality gate: weak learner-facing signal; preserved as search_only evidence",
+          "frequency": 1,
+          "degree": 1,
+          "description": "중농 학파는 조선 후기 실학자 집단으로, 농민 생활 안정을 중시하며 토지 제도 개혁과 농업 진흥에 초점을 맞춘 개혁 사상을 주장하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 285,
+          "title": "중상 학파",
+          "type": "인물",
+          "visibility": "search_only",
+          "reason": "중상학파의 변형 표기이지만 비교 학습에 유용해 supporting이다. / supporting quality gate: weak learner-facing signal; preserved as search_only evidence",
+          "frequency": 1,
+          "degree": 1,
+          "description": "중상 학파는 조선 후기 실학자 집단으로, 상업과 수공업 진흥을 통해 산업 발전을 도모하고 사회 개혁을 추진하려 한 사상 집단이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 256,
+          "title": "중상학파",
+          "type": "인물",
+          "visibility": "core",
+          "reason": "경제 개혁 축의 핵심 사상 계파라 core이다.",
+          "frequency": 2,
+          "degree": 7,
+          "description": "중상학파는 조선 후기 실학자들로 구성된 사상 계파로, 경제적 현실에 기반한 실용적 학문을 중시하였다. 이들은 상공업의 활성화와 기술 개발을 통해 사회 발전을 도모하고자 하였으며, 나아가 백성들의 생활 안정을 추구하였다. 중상학파는 청나라 문화를 수용하여 조선 사회의 발전에 활용하는 데에도 적극적이었다. 대표적인 인물로는 유수원, 홍대용, 박지원, 박제가 등이 있으며, 이들은 현실적 경제 문제에 집중하면서 상공업과 기술 향상을 통해 국가의 부강과 국민 생활의 질적 향상을 목표로 삼았다. 중상학파의 이러한 사상과 활동은 조선 후기 실학 운동 내에서도 경제 발전과 사회 개혁을 위한 중요한 흐름으로 자리 잡았다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 260,
+          "title": "유수원",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "중상학파의 대표 인물로 supporting이다.",
+          "frequency": 3,
+          "degree": 2,
+          "description": "유수원은 조선 후기 북학파에 속한 대표적인 중상학파 실학자로, 청 대국의 선진 문물을 받아들이고 상공업 발전을 통해 국가의 부강을 이루고자 한 사상가이다. 그는 상업과 수공업, 그리고 상공업 진흥을 중시하며, 이를 통해 경제 발전을 도모하려 하였다. 유수원은 실학적 관점에서 청나라의 제도와 문물을 수용하는 것이 조선의 발전에 필수적이라고 보았으며, 이러한 실용적이고 개방적인 사고로 북학파 실학사상에 큰 영향을 미쳤다. 그의 사상은 조선 후기 국가 경제의 활성화와 근대적 경제 체제의 기초 마련에 기여한 중요한 역할을 하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 261,
+          "title": "홍대용",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "청 문물 수용과 과학적 시각을 보강하므로 supporting이다.",
+          "frequency": 3,
+          "degree": 2,
+          "description": "홍대용은 조선 후기의 대표적인 실학자인 중상학파와 북학파에 모두 속하는 학자로, 청 문물과 문화의 우수성을 인식하고 이를 적극적으로 수용하여 조선 사회의 개혁을 추구하였다. 그는 과학기술과 실용적 지식의 중요성을 강조하며, 이를 통해 사회 전반의 발전을 도모하고자 하였다. 특히, 상공업의 발전과 기술 진보를 중시하여 경제 개혁에 큰 영향을 미쳤으며, 청의 선진 문물을 받아들여 조선 사회 현실에 적합한 변화를 이루려 하였다. 홍대용은 이러한 실학적 사상을 바탕으로 조선 후기 사회 개혁과 경제 발전에 중요한 역할을 담당한 인물이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 262,
+          "title": "박지원",
+          "type": "인물",
+          "visibility": "core",
+          "reason": "북학파와 실학 문학을 대표하는 핵심 인물이라 core이다.",
+          "frequency": 3,
+          "degree": 4,
+          "description": "박지원은 조선 후기의 대표적인 실학자로, 북학파 및 중상학파를 대표하는 개혁가이다. 그는 청나라의 문물을 접하고 이를 통해 조선 사회의 개혁 방안을 모색하였으며, 특히 《열하일기》의 저자로 잘 알려져 있다. 박지원은 상공업 진흥과 발전에 깊은 관심을 가지고, 기술 혁신과 생산력 향상을 통해 사회 전반의 발전과 백성 생활의 안정을 도모하고자 하였다. 그의 사상과 활동은 청 문물 수용을 바탕으로 경제적 실용주의를 추구하며, 조선 후기 사회 개혁과 경제 발전에 중요한 영향을 미쳤다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 263,
+          "title": "박제가",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "상공업 개혁의 대표 인물로 supporting이다.",
+          "frequency": 3,
+          "degree": 2,
+          "description": "박제가는 조선 후기의 중상학파 및 북학파 실학자로, 청 문화를 적극적으로 학습하고 수용하는 데 앞장섰다. 그는 상공업 진흥과 상업 중심의 경제 활성화를 통해 국가 경제 발전을 도모하고자 하였으며, 이를 바탕으로 조선 사회의 개혁을 주장하였다. 박제가는 당시의 현실 경제를 개선하고자 중상학파의 경제 이론을 기반으로 상공업 진흥을 강조하는 한편, 북학파의 시각에서 청의 선진 문물을 수용하여 조선의 사회와 경제 전반에 걸친 실질적인 변화를 추구하였다. 이러한 점에서 박제가는 조선 후기 개혁론을 대표하는 실학자로 꼽히며, 국가의 근대적 발전을 위한 경제적·사회적 개혁 방안을 제시한 중요한 인물로 평가받고 있다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 264,
+          "title": "북학파",
+          "type": "인물",
+          "visibility": "search_only",
+          "reason": "중상학파 내부의 개혁 방향을 구체화하므로 supporting이다. / supporting quality gate: weak learner-facing signal; preserved as search_only evidence",
+          "frequency": 1,
+          "degree": 5,
+          "description": "북학파는 청의 우수한 문물을 받아들여 조선 사회를 개혁하려 한 중상학파 실학자들을 일컫는 명칭이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 265,
+          "title": "기술 개발",
+          "type": "정책",
+          "visibility": "supporting",
+          "reason": "경제 개혁의 실천 방향을 보여주므로 supporting이다.",
+          "frequency": 1,
+          "degree": 2,
+          "description": "기술 개발은 조선 후기 중상학파가 주장한 생산력 향상과 경제 발전을 위한 과학기술 및 교통 수단 발전 정책이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 266,
+          "title": "수레와 배",
+          "type": "문물",
+          "visibility": "search_only",
+          "reason": "교통 수단의 예시로만 등장해 핵심성이 낮다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "수레와 배는 조선 후기 경제 발전을 위한 교통 수단으로, 상공업 유통의 원활화에 기여한 문물이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 267,
+          "title": "연암집",
+          "type": "문물",
+          "visibility": "search_only",
+          "reason": "박지원의 사상과 현실 비판을 보여주는 저작이라 supporting이다. / supporting quality gate: weak learner-facing signal; preserved as search_only evidence",
+          "frequency": 1,
+          "degree": 1,
+          "description": "연암집은 박지원이 지은 저서로, 열하일기 외에 조선 후기 상공업과 사회 현실에 관한 글이 수록되어 실학 사상의 현실 인식을 보여준다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 287,
+          "title": "열하일기",
+          "type": "문물",
+          "visibility": "supporting",
+          "reason": "북학파와 청 문물 수용을 대표하는 저작이라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "열하일기는 박지원이 청나라를 방문한 경험을 기록한 저술로, 실학 사상을 바탕으로 조선 사회의 현실 문제와 개혁 방안을 비판적으로 서술하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 253,
+          "title": "김육",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "대동법 확대의 핵심 인물로 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "김육은 조선 후기 실학자이자 개혁가로, 대동법 확대 실시와 동전 사용 확대에 기여하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 254,
+          "title": "대동법",
+          "type": "정책",
+          "visibility": "core",
+          "reason": "조세 개혁의 대표 제도라 core이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "대동법은 조선 후기 토산물 공납 대신 쌀로 세금을 내도록 한 세제 개혁 정책으로, 조세 제도 개선에 중요한 역할을 하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 255,
+          "title": "중농학파",
+          "type": "인물",
+          "visibility": "core",
+          "reason": "농업·토지 개혁 축의 핵심 사상 계파라 core이다.",
+          "frequency": 2,
+          "degree": 4,
+          "description": "중농학파는 18세기 조선 후기의 실학자 그룹으로, 농업과 토지 제도 개혁을 중시하며 농민의 생활 안정과 사회 문제 해결을 목표로 한 사상 계파이다. 중농학파는 농민 중심의 사회를 강조하여 토지의 균등 소유를 주장하였으며, 이를 통해 농민들의 경제적 기반을 강화하고 사회 전반의 안정을 도모하고자 하였다. 유형원, 이익, 정약용 등이 대표적인 중농학파 실학자로, 그들은 토지 제도와 농업 개혁에 관한 다양한 이론과 실천 방안을 제시하면서 조선 사회의 현실적 문제 해결에 기여하였다. 중농학파는 기존 지배 계층 중심의 사회 구조를 비판하고, 농민의 권익을 보호하며 국가 발전의 기초로 농업을 중시하는 실학 사상을 발전시킨 중요한 학파로 평가받는다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 257,
+          "title": "유형원",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "중농학파의 대표 인물로 supporting이다.",
+          "frequency": 2,
+          "degree": 2,
+          "description": "유형원은 조선 후기 중농학파에 속한 실학자로서, 토지 개혁과 신분제 개혁에 관한 사상을 제시한 인물이다. 그는 농민들에게 일정 면적의 농지를 분배할 것을 주장하는 토지 개혁론자로 알려져 있으며, 이를 통해 농민 생활의 안정을 도모하고자 하였다. 유형원의 사상은 농민의 경제적 기반을 강화하고 사회 전반의 안정과 발전을 목표로 하였으며, 중농학파 실학자로서 당시 사회 문제 해결에 중요한 기여를 하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 258,
+          "title": "이익",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "토지 제도 개혁을 설명하는 핵심 인물이라 supporting이다.",
+          "frequency": 2,
+          "degree": 1,
+          "description": "이익은 조선 시대의 중농학파 실학자로, 농민들이 안심하고 농사를 지을 수 있도록 토지 제도 개혁에 깊은 관심을 가진 개혁가이다. 그는 농가가 대대로 경작할 수 있는 토지를 보장하고, 그 토지의 매매를 금지함으로써 농민들의 생활 안정과 사회적 안정을 도모하고자 하였다. 또한, 이익은 단순히 토지 문제에만 국한하지 않고, 질병 치료 등 백성들의 전반적인 생활 개선에도 힘쓰며 실질적인 개혁을 추구하였다. 이러한 점에서 그는 경제적·사회적 제도의 개선을 통해 백성들의 삶의 질 향상에 기여한 실학자로 평가받고 있다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 259,
+          "title": "정약용",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "농촌 개혁과 실학의 실천성을 보여주므로 supporting이다.",
+          "frequency": 2,
+          "degree": 1,
+          "description": "정약용은 중농학파를 대표하는 실학자로서, 농민 중심의 토지 제도 개혁과 농촌 사회 문제 해결에 기여한 학자이다. 그는 농지의 공동 소유 및 경작, 그리고 수확물의 공동 분배를 통해 당시 농촌에 존재하던 여러 모순을 해소하고자 하였다. 이러한 그의 사상은 농민들의 경제적 자립과 사회적 안정에 중점을 두었으며, 실학 사상의 발전에 중요한 역할을 하였다. 정약용은 현실적인 농업 제도 개혁 방안을 제시함으로써 농촌 사회의 불균형과 불평등을 개선하려 했으며, 이를 통해 조선 후기 사회 개혁에 큰 영향을 끼쳤다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 286,
+          "title": "반계수록",
+          "type": "문물",
+          "visibility": "search_only",
+          "reason": "중농학파 개혁안을 집약한 저작이라 supporting이다. / supporting quality gate: weak learner-facing signal; preserved as search_only evidence",
+          "frequency": 1,
+          "degree": 1,
+          "description": "반계수록은 유형원이 저술한 실학 저술로, 토지와 인구, 병역 제도 등에 관한 중농학파 개혁안을 체계적으로 제시하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 217,
+          "title": "홍경래의 난",
+          "type": "사건",
+          "visibility": "supporting",
+          "reason": "사회 모순의 결과를 보여주는 대표 봉기라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "홍경래의 난은 1811년 조선 후기 서북 지역에서 발생한 농민 봉기로, 사회 불안과 개혁 요구를 상징한다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 218,
+          "title": "임술 농민 봉기",
+          "type": "사건",
+          "visibility": "search_only",
+          "reason": "후기 사회 갈등의 확산을 보여주므로 supporting이다. / supporting quality gate: weak learner-facing signal; preserved as search_only evidence",
+          "frequency": 1,
+          "degree": 1,
+          "description": "임술 농민 봉기는 1862년에 발생한 조선 후기 농민 봉기로, 사회 구조 문제와 정치적 변화를 촉진하는 요인이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 215,
+          "title": "서학 금지",
+          "type": "정책",
+          "visibility": "search_only",
+          "reason": "종교 갈등의 배경으로만 등장해 핵심성이 낮다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "서학 금지 정책은 조선 후기 천주교와 관련된 사상 및 신앙 활동을 금지한 정책으로, 종교적 갈등과 사회적 변동을 보여준다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 216,
+          "title": "신유박해",
+          "type": "사건",
+          "visibility": "search_only",
+          "reason": "사회 갈등 사례이지만 경제 개혁 방의 중심은 아니다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "신유박해는 1801년에 발생한 조선 후기 천주교 신자들에 대한 박해 사건으로, 종교와 사회 갈등의 중요한 사례이다.",
+          "aliases": []
+        }
+      ],
+      "risk_flags": [
+        "실학 방은 인물과 저작이 많아 supporting이 과밀해질 위험이 있어, 예시성 항목은 search_only로 낮췄다.",
+        "중농/중상/북학이 서로 겹쳐 보일 수 있어 learning_flow에서 비교 구조를 명시했다.",
+        "supporting quality gate: weak supporting 7개를 search_only로 낮춤"
+      ],
+      "visibility_summary": {
+        "core": 5,
+        "supporting": 14,
+        "search_only": 10
+      },
+      "entity_count": 29
+    },
+    {
+      "room_no": 6,
+      "title": "조선 후기 역사·지리·국어학",
+      "learning_flow": "안정복·유득공의 역사 인식에서 시작해 이중환·김정호의 지리 연구, 신경준·유희의 국어학 연구로 이어지는 후기 학문 발전을 탐색한다.",
+      "ui_design_reason": "역사·지리·국어학은 서로 다른 분야지만 모두 후기 실학의 확장으로 묶을 수 있어, 하나의 '학문 혁신' 방으로 정리하면 깔끔하다. 각 분야를 하위 구역으로 나누면 학습자가 분야별로 진입하기 쉽다.",
+      "visible_communities": [
+        20,
+        22,
+        33,
+        16,
+        18,
+        31,
+        32
+      ],
+      "background_communities": [
+        {
+          "community_id": 19,
+          "reason": "동문선과 한문학은 문학사 배경으로 의미가 있지만, 이 방의 핵심은 후기 실학 기반 학문 발전이므로 background로 둔다."
+        },
+        {
+          "community_id": 7,
+          "reason": "고려사·고려사절요는 역사 인식의 선행 자료로 보존하되, 후기 학문 혁신의 중심은 아니어서 background로 둔다."
+        }
+      ],
+      "source_communities": [
+        20,
+        22,
+        33,
+        16,
+        18,
+        31,
+        32,
+        19,
+        7
+      ],
+      "subzones": [
+        {
+          "title": "역사 인식의 재구성",
+          "source_communities": [
+            20,
+            22,
+            7
+          ],
+          "entity_ids": [
+            268,
+            269,
+            270,
+            271,
+            91,
+            92
+          ]
+        },
+        {
+          "title": "실학적 지리 연구",
+          "source_communities": [
+            33,
+            16,
+            18
+          ],
+          "entity_ids": [
+            272,
+            273,
+            274,
+            275,
+            276,
+            277
+          ]
+        },
+        {
+          "title": "한글과 음운 연구",
+          "source_communities": [
+            31,
+            32
+          ],
+          "entity_ids": [
+            279,
+            280,
+            281,
+            282
+          ]
+        }
+      ],
+      "entities": [
+        {
+          "entity_id": 268,
+          "title": "안정복",
+          "type": "인물",
+          "visibility": "core",
+          "reason": "민족 사관 확립의 핵심 인물이라 core이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "안정복은 조선 후기 실학자이자 역사학자로, 동사강목을 저술하여 고조선부터 고려 말까지 우리 역사를 체계적으로 정리하고 민족 사관 형성에 기여하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 270,
+          "title": "동사강목",
+          "type": "문물",
+          "visibility": "core",
+          "reason": "조선 후기 역사 인식 전환을 대표하는 저작이라 core이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "동사강목은 안정복이 저술한 역사서로, 중국 중심 사관에서 벗어나 우리 역사의 독자성과 정통성을 세워 민족 사관 형성에 기여하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 269,
+          "title": "유득공",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "발해를 한국사에 포함시키는 관점을 보강하므로 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "유득공은 조선 후기 실학자이자 역사학자로, 발해고에서 발해 역사를 한국사에 포함시키는 북방 민족관을 주장하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 271,
+          "title": "발해고",
+          "type": "문물",
+          "visibility": "supporting",
+          "reason": "북방 민족론과 남북국 시대론을 설명하는 핵심 저작이라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "발해고는 유득공이 쓴 역사서로, 발해 역사를 한국사로 편입하고 남북국 시대론을 제시하는 데 중요한 저작이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 272,
+          "title": "이중환",
+          "type": "인물",
+          "visibility": "core",
+          "reason": "실학적 지리 연구의 대표 인물이라 core이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "이중환은 조선 후기 실학자로, 지리와 경제 생활을 조사하여 택리지를 저술하며 자연과 인간 생활의 상호 관계를 인과적으로 파악하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 275,
+          "title": "택리지",
+          "type": "문물",
+          "visibility": "core",
+          "reason": "지리·풍속·경제를 아우르는 대표 저작이라 core이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "택리지는 이중환이 저술한 지리서로, 조선의 지리 환경과 각 지역의 경제·풍속을 상세히 기술하며 자연과 인간의 관계를 인과적으로 분석한 대표적 지리서이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 273,
+          "title": "정상기",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "지도 제작 기술 발전을 설명하는 핵심 인물이라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "정상기는 조선 후기 실학자이자 지도 제작자로, 동국지도를 작성하여 조선의 지도 제작 기술 수준을 향상시켰다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 276,
+          "title": "동국지도",
+          "type": "문물",
+          "visibility": "supporting",
+          "reason": "실측 지리의 대표 사례라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "동국지도는 정상기가 제작한 조선 후기 지도이며, 실제 거리를 축소하여 조선 전역을 정확하게 표현한 지도이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 274,
+          "title": "김정호",
+          "type": "인물",
+          "visibility": "supporting",
+          "reason": "대동여지도 제작으로 실용 지리학을 대표하므로 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "김정호는 조선 후기 실학자이자 지도 제작자로, 대동여지도를 제작하여 산맥, 하천, 도로망 등을 상세하게 표시함으로써 실용적 지리 지식을 제공하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 277,
+          "title": "대동여지도",
+          "type": "문물",
+          "visibility": "supporting",
+          "reason": "실용 지도 제작의 정점으로 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "대동여지도는 김정호가 제작한 22첩 분첩 지도집으로, 조선 후기에 상업 발달과 교통망 확대에 따른 실용적 지도 제작의 정점을 보여준다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 279,
+          "title": "신경준",
+          "type": "인물",
+          "visibility": "core",
+          "reason": "훈민정음 음운 연구의 핵심 인물이라 core이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "신경준은 조선 후기 국어학자로, 훈민정음의 음운 연구서인 훈민정음운해를 집필하며 국어음운학 발전에 기여하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 281,
+          "title": "훈민정음운해",
+          "type": "문물",
+          "visibility": "supporting",
+          "reason": "음운 연구의 대표 저작이라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "훈민정음운해는 신경준이 편찬한 음운 연구서로, 훈민정음의 음운 체계를 과학적으로 분석한 조선 후기 국어학 연구서이다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 280,
+          "title": "유희",
+          "type": "인물",
+          "visibility": "core",
+          "reason": "한글 연구 발전의 핵심 인물이라 core이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "유희는 조선 후기 국어학자로, 언문지를 저술하여 한글 연구와 한글 우수성 인식 확대에 중요한 역할을 하였다.",
+          "aliases": []
+        },
+        {
+          "entity_id": 282,
+          "title": "언문지",
+          "type": "문물",
+          "visibility": "supporting",
+          "reason": "한글 우수성 연구를 대표하는 저작이라 supporting이다.",
+          "frequency": 1,
+          "degree": 1,
+          "description": "언문지는 유희가 지은 한글 연구서로, 한글의 우수성과 그 문화적 자아 의식을 드러낸 중요한 국어학 저작이다.",
+          "aliases": []
+        }
+      ],
+      "risk_flags": [
+        "역사·지리·국어학이 한 방에 들어가므로 하위구역 분리가 필수적이다.",
+        "고려사/고려사절요는 역사 인식의 배경이지만 화면에서 과도하게 보이면 주제가 흐려질 수 있다.",
+        "로컬 검증기가 중복 엔티티 [91, 92, 104, 105]를 다른 주 방에 남기고 이 방에서는 제거함"
+      ],
+      "visibility_summary": {
+        "core": 6,
+        "supporting": 8
+      },
+      "entity_count": 14
+    }
+  ],
+  "backend_only_communities": [
+    {
+      "community_id": 7,
+      "assigned_room_no": 1,
+      "reason": "조선 초기 역사 인식 자료로는 중요하지만 UI 전면 노출보다 검색/답변 근거로 보존하는 편이 깔끔하다."
+    },
+    {
+      "community_id": 19,
+      "assigned_room_no": 1,
+      "reason": "문학사 배경으로만 쓰이며 방 제목을 흐릴 수 있어 backend_only로 보존한다."
+    },
+    {
+      "community_id": 26,
+      "assigned_room_no": 2,
+      "reason": "여성 윤리 규범은 사회사 배경으로 유용하지만 붕당 정치 방의 핵심은 아니다."
+    },
+    {
+      "community_id": 1,
+      "assigned_room_no": 3,
+      "reason": "북방 국경 정책은 전쟁 배경으로만 연결되어 UI 전면 노출이 과하다."
+    },
+    {
+      "community_id": 9,
+      "assigned_room_no": 3,
+      "reason": "광해군·인조반정은 병자호란 배경이지만 전쟁 방의 중심은 아니므로 숨긴다."
+    },
+    {
+      "community_id": 7,
+      "assigned_room_no": 4,
+      "reason": "세종의 기록 사업 배경으로만 활용되며 핵심 학습 흐름은 아니다."
+    },
+    {
+      "community_id": 19,
+      "assigned_room_no": 4,
+      "reason": "문학 배경 자료로만 필요하다."
+    },
+    {
+      "community_id": 34,
+      "assigned_room_no": 5,
+      "reason": "농민 봉기는 개혁의 결과/배경으로 중요하지만 경제 개혁 방의 중심은 아니다."
+    },
+    {
+      "community_id": 28,
+      "assigned_room_no": 5,
+      "reason": "종교 갈등은 후기 사회 변화의 배경이지만 실학·경제 개혁과는 분리하는 것이 깔끔하다."
+    },
+    {
+      "community_id": 16,
+      "assigned_room_no": 5,
+      "reason": "김정호·대동여지도는 별도 학문 방에서 다루는 편이 더 명확하다."
+    },
+    {
+      "community_id": 18,
+      "assigned_room_no": 5,
+      "reason": "동국지도는 지리학 방으로 보내는 것이 UI상 더 적절하다."
+    },
+    {
+      "community_id": 19,
+      "assigned_room_no": 6,
+      "reason": "문학 전통은 후기 학문 발전의 배경이지만 핵심 축은 아니다."
+    },
+    {
+      "community_id": 7,
+      "assigned_room_no": 6,
+      "reason": "고려사·고려사절요는 역사 인식의 선행 자료로만 보존한다."
+    }
+  ],
+  "ambiguous_items_for_user_review": [
+    {
+      "item_type": "entity",
+      "id": 20,
+      "current_room_no": 1,
+      "reason": "이성계와 태조 이성계가 함께 있어 동일 인물 표기 통합 여부를 사용자 검토로 남긴다."
+    },
+    {
+      "item_type": "entity",
+      "id": 35,
+      "current_room_no": 1,
+      "reason": "이방원과 태종 이방원이 중복 표기처럼 보일 수 있어 검토가 필요하다."
+    },
+    {
+      "item_type": "entity",
+      "id": 167,
+      "current_room_no": 3,
+      "reason": "유정/사명대사 유정의 표기 변형이 있어 통합 표시 여부를 검토할 수 있다."
+    },
+    {
+      "item_type": "entity",
+      "id": 163,
+      "current_room_no": 3,
+      "reason": "진주대첩과 진주성 전투가 사실상 같은 맥락이라 중복 노출 여부를 검토한다."
+    },
+    {
+      "item_type": "entity",
+      "id": 164,
+      "current_room_no": 3,
+      "reason": "행주산성 전투와 행주 대첩의 중복 표기 가능성이 있어 검토가 필요하다."
+    },
+    {
+      "item_type": "entity",
+      "id": 284,
+      "current_room_no": 5,
+      "reason": "중농 학파와 중농학파의 표기 차이가 있어 통합 여부를 검토한다."
+    },
+    {
+      "item_type": "entity",
+      "id": 285,
+      "current_room_no": 5,
+      "reason": "중상 학파와 중상학파의 표기 차이가 있어 통합 여부를 검토한다."
+    }
+  ],
+  "self_check": {
+    "all_communities_covered": true,
+    "duplicate_community_ids": [],
+    "missing_community_ids": [],
+    "notes": "37개 원본 community를 6개 방에 정확히 한 번씩 배치했다. major_visible_candidate는 핵심 방의 visible로 올리고, 작은 주제는 방 제목을 흐리지 않는 범위에서 background/search_only로 낮췄다. 동일/유사 표기 엔티티는 ambiguity로 분리해 UI 혼선을 줄였다."
+  },
+  "duplicate_entity_repair_notes": {
+    "20": "중복 엔티티 20는 visibility/설명 근거가 가장 강한 방 1에만 남김",
+    "91": "중복 엔티티 91는 visibility/설명 근거가 가장 강한 방 1에만 남김",
+    "92": "중복 엔티티 92는 visibility/설명 근거가 가장 강한 방 1에만 남김",
+    "104": "중복 엔티티 104는 visibility/설명 근거가 가장 강한 방 1에만 남김",
+    "105": "중복 엔티티 105는 visibility/설명 근거가 가장 강한 방 1에만 남김",
+    "42": "중복 엔티티 42는 visibility/설명 근거가 가장 강한 방 4에만 남김",
+    "43": "중복 엔티티 43는 visibility/설명 근거가 가장 강한 방 4에만 남김"
+  },
+  "ui_density_policy": {
+    "max_core_share": 0.3,
+    "max_supporting_share": 0.3,
+    "computed_max_core_per_room": 10,
+    "computed_max_supporting_per_room": 24
+  },
+  "supporting_quality_gate": {
+    "policy": "No search_only quota. Only overcrowded supporting panels are reviewed; weak learner-facing supporting items are preserved as search_only evidence.",
+    "review_threshold": 12,
+    "notes": [
+      {
+        "room_no": 3,
+        "title": "임진왜란과 병자호란",
+        "review_threshold": 12,
+        "demoted_supporting_to_search_only": [
+          {
+            "entity_id": 162,
+            "title": "정유재란",
+            "score": 1,
+            "signals": [
+              "room-token-overlap"
+            ]
+          },
+          {
+            "entity_id": 157,
+            "title": "곽재우",
+            "score": 0,
+            "signals": []
+          },
+          {
+            "entity_id": 161,
+            "title": "유정(사명대사)",
+            "score": 0,
+            "signals": []
+          },
+          {
+            "entity_id": 153,
+            "title": "거북선",
+            "score": 0,
+            "signals": []
+          },
+          {
+            "entity_id": 150,
+            "title": "친명 배금 정책",
+            "score": 0,
+            "signals": []
+          },
+          {
+            "entity_id": 184,
+            "title": "삼전도 강화",
+            "score": 1,
+            "signals": [
+              "room-token-overlap"
+            ]
+          },
+          {
+            "entity_id": 188,
+            "title": "북한산성",
+            "score": 1,
+            "signals": [
+              "frequency>=2"
+            ]
+          },
+          {
+            "entity_id": 189,
+            "title": "임경업",
+            "score": 0,
+            "signals": []
+          }
+        ]
+      },
+      {
+        "room_no": 5,
+        "title": "조선 후기 실학과 경제 개혁",
+        "review_threshold": 12,
+        "demoted_supporting_to_search_only": [
+          {
+            "entity_id": 252,
+            "title": "이수광",
+            "score": 1,
+            "signals": [
+              "room-token-overlap"
+            ]
+          },
+          {
+            "entity_id": 284,
+            "title": "중농 학파",
+            "score": 1,
+            "signals": [
+              "room-token-overlap"
+            ]
+          },
+          {
+            "entity_id": 285,
+            "title": "중상 학파",
+            "score": 1,
+            "signals": [
+              "room-token-overlap"
+            ]
+          },
+          {
+            "entity_id": 264,
+            "title": "북학파",
+            "score": 1,
+            "signals": [
+              "degree>=2"
+            ]
+          },
+          {
+            "entity_id": 267,
+            "title": "연암집",
+            "score": 1,
+            "signals": [
+              "room-token-overlap"
+            ]
+          },
+          {
+            "entity_id": 286,
+            "title": "반계수록",
+            "score": 1,
+            "signals": [
+              "room-token-overlap"
+            ]
+          },
+          {
+            "entity_id": 218,
+            "title": "임술 농민 봉기",
+            "score": 1,
+            "signals": [
+              "room-token-overlap"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

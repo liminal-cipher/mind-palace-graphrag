@@ -1,0 +1,141 @@
+### GPT-5.4 mini post-processing settings
+### This file is for step 2 only:
+### GraphRAG merge/split/anomaly judgement after merge_analysis.md/json is created.
+###
+### It is NOT a GraphRAG indexing settings.yaml.
+### Keep the project root GraphRAG settings.yaml on gpt-4.1-mini.
+
+azure_openai:
+  model: gpt-5.4-mini
+
+  # Option A: use an environment variable from graphrag_quickstart/.env
+  deployment_name: ${AZURE_OPENAI_GPT54MINI_DEPLOYMENT}
+
+  # Option B: if you do not want to add a new env variable, replace the line above
+  # with your actual Azure deployment name, for example:
+  # deployment_name: gpt-5.4-mini_Chosun_Test
+
+  endpoint: ${AZURE_OPENAI_ENDPOINT}
+  api_key: ${AZURE_OPENAI_API_KEY}
+  api_version: 2025-01-01-preview
+  temperature: 0.0
+
+inputs:
+  merge_analysis_markdown: "output/그래프라그 방나누기/gpt4.1mini/10차_프롬프트/10차(수정)/merge_analysis.md"
+  merge_analysis_json: "output/그래프라그 방나누기/gpt4.1mini/10차_프롬프트/10차(수정)/merge_analysis.json"
+
+outputs:
+  judgement_markdown: "output/그래프라그 방나누기/gpt4.1mini/10차_프롬프트/10차(수정)/merge_judgement_gpt5.4mini.md"
+  judgement_json: "output/그래프라그 방나누기/gpt4.1mini/10차_프롬프트/10차(수정)/merge_judgement_gpt5.4mini.json"
+
+task:
+  room_count_policy:
+    mode: automatic
+    user_profile: none
+    hard_limit: null
+    preferred_density: normal
+    instruction: "사용자 추가 정보가 없다고 가정하고, 원본 커뮤니티 구조와 학습 자연성을 보고 방 개수를 자율적으로 정한다."
+  language: Korean
+  goal: "한국사 GraphRAG 커뮤니티를 3D 기억방 구조로 병합, 분할, 정리한다."
+  decision_labels:
+    - merge
+    - keep_separate
+    - parent_room_with_subzones
+    - split
+    - move_entity
+    - exclude_entity
+    - alias_entity
+
+rules:
+  - "GraphRAG 1단계 산출물은 gpt-4.1-mini 결과를 그대로 사용한다."
+  - "그래프 점수가 높아도 학습 주제가 다르면 완전 병합하지 않는다."
+  - "같은 시대 흐름이지만 주제가 다르면 상위 방/하위 구역 구조를 사용한다."
+  - "한국사 학습 순서와 교과서 원문 소제목을 우선한다."
+  - "한 글자 인명, 잘린 인명, 더 긴 엔티티명의 일부처럼 보이는 엔티티는 반드시 검토한다."
+  - "alias 후보가 여러 개이면 같은 커뮤니티, 같은 원문 청크, 같은 시대/주제, 관계 근거 순서로 우선한다."
+  - "이름 일부만 보고 alias를 결정하지 말고, 후보의 community/source_overlap/alias_confidence를 함께 확인한다."
+  - "최종 방 개수를 억지로 10개에 맞추지 않는다."
+  - "사용자 추가 정보가 없는 자동 설정이라고 가정하고, 학습 주제가 자연스럽게 합쳐지는 만큼만 방을 만든다."
+  - "각 최종 방에는 반드시 포함 원본 커뮤니티 ID 목록을 적는다."
+  - "원본 커뮤니티 ID 0번부터 29번까지는 최종 방 중 하나에 반드시 배치한다. 제외가 필요하면 별도 제외 목록과 이유를 적는다."
+  - "최종 방의 원본 커뮤니티 목록을 누락하지 않는다."
+  - "원본 커뮤니티 ID는 중복 배치하지 않는다. 각 ID는 정확히 한 번만 등장해야 한다."
+  - "최종 방 제목에 '방 이름'이라는 템플릿 문구를 쓰지 말고 실제 방 제목을 쓴다."
+  - "최종 결과는 3D 기억방에 바로 옮길 수 있는 방 구조로 정리한다."
+
+prompt: |
+  당신은 한국사 교과서 기반 GraphRAG 결과를 3D 기억방 구조로 정리하는 검토자입니다.
+
+  입력으로는 GraphRAG 커뮤니티 후처리 분석 결과가 주어집니다.
+  이 분석 결과에는 병합 후보, 작은 커뮤니티, 큰 커뮤니티/분할 후보, 이상 엔티티 후보가 포함됩니다.
+
+  목표:
+  1. 병합 후보 중 실제로 병합할 커뮤니티를 고릅니다.
+  2. 병합은 아니지만 같은 상위 방 안의 하위 구역으로 둘 커뮤니티를 고릅니다.
+  3. 분리 유지해야 할 커뮤니티를 고릅니다.
+  4. 큰 커뮤니티 중 분할할 커뮤니티와 분할 기준을 제안합니다.
+  5. 이상 엔티티의 alias, 이동, 제외 여부를 판단합니다.
+  6. 최종적으로 한국사 학습 순서에 맞는 3D 기억방 구성안을 만듭니다.
+     사용자 추가 정보가 없으므로 방 개수는 자동으로 정하십시오.
+
+  판단 기준:
+  - 그래프 점수가 높아도 학습 주제가 다르면 완전 병합하지 마십시오.
+  - 같은 시대 흐름에 속하지만 주제가 다르면 상위 방/하위 구역 구조를 사용하십시오.
+  - 교과서 목차, 원문 소제목, 시간 순서를 중요하게 보십시오.
+  - 단순히 커뮤니티 수를 줄이는 것보다 학습자가 기억하기 좋은 구조를 우선하십시오.
+  - 방 개수를 억지로 10개에 맞추지 마십시오.
+  - 너무 작은 보조 주제 방이 생기면 더 큰 학습방의 하위 구역으로 흡수하십시오.
+  - 최종 방 개수는 원본 커뮤니티 30개의 구조, 작은 커뮤니티 수, 큰 커뮤니티 수, 병합 후보를 보고 자율적으로 결정하십시오.
+  - 최종 방 개수를 정한 이유를 출력하십시오.
+  - 원본 커뮤니티 전체 목록을 확인하고, 각 원본 커뮤니티 ID를 최종 방 중 하나에 배치하십시오.
+  - 원본 커뮤니티를 최종 방에서 누락하지 마십시오. 애매한 커뮤니티는 가장 가까운 방의 하위 구역으로 배치하십시오.
+  - 원본 커뮤니티 ID를 중복 배치하지 마십시오. 0~29번 ID가 정확히 한 번씩만 나타나야 합니다.
+  - 정말 제외해야 할 원본 커뮤니티가 있다면 `제외 원본 커뮤니티` 항목에 ID와 이유를 따로 적으십시오.
+  - 한 글자 인명, 잘린 인명, 더 긴 엔티티명의 일부처럼 보이는 엔티티는 반드시 검토하십시오.
+  - alias 후보가 여러 개이면 같은 커뮤니티에 있는 후보를 최우선으로 보십시오.
+  - 같은 커뮤니티 후보가 없으면 같은 원문 청크(source_overlap), 같은 시대/주제, 관계 근거를 순서대로 보십시오.
+  - 예를 들어 짧은 엔티티가 `효`이고 후보가 `박영효`, `효종`이라면 이름 포함 여부만 보지 말고 community/source_overlap/alias_confidence를 기준으로 판단하십시오.
+
+  출력 형식:
+
+  ## 1. 실제 병합
+  - 병합 커뮤니티:
+  - 이유:
+  - 새 방 이름:
+  - 포함할 핵심 엔티티:
+
+  ## 2. 상위 방/하위 구역 권장
+  - 상위 방 이름:
+  - 하위 구역:
+  - 이유:
+
+  ## 3. 분리 유지
+  - 커뮤니티:
+  - 이유:
+
+  ## 4. 큰 커뮤니티 분할
+  - 기존 커뮤니티:
+  - 분할 기준:
+  - 새 하위 구역 또는 새 방:
+
+  ## 5. 이상 엔티티 처리
+  - 엔티티:
+  - 처리: alias / 이동 / 제외 / 유지
+  - 이유:
+
+  ## 6. 최종 3D 기억방 구성안
+  - 권장 최종 방 수:
+  - 방 개수 결정 이유:
+  - 제외 원본 커뮤니티:
+
+  1. 실제 방 제목
+     - 시대/순서:
+     - 핵심 내용:
+     - 주요 엔티티:
+     - 하위 구역:
+     - 원본 커뮤니티:
+
+  최종 출력 전 자체 점검:
+  - 원본 커뮤니티 ID 0~29가 모두 포함되었는지 확인하십시오.
+  - 중복 배치된 ID가 없는지 확인하십시오.
+  - 제목이 `방 이름` 또는 `실제 방 제목` 같은 템플릿 문구로 남아 있지 않은지 확인하십시오.

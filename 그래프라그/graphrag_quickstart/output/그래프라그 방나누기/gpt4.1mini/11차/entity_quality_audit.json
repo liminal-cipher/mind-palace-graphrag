@@ -1,0 +1,3383 @@
+{
+  "created_at": "2026-06-04T12:11:58",
+  "base": "output\\그래프라그 방나누기\\gpt4.1mini\\10차_프롬프트\\10차(수정)",
+  "summary": {
+    "duplicate_candidates": 55,
+    "type_notation_issues": 0,
+    "orphan_candidates": 39
+  },
+  "duplicates": [
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "흥선대원군~흥선대원군의개혁",
+      "entities": [
+        {
+          "id": 296,
+          "title": "흥선 대원군",
+          "type": "인물",
+          "frequency": 6,
+          "degree": 16
+        },
+        {
+          "id": 303,
+          "title": "흥선 대원군의 개혁",
+          "type": "정책",
+          "frequency": 1,
+          "degree": 7
+        }
+      ]
+    },
+    {
+      "reason": "same_normalized_title",
+      "normalized": "흥선대원군",
+      "entities": [
+        {
+          "id": 296,
+          "title": "흥선 대원군",
+          "type": "인물",
+          "frequency": 6,
+          "degree": 16
+        },
+        {
+          "id": 384,
+          "title": "흥선대원군",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "동학~동학농민운동",
+      "entities": [
+        {
+          "id": 291,
+          "title": "동학",
+          "type": "사건",
+          "frequency": 3,
+          "degree": 11
+        },
+        {
+          "id": 367,
+          "title": "동학 농민 운동",
+          "type": "사건",
+          "frequency": 3,
+          "degree": 6
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "왜란~임진왜란",
+      "entities": [
+        {
+          "id": 141,
+          "title": "왜란",
+          "type": "사건",
+          "frequency": 1,
+          "degree": 0
+        },
+        {
+          "id": 144,
+          "title": "임진왜란",
+          "type": "사건",
+          "frequency": 4,
+          "degree": 14
+        }
+      ]
+    },
+    {
+      "reason": "same_normalized_title",
+      "normalized": "태종",
+      "entities": [
+        {
+          "id": 14,
+          "title": "태종",
+          "type": "인물",
+          "frequency": 3,
+          "degree": 7
+        },
+        {
+          "id": 15,
+          "title": "방원",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 1
+        },
+        {
+          "id": 26,
+          "title": "이방원",
+          "type": "인물",
+          "frequency": 2,
+          "degree": 5
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "동학~동학농민군",
+      "entities": [
+        {
+          "id": 291,
+          "title": "동학",
+          "type": "사건",
+          "frequency": 3,
+          "degree": 11
+        },
+        {
+          "id": 388,
+          "title": "동학 농민군",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 2
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "농민군~동학농민군",
+      "entities": [
+        {
+          "id": 370,
+          "title": "농민군",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 10
+        },
+        {
+          "id": 388,
+          "title": "동학 농민군",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 2
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "삼정~삼정의문란",
+      "entities": [
+        {
+          "id": 271,
+          "title": "삼정",
+          "type": "정책",
+          "frequency": 1,
+          "degree": 3
+        },
+        {
+          "id": 277,
+          "title": "삼정의 문란",
+          "type": "정책",
+          "frequency": 1,
+          "degree": 7
+        }
+      ]
+    },
+    {
+      "reason": "same_normalized_title",
+      "normalized": "세종",
+      "entities": [
+        {
+          "id": 19,
+          "title": "세종",
+          "type": "인물",
+          "frequency": 2,
+          "degree": 2
+        },
+        {
+          "id": 106,
+          "title": "세종 대왕",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 7
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "붕당~붕당정치",
+      "entities": [
+        {
+          "id": 119,
+          "title": "붕당",
+          "type": "기관",
+          "frequency": 3,
+          "degree": 6
+        },
+        {
+          "id": 218,
+          "title": "붕당 정치",
+          "type": "사건",
+          "frequency": 2,
+          "degree": 3
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "농민봉기~진주농민봉기",
+      "entities": [
+        {
+          "id": 276,
+          "title": "농민 봉기",
+          "type": "사건",
+          "frequency": 2,
+          "degree": 5
+        },
+        {
+          "id": 280,
+          "title": "진주 농민 봉기",
+          "type": "사건",
+          "frequency": 2,
+          "degree": 4
+        }
+      ]
+    },
+    {
+      "reason": "same_normalized_title",
+      "normalized": "중상학파",
+      "entities": [
+        {
+          "id": 245,
+          "title": "중상 학파",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 7
+        },
+        {
+          "id": 251,
+          "title": "중상학파",
+          "type": "사상가",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "태종~청나라태종",
+      "entities": [
+        {
+          "id": 14,
+          "title": "태종",
+          "type": "인물",
+          "frequency": 3,
+          "degree": 7
+        },
+        {
+          "id": 188,
+          "title": "청나라 태종",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "농민봉기~고부농민봉기",
+      "entities": [
+        {
+          "id": 276,
+          "title": "농민 봉기",
+          "type": "사건",
+          "frequency": 2,
+          "degree": 5
+        },
+        {
+          "id": 364,
+          "title": "고부 농민 봉기",
+          "type": "사건",
+          "frequency": 2,
+          "degree": 3
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "흥선대원군의개혁~흥선대원군",
+      "entities": [
+        {
+          "id": 303,
+          "title": "흥선 대원군의 개혁",
+          "type": "정책",
+          "frequency": 1,
+          "degree": 7
+        },
+        {
+          "id": 384,
+          "title": "흥선대원군",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "일본~일본군파병",
+      "entities": [
+        {
+          "id": 38,
+          "title": "일본",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 5
+        },
+        {
+          "id": 376,
+          "title": "일본군 파병",
+          "type": "사건",
+          "frequency": 1,
+          "degree": 2
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "서인~서인정권",
+      "entities": [
+        {
+          "id": 121,
+          "title": "서인",
+          "type": "기관",
+          "frequency": 4,
+          "degree": 4
+        },
+        {
+          "id": 185,
+          "title": "서인 정권",
+          "type": "기관",
+          "frequency": 2,
+          "degree": 3
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "인조반정~인조",
+      "entities": [
+        {
+          "id": 184,
+          "title": "인조반정",
+          "type": "사건",
+          "frequency": 3,
+          "degree": 3
+        },
+        {
+          "id": 191,
+          "title": "인조",
+          "type": "인물",
+          "frequency": 2,
+          "degree": 4
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "태종~청나라태종",
+      "entities": [
+        {
+          "id": 26,
+          "title": "이방원",
+          "type": "인물",
+          "frequency": 2,
+          "degree": 5
+        },
+        {
+          "id": 188,
+          "title": "청나라 태종",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "일본~일본국왕",
+      "entities": [
+        {
+          "id": 38,
+          "title": "일본",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 5
+        },
+        {
+          "id": 329,
+          "title": "일본 국왕",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "일본~일본의경제침투",
+      "entities": [
+        {
+          "id": 38,
+          "title": "일본",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 5
+        },
+        {
+          "id": 387,
+          "title": "일본의 경제 침투",
+          "type": "사건",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "일본~일본도요토미히데요시",
+      "entities": [
+        {
+          "id": 38,
+          "title": "일본",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 5
+        },
+        {
+          "id": 174,
+          "title": "일본 도요토미 히데요시",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 0
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "서원~백운동서원",
+      "entities": [
+        {
+          "id": 116,
+          "title": "서원",
+          "type": "기관",
+          "frequency": 3,
+          "degree": 2
+        },
+        {
+          "id": 135,
+          "title": "백운동 서원",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 3
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "명~최명길",
+      "entities": [
+        {
+          "id": 181,
+          "title": "명나라",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 2
+        },
+        {
+          "id": 207,
+          "title": "최명길",
+          "type": "인물",
+          "frequency": 2,
+          "degree": 3
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "홍경래의난~홍경래",
+      "entities": [
+        {
+          "id": 279,
+          "title": "홍경래의 난",
+          "type": "사건",
+          "frequency": 2,
+          "degree": 4
+        },
+        {
+          "id": 281,
+          "title": "홍경래",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "진주농민봉기~진주",
+      "entities": [
+        {
+          "id": 280,
+          "title": "진주 농민 봉기",
+          "type": "사건",
+          "frequency": 2,
+          "degree": 4
+        },
+        {
+          "id": 282,
+          "title": "진주",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "향약~여씨향약",
+      "entities": [
+        {
+          "id": 117,
+          "title": "향약",
+          "type": "정책",
+          "frequency": 2,
+          "degree": 3
+        },
+        {
+          "id": 129,
+          "title": "여씨향약",
+          "type": "문물",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "명나라원군~명",
+      "entities": [
+        {
+          "id": 165,
+          "title": "명나라 원군",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 2
+        },
+        {
+          "id": 181,
+          "title": "명나라",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 2
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "유정~계유정난",
+      "entities": [
+        {
+          "id": 172,
+          "title": "유정",
+          "type": "인물",
+          "frequency": 2,
+          "degree": 2
+        },
+        {
+          "id": 203,
+          "title": "계유정난",
+          "type": "사건",
+          "frequency": 1,
+          "degree": 2
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "안동김씨~안동김씨세력",
+      "entities": [
+        {
+          "id": 267,
+          "title": "안동 김씨",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 1
+        },
+        {
+          "id": 298,
+          "title": "안동 김씨 세력",
+          "type": "기관",
+          "frequency": 2,
+          "degree": 3
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "개화파~온건개화파",
+      "entities": [
+        {
+          "id": 338,
+          "title": "개화파",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 2
+        },
+        {
+          "id": 393,
+          "title": "온건 개화파",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 2
+        }
+      ]
+    },
+    {
+      "reason": "same_normalized_title",
+      "normalized": "유정",
+      "entities": [
+        {
+          "id": 159,
+          "title": "유정(사명대사)",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 1
+        },
+        {
+          "id": 172,
+          "title": "유정",
+          "type": "인물",
+          "frequency": 2,
+          "degree": 2
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "신진사대부~진사",
+      "entities": [
+        {
+          "id": 10,
+          "title": "신진 사대부",
+          "type": "기관",
+          "frequency": 2,
+          "degree": 2
+        },
+        {
+          "id": 62,
+          "title": "진사",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "조선과명의친선관계~명",
+      "entities": [
+        {
+          "id": 28,
+          "title": "조선과 명의 친선 관계",
+          "type": "사건",
+          "frequency": 1,
+          "degree": 1
+        },
+        {
+          "id": 181,
+          "title": "명나라",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 2
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "조선수군~수군",
+      "entities": [
+        {
+          "id": 35,
+          "title": "조선 수군",
+          "type": "기관",
+          "frequency": 2,
+          "degree": 3
+        },
+        {
+          "id": 72,
+          "title": "수군",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 0
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "서원~소수서원",
+      "entities": [
+        {
+          "id": 116,
+          "title": "서원",
+          "type": "기관",
+          "frequency": 3,
+          "degree": 2
+        },
+        {
+          "id": 136,
+          "title": "소수 서원",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "고경명~명",
+      "entities": [
+        {
+          "id": 157,
+          "title": "고경명",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 1
+        },
+        {
+          "id": 181,
+          "title": "명나라",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 2
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "유정~계유정난",
+      "entities": [
+        {
+          "id": 159,
+          "title": "유정(사명대사)",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 1
+        },
+        {
+          "id": 203,
+          "title": "계유정난",
+          "type": "사건",
+          "frequency": 1,
+          "degree": 2
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "명량해전~명",
+      "entities": [
+        {
+          "id": 166,
+          "title": "명량 해전",
+          "type": "사건",
+          "frequency": 1,
+          "degree": 1
+        },
+        {
+          "id": 181,
+          "title": "명나라",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 2
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "명~친명배금정책",
+      "entities": [
+        {
+          "id": 181,
+          "title": "명나라",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 2
+        },
+        {
+          "id": 199,
+          "title": "친명 배금 정책",
+          "type": "정책",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "부농~고부농민봉기",
+      "entities": [
+        {
+          "id": 236,
+          "title": "부농",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 0
+        },
+        {
+          "id": 364,
+          "title": "고부 농민 봉기",
+          "type": "사건",
+          "frequency": 2,
+          "degree": 3
+        }
+      ]
+    },
+    {
+      "reason": "same_normalized_title",
+      "normalized": "노비문서",
+      "entities": [
+        {
+          "id": 168,
+          "title": "노비 문서",
+          "type": "문물",
+          "frequency": 1,
+          "degree": 1
+        },
+        {
+          "id": 390,
+          "title": "노비문서",
+          "type": "문물",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "태종~청나라태종",
+      "entities": [
+        {
+          "id": 15,
+          "title": "방원",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 1
+        },
+        {
+          "id": 188,
+          "title": "청나라 태종",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "수군절도사~수군",
+      "entities": [
+        {
+          "id": 71,
+          "title": "수군절도사",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 2
+        },
+        {
+          "id": 72,
+          "title": "수군",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 0
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "고려사~고려사절요",
+      "entities": [
+        {
+          "id": 90,
+          "title": "고려사",
+          "type": "문물",
+          "frequency": 1,
+          "degree": 1
+        },
+        {
+          "id": 91,
+          "title": "고려사절요",
+          "type": "문물",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "사화~무오사화",
+      "entities": [
+        {
+          "id": 112,
+          "title": "사화",
+          "type": "사건",
+          "frequency": 1,
+          "degree": 1
+        },
+        {
+          "id": 113,
+          "title": "무오사화",
+          "type": "사건",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "노비~노비문서",
+      "entities": [
+        {
+          "id": 127,
+          "title": "노비",
+          "type": "기관",
+          "frequency": 2,
+          "degree": 1
+        },
+        {
+          "id": 168,
+          "title": "노비 문서",
+          "type": "문물",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "노비~노비문서",
+      "entities": [
+        {
+          "id": 127,
+          "title": "노비",
+          "type": "기관",
+          "frequency": 2,
+          "degree": 1
+        },
+        {
+          "id": 390,
+          "title": "노비문서",
+          "type": "문물",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "진주성전투~진주",
+      "entities": [
+        {
+          "id": 161,
+          "title": "진주성 전투",
+          "type": "사건",
+          "frequency": 1,
+          "degree": 1
+        },
+        {
+          "id": 282,
+          "title": "진주",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "환곡~환곡제폐지",
+      "entities": [
+        {
+          "id": 274,
+          "title": "환곡",
+          "type": "정책",
+          "frequency": 1,
+          "degree": 1
+        },
+        {
+          "id": 306,
+          "title": "환곡제 폐지",
+          "type": "정책",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "전주집강소~집강소",
+      "entities": [
+        {
+          "id": 380,
+          "title": "전주 집강소",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 1
+        },
+        {
+          "id": 389,
+          "title": "집강소",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "유향소향청~유향소",
+      "entities": [
+        {
+          "id": 54,
+          "title": "유향소(향청)",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 0
+        },
+        {
+          "id": 128,
+          "title": "유향소",
+          "type": "기관",
+          "frequency": 2,
+          "degree": 1
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "도요토미히데요시~일본도요토미히데요시",
+      "entities": [
+        {
+          "id": 142,
+          "title": "도요토미 히데요시",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 1
+        },
+        {
+          "id": 174,
+          "title": "일본 도요토미 히데요시",
+          "type": "인물",
+          "frequency": 1,
+          "degree": 0
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "위정척사운동~위정척사",
+      "entities": [
+        {
+          "id": 339,
+          "title": "위정척사 운동",
+          "type": "사건",
+          "frequency": 1,
+          "degree": 1
+        },
+        {
+          "id": 346,
+          "title": "위정척사",
+          "type": "정책",
+          "frequency": 1,
+          "degree": 0
+        }
+      ]
+    },
+    {
+      "reason": "substring_or_high_similarity",
+      "normalized": "위정척사~위정척사파",
+      "entities": [
+        {
+          "id": 346,
+          "title": "위정척사",
+          "type": "정책",
+          "frequency": 1,
+          "degree": 0
+        },
+        {
+          "id": 392,
+          "title": "위정척사파",
+          "type": "기관",
+          "frequency": 1,
+          "degree": 1
+        }
+      ]
+    }
+  ],
+  "type_issues": [],
+  "orphans": [
+    {
+      "id": 94,
+      "title": "국조오례의",
+      "type": "문물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "정도전",
+          "type": "인물",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "위화도 회군",
+          "type": "사건",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "조선",
+          "type": "기관",
+          "degree": 17,
+          "co_text_units": 1
+        },
+        {
+          "title": "신진 사대부",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "태종",
+          "type": "인물",
+          "degree": 7,
+          "co_text_units": 1
+        },
+        {
+          "title": "세조",
+          "type": "인물",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "최윤덕",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "김종서",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        }
+      ],
+      "description": "국조오례의는 조선시대 왕실 의례와 국가 의식을 체계적으로 정리한 책으로, 유교적 통치 이념에 따른 예법 확립에 기여하였다."
+    },
+    {
+      "id": 273,
+      "title": "군포",
+      "type": "정책",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "세도 정치",
+          "type": "사건",
+          "degree": 11,
+          "co_text_units": 1
+        },
+        {
+          "title": "순조",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "헌종",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "철종",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "세도가",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "안동 김씨",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "풍양 조씨",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "정치 기강 문란",
+          "type": "사건",
+          "degree": 2,
+          "co_text_units": 1
+        }
+      ],
+      "description": "군포는 조선 후기 군사비 명목으로 농민에게 징수된 세금으로, 삼정에 포함되어 세도 정치기의 탐관오리 착취 대상이었다."
+    },
+    {
+      "id": 233,
+      "title": "규장전운",
+      "type": "문물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "성균관",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "노비",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "남인",
+          "type": "기관",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "예송",
+          "type": "사건",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "환국",
+          "type": "사건",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "노론",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "소론",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "소수 특정 가문",
+          "type": "기관",
+          "degree": 0,
+          "co_text_units": 1
+        }
+      ],
+      "description": "규장전운은 정조가 규장각 중심으로 편찬한 운문집으로, 조선 후기 문예 부흥의 상징적 문물이다."
+    },
+    {
+      "id": 225,
+      "title": "동국문헌비고",
+      "type": "문물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "성균관",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "노비",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "남인",
+          "type": "기관",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "예송",
+          "type": "사건",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "환국",
+          "type": "사건",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "노론",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "소론",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "소수 특정 가문",
+          "type": "기관",
+          "degree": 0,
+          "co_text_units": 1
+        }
+      ],
+      "description": "동국문헌비고는 영조 때 편찬된 종합 백과사전으로, 문물과 제도 정비를 위해 제작된 중요한 문화유산이다."
+    },
+    {
+      "id": 103,
+      "title": "동문선",
+      "type": "문물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "정도전",
+          "type": "인물",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "위화도 회군",
+          "type": "사건",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "조선",
+          "type": "기관",
+          "degree": 17,
+          "co_text_units": 1
+        },
+        {
+          "title": "신진 사대부",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "태종",
+          "type": "인물",
+          "degree": 7,
+          "co_text_units": 1
+        },
+        {
+          "title": "세조",
+          "type": "인물",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "최윤덕",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "김종서",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        }
+      ],
+      "description": "동문선은 조선 전기에 삼국 시대부터의 유명한 시문을 선별하여 엮은 문집으로, 한문학의 전통과 유교적 가치관을 반영하였다."
+    },
+    {
+      "id": 231,
+      "title": "동문휘고",
+      "type": "문물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "성균관",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "노비",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "남인",
+          "type": "기관",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "예송",
+          "type": "사건",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "환국",
+          "type": "사건",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "노론",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "소론",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "소수 특정 가문",
+          "type": "기관",
+          "degree": 0,
+          "co_text_units": 1
+        }
+      ],
+      "description": "동문휘고는 정조 시대 편찬된 어문 및 문헌 관련 서적으로, 조선 후기 학문과 문화 발전에 기여하였다."
+    },
+    {
+      "id": 120,
+      "title": "동인",
+      "type": "기관",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "경국대전",
+          "type": "문물",
+          "degree": 6,
+          "co_text_units": 1
+        },
+        {
+          "title": "농사직설",
+          "type": "문물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "사림",
+          "type": "기관",
+          "degree": 14,
+          "co_text_units": 1
+        },
+        {
+          "title": "훈구 세력",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "길재",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "성종",
+          "type": "인물",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "김종직",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "사화",
+          "type": "사건",
+          "degree": 1,
+          "co_text_units": 1
+        }
+      ],
+      "description": "동인은 붕당의 한 갈래로, 16세기 후반 사림 세력 내에서 이조 전랑의 인사와 공론 문제를 중심으로 서인과 대립한 정치 집단이다."
+    },
+    {
+      "id": 39,
+      "title": "류큐",
+      "type": "인물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "정도전",
+          "type": "인물",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "이방원",
+          "type": "인물",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "태조",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "조선과 명의 친선 관계",
+          "type": "사건",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "여진족",
+          "type": "인물",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "최윤덕",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "김종서",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "4군",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        }
+      ],
+      "description": "조선과 동남아시아 무역에 참여한 국가로, 조선과 경제적 교류가 이루어졌다."
+    },
+    {
+      "id": 66,
+      "title": "문음",
+      "type": "정책",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "세종",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "성균관",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "신문고",
+          "type": "문물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "6방",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "과거 시험",
+          "type": "정책",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "서당",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "4부 학당",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "향교",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        }
+      ],
+      "description": "문음은 조선 시대 인물 등용 방식 중 하나로, 추천을 통해 유능한 인물을 선발하는 방법이다."
+    },
+    {
+      "id": 285,
+      "title": "미륵불 신앙",
+      "type": "문물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "정조",
+          "type": "인물",
+          "degree": 7,
+          "co_text_units": 1
+        },
+        {
+          "title": "순조",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "정감록",
+          "type": "문물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "후천 개벽 사상",
+          "type": "문물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "무속 신앙",
+          "type": "문물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "천주교",
+          "type": "사건",
+          "degree": 6,
+          "co_text_units": 1
+        },
+        {
+          "title": "이승훈",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "신유박해",
+          "type": "사건",
+          "degree": 2,
+          "co_text_units": 1
+        }
+      ],
+      "description": "미륵불 신앙은 미래불인이 지상에 내려와 중생을 구원한다는 불교적 예언 신앙으로, 조선 후기 민중의 구원과 새 세상에 대한 기대를 담은 신앙이다."
+    },
+    {
+      "id": 84,
+      "title": "봉수 제도",
+      "type": "정책",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "세종",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "성균관",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "신문고",
+          "type": "문물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "6방",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "과거 시험",
+          "type": "정책",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "서당",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "4부 학당",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "향교",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        }
+      ],
+      "description": "봉수 제도는 조선 시대 국경 지대의 위급 상황을 중앙에 신속히 알리기 위한 통신 제도로, 국가 방어에 중요한 역할을 하였다."
+    },
+    {
+      "id": 236,
+      "title": "부농",
+      "type": "기관",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "남인",
+          "type": "기관",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "노론",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "붕당 정치",
+          "type": "사건",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "정조",
+          "type": "인물",
+          "degree": 7,
+          "co_text_units": 1
+        },
+        {
+          "title": "장용영",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "실학",
+          "type": "사건",
+          "degree": 6,
+          "co_text_units": 1
+        },
+        {
+          "title": "대상인",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "이수광",
+          "type": "인물",
+          "degree": 0,
+          "co_text_units": 1
+        }
+      ],
+      "description": "부농은 조선 후기 농업 기술 발전으로 형성된 중산층 농민 계층으로, 경제적 여유를 가진 농업 생산자이다."
+    },
+    {
+      "id": 211,
+      "title": "북인",
+      "type": "기관",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "의정부",
+          "type": "기관",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "홍문관",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "사림",
+          "type": "기관",
+          "degree": 14,
+          "co_text_units": 1
+        },
+        {
+          "title": "붕당",
+          "type": "기관",
+          "degree": 6,
+          "co_text_units": 1
+        },
+        {
+          "title": "서인",
+          "type": "기관",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "삼사",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "후금",
+          "type": "기관",
+          "degree": 6,
+          "co_text_units": 1
+        },
+        {
+          "title": "인조반정",
+          "type": "사건",
+          "degree": 3,
+          "co_text_units": 1
+        }
+      ],
+      "description": "북인은 임진왜란 이후 정치 주도권을 쥔 조선 붕당으로, 인조반정으로 서인에게 권력을 빼앗겼다."
+    },
+    {
+      "id": 307,
+      "title": "사창제",
+      "type": "정책",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "서원",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "조선 정부",
+          "type": "기관",
+          "degree": 11,
+          "co_text_units": 1
+        },
+        {
+          "title": "천주교",
+          "type": "사건",
+          "degree": 6,
+          "co_text_units": 1
+        },
+        {
+          "title": "흥선 대원군",
+          "type": "인물",
+          "degree": 16,
+          "co_text_units": 1
+        },
+        {
+          "title": "안동 김씨 세력",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "흥선 대원군의 개혁",
+          "type": "정책",
+          "degree": 7,
+          "co_text_units": 1
+        },
+        {
+          "title": "양전",
+          "type": "정책",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "호포제",
+          "type": "정책",
+          "degree": 1,
+          "co_text_units": 1
+        }
+      ],
+      "description": "사창제는 환곡제의 폐지에 따른 곡물 구휼 제도로, 지방 내 민간이 자율적으로 운영하는 조선 후기 정책이다.>"
+    },
+    {
+      "id": 95,
+      "title": "삼강행실도",
+      "type": "문물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "정도전",
+          "type": "인물",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "위화도 회군",
+          "type": "사건",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "조선",
+          "type": "기관",
+          "degree": 17,
+          "co_text_units": 1
+        },
+        {
+          "title": "신진 사대부",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "태종",
+          "type": "인물",
+          "degree": 7,
+          "co_text_units": 1
+        },
+        {
+          "title": "세조",
+          "type": "인물",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "최윤덕",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "김종서",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        }
+      ],
+      "description": "삼강행실도는 조선 시대 유교 윤리를 실천한 인물들의 행적을 그림과 글로 기록한 책으로, 유교 도덕 교육에 중요한 자료이다."
+    },
+    {
+      "id": 217,
+      "title": "소수 특정 가문",
+      "type": "기관",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "성균관",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "노비",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "남인",
+          "type": "기관",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "예송",
+          "type": "사건",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "환국",
+          "type": "사건",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "노론",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "소론",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "붕당 정치",
+          "type": "사건",
+          "degree": 3,
+          "co_text_units": 1
+        }
+      ],
+      "description": "소수 특정 가문은 조선 시대 붕당 정치에서 권력을 독점하고 세습하여 장기 집권을 한 세력 집단으로, 왕권 약화의 주요 원인이 되었다."
+    },
+    {
+      "id": 224,
+      "title": "속오례의",
+      "type": "문물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "성균관",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "노비",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "남인",
+          "type": "기관",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "예송",
+          "type": "사건",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "환국",
+          "type": "사건",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "노론",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "소론",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "소수 특정 가문",
+          "type": "기관",
+          "degree": 0,
+          "co_text_units": 1
+        }
+      ],
+      "description": "속오례의는 조선 후기 의례서로, 영조 시대에 편찬되어 국례 및 의례 제도 정비에 중요한 역할을 하였다."
+    },
+    {
+      "id": 72,
+      "title": "수군",
+      "type": "기관",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "세종",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "성균관",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "신문고",
+          "type": "문물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "6방",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "과거 시험",
+          "type": "정책",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "서당",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "4부 학당",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "향교",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        }
+      ],
+      "description": "수군은 조선 시대 해상 방어와 해운 통제를 맡은 군사 조직으로, 국방과 통신에 중요한 역할을 하였다."
+    },
+    {
+      "id": 331,
+      "title": "수호 통상 조약",
+      "type": "사건",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "조선 정부",
+          "type": "기관",
+          "degree": 11,
+          "co_text_units": 1
+        },
+        {
+          "title": "청",
+          "type": "기관",
+          "degree": 6,
+          "co_text_units": 1
+        },
+        {
+          "title": "흥선 대원군",
+          "type": "인물",
+          "degree": 16,
+          "co_text_units": 1
+        },
+        {
+          "title": "민씨 세력",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "치외법권",
+          "type": "정책",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "개화 정책",
+          "type": "정책",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "김기수",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "김홍집",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        }
+      ],
+      "description": "수호 통상 조약은 조선이 19세기 말 미국, 영국 등 서양 열강과 체결한 조약으로, 문호 개방과 함께 치외법권을 인정하는 불평등 조약의 성격을 띠었다."
+    },
+    {
+      "id": 47,
+      "title": "승정원",
+      "type": "기관",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "정도전",
+          "type": "인물",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "이방원",
+          "type": "인물",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "태조",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "조선과 명의 친선 관계",
+          "type": "사건",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "여진족",
+          "type": "인물",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "최윤덕",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "김종서",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "4군",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        }
+      ],
+      "description": "왕의 비서 기관으로, 조선 왕실 문서와 행정 사무를 담당하였다."
+    },
+    {
+      "id": 40,
+      "title": "시암(타이)",
+      "type": "인물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "정도전",
+          "type": "인물",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "이방원",
+          "type": "인물",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "태조",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "조선과 명의 친선 관계",
+          "type": "사건",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "여진족",
+          "type": "인물",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "최윤덕",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "김종서",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "4군",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        }
+      ],
+      "description": "동남아시아 국가로, 조선과 무역을 통해 교류하였다."
+    },
+    {
+      "id": 81,
+      "title": "역졸",
+      "type": "기관",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "세종",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "성균관",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "신문고",
+          "type": "문물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "6방",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "과거 시험",
+          "type": "정책",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "서당",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "4부 학당",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "향교",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        }
+      ],
+      "description": "역졸은 조선 시대 역에서 마필과 숙박 등 여행 지원 업무를 담당한 관리로, 공무 여행자의 이동을 지원하였다."
+    },
+    {
+      "id": 300,
+      "title": "연해주",
+      "type": "기관",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "세도 정치",
+          "type": "사건",
+          "degree": 11,
+          "co_text_units": 1
+        },
+        {
+          "title": "농민 봉기",
+          "type": "사건",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "천주교",
+          "type": "사건",
+          "degree": 6,
+          "co_text_units": 1
+        },
+        {
+          "title": "동학",
+          "type": "사건",
+          "degree": 11,
+          "co_text_units": 1
+        },
+        {
+          "title": "흥선 대원군",
+          "type": "인물",
+          "degree": 16,
+          "co_text_units": 1
+        },
+        {
+          "title": "고종",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "안동 김씨 세력",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "서양 열강의 침입",
+          "type": "사건",
+          "degree": 1,
+          "co_text_units": 1
+        }
+      ],
+      "description": "연해주는 19세기 말 러시아가 점령한 지역으로, 조선과 두만강을 경계하며 러시아와의 국경 분쟁 및 외세 침입 위협의 실체가 된 지역이다."
+    },
+    {
+      "id": 141,
+      "title": "왜란",
+      "type": "사건",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "태종",
+          "type": "인물",
+          "degree": 7,
+          "co_text_units": 1
+        },
+        {
+          "title": "성종",
+          "type": "인물",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "유석진",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "가묘",
+          "type": "정책",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "서전",
+          "type": "문물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "사족",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "도요토미 히데요시",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "조총",
+          "type": "문물",
+          "degree": 1,
+          "co_text_units": 1
+        }
+      ],
+      "description": "조선 중기 16세기 말에 일본 도요토미 히데요시의 침략으로 발생한 임진왜란을 포함한 일련의 군사적 갈등을 총칭하며, 조선의 국방력 약화와 동아시아 국제 정세 변화를 배경으로 한다."
+    },
+    {
+      "id": 346,
+      "title": "위정척사",
+      "type": "정책",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "고종",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "강화도 조약",
+          "type": "정책",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "통리기무아문",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "별기군",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "박영효",
+          "type": "인물",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "태극기",
+          "type": "문물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "효",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "조선책략",
+          "type": "정책",
+          "degree": 0,
+          "co_text_units": 1
+        }
+      ],
+      "description": "위정척사는 19세기 말 조선의 보수 유생들이 서구 세력과 개화 사상을 배척하며 전통 유교 질서 유지를 주장한 운동으로, 당시 개화파와 대립하였다."
+    },
+    {
+      "id": 54,
+      "title": "유향소(향청)",
+      "type": "기관",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "정도전",
+          "type": "인물",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "이방원",
+          "type": "인물",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "태조",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "조선과 명의 친선 관계",
+          "type": "사건",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "여진족",
+          "type": "인물",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "최윤덕",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "김종서",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "4군",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        }
+      ],
+      "description": "지방 양반들이 운영하며 향회를 통해 지방 여론 수렴과 수령 감시, 백성 교화 기능을 수행한 조선 지방 자치 기관이다."
+    },
+    {
+      "id": 238,
+      "title": "이수광",
+      "type": "인물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "남인",
+          "type": "기관",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "노론",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "붕당 정치",
+          "type": "사건",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "정조",
+          "type": "인물",
+          "degree": 7,
+          "co_text_units": 1
+        },
+        {
+          "title": "장용영",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "실학",
+          "type": "사건",
+          "degree": 6,
+          "co_text_units": 1
+        },
+        {
+          "title": "부농",
+          "type": "기관",
+          "degree": 0,
+          "co_text_units": 1
+        },
+        {
+          "title": "대상인",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        }
+      ],
+      "description": "이수광은 조선 후기 실학의 선구자로서, 저서 '지봉유설'을 통해 한국과 중국의 문화 전통을 체계적으로 정리하였다."
+    },
+    {
+      "id": 260,
+      "title": "이제마",
+      "type": "인물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "허준",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "유수원",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "홍대용",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "박지원",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "박제가",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "중상학파",
+          "type": "사상가",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "국학 연구",
+          "type": "사건",
+          "degree": 7,
+          "co_text_units": 1
+        },
+        {
+          "title": "안정복",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        }
+      ],
+      "description": "이제마는 조선 후기 의학자로 사람 체질에 따른 맞춤형 처방을 주장한 체질론을 창시하여 한의학 발전에 중요한 역할을 하였다."
+    },
+    {
+      "id": 102,
+      "title": "인지의",
+      "type": "문물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "정도전",
+          "type": "인물",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "위화도 회군",
+          "type": "사건",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "조선",
+          "type": "기관",
+          "degree": 17,
+          "co_text_units": 1
+        },
+        {
+          "title": "신진 사대부",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "태종",
+          "type": "인물",
+          "degree": 7,
+          "co_text_units": 1
+        },
+        {
+          "title": "세조",
+          "type": "인물",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "최윤덕",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "김종서",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        }
+      ],
+      "description": "인지의는 조선 시대 토지 측량에 사용된 기구로, 토지 관리와 행정 운영에 활용되어 국가 재정과 토지 제도의 발전에 기여하였다."
+    },
+    {
+      "id": 174,
+      "title": "일본 도요토미 히데요시",
+      "type": "인물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "양반",
+          "type": "기관",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "여진족",
+          "type": "인물",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "조선 수군",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "선조",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "임진왜란",
+          "type": "사건",
+          "degree": 14,
+          "co_text_units": 1
+        },
+        {
+          "title": "정발",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "송상현",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "조선 정부",
+          "type": "기관",
+          "degree": 11,
+          "co_text_units": 1
+        }
+      ],
+      "description": "도요토미 히데요시는 임진왜란을 일으킨 일본의 권력자로, 그의 사망으로 전쟁 종결 국면이 마련되었다."
+    },
+    {
+      "id": 41,
+      "title": "자와(자바)",
+      "type": "인물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "정도전",
+          "type": "인물",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "이방원",
+          "type": "인물",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "태조",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "조선과 명의 친선 관계",
+          "type": "사건",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "여진족",
+          "type": "인물",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "최윤덕",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "김종서",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "4군",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        }
+      ],
+      "description": "동남아시아 국가로, 조선과의 무역 관계에서 중요한 역할을 하였다."
+    },
+    {
+      "id": 65,
+      "title": "잡과",
+      "type": "정책",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "세종",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "성균관",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "신문고",
+          "type": "문물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "6방",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "과거 시험",
+          "type": "정책",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "서당",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "4부 학당",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "향교",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        }
+      ],
+      "description": "잡과는 조선 시대 과거 시험의 한 종류로, 중인이 주로 응시하여 의학 등 특수 분야 전문가를 관리로 선발하는 시험이었다."
+    },
+    {
+      "id": 272,
+      "title": "전세",
+      "type": "정책",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "세도 정치",
+          "type": "사건",
+          "degree": 11,
+          "co_text_units": 1
+        },
+        {
+          "title": "순조",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "헌종",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "철종",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "세도가",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "안동 김씨",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "풍양 조씨",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "정치 기강 문란",
+          "type": "사건",
+          "degree": 2,
+          "co_text_units": 1
+        }
+      ],
+      "description": "전세는 조선 후기 농민들이 농토에 부과받은 세금으로, 삼정 중 한 종류이며 세도 정치 시기 과도하게 징수되었다."
+    },
+    {
+      "id": 345,
+      "title": "조선책략",
+      "type": "정책",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "고종",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "강화도 조약",
+          "type": "정책",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "통리기무아문",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "별기군",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "박영효",
+          "type": "인물",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "태극기",
+          "type": "문물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "효",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "위정척사",
+          "type": "정책",
+          "degree": 0,
+          "co_text_units": 1
+        }
+      ],
+      "description": "조선책략은 19세기 말 조선 개화파가 청과 열강에게 조선의 국제적 지위와 개혁 방향을 제시한 외교 정책으로, 개화 세력과 위정척사 세력 간 갈등의 배경이 되었다."
+    },
+    {
+      "id": 1,
+      "title": "조준",
+      "type": "인물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "정도전",
+          "type": "인물",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "이성계",
+          "type": "인물",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "우왕",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "최영",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "위화도 회군",
+          "type": "사건",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "과전법",
+          "type": "정책",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "정몽주",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "조선",
+          "type": "기관",
+          "degree": 17,
+          "co_text_units": 1
+        }
+      ],
+      "description": "조준은 조선 건국에 참여한 신진 사대부로, 이성계와 협력하여 고려 사회 개혁과 조선 새로운 국가 질서 수립에 기여하였다."
+    },
+    {
+      "id": 67,
+      "title": "천거",
+      "type": "정책",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "세종",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "성균관",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "신문고",
+          "type": "문물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "6방",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "과거 시험",
+          "type": "정책",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "서당",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "4부 학당",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "향교",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        }
+      ],
+      "description": "천거는 조선 시대 관리 등용 방식으로, 지식인이나 관리가 재능 있는 인물을 추천하여 관직에 임명하는 제도이다."
+    },
+    {
+      "id": 49,
+      "title": "춘추관",
+      "type": "기관",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "정도전",
+          "type": "인물",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "이방원",
+          "type": "인물",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "태조",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "조선과 명의 친선 관계",
+          "type": "사건",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "여진족",
+          "type": "인물",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "최윤덕",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "김종서",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "4군",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        }
+      ],
+      "description": "조선의 역사 편찬을 담당한 기관으로, 국가 사료와 기록 보존에 중요한 역할을 하였다."
+    },
+    {
+      "id": 232,
+      "title": "탁지지",
+      "type": "문물",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "성균관",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "노비",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "남인",
+          "type": "기관",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "예송",
+          "type": "사건",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "환국",
+          "type": "사건",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "노론",
+          "type": "기관",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "소론",
+          "type": "기관",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "소수 특정 가문",
+          "type": "기관",
+          "degree": 0,
+          "co_text_units": 1
+        }
+      ],
+      "description": "탁지지는 조선 후기 재정과 경제 제도, 특히 탁지부 관련 내용을 기록한 문헌으로, 정조 시대 경제 정책 이해에 중요하다."
+    },
+    {
+      "id": 51,
+      "title": "한성부",
+      "type": "기관",
+      "frequency": 1,
+      "degree": 0,
+      "co_mention_candidates": [
+        {
+          "title": "정도전",
+          "type": "인물",
+          "degree": 3,
+          "co_text_units": 1
+        },
+        {
+          "title": "이방원",
+          "type": "인물",
+          "degree": 5,
+          "co_text_units": 1
+        },
+        {
+          "title": "태조",
+          "type": "인물",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "조선과 명의 친선 관계",
+          "type": "사건",
+          "degree": 1,
+          "co_text_units": 1
+        },
+        {
+          "title": "여진족",
+          "type": "인물",
+          "degree": 4,
+          "co_text_units": 1
+        },
+        {
+          "title": "최윤덕",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "김종서",
+          "type": "인물",
+          "degree": 2,
+          "co_text_units": 1
+        },
+        {
+          "title": "4군",
+          "type": "기관",
+          "degree": 2,
+          "co_text_units": 1
+        }
+      ],
+      "description": "조선 시대 서울의 행정 업무를 담당한 지방 행정 기관이다."
+    }
+  ]
+}

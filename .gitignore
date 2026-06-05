@@ -1,0 +1,41 @@
+# Secrets and local environment files
+.env
+.ENV
+**/.env
+**/.ENV
+*.key
+*.pem
+
+# Python virtual environments
+.venv/
+.venv*/
+**/.venv/
+**/.venv*/
+venv/
+env/
+
+# Python caches
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.pyo
+
+# Local caches and logs
+cache/
+**/cache/
+logs/
+**/logs/
+*.log
+.paddle-home/
+.paddlex-cache/
+
+# GraphRAG/vector database generated outputs
+**/lancedb/
+**/output/lancedb/
+**/*.lance/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

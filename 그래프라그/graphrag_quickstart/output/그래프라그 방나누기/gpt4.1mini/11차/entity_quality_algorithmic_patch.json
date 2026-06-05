@@ -1,0 +1,5447 @@
+{
+  "created_at": "2026-06-04T12:25:24",
+  "base": "output\\그래프라그 방나누기\\gpt4.1mini\\10차_프롬프트\\10차(수정)",
+  "summary": {
+    "entity_count_before": 394,
+    "safe_resolution_group_count": 4,
+    "entities_in_resolution_groups": 9,
+    "entity_count_after_safe_resolution": 389,
+    "canonical_relationship_count": 394,
+    "weak_edge_count": 117,
+    "orphan_entities_with_weak_edges": 39,
+    "original_relationship_count": 407,
+    "changed_or_collapsed_relationships": 10
+  },
+  "safe_entity_resolution_groups": [
+    {
+      "canonical_title": "태종",
+      "canonical_entity_id": 14,
+      "canonical_type": "인물",
+      "merged_entity_ids": [
+        14,
+        15,
+        26
+      ],
+      "merged_titles": [
+        "태종",
+        "방원",
+        "이방원"
+      ],
+      "type_family": "인물",
+      "frequency_sum": 6,
+      "degree_sum_before_dedup": 13,
+      "rule": "same canonical normalized title and compatible type family"
+    },
+    {
+      "canonical_title": "노비문서",
+      "canonical_entity_id": 390,
+      "canonical_type": "문물",
+      "merged_entity_ids": [
+        168,
+        390
+      ],
+      "merged_titles": [
+        "노비 문서",
+        "노비문서"
+      ],
+      "type_family": "문물|서적",
+      "frequency_sum": 2,
+      "degree_sum_before_dedup": 2,
+      "rule": "same canonical normalized title and compatible type family"
+    },
+    {
+      "canonical_title": "세종 대왕",
+      "canonical_entity_id": 106,
+      "canonical_type": "인물",
+      "merged_entity_ids": [
+        19,
+        106
+      ],
+      "merged_titles": [
+        "세종",
+        "세종 대왕"
+      ],
+      "type_family": "인물",
+      "frequency_sum": 3,
+      "degree_sum_before_dedup": 9,
+      "rule": "same canonical normalized title and compatible type family"
+    },
+    {
+      "canonical_title": "흥선 대원군",
+      "canonical_entity_id": 296,
+      "canonical_type": "인물",
+      "merged_entity_ids": [
+        296,
+        384
+      ],
+      "merged_titles": [
+        "흥선 대원군",
+        "흥선대원군"
+      ],
+      "type_family": "인물",
+      "frequency_sum": 7,
+      "degree_sum_before_dedup": 17,
+      "rule": "same canonical normalized title and compatible type family"
+    }
+  ],
+  "canonical_relationships": [
+    {
+      "source": "이성계",
+      "target": "정도전",
+      "weight": 19.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정도전은 신진 사대부를 대표하여 이성계와 협력하여 고려의 개혁을 추진하고 조선을 건국한 인물이다. 그는 이성계와 함께 조선 건국에 중심적인 역할을 하였으며, 정치·경제 분야에서 개혁을 이루어 신진 사대부 세력의 기반을 확립하는 데 기여하였다. 정도전과 이성계의 협력은 고려 말 혼란한 시기에 새로운 국가 체제를 세우는 데 중요한 역할을 했으며, 이를 통해 조선이라는 새로운 왕조가 탄생할 수 있었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "위화도 회군",
+      "target": "이성계",
+      "weight": 11.0,
+      "relationship_count": 2,
+      "descriptions": [
+        "위화도 회군은 이성계가 군사를 돌려 권력을 장악하는 계기가 되어 조선 건국으로 이어졌다.",
+        "이성계는 위화도 회군을 주도하여 권력 장악과 조선 건국을 가능하게 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "우왕",
+      "target": "위화도 회군",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "위화도 회군으로 우왕은 권력에서 밀려나 조선 성립의 정치적 배경이 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "위화도 회군",
+      "target": "최영",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "위화도 회군으로 최영은 권력에서 축출되어 조선 건국 전환기에 중요한 군사적 변화를 일으켰다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "이성계",
+      "target": "조선",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이성계는 조선을 건국하여 1392년 새로운 왕조를 세웠다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "과전법",
+      "target": "조선",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "과전법은 조선 건국 초기 경제 기반 마련과 국가 권력 강화를 위한 정책이었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "정몽주",
+      "target": "조선",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정몽주는 조선 건국 반대 세력의 대표로, 제거됨으로써 조선 성립 과정의 갈등을 나타낸다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "우왕",
+      "target": "이성계",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이성계가 위화도 회군 후 우왕을 몰아내고 권력을 잡아 조선 건국의 토대를 마련하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "조선",
+      "target": "한양",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조선은 도읍을 한양으로 정하여 중앙집권적 행정과 효율적 통치를 도모하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "신진 사대부",
+      "target": "조선",
+      "weight": 19.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "신진 사대부는 조선 왕조의 건국과 초기 통치 체제 확립에 중심적인 역할을 한 지배 계층이다. 이들은 조선의 성리학적 통치 이념을 주도하며 새로운 정치 사회 변화를 이끌어냈다. 신진 사대부는 기존의 기성 세력과 구별되며, 조선 건국 과정에서 핵심적인 주도 세력으로 부상하였다. 그들은 성리학을 바탕으로 한 정치 철학과 행정 원칙을 확립함으로써 조선의 국가 기틀을 마련하고, 조선 사회의 정치적, 사회적 변혁을 이끈 중요한 역할을 수행하였다. 결과적으로 신진 사대부는 조선의 초기 통치 모델과 이념적 기반을 구성하며 왕조의 안정과 발전에 기여한 핵심 집단이라고 할 수 있다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "성리학",
+      "target": "조선",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "성리학은 조선의 국가 통치 이념으로 채택되어 정치와 사회 전반에 깊은 영향을 미쳤다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "덕치주의",
+      "target": "조선",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "덕치주의는 성리학 이념을 바탕으로 조선 초기 이상적인 유교 정치 실현을 목표로 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "양반",
+      "target": "조선",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "양반은 조선 관료제 사회의 주축으로 국가 통치와 사회 질서 유지에 핵심 역할을 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "정종",
+      "target": "태종",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정종 이후 태종이 권력을 장악하고 조선 왕권을 공고히 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "사병",
+      "target": "태종",
+      "weight": 18.0,
+      "relationship_count": 2,
+      "descriptions": [
+        "태종은 사병을 모두 철폐하여 군사권을 왕권 아래로 통합하였다.",
+        "이방원은 즉위 후 사병을 혁파하여 중앙 집권적 군사 통제와 왕권 강화를 도모하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "태종",
+      "target": "호패법",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "태종이 시행한 호패법은 인구 통제 및 조세와 군역 관리 강화에 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세종 대왕",
+      "target": "집현전",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "세종은 집현전을 설치하여 학문 연구를 장려하고 국가 정책 수립에 큰 영향을 끼쳤다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "단종",
+      "target": "세조",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "세조는 단종을 몰아내고 왕권을 장악하여 조선 초기 권력 투쟁에서 승리하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "성삼문",
+      "target": "세조",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "세조는 성삼문 등 반대 세력을 제거하여 왕권 강화에 성공하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세조",
+      "target": "직전법",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "세조는 직전법을 시행하여 국가 재정 수입을 늘리고 군사력을 강화하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "경국대전",
+      "target": "성종",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "성종 때 조선 통치의 기본 법전인 경국대전을 완성하여 국가 조직과 법 체계를 확립하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "정도전",
+      "target": "태종",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정도전은 군사 계획 추진 중 이방원에게 살해당하여 계획이 중단되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "태조",
+      "target": "태종",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이방원의 권력 장악 및 정도전 제거 이후 태조가 왕위에서 물러나 조선 초 정치 변화가 일어났다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "조선",
+      "target": "조선과 명의 친선 관계",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조선은 명과 친선 관계를 유지하며 경제적, 문화적 실리를 취하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "4군",
+      "target": "최윤덕",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "최윤덕은 세종 때 압록강 방면에 파견되어 4군을 설치하며 국경 확장과 안보를 강화하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "6진",
+      "target": "김종서",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "김종서는 세종 때 두만강 방면에 파견되어 6진을 설치하고 국경 방어에 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "4군",
+      "target": "6진",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "4군과 6진은 세종 시대 북방 국경을 안정시키고 여진족 대응을 위해 설치된 군사 조직이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "여진 정책",
+      "target": "여진족",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "여진족에 대해 조선은 토벌과 포섭 회유 정책을 병행하여 북방 국경의 안정을 도모하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "쓰시마 섬 토벌",
+      "target": "조선 수군",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조선 수군은 세종 때 왜구의 근거지인 쓰시마 섬을 토벌하여 해상 방어를 강화하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "3포 개항",
+      "target": "일본",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조선은 일본과의 평화적 교역을 위해 3포를 개항하여 무역과 친선을 도모하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "의정부",
+      "target": "조선",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "의정부는 조선 중앙 정치의 최고 기관으로 중요한 국가 정책 결정 역할을 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "6조",
+      "target": "의정부",
+      "weight": 26.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "의정부는 조선 시대 국가 행정의 최고 기구로서, 국가 체계의 효율성을 높이고 관제를 정비하기 위해 6조라는 하부 업무 조직을 두었다. 6조는 의정부 아래에서 각 부문별 행정을 담당하며, 구체적인 국가 행정을 실행하는 역할을 맡았다. 의정부의 재상들과 6조의 판서들은 함께 국정에 관여하며 중앙 집권 체제를 강화하고 행정의 전문성과 효율성을 증진시켰다. 이를 통해 의정부는 행정 업무를 효과적으로 분담하고 국가 운영의 체계를 더욱 체계적이고 통합적으로 관리할 수 있었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "수령",
+      "target": "향리",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "향리는 지방 행정의 실무를 담당하며 수령의 지시 아래 지역 업무를 수행하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "6방",
+      "target": "신문고",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "신문고는 백성이 왕에게 의견을 올리는 수단으로 6방 조직 내에서 정치 소통 창구 역할을 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "과거 시험",
+      "target": "서당",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "과거 시험은 주로 서당에서 기초 교육을 받은 양반 자제들이 응시하여 관리로 선발되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "4부 학당",
+      "target": "과거 시험",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "4부 학당에서 유학 경전을 배운 인재들이 과거 시험에 응시하여 관료로 임용되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "과거 시험",
+      "target": "향교",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "향교는 지방 인재 교육 기관으로, 그 교육을 바탕으로 인물들이 과거 시험에 응시하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "생원",
+      "target": "성균관",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "성균관은 소과에 합격한 생원을 입학시켜 고등 유학 교육을 시행하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "성균관",
+      "target": "진사",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "성균관은 진사를 입학시켜 체계적인 유학 교육과 인재 양성을 담당하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "문과",
+      "target": "양반",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "문과는 주로 양반 자제가 응시하는 시험으로 조선 시대 관리 등용의 핵심 경로이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "무과",
+      "target": "양반",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "무과는 양반층과 향리, 상민 자제가 응시하여 무관을 선발하는 시험이었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "5위",
+      "target": "군역 제도",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "군역 제도에 따라 5위가 서울의 주력 군사 조직으로 중앙 군사력을 담당하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "군역 제도",
+      "target": "병마절도사",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "군역 제도는 병마절도사가 지방 육군을 지휘하는 군사 조직 운영의 기초가 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "군역 제도",
+      "target": "수군절도사",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "군역 제도는 수군절도사가 지방 수군을 이끄는 제도로 군사 방어 체계의 일부였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "병마절도사",
+      "target": "수군절도사",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "병마절도사와 수군절도사는 각각 육군과 수군의 지방 군사 지휘관으로 상호 보완적 역할을 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "병마절도사",
+      "target": "읍성",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "읍성은 병마절도사가 관할하는 지방 군사 방어 거점으로 중요하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "잡색군",
+      "target": "정규군",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "잡색군은 정규군의 예비군 역할을 하여 국가 방위력을 보완하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "강창",
+      "target": "조운",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조운 제도 하에서 강창은 세곡을 일시 저장하는 장소로 운송 체계의 핵심이었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "조운",
+      "target": "해창",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조운은 해창을 거쳐 해상 운송으로 세곡을 서울 경창까지 안전하게 보냈다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "역",
+      "target": "역원 제도",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "역원 제도는 역 설치와 역졸 배치로 조선의 교통과 통신을 원활하게 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "마패",
+      "target": "역원 제도",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "마패는 역원 제도의 일부로, 공무 여행자가 역마를 이용할 증명 수단이었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "역원 제도",
+      "target": "원",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "원은 역원 제도에서 여행자 숙박을 제공하는 시설로 교통 편의에 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세종 대왕",
+      "target": "훈민정음",
+      "weight": 20.0,
+      "relationship_count": 2,
+      "descriptions": [
+        "세종은 우리 민족의 문자 생활을 혁신한 훈민정음을 창제하여 문화 정체성과 국문학 발전의 기반을 마련하였다.",
+        "세종 대왕은 백성들의 문자 생활을 개선하고 민족 문화 발전을 위해 훈민정음을 창제하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "용비어천가",
+      "target": "훈민정음",
+      "weight": 18.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "훈민정음은 조선 세종대왕이 창제한 한글로, 한국어를 표기하기 위해 만들어진 고유 문자 체계이다. 훈민정음의 창제로 인해 우리 국문학의 새로운 장이 열렸으며, 그 결과 최초의 국문학 작품인 《용비어천가》가 탄생하였다. 《용비어천가》는 훈민정음으로 창작된 최초의 작품으로서, 한글 활용의 효시를 보여줄 뿐만 아니라 민족 문학의 발전을 상징한다. 이 작품은 훈민정음 창제의 중요성을 실질적으로 입증하며, 한국어 문학과 문화의 기초를 확립하는 데 큰 역할을 하였다. 따라서 훈민정음과 《용비어천가》는 한국 문학사에서 서로 밀접하게 연결되어 있으며, 한글 창제와 국문학 발전의 역사적 출발점으로 평가받는다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "월인천강지곡",
+      "target": "훈민정음",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "훈민정음은 국문학 발전뿐만 아니라 불교 문화 산물인 ‘월인천강지곡’ 작성에도 활용되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "용비어천가",
+      "target": "월인천강지곡",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "월인천강지곡은 용비어천가 이후의 중요한 국문학 작품으로, 조선 초기 국문학의 연속성과 발전을 보여준다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동국통감",
+      "target": "조선왕조실록",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조선왕조실록과 동국통감은 조선의 역사 기록과 국가의 역사 인식 체계를 대표하는 문헌으로, 함께 조선 역사 연구의 기초를 이룬다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "고려사",
+      "target": "고려사절요",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "고려사절요는 고려사의 핵심 내용을 요약한 역사서로, 두 문헌은 고려사 연구에 함께 참고하는 주요 자료이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동국여지승람",
+      "target": "팔도지리지",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "팔도지리지와 동국여지승람은 조선 초 지리서로, 전국의 지리 정보를 체계적으로 정리하여 국가 행정과 토지 관리에 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "경국대전",
+      "target": "조선",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "경국대전은 조선의 법치 국가 기틀을 마련하며 조선 왕조의 통치 질서 확립에 중추적 역할을 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "경국대전",
+      "target": "의정부",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "의정부는 경국대전의 법과 제도를 바탕으로 국가 정책 결정과 집행을 담당하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "사간원",
+      "target": "사헌부",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "사간원과 사헌부는 조선 시대 왕권과 관리 부정을 감시하고 견제하는 기관으로서 국왕 권력 유지 및 부패 방지에 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "과거제",
+      "target": "신진 사대부",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "과거제는 신진 사대부가 관리로 등용되는 주요 통로로서 조선 사회와 정치에 신진 사대부의 입지를 강화하는 데 역할을 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "위화도 회군",
+      "target": "조선",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "위화도 회군은 조선 건국의 직접적 계기가 되었으며, 무인 세력과 신진 사대부의 연합 왕조 수립을 촉진하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "경국대전",
+      "target": "정도전",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정도전은 경국대전 편찬과 조선의 정치 체제 설계에 핵심적 역할을 한 인물이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "경국대전",
+      "target": "태종",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "태종은 왕권 강화와 국가 제도 정비를 통해 경국대전 체계 확립에 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세종 대왕",
+      "target": "측우기",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "세종 대왕 시기에 측우기가 제작되어 조선의 과학 기술과 농업 발전에 중요한 기여를 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농사직설",
+      "target": "세종 대왕",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "세종 대왕 때 농사직설이 편찬되어 농업 생산력 향상과 국가 경제 기반 강화에 이바지하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "금속활자",
+      "target": "세종 대왕",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "세종 대왕 시기 금속활자 인쇄술이 발전하여 지식과 문화 보급이 촉진되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세종 대왕",
+      "target": "혼천의",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "혼천의는 세종 대왕 시기 천문학과 과학 기술 수준을 보여주는 중요한 과학 기구이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세종 대왕",
+      "target": "해시계",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "해시계는 세종 대왕 때 제작된 시각 측정 기구로, 시간 관리와 과학 연구에 일조하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "물시계",
+      "target": "세종 대왕",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "물시계는 세종 대왕 시기 시간 측정 기구로, 조선의 과학 기술을 상징한다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "신흥 무인 세력",
+      "target": "위화도 회군",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "신흥 무인 세력은 위화도 회군을 주도하여 조선 왕조 건국의 정치적 기반을 마련하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "김종서",
+      "target": "조선",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "김종서는 조선 초기 국방과 북방 안보 강화에 기여한 무신 장군이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "조선",
+      "target": "최윤덕",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "최윤덕은 조선 초기 북방 개척과 군사적 방어에 중요한 역할을 한 장군이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "왕권 강화",
+      "target": "태종",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "태종은 중앙 집권과 왕권 강화를 통해 조선 초기 국가 안정과 제도 완성에 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세조",
+      "target": "왕권 강화",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "세조는 조선 중기 왕권 강화를 위한 정치 개혁과 국정 안정에 힘썼다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "경국대전",
+      "target": "훈구 세력",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "경국대전의 편찬으로 조선의 통치 체계가 확립되었으며, 그 기틀 위에서 훈구 세력이 권력을 장악하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "길재",
+      "target": "사림",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "길재는 사림 세력의 학통을 이은 유학자로, 사림의 사상적 기초를 형성하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "사림",
+      "target": "성종",
+      "weight": 18.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "During the reign of King Seongjong, the Sarim faction began to enter the central political arena, leading to the formation of a political structure characterized by opposition between the Sarim and the entrenched Hun’gu faction. King Seongjong actively supported the growth of the Sarim by appointing its members to key positions within official communication and advisory institutions, thereby promoting a political environment centered on public discourse and Confucian principles. This strategic empowerment of the Sarim facilitated their rise as a significant political force, shaping the dynamics of Joseon dynasty politics during Seongjong’s reign."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "김종직",
+      "target": "성종",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "성종은 김종직을 비롯한 영남 출신 사림 세력을 등용하여 정치를 개혁하고 훈구 세력을 비판하게 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "사림",
+      "target": "훈구 세력",
+      "weight": 19.0,
+      "relationship_count": 2,
+      "descriptions": [
+        "훈구 세력은 사림 세력과 정치적으로 대립하며 권력 유지를 위해 사화를 일으켜 사림을 탄압하였다.",
+        "사림과 훈구 세력은 성리학을 둘러싼 정치적 대립과 견제를 통해 조선 중기 정치 변화를 주도하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "무오사화",
+      "target": "사림",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "무오사화는 훈구 세력이 주도하여 사림 세력을 대대적으로 공격한 정치 탄압 사건이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "사림",
+      "target": "중종반정",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "중종반정 이후 사림 세력이 다시 등용되어 조광조 중심의 개혁 정치가 추진되었으나, 훈구 세력의 반발로 사화가 일어났다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "사림",
+      "target": "조광조",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조광조는 사림 세력의 대표적 개혁가로서 유교적 이상 정치를 추진하며 사림 세력의 정치적 위상을 높였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "사림",
+      "target": "사화",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "사화들은 사림 세력이 정치 권력을 확대하는 과정에서 훈구 세력과 외척이 주도한 반복적 탄압 사건이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "사림",
+      "target": "서원",
+      "weight": 19.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "사림은 서원을 중심으로 학문과 교육 활동을 전개하며 향촌에서 세력을 유지하고 성장한 유교적 세력이다. 이들은 유학 교육과 학문 연구를 중시하여 서원을 설립하고 이를 전국적으로 확산시키는 데 주력하였다. 서원은 단순한 교육 기관을 넘어 지방 사회에서 유교 문화를 활성화하고 지방 유교 문화의 중심 역할을 하였다. 이를 통해 사림 세력은 향촌 사회 속에서 학문적 기반을 강화하고 자신들의 영향력을 넓혀 나갔다. 결과적으로 사림과 서원은 조선 시대 지방 사회에서 학문과 교육을 매개로 한 유교적 권위와 문화의 중요한 축으로 기능하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "사림",
+      "target": "향약",
+      "weight": 18.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "사림 세력은 향약을 전국에 보급하여 향촌 사회의 자치와 교화를 강화하는 중요한 역할을 수행하였다. 그들은 도덕과 공동체 규범을 확산하기 위해 향약을 적극적으로 활용하였으며, 이를 통해 향촌 공동체 내에서 자치적 운영과 도덕적 생활의 안정을 도모하였다. 사림은 이러한 향약 보급 활동을 통해 지방 사회의 질서 유지와 공동체 의식을 고취시키는 데 크게 기여하였다. 결과적으로 사림은 향약을 기반으로 한 향촌 사회의 자치 체계를 확립하고, 도덕적 규범과 공동체 생활의 조화를 이루는 데 중요한 역할을 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "사림",
+      "target": "선조",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "선조는 사림 세력을 대거 등용하여 문치주의 정치 체제를 확립하는 데 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "붕당",
+      "target": "사림",
+      "weight": 27.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "사림은 조선 시대에 공론 형성을 중심으로 활동한 정치 집단으로, 정치적 입장을 강화하고자 붕당이라는 정파를 형성하였다. 사림 세력 내부에서 발생한 갈등을 바탕으로 붕당 정치가 출현하였으며, 이 과정에서 사림은 동인과 서인이라는 두 주요 붕당으로 나뉘어 정치적 주도권을 행사하였다. 이러한 붕당 정치는 사림이 마련한 공론의 토대 위에서 발전하였으며, 사림과 붕당은 조선 정치사의 중요한 축으로 자리 잡아 각자 자신들의 이념과 정책을 전개하였다. 결과적으로 사림은 붕당 정치의 기초를 닦은 중심 세력으로, 내부 갈등을 계기로 동인과 서인의 분화를 통해 조선 중기 정치 구조에 큰 영향을 끼쳤다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "붕당",
+      "target": "이조 전랑",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이조 전랑은 붕당 간 인사권과 공론 형성의 핵심 기관으로 붕당 정치 운영의 중요한 쟁점이 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "붕당",
+      "target": "삼사",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "삼사는 붕당 정치에서 언론 역할을 하며 이조 전랑을 지원하여 공론 형성에 핵심적인 기관이었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농사직설",
+      "target": "농업",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "농사직설은 농업 생산력 향상을 위해 농업 기술을 체계적으로 정리하여 보급하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농업",
+      "target": "모내기법",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "모내기법은 농업 생산성 증대를 위한 중요한 기술로, 남부 지방에서 시행되어 농촌 경제에 긍정적 영향을 미쳤다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농업",
+      "target": "장시",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "농업 생산력 향상으로 장시가 발전하여 전국적으로 상업과 경제 활동이 활성화되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "노비",
+      "target": "훈구 세력",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "훈구 세력은 대농장과 많은 노비를 소유하여 권력 기반과 재산을 크게 확장하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "사림",
+      "target": "유향소",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "사림은 조선시대 지방 사회에서 중요한 역할을 수행한 유력한 지식인 집단으로, 향촌 사회의 자치와 교화를 중시하였다. 이들은 유향소를 구성하고 운영함으로써 지방 행정과 교화 활동에 적극적으로 참여하였다. 유향소는 사림 세력의 향촌 기반을 강화하는 핵심 기구로, 지방 주민들의 자치적 운영과 사회 질서 유지에 중요한 역할을 하였다. 사림은 유향소를 통해 향촌 사회에서 자신들의 정치적 이상과 도덕적 가르침을 실현하며, 지역 사회의 자치를 발전시키는 데 기여하였다. 결과적으로 사림과 유향소는 조선 시대 향촌 자치 체계의 중심축으로 작용하며 지방 행정과 교화에 깊숙이 관여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "여씨향약",
+      "target": "향약",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "여씨향약은 중국에서 유래한 향약으로, 사림은 이를 번역하고 조선 실정에 맞게 개편하여 향약 제도 발전에 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "계",
+      "target": "향약",
+      "weight": 6.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "계는 지역 공동체의 자발적 조직으로, 향약 제도 내에 흡수되어 농민들의 경제적·사회적 안정을 도왔다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "사림",
+      "target": "성리학",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "사림은 성리학을 중심으로 학문과 윤리 교육을 하며 조선 사회의 통치 이념을 확산시킨 핵심 세력이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "성리학",
+      "target": "이황",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이황은 성리학의 체계적인 발전과 중화학파의 대표 학자로서 조선 중기 성리학 발전에 크게 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "성리학",
+      "target": "이이",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이이는 조선 중기의 성리학자로 실천적 유교 사상을 강조하며 정치와 교육에 영향력을 행사하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "백운동 서원",
+      "target": "주세붕",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "주세붕은 안향을 추모하고 후진 양성을 위해 백운동 서원을 설립하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "백운동 서원",
+      "target": "안향",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "안향은 백운동 서원의 추모 대상이며, 조선 초기 성리학 전파에 중요한 인물이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "백운동 서원",
+      "target": "소수 서원",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "백운동 서원은 후에 소수 서원이라는 명칭을 받으며 조선 시대 서원의 대표적 사례가 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "김종직",
+      "target": "사림",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "김종직은 경상도 출신 사림 세력의 지도자로서 많은 제자를 양성하고 사림 세력의 기반을 확립하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "가묘",
+      "target": "유석진",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "유석진의 효행 이야기는 가묘 설치와 같은 효 사상을 이해하는 데 중요한 사례로, 효와 가묘 제도의 사회적 의미를 보여준다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "가묘",
+      "target": "태종",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "태종은 조선 초기 국가 권력 강화와 유교 윤리 실천의 일환으로 가묘 설치를 엄격히 시행하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "서전",
+      "target": "성종",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "성종은 여성 윤리 강화와 사회 질서 유지를 위해 서전에 기반한 재혼 금지 정책을 공포하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "사족",
+      "target": "성종",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "성종은 재혼 금지 정책을 통해 사족 계층의 명분과 가문의 풍속을 보호하고자 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "도요토미 히데요시",
+      "target": "임진왜란",
+      "weight": 19.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "도요토미 히데요시는 일본을 통일한 강력한 정치 지도자이자 군사 지휘관으로, 조선을 침략하여 임진왜란을 일으킨 인물이다. 임진왜란은 1592년부터 시작된 일본과 조선 간의 대규모 전쟁으로, 도요토미 히데요시가 자신의 권력과 영향력을 확대하기 위해 주도한 군사 행동이었다. 그는 일본 내의 통일을 이룬 후, 조선을 정복하여 명나라까지 진출하려는 야망을 품고 전쟁을 계획하고 실행하였으며, 이는 한반도 전역에 막대한 피해와 혼란을 초래했다. 도요토미 히데요시의 사망은 임진왜란의 전쟁 종결에 중요한 영향을 미쳤는데, 그의 죽음 이후 일본 내 정치 상황과 군사 전략에 변화가 생기면서 전쟁이 점차 마무리 국면에 접어들게 되었다. 따라서 도요토미 히데요시는 임진왜란을 발발시킨 주도적인 일본 권력자로서, 그의 정치적 행동과 죽음은 이 시대 동아시아 역사에 중대한 전환점을 제공하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "임진왜란",
+      "target": "조총",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조총은 임진왜란 당시 왜군의 군사력을 강화하는 무기로 사용되어 전쟁 전개에 큰 영향을 미쳤다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "임진왜란",
+      "target": "정발",
+      "weight": 18.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정발은 임진왜란 초기에 조선 방어를 위해 적극적으로 싸운 군인으로, 임진왜란의 전개를 이해하는 데 중요한 인물이다. 그는 특히 부산진과 동래성 전투에서 왜군과 맞서 싸우며 전쟁 초반의 주요 전투 상황을 형성하는 데 중요한 역할을 하였다. 정발의 활약은 임진왜란 초기 조선의 방어 노력과 저항을 대표하며, 그의 전투 참여는 전쟁 초기 단계의 전개 양상을 이해하는 데 핵심적인 의미를 가진다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "송상현",
+      "target": "임진왜란",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "임진왜란은 1592년부터 1598년까지 조선과 일본 사이에 벌어진 대규모 전쟁으로, 조선의 많은 지역과 인물이 이 전쟁에서 중요한 역할을 했다. 이 가운데 송상현은 임진왜란 초기의 대표적인 조선인 방어 인물로 기억된다. 그는 특히 임진왜란 초기 주요 전투 중 하나인 동래성 전투와 부산진 수비에 참여하여 왜군과 맞서 싸웠다. 송상현의 활약은 동래성 전투에서 조선군의 저항을 상징하며, 임진왜란 초기에 조선이 보여준 방어 태세의 중요한 사례로 평가된다. 이러한 그의 활동은 전쟁 초기 조선의 군사적 대응과 지역 방어에 있어 중요한 의미를 지닌다. 결과적으로 송상현은 임진왜란 당시 전쟁의 한복판에서 조선의 방어를 이끈 인물로서 역사에 남아 있다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "선조",
+      "target": "임진왜란",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "선조는 임진왜란 당시 국왕으로서 전쟁 중 의주로 피란하는 등 전쟁 초기 조정의 대응을 대표한다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "임진왜란",
+      "target": "조선 정부",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조선 정부는 임진왜란 동안 왜군의 북진을 저지하려고 방어선을 구축했으나 초기에는 여러 차례 실패하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "이순신",
+      "target": "조선 수군",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이순신은 조선 수군을 지휘하여 임진왜란 해상 전투에서 여러 차례 승리를 이끌었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "거북선",
+      "target": "조선 수군",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "거북선은 임진왜란 당시에 조선 수군이 사용한 독특한 전투선으로, 해전 승리의 중요한 무기였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "옥포 해전",
+      "target": "이순신",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이순신은 옥포 해전에서 조선 수군을 이끌어 임진왜란 첫 승리를 거두었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "사천 해전",
+      "target": "이순신",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이순신은 사천 해전에서 거북선을 활용하여 왜군을 격파하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "당포 해전",
+      "target": "이순신",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이순신은 당포 해전에서 조선 수군 이끄며 승리하여 해상 제해권 장악에 기여했다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "이순신",
+      "target": "한산도 대첩",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이순신은 한산도 대첩에서 거북선과 조선 수군을 이끌어 왜군을 크게 무찔렀다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "의병",
+      "target": "임진왜란",
+      "weight": 20.0,
+      "relationship_count": 2,
+      "descriptions": [
+        "의병은 임진왜란 동안 지방에서 자발적으로 조직되어 향토 방어와 왜군 저항에 기여했다.",
+        "의병은 임진왜란 당시 자발적으로 조직된 민족 저항 세력으로서 활약하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "곽재우",
+      "target": "의병",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "곽재우는 경상도에서 의병을 처음 일으켜 임진왜란 초기 민간 저항의 상징이 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "의병",
+      "target": "조헌",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조헌은 임진왜란 시기 의병장으로서 여러 지역에서 의병 활동을 주도하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "고경명",
+      "target": "의병",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "고경명은 임진왜란 중 의병장으로 활약하며 지방 방어에 공헌하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "의병",
+      "target": "정문부",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정문부는 의병장으로서 임진왜란 시기 지방 민병 조직을 이끌었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "유정(사명대사)",
+      "target": "의병",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "유정은 승려 의병장으로서 임진왜란 동안 군사 및 외교 역할을 수행하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "김시민",
+      "target": "진주성 전투",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "김시민은 진주성 전투에서 조선군을 지휘하여 왜군을 격퇴하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "권율",
+      "target": "행주산성 전투",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "권율은 행주산성 전투에서 조선군을 이끌고 왜군을 물리쳤다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "임진왜란",
+      "target": "정유재란",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정유재란은 임진왜란의 재개 국면으로, 임진왜란 전쟁의 연속성과 변화를 이해하는 데 필수적이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "명나라 원군",
+      "target": "임진왜란",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "명나라 원군은 임진왜란 중 조선을 군사적으로 지원하여 전쟁 승리에 중요한 역할을 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "명량 해전",
+      "target": "이순신",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이순신은 명량 해전에서 조선 수군을 다시 지휘하여 왜군을 대패시켰다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "노량 해전",
+      "target": "이순신",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이순신은 노량 해전에서 왜군을 격멸하는 데 성공했으나 전사하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "노비문서",
+      "target": "임진왜란",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "임진왜란 중 노비 문서가 소실되어 조선 후기 신분제 변화의 한 원인으로 작용하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "양반",
+      "target": "임진왜란",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "임진왜란으로 양반 계층의 위신이 약화되어 신분제 붕괴로 이어진 사회 변동을 설명하는 데 중요하다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "불국사",
+      "target": "임진왜란",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "불국사는 임진왜란 중 일본군에게 파괴된 대표적 문화재로, 전쟁의 문화적 피해를 상징한다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "사고",
+      "target": "임진왜란",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "임진왜란은 사고 등 문화재 소실을 초래하여 조선 문화유산 이해에 중요한 의미가 있다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "임진왜란",
+      "target": "통신사",
+      "weight": 23.0,
+      "relationship_count": 2,
+      "descriptions": [
+        "통신사는 임진왜란 이후 일본과 조선 사이 국교 정상화와 문화 교류를 담당한 외교 사절단이다.",
+        "임진왜란 이후 조선과 일본 사이에서는 통신사가 활발히 운영되었다. 통신사는 양국 간의 외교 활동을 담당하면서 두 나라의 문화 교류와 관계 안정에 중요한 역할을 수행하였다. 이러한 통신사의 외교 활동은 임진왜란으로 인한 갈등과 긴장 속에서도 지속적인 소통을 가능하게 하여, 조선과 일본 사이의 상호 이해 증진과 평화 유지에 크게 기여하였다. 결과적으로 통신사는 임진왜란 이후 양국 관계 회복과 문화적 교류 확대에 중심적인 역할을 한 중요한 외교적 채널이었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "유정",
+      "target": "통신사",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "유정은 임진왜란 후 일본에 파견되어 조선인 포로를 구출하고 통신사 파견의 계기를 마련하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "왜관",
+      "target": "통신사",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "왜관은 통신사의 활동 무대 중 하나로서, 조선과 일본 간 외교 및 교역에서 핵심 기관이었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "명나라 원군",
+      "target": "여진족",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "임진왜란 이후 명나라가 국력이 쇠약해지자 여진족이 만주를 장악하며 동아시아 권력 구도 변화에 영향을 주었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "유정",
+      "target": "조선",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "유정은 일본에 파견되어 조선인 포로를 데려오고 조선과 일본 간 국교 재개에 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "왜관",
+      "target": "조선",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조선 정부는 일본 사신의 서울 방문을 제한하고 왜관을 통해 일본과의 외교 및 무역을 통제하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "조선",
+      "target": "통신사",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조선은 공식 외교 사절단인 통신사를 일본에 파견하여 막부와 외교 및 문화 교류를 활발히 수행하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "광해군",
+      "target": "중립 외교 정책",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "광해군은 명과 후금 사이에서 중립 외교 정책을 펴 조선의 전쟁 후 안정을 도모하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "광해군",
+      "target": "허준",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "광해군은 의학 발전과 국민 건강 증진을 위해 허준에게 동의보감 편찬을 명하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동의보감",
+      "target": "허준",
+      "weight": 20.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "허준은 조선 중기에 활동한 의사로, 의학 발전과 질병 예방에 큰 기여를 한 인물이다. 그는 조선 의학의 중요한 저서인 『동의보감』을 편찬하였다. 『동의보감』은 당시의 의학 지식을 집대성한 책으로, 전통 치료법과 예방 의학의 체계적인 확립에 중요한 역할을 하였다. 이 책은 조선 의학 발전에 중추적인 기여를 하였으며, 허준의 업적은 조선 뿐만 아니라 이후 한국 전통 의학의 기틀을 마련한 것으로 평가받는다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "누르하치",
+      "target": "후금",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "누르하치는 여진족을 통일하고 후금을 세워 명나라에 대항하는 강력한 국가를 건설하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "명나라",
+      "target": "후금",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "후금은 명나라의 쇠퇴를 틈타 대립하며 동아시아 정치 지형에 변화를 일으켰다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "광해군",
+      "target": "여진족",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "광해군은 변하는 북방 정세 속에서 여진족(후금)의 강성을 인식하고 외교적 중립을 택하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "서인",
+      "target": "인조반정",
+      "weight": 27.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "서인 세력은 광해군의 유교 윤리 위반과 정치적 취약점을 빌미로 삼아 인조반정을 주도하였다. 이 반정을 통해 서인은 정권을 장악하고 북인 정권을 무너뜨리며 정치적 주도권을 확보하였다. 인조반정은 서인 세력이 권력 전환을 이끌어내는 중요한 계기가 되었으며, 이를 통해 서인은 조선 후기 정치의 중심 세력으로 부상하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "광해군",
+      "target": "영창대군",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "영창대군의 제거는 광해군 정권의 도덕적 약점을 드러내 정치적 위기를 심화시켰다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "광해군",
+      "target": "인목대비",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "인목대비의 유폐는 광해군 정권 내 권력 불안을 상징하며 독재적 왕권 행사의 문제점을 보여주었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "명나라",
+      "target": "서인 정권",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "서인 정권은 명나라와 가까운 외교 정책을 추구하며 후금을 배척하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "정묘호란",
+      "target": "후금",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "후금은 1627년 조선에 침입하여 정묘호란을 일으키며 조선 북방 안보를 위협하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "이괄의 난",
+      "target": "정묘호란",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조선 내부의 이괄의 난으로 혼란이 심화되어 후금 군대의 정묘호란 침입이 가능해졌다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "서인 정권",
+      "target": "청나라 태종",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "청나라 태종은 조선에 태도를 강화하여 서인 정권과 조선의 외교 긴장을 높였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "청",
+      "target": "후금",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "후금은 국호를 청으로 바꾸어 동아시아 강대국으로 발전하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "병자호란",
+      "target": "청",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "청은 국력을 바탕으로 조선을 재차 침략하여 병자호란을 일으켰다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "병자호란",
+      "target": "인조",
+      "weight": 20.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "병자호란은 조선 왕 인조가 청군의 침략에 맞서 남한산성에서 항전한 전쟁이다. 이 전쟁은 인조에게 큰 위기를 안겨주었으며, 그 결과 인조는 외교 정책을 새롭게 결정하는 계기가 되었다. 남한산성에서 인조는 선전 후화론을 주장하며 끝까지 항전하려 했으나, 결국 전세가 불리해져 삼전도에서 청군에 굴욕적인 항복을 하게 되었다. 병자호란은 조선과 청나라 사이의 정치적 긴장과 군사적 충돌을 상징하는 중요한 사건으로, 인조의 통치와 외교 전략에 지대한 영향을 미쳤다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "남한산성",
+      "target": "인조",
+      "weight": 18.0,
+      "relationship_count": 2,
+      "descriptions": [
+        "인조는 남한산성에 피신하여 청의 침략에 45일간 버텼다.",
+        "인조가 병자호란 당시 남한산성으로 피신하여 항전을 지휘하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "병자호란",
+      "target": "삼전도",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "병자호란은 삼전도에서 청과 굴욕적인 화의를 맺는 것으로 끝났다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "북벌 운동",
+      "target": "효종",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "효종은 북벌 운동을 국정의 중요한 목표로 삼고 추진하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "북벌 운동",
+      "target": "송시열",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "송시열은 효종과 함께 북벌 운동에 참여하며 군사력 강화에 힘썼다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "북벌 운동",
+      "target": "이완",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이완도 북벌 운동에 참여하여 군사력 양성을 위해 노력하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "나선 정벌",
+      "target": "청",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "나선 정벌은 청이 러시아의 침입을 막기 위해 조선에 군사 원병을 요청한 사건이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "광해군",
+      "target": "인조반정",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "인조반정은 광해군을 폐위하고 인조가 즉위하도록 한 정치적 사건이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "서인",
+      "target": "친명 배금 정책",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "서인 정권은 친명 배금 정책을 실시하여 명을 지지하고 청에 적대적인 외교 노선을 견지하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "여진족",
+      "target": "후금",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "여진족은 후금을 건국한 민족으로서 동아시아 정세 변동에 중요한 역할을 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "인조반정",
+      "target": "종묘 사직",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "인조반정 당시 윤리와 기강이 무너져 종묘 사직의 위기에 대한 우려가 깊었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "제1차 왕자의 난",
+      "target": "태종",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이방원은 제1차 왕자의 난을 일으켜 정도전 등 정치 반대 세력을 제거하고 자신이 왕위 계승자로 나섰다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "의정부",
+      "target": "태종",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이방원은 왕권 강화를 위해 의정부를 설치하고 행정 체제를 개혁하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "계유정난",
+      "target": "세조",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "계유정난으로 세조가 단종을 몰아내고 왕위에 올라 조선 왕권의 새로운 국면을 열었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "계유정난",
+      "target": "신숙주",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "신숙주는 계유정난에 참여하여 세조 즉위에 공헌하고 정난 공신으로서 권력을 장악하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "사육신",
+      "target": "성삼문",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "성삼문은 사육신의 한 명으로 단종 복위를 위해 계유정난에 저항하다 처형되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "신숙주",
+      "target": "정난 공신",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "신숙주는 정난 공신 2등으로서 세조 집권 체제에서 중요한 위치를 차지하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "김상헌",
+      "target": "정묘호란",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "김상헌은 정묘호란 당시 명에 구원병 요청을 했고, 후금과 화의를 반대하는 강경 입장을 주장하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "김상헌",
+      "target": "병자호란",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "병자호란 시기에 김상헌은 선전 후화를 주장하며 항복에 반대하는 입장을 고수하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "병자호란",
+      "target": "최명길",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "최명길은 병자호란 당시 항복 문서를 작성하여 남한산성 항복에 결정적 역할을 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "김상헌",
+      "target": "최명길",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "병자호란 이후 김상헌은 최명길이 작성한 항복 문서를 찢으며 강경 투쟁을 이어갔으며, 두 사람은 항복과 저항 입장을 대변한다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "선전 후화론",
+      "target": "인조",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "인조는 병자호란 당시 먼저 싸우고 그 후에 화의를 주장하는 선전 후화론을 강력히 제기하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "상소",
+      "target": "인조",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "인조는 병자호란 이후 명과의 의리를 유지하고 치욕을 씻기 위해 상소를 올렸다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "최명길",
+      "target": "후금",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "최명길은 후금과의 유연한 외교 관계 유지를 주장하며 강경 투쟁을 피하고자 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "삼사",
+      "target": "홍문관",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "삼사 관리는 홍문관을 중심으로 정치 비판과 공론 형성에 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "붕당",
+      "target": "홍문관",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "홍문관은 붕당 간의 공론 형성을 주도한 기관이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "붕당",
+      "target": "비변사",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "붕당 정치가 전개되면서 국방 기구인 비변사가 최고 정치 기구로 권한을 확대하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "비변사",
+      "target": "의정부",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "비변사 권한 확대는 의정부 기능 약화와 연결되며 정치 권력 분산과 집중 변화를 나타낸다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "남인",
+      "target": "서인",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "서인은 우세 세력이 되었고 남인은 동참하는 양상으로 붕당 정치가 전개되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "붕당",
+      "target": "예송",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "붕당 간 경쟁이 심해지면서 예송이라는 정치적 예법 논쟁이 일어났다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "남인",
+      "target": "서인 정권",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "남인은 서인 정권의 전제화 과정에서 크게 위축되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "노론",
+      "target": "서인",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "서인은 노론과 소론으로 분화되었으며, 노론이 후기 정치 주도권을 장악하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "예송",
+      "target": "환국",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "예송 논쟁이 붕당 간 대립을 심화시켜 환국 정치의 배경이 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "붕당 정치",
+      "target": "환국",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "환국은 붕당 정치에서 특정 붕당이 권력을 장악한 정치권력 교체 사건이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "붕당 정치",
+      "target": "탕평책",
+      "weight": 20.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "붕당 정치는 조선 시대에 특정 정치 세력들 간의 당파 싸움과 갈등으로 인해 정치적 혼란과 폐해를 초래한 정치 체제이다. 이러한 붕당 정치의 문제점을 극복하고자 영조와 정조는 탕평책이라는 정치 개혁 정책을 제기하고 실시하였다. 탕평책은 붕당 정치로 인한 당파 싸움과 정치 혼란을 해소하는 데 목적을 두었으며, 다양한 당파를 포용하여 정치의 안정을 도모하려는 노력이었다. 이를 통해 영조와 정조는 조선 정치의 균형과 화합을 추구하며 붕당 정치의 폐해를 극복하고자 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "영조",
+      "target": "탕평책",
+      "weight": 21.0,
+      "relationship_count": 2,
+      "descriptions": [
+        "영조는 조선 시대의 왕으로, 그의 통치 기간 동안 붕당 간의 심각한 갈등과 분열 상황에서 왕권을 안정시키고 정치적 균형을 이루기 위해 탕평책을 처음 도입하고 본격적으로 시행하였다. 탕평책은 당파 간의 대립과 갈등을 완화하여 국가 내 정치적 안정을 도모하고, 이를 통해 왕권을 강화하는 데 중점을 둔 정책이었다. 영조는 이러한 탕평책을 통해 다양한 정치 세력들을 포용하고 조정하며 당파 간의 갈등을 줄이고자 노력함으로써, 조선 사회의 정치적 혼란을 해소하고자 하였다. 이로써 영조와 탕평책은 조선 후기 정치 균형과 왕권 강화를 위한 중요한 역할을 수행하였다.",
+        "탕평책은 영조가 붕당 정치의 폐단을 극복하고 왕권을 강화하기 위해 시도한 정책으로, 영조의 정치적 업적과 직결된다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "노론",
+      "target": "탕평책",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "탕평책은 노론 강경파를 배제하고 온건파를 등용하여 노론 독주를 견제하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "소론",
+      "target": "탕평책",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "탕평책은 온건한 소론 인사를 등용하여 붕당 간 균형을 유지하고 왕권을 강화하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "남인",
+      "target": "탕평책",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "탕평책은 남인 온건파의 정치 참여를 허용하여 당파 균형과 왕권 강화를 도모하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "영조",
+      "target": "탕평비",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "영조는 탕평책의 중요성을 알리기 위해 성균관에 탕평비를 세웠다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "성균관",
+      "target": "탕평책",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "탕평책의 상징인 탕평비가 성균관에 세워져 학문 기관에서 붕당 다툼 금지를 촉구하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "균역법",
+      "target": "영조",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "영조는 탕평책과 함께 군역 부담 경감을 위해 균역법을 시행하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "신문고",
+      "target": "영조",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "영조는 백성 보호를 위해 신문고를 부활시켜 억울함을 호소할 수 있게 했다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "속대전",
+      "target": "영조",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "속오례의"
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "정조",
+      "target": "탕평책",
+      "weight": 18.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정조는 조선 시대의 왕으로서, 그의 통치 기간 동안 영조가 시행한 탕평책을 계승하여 정치적 안정을 도모하고 왕권 강화를 위해 힘썼다. 즉위 이후에도 꾸준히 탕평책을 실시함으로써 당쟁으로 인한 붕당 대립을 완화하고 국정의 안정성을 확보하고자 하였다. 이러한 정책적 연속성은 정조가 왕권을 공고히 하고 전국적인 정치적 갈등을 줄이는 데 중요한 역할을 하였다. 탕평책은 특정 정치 세력에 치우치지 않고 여러 당파를 고루 등용하여 균형을 맞추는 정책으로, 정조는 이를 통해 왕권 중심의 통치를 강화하는 동시에 사회 안정을 유지하려는 노력을 지속하였다. 결과적으로 정조는 탕평책을 바탕으로 정국을 안정시키고 국가 발전에 기여한 군주로 평가받는다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "규장각",
+      "target": "정조",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정조는 자신의 정치와 학문 연구를 위해 규장각을 설치하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "장용영",
+      "target": "정조",
+      "weight": 17.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정조는 자신의 권력 강화를 목적으로 장용영이라는 친위 군사 기관을 설치하였다. 장용영은 정조가 창설한 친위 부대로서, 왕권 강화를 도모하기 위해 조직되었다. 이 군사 기관은 정조가 자신의 통치 기반을 공고히 하고 내부의 권력 안정성을 확보하기 위해 직접 관리한 친위 부대였다. 따라서 장용영은 정조의 권력 강화와 왕권 확립에 중요한 역할을 한 군사 조직으로 평가된다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "정조",
+      "target": "화성",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정조는 왕권 상징과 국방 강화를 위해 수원에 화성을 축조하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "대전통편",
+      "target": "정조",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "동문휘고"
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "서얼",
+      "target": "정조",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "노비"
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "성리학",
+      "target": "실학",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "실학은 성리학 중심의 경직된 사회를 비판하며 조선 후기 현실 문제 해결을 강조한 실용적 학문으로 발전하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "노론",
+      "target": "붕당 정치",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "노론은 조선 후기 붕당 정치에서 집권한 주요 세력으로, 정치 독점과 사회 모순 심화의 중심이었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "김육",
+      "target": "대동법",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "김육은 대동법의 확대 실시와 동전 사용 확대에 힘써 경제 개혁에 중요한 역할을 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "유형원",
+      "target": "중농 학파",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "유형원은 중농 학파에 속하는 실학자로 토지 제도 개혁을 주장하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "이익",
+      "target": "중농 학파",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이익은 중농 학파의 실학자로서 농가 토지 상속 및 매매 금지 정책을 제안하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "정약용",
+      "target": "중농 학파",
+      "weight": 20.0,
+      "relationship_count": 2,
+      "descriptions": [
+        "정약용은 중농 학파를 대표하는 실학자로 농촌 공동 소유와 경작을 통한 개혁을 주장하였다.",
+        "정약용은 중농 학파의 대표적인 인물로, 조선 후기 사회의 토지 개혁과 실용적 정치 개혁에 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "북학파",
+      "target": "중상 학파",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "중상 학파는 청 문물을 수용하여 조선 사회를 개혁하려는 사상을 가진 북학파와 동일한 실학 집단이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "유수원",
+      "target": "중상 학파",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "유수원은 중상 학파에 속하며 상공업 진흥과 청 문물 수용을 강조하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "중상 학파",
+      "target": "홍대용",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "홍대용은 중상 학파의 실학자로 청 문명을 적극 수용하여 조선 개혁을 주장하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "박지원",
+      "target": "중상 학파",
+      "weight": 19.0,
+      "relationship_count": 2,
+      "descriptions": [
+        "박지원은 중상 학파 실학자로 청 선진 문물의 도입과 개혁을 주도하였다.",
+        "박지원은 중상 학파의 핵심 실학자로 상업과 유통을 통한 경제 활성화 방안을 제시하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "박제가",
+      "target": "중상 학파",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "박제가는 중상 학파 소속 실학자로 상공업 발전과 청 문물 수용을 통한 개혁을 강조하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "남인",
+      "target": "실학",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "남인은 오랫동안 정권에서 배제된 정치 세력이지만 실학자들을 배출하며 현실 개혁에 중요한 역할을 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "대동법",
+      "target": "실학",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "실학 사상은 대동법 확대 실시와 경제적 세제 개혁과 밀접한 관련이 있다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "대상인",
+      "target": "중상 학파",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "중상 학파가 주장한 상공업 진흥은 대상인 계층의 등장에서 배경적 의미를 가진다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "북학파",
+      "target": "유수원",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "유수원은 북학파의 대표적 인물로서 청 문물을 수용하고 조선 현실 개혁을 주장하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "북학파",
+      "target": "홍대용",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "홍대용은 북학파의 주요 인물로서 청의 선진 문물과 과학 기술을 조선에 도입하길 원하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "박지원",
+      "target": "북학파",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "박지원은 북학파의 핵심 인물로 청 문화 수용과 상공업 발전을 통한 사회 개혁을 주장하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "박제가",
+      "target": "북학파",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "박제가는 북학파의 대표적 인물 중 하나로 현실 개혁에 주력하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "북학파",
+      "target": "중상학파",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "북학파와 중상학파는 조선 후기 경제 현실 개혁과 상공업 발전을 강조한 사상적 흐름에서 밀접히 연결되어 있다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "국학 연구",
+      "target": "안정복",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "안정복은 국학 연구의 대표적 인물로, 우리 역사를 체계화한 ‘동사강목’을 저술하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "국학 연구",
+      "target": "유득공",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "유득공은 국학 연구의 한 축으로 발해를 한국사에 포함시키는 ‘발해고’를 저술하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "국학 연구",
+      "target": "이중환",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이중환은 국학 연구에서 지리와 경제 생활을 체계적으로 탐구한 학자이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "국학 연구",
+      "target": "정상기",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정상기는 국학 연구의 하나인 지도 제작 분야를 발전시켜 ‘동국지도’를 완성하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "국학 연구",
+      "target": "김정호",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "김정호는 ‘대동여지도’를 제작하여 조선 후기 국학 연구 중 지리학 발전에 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "국학 연구",
+      "target": "신경준",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "신경준은 국학 연구를 통한 한글 음운 연구로 ‘훈민정음운해’를 저술하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "국학 연구",
+      "target": "유희",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "유희는 국학 연구에 기여한 국어학자로 ‘언문지’를 통해 한글과 문화 의식을 연구하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "실사구시",
+      "target": "실학",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "실학은 실증적 학문 태도인 실사구시를 기반으로 하여 현실 문제 해결과 근대적 개혁 사상을 선도하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "실학",
+      "target": "중농 학파",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "중농 학파는 실학 운동의 토지와 농업 중심 개혁을 강조한 계파로, 실학의 사회 개혁 방향 중 중요한 축을 형성한다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "실학",
+      "target": "중상 학파",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "중상 학파는 실학의 경제적 현실 인식과 상업·유통 활성화를 주장한 실학 계파로, 실학의 경제 개혁 사상을 나타낸다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "영조",
+      "target": "의금부",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "영조는 탕평책 시행 중 반대파 즉 붕당 인사에 대한 처벌과 조정을 의금부에 맡겨 정치 안정에 활용하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세도 정치",
+      "target": "순조",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "순조가 어린 나이에 즉위하면서 외척 가문이 권력을 장악하여 세도 정치가 시작되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세도 정치",
+      "target": "헌종",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "헌종 통치 기간에도 외척 세력이 권력을 독점하는 세도 정치가 계속되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세도 정치",
+      "target": "철종",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "철종 시대까지 이어진 세도 정치는 조선 후기 정치 부패와 사회 혼란의 특징이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세도 정치",
+      "target": "세도가",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "세도가는 조선 후기 어린 왕과 외척이 정권을 장악한 세도 정치의 주체 세력이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세도가",
+      "target": "안동 김씨",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "안동 김씨 가문은 세도가를 대표하는 외척 세력으로 권력을 독점하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세도가",
+      "target": "풍양 조씨",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "풍양 조씨 가문은 세도가의 핵심 외척 가문 중 하나이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세도 정치",
+      "target": "정치 기강 문란",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "세도 정치 하에서 정치 기강이 문란해져 부패와 부정행위가 만연하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "과거 시험",
+      "target": "정치 기강 문란",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "부패한 정치 기강은 과거 시험에서 부정과 뇌물이 판치는 원인이 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "매관매직",
+      "target": "세도 정치",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "매관매직은 세도 정치 시기의 부패한 관직 매매 행위로, 국가와 백성에게 큰 피해를 주었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "매관매직",
+      "target": "탐관오리",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "탐관오리들은 매관매직을 통해 관직을 사서 백성들에게 과다한 세금을 징수하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농민 봉기",
+      "target": "삼정",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "삼정 문란은 농민 봉기의 주요 원인으로, 과도한 세금과 환곡 이자 부담 때문에 농민 생활이 악화되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "삼정",
+      "target": "환곡",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "환곡은 삼정의 하나로, 조선 후기 세도 정치 기간에 부정과 고리대 성격으로 변질되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "삼정",
+      "target": "탐관오리",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "탐관오리들은 삼정 징수 과정에서 부당한 착취를 일삼았다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농민 봉기",
+      "target": "세도 정치",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "세도 정치로 인한 부패와 삼정 문란이 농민 봉기를 촉발한 중요한 배경이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농민 봉기",
+      "target": "삼정의 문란",
+      "weight": 20.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "삼정의 문란은 조선 시대 농민 봉기의 주요 원인으로, 과도한 세금 부과와 지방 관리들의 부패 행위가 결합하여 농민들의 불만과 생활고를 심화시켰다. 삼정은 세 가지 세금 제도를 의미하는데, 이 세금들이 부당하게 징수되면서 농민들의 삶은 크게 악화되었다. 이러한 경제적 부담과 부패는 전국 각지에서 농민 봉기가 발생하는 직접적인 원인이 되었다. 따라서 삼정의 문란은 농민 봉기의 배경이자 촉매제로 작용하며, 농민들의 반발과 저항을 불러일으킨 핵심 문제로 평가된다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농민 봉기",
+      "target": "탐관오리",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "탐관오리의 부정과 착취는 농민 봉기와 사회 불안의 중요한 원인으로 작용하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "삼정의 문란",
+      "target": "암행어사",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "암행어사는 조선 시대에 삼정의 문란과 지방 관리의 부패 문제를 감찰하고 바로잡기 위해 파견된 관리였다. 이들은 삼정의 문란, 즉 삼정(군포, 환곡, 결작)의 부당한 운영과 관리들의 부정 행위를 조사하여 부패를 척결하고 사회 문제를 해결하는 데 중요한 역할을 맡았다. 그러나 암행어사가 파견되었음에도 불구하고 이들의 노력은 큰 효과를 거두지 못하여 삼정의 문란 문제는 쉽게 개선되지 않았다. 이처럼 암행어사는 삼정의 문란과 관리 부패 문제를 직접 감시하고 시정하기 위해 임명되었지만, 근본적인 문제 해결에는 한계가 있었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "홍경래",
+      "target": "홍경래의 난",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "홍경래는 몰락 양반 출신으로 1811년 평안도에서 농민과 광부를 이끌어 홍경래의 난을 주도하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "진주 농민 봉기",
+      "target": "홍경래의 난",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "홍경래의 난의 실패 이후 농민 봉기가 전국으로 확산되었으며, 진주 농민 봉기 등 여러 봉기에 영향을 미쳤다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "백낙신",
+      "target": "진주 농민 봉기",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "백낙신의 과도한 수탈은 진주 농민 봉기를 촉발시킨 주요 원인이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "진주",
+      "target": "진주 농민 봉기",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "진주는 진주 농민 봉기의 발생지로서 봉기의 중심 무대였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "정감록",
+      "target": "후천 개벽 사상",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정감록의 예언 사상은 후천 개벽과 같은 시대적 예언 신앙의 일부분으로, 조선 후기 민중이 새 세상과 구원을 바라는 정서를 반영한다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "이승훈",
+      "target": "천주교",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "이승훈은 천주교 초창기에 청에서 세례를 받고 돌아와 조선 천주교 교회의 창설에 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "정조",
+      "target": "천주교",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정조는 천주교를 학문적으로 연구하도록 하였으며, 초기에는 심한 박해를 자제하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "순조",
+      "target": "신유박해",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "순조는 즉위 후 천주교에 대한 대대적 박해인 신유박해를 주도하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "신유박해",
+      "target": "천주교",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "신유박해는 천주교 교세 확장에 대한 조선 정부의 강경 대응으로 천주교 박해의 전환점이 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동학",
+      "target": "최제우",
+      "weight": 30.0,
+      "relationship_count": 2,
+      "descriptions": [
+        "최제우는 동학을 창시한 인물로, 전통 신앙과 유불도를 융합한 민족적 종교 운동을 일으키며 농민과 민중에게 희망을 주는 중요한 사회적 변화를 추구하였다. 동학은 단순한 종교를 넘어 당시 사회의 억압받는 계층을 위한 사회 운동의 성격을 지니고 있었으며, 이를 통해 민중들에게 새로운 정신적 기반과 공동체 의식을 제공하였다. 최제우는 동학을 통해 전통적인 신앙 체계와 동서양의 사상을 조화롭게 통합하며, 민족 고유의 정체성과 사회 정의를 실현하고자 하였다. 이러한 동학 운동은 조선 후기 사회 내에서 민중의 삶에 직접적인 영향을 미쳤으며, 당시 권위주의 체제와 부패한 사회 구조에 대한 비판과 개혁의 목소리를 담아내어 큰 호응을 얻었다. 결과적으로 최제우와 동학은 한국 역사에서 중요한 종교적·사회적 혁신의 사례로 평가받으며, 민중의 자각과 저항 정신을 고취시킨 민족 운동으로 자리매김하였다.",
+        "최제우는 동학을 창시하여 인내천 사상을 중심으로 농민과 서민에게 평등과 사회 개혁의 메시지를 전파하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동경대전",
+      "target": "동학",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "동경대전은 동학의 교리를 정리한 주요 경전으로, 동학 사상을 이해하는 데 필수적이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동학",
+      "target": "용담유사",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "용담유사는 동학 창시자인 최제우의 사상과 행적을 기록한 문헌으로 동학의 역사적 이해에 중요하다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동학",
+      "target": "서학",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "동학은 서학(천주교)와 대립하며 반외세적 성격으로 우리 사회를 수호하려는 운동이었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동학",
+      "target": "무속 신앙",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "동학은 전통 민간 신앙인 무속 신앙을 바탕으로 하여 민중의 정신적 지주 역할을 이어갔다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "정감록",
+      "target": "천주교",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정감록과 천주교는 모두 19세기 조선 민중 속에서 새 세상과 구원을 염원하는 사상과 신앙으로 함께 이해할 필요가 있다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "삼정의 문란",
+      "target": "세도 정치",
+      "weight": 27.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "세도 정치 시기는 외척 세력이 권력을 독점하며 국가 기강이 문란해진 시기로, 이로 인해 삼정의 문란이 심화되었다. 세도 정치의 부패와 무능은 토지 문제와 세금의 부당 징수, 기타 행정적 부패를 포함하는 삼정의 문란을 악화시켜 농민들의 생활 고통을 크게 증가시켰다. 이러한 사회경제적 고통은 농민들의 불만을 증폭시켜 결국 농민 봉기와 사회 불안으로 이어졌다. 따라서 세도 정치와 삼정의 문란은 서로 긴밀히 연관되어 조선 후기 농민들의 삶에 심각한 악영향을 끼쳤으며, 사회 전반의 붕괴와 혼란을 불러일으킨 주요 원인으로 평가된다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "삼정의 문란",
+      "target": "홍경래의 난",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "삼정의 문란과 탐관오리의 부패는 홍경래의 난 발발의 주요 원인으로 농민 봉기의 배경이 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "삼정의 문란",
+      "target": "진주 농민 봉기",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "삼정의 문란으로 인한 농민의 고통이 진주 농민 봉기 등 지방 농민 봉기의 직접적인 원인이 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세도 정치",
+      "target": "홍경래의 난",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "세도 정치 하에서 부패와 사회 모순이 증가하여 홍경래의 난이 전국적 농민 봉기로 이어졌다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동학",
+      "target": "삼정의 문란",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "동학은 삼정의 문란으로 경제적 어려움을 겪는 농촌 사회에서 평등과 구원의 가르침으로 확산되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "고종",
+      "target": "흥선 대원군",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군은 어린 고종이 즉위하자 그의 섭정으로서 집권하여 조선 후기 개혁을 주도하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농민 봉기",
+      "target": "동학",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "동학은 농민들의 불만과 개혁 요구를 조직화하여 민중 봉기로 발전하는 과정에 중요한 역할을 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "서양 열강의 침입",
+      "target": "흥선 대원군",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "서양 열강의 조선 연해 침입과 위협은 흥선 대원군이 내정과 군사 개혁에 나서게 된 외부적 원인이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세도 정치",
+      "target": "안동 김씨 세력",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "안동 김씨 세력은 19세기 후반 세도 정치의 중심 가문으로, 왕권 약화와 정치 부패를 심화시켰다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "안동 김씨 세력",
+      "target": "흥선 대원군",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군은 세도 정치의 주역인 안동 김씨 세력을 몰아내고 왕권 강화를 추진하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "내정 개혁",
+      "target": "왕권 강화",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군의 내정 개혁은 왕권 강화를 주요 목표로 하여 조선 후기 정치 질서 회복에 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "흥선 대원군",
+      "target": "흥선 대원군의 개혁",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군은 왕권 강화와 국가 개혁을 목표로 개혁 정책을 추진하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "안동 김씨 세력",
+      "target": "흥선 대원군의 개혁",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군의 개혁은 세도 정치의 대표 세력인 안동 김씨 세력을 몰아내는 데 성공하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "서원",
+      "target": "흥선 대원군의 개혁",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "서원의 특권 축소와 대규모 철폐는 흥선 대원군의 개혁 중 핵심 정책으로 국가 재정 개선과 사회 질서 확립에 기여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "삼정의 문란",
+      "target": "흥선 대원군의 개혁",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군의 개혁 정책은 삼정의 문란을 시정하여 농민 부담 완화를 도모하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "양전",
+      "target": "흥선 대원군의 개혁",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군은 양전을 실시하여 토지 조사를 통해 세금 체계를 개선하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "호포제",
+      "target": "흥선 대원군의 개혁",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군은 호포제를 실시하여 양반에게도 군포를 부과함으로써 세금 부담의 형평성을 높였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "환곡제 폐지",
+      "target": "흥선 대원군의 개혁",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군은 구습인 환곡제를 폐지하고 사창제를 도입하여 곡물 수급과 민생 안정을 꾀하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "경복궁 중건",
+      "target": "흥선 대원군",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군은 임진왜란 때 소실된 경복궁을 중건하여 왕실 권위 회복과 정치 안정을 도모하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "대전회통",
+      "target": "흥선 대원군",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군은 법전을 편찬하여 통치 규범을 정비하고 중앙 집권 체제를 강화하고자 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "경복궁 중건",
+      "target": "당백전",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "경복궁 중건 자금 마련을 위해 발행된 당백전이 인플레이션과 민생 악화를 불러일으켰다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "원납전",
+      "target": "흥선 대원군",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군은 경복궁 중건 등 재원 마련을 위해 원납전이라는 강제 기부금을 거두었으며, 이는 민심 이반의 원인이 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "문세",
+      "target": "흥선 대원군",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군 정권은 도성 출입 백성에게 문세를 부과하여 재정 확보에 나섰으나 민생에 부담을 주었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "천주교",
+      "target": "흥선 대원군",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군은 초기 온건 태도에서 점차 천주교를 탄압하여 사회 갈등을 심화시키고 외세와의 마찰 원인이 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "병인양요",
+      "target": "천주교",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "천주교 탄압과 프랑스 선교사 처형이 병인양요의 원인으로 작용하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "병인양요",
+      "target": "프랑스 선교사",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "프랑스 선교사 처형이 프랑스의 강화도 침략, 즉 병인양요의 직접적 계기가 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "양헌수 부대",
+      "target": "조선 정부",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조선 정부는 흥선 대원군 집권기 군사 체계 정비를 통해 양헌수 부대를 조직하고 외세에 대응하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "삼랑성(정족산성)",
+      "target": "양헌수 부대",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "양헌수 부대는 삼랑성(정족산성)에서 병인양요 때 프랑스군을 격퇴하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "병인양요",
+      "target": "오페르트 사건",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "병인양요 후 오페르트 사건이 발생하여 조선 내 서양인 배척 기운이 더욱 거세졌다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "남연군",
+      "target": "오페르트 사건",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "오페르트 사건은 흥선 대원군 아버지 남연군 무덤 도굴 시도로 조선 내 서양인 배척을 강화하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "신미양요",
+      "target": "제너럴 셔먼 호",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "제너럴 셔먼 호의 조선 내 침입 사건이 신미양요라는 미국의 군사 행동으로 이어졌다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "신미양요",
+      "target": "흥선 대원군",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "신미양요는 흥선 대원군 집권기 외세 침략 상황과 조선의 통상 거부 정책과 관련 깊다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "병인양요",
+      "target": "제너럴 셔먼 호",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "제너럴 셔먼 호 사건이 프랑스의 강화도 침략인 병인양요의 배경이 되었으며, 서양 세력과 조선의 갈등을 설명하는 핵심 사건이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "병인양요",
+      "target": "척화비",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "병인양요를 비롯한 서양 세력의 침입 이후 조선 정부는 척화비를 세워 통상 수교 거부 정책을 알렸다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "광성보",
+      "target": "신미양요",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "신미양요 당시 조선군과 미군이 강화도 광성보에서 격렬한 전투를 벌였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "병인양요",
+      "target": "흥선 대원군",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군은 병인양요 시기 실질적 권력자로서 서양 세력의 침입에 대응하는 자주적 정책을 추진하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "척화비",
+      "target": "흥선 대원군",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군은 서양과의 통상 수교 거부 의지를 나타내기 위하여 전국에 척화비를 세우도록 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "광성보",
+      "target": "어재연",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "어재연 장군은 신미양요 때 광성보 전투를 지휘하여 강한 저항을 이끌었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "메이지 유신",
+      "target": "운요호 사건",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "메이지 유신 후 일본의 군사력 강화가 운요호 사건을 일으켜 조선과의 통상 압박을 촉발하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "강화도 조약",
+      "target": "운요호 사건",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "운요호 사건을 구실로 일본은 강화도 조약을 강요하였으며, 이는 조선 개항의 출발점이 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "강화도 조약",
+      "target": "민씨 세력",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "민씨 세력은 흥선 대원군 퇴진 후 외교 정책을 바꾸어 일본과 강화도 조약 체결을 수용하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "서양 세력",
+      "target": "신미양요",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "서양 세력, 특히 미국 함대가 제너럴 셔먼 호 사건을 근거로 신미양요라는 군사행동을 감행하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "세도 정치",
+      "target": "흥선 대원군",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군은 약화된 왕권 회복과 개혁을 추진하며 세도 정치 체제를 극복하려 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "강화도 조약",
+      "target": "일본 국왕",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "일본 국왕의 외교적 태도가 강화도 조약 체결 과정에서 조선 측의 반발을 불러일으켰다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "강화도 조약",
+      "target": "조선 정부",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조선 정부는 일본과의 외교 협상을 통해 최초의 근대적 조약인 강화도 조약을 체결하였으며, 이는 조선의 국제 관계와 개항 정책에 큰 전환점이 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "강화도 조약",
+      "target": "치외법권",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "강화도 조약은 조선 내에서 일본인에게 치외법권을 인정하여 조선 주권의 일부를 침해하는 불평등한 내용을 포함하고 있다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "개화 정책",
+      "target": "조선 정부",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조선 정부는 강화도 조약 체결 후 일본과 서양 문물을 도입하여 근대화를 추진하는 개화 정책을 시행하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "김기수",
+      "target": "수신사",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "김기수는 일본에 파견된 수신사로서 일본의 발전상을 시찰하고 본국에 보고하는 역할을 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "김홍집",
+      "target": "수신사",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "김홍집은 일본에 파견된 수신사로서 일본 문명을 조사하고 개화 정책 추진에 중요한 정보를 제공하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "별기군",
+      "target": "통리기무아문",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "통리기무아문은 개화 정책을 집행하는 관리 기관으로서 신식 군대 별기군을 조직하고 신무기 도입과 군사 훈련을 담당하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "개화 정책",
+      "target": "개화파",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "개화파는 개화 정책을 주장하고 추진한 정치 세력으로, 조선 근대화의 핵심 주체였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "개화파",
+      "target": "위정척사 운동",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "위정척사 운동은 개화파의 개화 정책에 반대하며 전통 유교 질서 수호를 내세워 조선 사회 내에서 대립하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "별기군",
+      "target": "임오군란",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "임오군란은 별기군과 구식 군인 간의 갈등과 불만이 폭발하여 발생한 반란 사건이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "임오군란",
+      "target": "흥선 대원군",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "임오군란 이후 흥선 대원군이 정권을 잡는 계기가 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "청",
+      "target": "흥선 대원군",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "청은 조선 내정 간섭을 위해 군대를 파견하여 흥선 대원군을 납치함으로써 그의 정치적 입지를 약화시켰다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "민씨 세력",
+      "target": "청",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "민씨 세력은 청나라의 군사 및 외교 지원을 받아 조선 정권을 다시 장악하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "임오군란",
+      "target": "제물포 조약",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "임오군란 직후 체결된 제물포 조약은 일본군 서울 주둔과 배상금 지급 등의 내용을 담아 일본의 조선 내 영향력을 강화하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "박영효",
+      "target": "제물포 조약",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "박영효는 제물포 조약 체결 이후 일본에 사절로 파견되어 조선과 일본 간 외교 관계에서 활동하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "박영효",
+      "target": "태극기",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "박영효 사절 파견 시기에 태극기가 처음 사용되어 국가 상징으로 자리잡기 시작하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "태극기",
+      "target": "효",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "효가 일본에 사절로 파견될 때 태극기가 처음 사용되어 조선의 국가 상징물 사용에서 중요한 역사적 시작이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑신정변",
+      "target": "개혁 정치",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "갑신정변은 개혁 정치를 추진하려는 목적에서 일어난 사건으로, 근대적 정치, 경제, 사회 개혁 내용을 포함하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑신정변",
+      "target": "김옥균",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "김옥균은 갑신정변을 주도하여 근대 개혁을 시도한 주요 인물이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑신정변",
+      "target": "박영효",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "박영효는 갑신정변에 참여하여 정치 개혁과 근대화 추진에 핵심적 역할을 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑신정변",
+      "target": "서광범",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "서광범은 갑신정변의 개화파 인사로서 정변에 참여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑신정변",
+      "target": "홍영식",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "홍영식은 갑신정변의 주요 인물 중 하나로, 개혁 추진에 관여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑신정변",
+      "target": "우정국 개국 축하연",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "우정국 개국 축하연은 개화파가 갑신정변을 일으키기 위한 계기로 활용되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "고종",
+      "target": "한성 조약",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "고종은 갑신정변 실패 후 일본과 한성 조약을 맺어 외교 문제를 처리하였으며, 개혁 무효화에 나섰다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "일본",
+      "target": "한성 조약",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "한성 조약은 갑신정변 실패 후 일본이 사죄와 배상을 요구하며 무력 시위를 한 결과 체결된 조약이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "청",
+      "target": "텐진 조약",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "텐진 조약은 청과 일본이 조선 내 군대 철수를 합의하고 군사 분쟁 재발 방지를 약속한 조약이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "일본",
+      "target": "텐진 조약",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "텐진 조약은 일본과 청이 조선 내 군사적 긴장을 완화하기 위해 맺은 약속으로, 조선 내 세력 경쟁과 청일 전쟁의 전초가 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑신정변",
+      "target": "청⋅일 전쟁",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "갑신정변 이후 청과 일본의 조선 지배권 경쟁이 심화되어 10년 후 청⋅일 전쟁으로 이어졌다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "시찰단",
+      "target": "조선 정부",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조선 정부는 개화 정책 추진을 위해 시찰단을 파견하여 근대 문물과 제도 연구를 시도하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "유학생",
+      "target": "조선 정부",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조선 정부는 근대화와 개화 정책 실행을 위해 유학생을 해외로 파견하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "조선 정부",
+      "target": "통리기무아문",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "통리기무아문은 조선 정부가 근대 개화 정책과 군사 개혁을 추진하기 위해 설치한 행정 기관이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "별기군",
+      "target": "조선 정부",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "별기군은 개화 정책의 일환으로 조선 정부가 창설한 근대적 군사 조직이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑신정변",
+      "target": "거문도 사건",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "갑신정변 실패 이후 청의 내정 간섭이 심화되자 국제 열강이 한반도 문제에 개입하면서 거문도 사건이 발생하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "거문도 사건",
+      "target": "러시아",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "러시아가 남하 정책을 추진하며 조선에 진출하자, 영국이 이를 견제하기 위해 거문도를 점령한 국제적 사건이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "방곡령",
+      "target": "일본",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "일본의 경제적 침투에 대응하여 조선 각 지역에서 일본 상인의 곡물 수탈을 막기 위해 방곡령이 시행되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "방곡령",
+      "target": "조선 정부",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조선 정부는 일본과의 마찰 속에서 방곡령을 철회하고 일본에 배상하여 외세 압박에 굴복하는 모습을 보였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동학",
+      "target": "최시형",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "최시형은 동학 교리를 체계화하고 포교에 힘써 동학 운동을 전국적으로 확산시켰다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동경대전",
+      "target": "최시형",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "최시형은 동학 경전인 동경대전을 간행하여 교리를 정리하고 동학 운동 이념을 확립하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "용담유사",
+      "target": "최시형",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "최시형은 용담유사를 간행하여 동학 포교와 신앙 생활을 돕는 기반을 마련하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동학",
+      "target": "삼례 집회",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "삼례 집회는 동학 교도들이 박해 중지를 요구하며 운동을 공론화한 중요한 사건이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동학",
+      "target": "보은 집회",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "보은 집회는 대규모 동학 신도와 농민이 참여하여 신앙 자유와 사회 개혁을 요구한 동학 운동의 중요한 집회이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "고부 농민 봉기",
+      "target": "전봉준",
+      "weight": 20.0,
+      "relationship_count": 2,
+      "descriptions": [
+        "전봉준은 고부 농민 봉기를 주도하며 동학 농민 운동을 본격적으로 이끈 지도자이다.",
+        "전봉준이 고부 농민 봉기를 주도하며 농민군을 이끌고 관아를 공격하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "고부 농민 봉기",
+      "target": "조병갑",
+      "weight": 19.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조병갑의 부정과 탐학 행위는 조선 후기 고부 지역에서 발생한 고부 농민 봉기의 직접적인 원인으로 작용하였다. 조병갑은 고부 현감으로 부임하여 권력을 남용하며 부패하고 탐욕스러운 행태를 보였다. 그의 부정 행위와 부패는 농민들의 생활을 더욱 어렵게 만들었고, 이에 대한 불만과 분노가 고부 농민 봉기라는 형태로 폭발하였다. 고부 농민 봉기는 조병갑의 착취와 비리로 인해 발생한 사회적 갈등과 민심 이반의 결과였으며, 이 사건은 당시 지방 관리의 부패가 농민 봉기로 이어질 수 있음을 상징적으로 보여주는 사례로 평가된다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동학",
+      "target": "조선 정부",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "조선 정부는 동학을 사교로 규정하고 최제우를 처형하는 등 동학 운동을 탄압하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "일본",
+      "target": "조선 정부",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "일본은 조선에서 경제적 이익 확대를 위해 침투 활동을 강화했으며, 조선 정부와 갈등을 빚었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "고부 농민 봉기",
+      "target": "동학 농민 운동",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "고부 농민 봉기는 동학 농민 운동의 출발점이자 주요 사건이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농민군",
+      "target": "전봉준",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "전봉준은 동학 농민 운동의 농민군 조직과 활동을 주도한 지도자이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "김개남",
+      "target": "농민군",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "김개남은 동학 농민 운동 시기 농민군 조직과 활동에 참여하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농민군",
+      "target": "손화중",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "손화중은 동학 농민 운동 농민군 조직에 함께 참여한 인물이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농민군",
+      "target": "황토현 전투",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "농민군은 황토현 전투에서 관군을 물리치고 세력을 확장하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농민군",
+      "target": "장성 전투",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "농민군은 장성 전투에서 관군을 격퇴하며 영향력을 확대하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농민군",
+      "target": "전주 점령",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "농민군은 전주를 포함한 전라도 지역을 점령하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "정부",
+      "target": "청에 원군 요청",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "정부는 동학 농민 운동 진압을 위하여 청나라에 원군을 요청하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "일본군 파병",
+      "target": "정부",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "청의 원군 요청과 동시에 일본도 군대를 파병하여 동학 농민 운동과 청일 전쟁에 개입하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농민군",
+      "target": "전주 화약",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "전주 화약을 통해 농민군은 일시 해산하였으며 정부와 잠정 평화를 이루었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "일본군 파병",
+      "target": "청⋅일 전쟁",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "일본군 파병은 청⋅일 전쟁의 전초 사건으로 긴장을 고조시켰다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동학 농민 운동",
+      "target": "청⋅일 전쟁",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "동학 농민 운동의 격화와 외세 개입이 청⋅일 전쟁 발발의 중요한 배경이 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농민군",
+      "target": "우금치 전투",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "농민군은 우금치 전투에서 관군과 일본군과 격전했으나 패배하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농민군",
+      "target": "태인 전투",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "농민군은 태인 전투에서 최후 결사전을 치렀으나 패배하며 동학 농민 운동의 패배로 이어졌다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "농민군",
+      "target": "전주 집강소",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "농민군은 전주 집강소를 설치하여 지역 자치를 실시하고 개혁을 추진하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑오개혁",
+      "target": "교정청",
+      "weight": 16.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "교정청은 갑오개혁의 추진과 행정 집행을 담당한 정부 기관이다. 농민들의 개혁 요구를 바탕으로 설치된 교정청은 정치 개혁을 모색하며 갑오개혁을 체계적으로 추진하는 역할을 수행하였다. 이를 통해 교정청은 조선 말기 사회 전반에 걸친 개혁 정책의 실행을 주도하며 근대 국가 체제 확립에 중요한 기여를 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑오개혁",
+      "target": "흥선 대원군",
+      "weight": 16.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "흥선 대원군은 조선 후기의 중요한 정치 인물로, 그의 집권기 이후 여러 개혁 운동이 전개되었다. 이러한 개혁 운동들은 봉건제도의 문제점을 해결하고 사회 전반의 변화를 모색하는 데 초점을 맞추었다. 그 흐름 속에서 갑오개혁이 본격적으로 추진되었는데, 갑오개혁은 조선의 봉건제도를 근본적으로 개혁하기 위한 일련의 정책들을 의미한다. 다만, 흥선 대원군이 일본군의 지원을 받아 갑오개혁 추진에 앞장섰다는 일부 주장은 역사적 사실과 상충되는데, 실제로 갑오개혁은 1894년 동학농민운동과 일본의 개입으로 촉진되었으며, 흥선 대원군은 이 시기에 직접적인 주도자 역할을 하지는 않았다. 대신 흥선 대원군은 19세기 중반에 집권하면서 조선 사회 내부의 여러 개혁적인 움직임을 자극한 인물로 평가받는다. 따라서 흥선 대원군은 갑오개혁을 향한 개혁의 흐름을 형성하는 데 중요한 배경을 제공했으며, 갑오개혁은 이 개혁 흐름 속에서 봉건제도를 본격적으로 개혁한 정책이라고 할 수 있다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑오개혁",
+      "target": "김홍집",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "김홍집은 총리로서 갑오개혁 내각을 구성하고 개혁을 추진하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑오개혁",
+      "target": "군국기무처",
+      "weight": 16.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "군국기무처는 갑오개혁 기간에 설치된 임시 기관으로, 정치·경제·사회 및 군사·국방 개혁안을 심의하고 담당하는 역할을 수행하였다. 이 기관은 갑오개혁의 전반적인 개혁 추진 과정에서 중요한 기능을 담당했으나, 군사 및 국방 분야 개혁의 실행에 있어 한계를 드러내면서 개혁의 완전한 실현에는 제약이 있었다. 따라서 군국기무처는 갑오개혁 시기의 다양한 개혁 과제를 심도 있게 검토하고 추진하려 했으나, 특히 군사·국방 개혁에서 어려움을 겪으며 개혁의 효과적인 이행에 일부 제약이 있었던 것으로 평가된다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑신정변",
+      "target": "갑오개혁",
+      "weight": 16.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "갑신정변은 19세기 조선에서 일어난 개혁 시도로, 신분제 폐지 등 근대적인 개혁 요구와 밀접하게 연관되어 있다. 이 사건은 갑오개혁의 선행 개혁 시도로서 중요한 역할을 하였으며, 갑신정변의 개혁 시도는 이후 추진된 갑오개혁에 영향을 미쳐 그 개혁 내용에 반영되었다. 갑신정변이 실패한 이후 조선에서는 보다 광범위하고 체계적인 개혁인 갑오개혁이 추진되었으며, 이를 통해 정치 및 사회 제도의 근대화를 시도하였다. 갑오개혁은 갑신정변의 경험을 바탕으로 한 근대 개혁 운동으로, 조선 사회 전반에 걸친 변화와 혁신을 목표로 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑오개혁",
+      "target": "박영효",
+      "weight": 17.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "박영효는 근대적 개혁인 갑오개혁 추진에 적극적으로 참여한 개혁 정치가이다. 그는 귀국한 후 갑오개혁의 동력을 강화하며 개혁을 주도하는 데 중요한 역할을 하였다. 박영효의 참여는 갑오개혁이 실질적인 변화를 이루는 데 기여하였으며, 그의 노력은 조선 사회의 근대화와 국가 체제의 개혁에 핵심적인 영향을 미쳤다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑오개혁",
+      "target": "서광범",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "서광범은 갑오개혁 추진에 적극적으로 참여한 개혁 인사로서, 근대 개혁 정책의 수립에 중요한 역할을 하였다. 그는 갑오개혁 과정에서 중심 인물 중 하나로 활동하며, 당시 조선의 사회와 정치 체제 변화를 이끌기 위해 노력하였다. 서광범의 참여는 갑오개혁이 지향한 근대화와 개혁 목표 달성에 기여하였으며, 그의 개혁 추진 활동은 조선 사회의 근대적 전환에 있어 중요한 의미를 가진다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "청⋅일 전쟁",
+      "target": "흥선 대원군",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "청⋅일 전쟁의 일본 승리는 흥선대원군이 물러나게 만든 원인이며, 정치적 변화를 촉진하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑오개혁",
+      "target": "홍범14조",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "홍범14조는 갑오개혁의 주요 개혁 내용을 법제화한 문서로서 개혁의 정신과 방향을 명확히 하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑오개혁",
+      "target": "교육입국조서",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "교육입국조서는 갑오개혁의 일환으로 근대적 교육 제도를 확립하기 위한 정책이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "방곡령",
+      "target": "일본의 경제 침투",
+      "weight": 8.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "일본의 경제 침투에 대응하여 조선 정부는 방곡령 정책을 시행하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동학 농민 운동",
+      "target": "동학 농민군",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "동학 농민 운동은 동학 농민군이 주도한 농민 봉기이며, 농민군이 운동의 주체이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동학 농민군",
+      "target": "집강소",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "동학 농민군은 집강소를 설치하여 전라도 지역에서 자치적 개혁을 추진하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동학 농민 운동",
+      "target": "전봉준",
+      "weight": 20.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "전봉준은 동학 농민 운동의 지도자로서 조선 말기 사회 변혁의 핵심 인물이다. 그는 탐관오리 척결과 외세 배격을 주도하며 농민들의 반봉건과 반외세 투쟁을 이끌었다. 전봉준은 동학 농민 운동을 통해 부패한 관리들의 부정을 바로잡고, 외세의 침략에 맞서 민족 자주와 정의 실현을 위해 헌신하였다. 그의 지도 아래 농민들은 조직적으로 봉기하여 기존 사회질서에 도전하였으며, 이는 조선 말기 사회 변혁과 민중운동의 중요한 계기가 되었다. 전봉준과 동학 농민 운동은 당시 농민들의 삶과 권리를 개선하고자 한 대표적인 저항 운동으로 평가받는다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "동학 농민 운동",
+      "target": "폐정개혁안",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "폐정개혁안은 동학 농민 운동 중 농민들이 제시한 사회 개혁 정책이다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "노비문서",
+      "target": "폐정개혁안",
+      "weight": 1.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "폐정개혁안에는 노비문서를 불태워 없애 신분 차별을 철폐하려는 내용이 포함되어 있다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑오개혁",
+      "target": "동학 농민 운동",
+      "weight": 10.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "동학 농민 운동은 봉건제도 개혁과 일본 침략 반대를 요구하며 대규모 민란을 일으켜, 조선 정부가 갑오개혁을 추진하게 만든 직접적 계기가 되었다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "온건 개화파",
+      "target": "위정척사파",
+      "weight": 9.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "위정척사파와 온건 개화파는 조선 말기 개화에 대한 입장이 대립되었으며, 각각 전통 수호와 점진적 서구 수용을 주장하였다."
+      ],
+      "kind": "canonicalized_existing"
+    },
+    {
+      "source": "갑신정변",
+      "target": "온건 개화파",
+      "weight": 7.0,
+      "relationship_count": 1,
+      "descriptions": [
+        "온건 개화파는 갑신정변에서 급진 개화파와 대비되며, 보다 점진적인 개혁과 외교 정책을 지향하는 세력으로 구분된다."
+      ],
+      "kind": "canonicalized_existing"
+    }
+  ],
+  "weak_edges_for_orphans": [
+    {
+      "source": "조준",
+      "target": "태종",
+      "weight": 1.4,
+      "kind": "weak_co_mention",
+      "co_text_units": 2,
+      "source_entity_id": 1,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 7,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "조준",
+      "target": "정도전",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 1,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "조준",
+      "target": "이성계",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 1,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 4,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "류큐",
+      "target": "정도전",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 39,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "류큐",
+      "target": "태종",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 39,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 7,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "류큐",
+      "target": "태조",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 39,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 1,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "시암(타이)",
+      "target": "정도전",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 40,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "시암(타이)",
+      "target": "태종",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 40,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 7,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "시암(타이)",
+      "target": "태조",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 40,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 1,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "자와(자바)",
+      "target": "정도전",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 41,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "자와(자바)",
+      "target": "태종",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 41,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 7,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "자와(자바)",
+      "target": "태조",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 41,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 1,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "승정원",
+      "target": "정도전",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 47,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "승정원",
+      "target": "태종",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 47,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 7,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "승정원",
+      "target": "태조",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 47,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 1,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "춘추관",
+      "target": "정도전",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 49,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "춘추관",
+      "target": "태종",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 49,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 7,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "춘추관",
+      "target": "태조",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 49,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 1,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "한성부",
+      "target": "정도전",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 51,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "한성부",
+      "target": "태종",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 51,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 7,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "한성부",
+      "target": "태조",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 51,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 1,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "유향소(향청)",
+      "target": "정도전",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 54,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "유향소(향청)",
+      "target": "태종",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 54,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 7,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "유향소(향청)",
+      "target": "태조",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 54,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 1,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "잡과",
+      "target": "세종 대왕",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 65,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 7,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "잡과",
+      "target": "성균관",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 65,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "잡과",
+      "target": "신문고",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 65,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "문음",
+      "target": "세종 대왕",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 66,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 7,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "문음",
+      "target": "성균관",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 66,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "문음",
+      "target": "신문고",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 66,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "천거",
+      "target": "세종 대왕",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 67,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 7,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "천거",
+      "target": "성균관",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 67,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "천거",
+      "target": "신문고",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 67,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "수군",
+      "target": "세종 대왕",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 72,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 7,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "수군",
+      "target": "성균관",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 72,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "수군",
+      "target": "신문고",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 72,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "역졸",
+      "target": "세종 대왕",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 81,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 7,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "역졸",
+      "target": "성균관",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 81,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "역졸",
+      "target": "신문고",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 81,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "봉수 제도",
+      "target": "세종 대왕",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 84,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 7,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "봉수 제도",
+      "target": "성균관",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 84,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "봉수 제도",
+      "target": "신문고",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 84,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "국조오례의",
+      "target": "정도전",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 94,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "국조오례의",
+      "target": "위화도 회군",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 94,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 5,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "국조오례의",
+      "target": "조선",
+      "weight": 0.75,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 94,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 17,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "삼강행실도",
+      "target": "정도전",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 95,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "삼강행실도",
+      "target": "위화도 회군",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 95,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 5,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "삼강행실도",
+      "target": "조선",
+      "weight": 0.75,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 95,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 17,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "인지의",
+      "target": "정도전",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 102,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "인지의",
+      "target": "위화도 회군",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 102,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 5,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "인지의",
+      "target": "조선",
+      "weight": 0.75,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 102,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 17,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "동문선",
+      "target": "정도전",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 103,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "동문선",
+      "target": "위화도 회군",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 103,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 5,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "동문선",
+      "target": "조선",
+      "weight": 0.75,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 103,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 17,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "동인",
+      "target": "경국대전",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 120,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 6,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "동인",
+      "target": "농사직설",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 120,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "동인",
+      "target": "사림",
+      "weight": 0.75,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 120,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 14,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "왜란",
+      "target": "태종",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 141,
+      "source_type": "사건",
+      "source_frequency": 1,
+      "target_degree": 7,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "왜란",
+      "target": "성종",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 141,
+      "source_type": "사건",
+      "source_frequency": 1,
+      "target_degree": 5,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "왜란",
+      "target": "유석진",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 141,
+      "source_type": "사건",
+      "source_frequency": 1,
+      "target_degree": 1,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "일본 도요토미 히데요시",
+      "target": "양반",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 174,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 4,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "일본 도요토미 히데요시",
+      "target": "여진족",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 174,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 4,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "일본 도요토미 히데요시",
+      "target": "조선 수군",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 174,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "북인",
+      "target": "의정부",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 211,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 5,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "북인",
+      "target": "홍문관",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 211,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "북인",
+      "target": "사림",
+      "weight": 0.75,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 211,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 14,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "소수 특정 가문",
+      "target": "성균관",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 217,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "소수 특정 가문",
+      "target": "노비",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 217,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 1,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "소수 특정 가문",
+      "target": "남인",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 217,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 4,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "속오례의",
+      "target": "성균관",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 224,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "속오례의",
+      "target": "노비",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 224,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 1,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "속오례의",
+      "target": "남인",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 224,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 4,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "동국문헌비고",
+      "target": "성균관",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 225,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "동국문헌비고",
+      "target": "노비",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 225,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 1,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "동국문헌비고",
+      "target": "남인",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 225,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 4,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "동문휘고",
+      "target": "성균관",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 231,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "동문휘고",
+      "target": "노비",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 231,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 1,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "동문휘고",
+      "target": "남인",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 231,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 4,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "탁지지",
+      "target": "성균관",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 232,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "탁지지",
+      "target": "노비",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 232,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 1,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "탁지지",
+      "target": "남인",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 232,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 4,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "규장전운",
+      "target": "성균관",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 233,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "규장전운",
+      "target": "노비",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 233,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 1,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "규장전운",
+      "target": "남인",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 233,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 4,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "부농",
+      "target": "남인",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 236,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 4,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "부농",
+      "target": "노론",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 236,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "부농",
+      "target": "붕당 정치",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 236,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "이수광",
+      "target": "남인",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 238,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 4,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "이수광",
+      "target": "노론",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 238,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "이수광",
+      "target": "붕당 정치",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 238,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 3,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "이제마",
+      "target": "허준",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 260,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "이제마",
+      "target": "유수원",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 260,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "이제마",
+      "target": "홍대용",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 260,
+      "source_type": "인물",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "전세",
+      "target": "세도 정치",
+      "weight": 0.75,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 272,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 11,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "전세",
+      "target": "순조",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 272,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "전세",
+      "target": "헌종",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 272,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 1,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "군포",
+      "target": "세도 정치",
+      "weight": 0.75,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 273,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 11,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "군포",
+      "target": "순조",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 273,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "군포",
+      "target": "헌종",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 273,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 1,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "미륵불 신앙",
+      "target": "정조",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 285,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 7,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "미륵불 신앙",
+      "target": "순조",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 285,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "미륵불 신앙",
+      "target": "정감록",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 285,
+      "source_type": "문물",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "연해주",
+      "target": "세도 정치",
+      "weight": 0.75,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 300,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 11,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "연해주",
+      "target": "농민 봉기",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 300,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 5,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "연해주",
+      "target": "천주교",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 300,
+      "source_type": "기관",
+      "source_frequency": 1,
+      "target_degree": 6,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "사창제",
+      "target": "서원",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 307,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "사창제",
+      "target": "조선 정부",
+      "weight": 0.75,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 307,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 11,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "사창제",
+      "target": "천주교",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 307,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 6,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "수호 통상 조약",
+      "target": "조선 정부",
+      "weight": 0.75,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 331,
+      "source_type": "사건",
+      "source_frequency": 1,
+      "target_degree": 11,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "수호 통상 조약",
+      "target": "청",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 331,
+      "source_type": "사건",
+      "source_frequency": 1,
+      "target_degree": 6,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "수호 통상 조약",
+      "target": "흥선 대원군",
+      "weight": 0.75,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 331,
+      "source_type": "사건",
+      "source_frequency": 1,
+      "target_degree": 16,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "조선책략",
+      "target": "고종",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 345,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "조선책략",
+      "target": "강화도 조약",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 345,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 5,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "조선책략",
+      "target": "통리기무아문",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 345,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "위정척사",
+      "target": "고종",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 346,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "위정척사",
+      "target": "강화도 조약",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 346,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 5,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    },
+    {
+      "source": "위정척사",
+      "target": "통리기무아문",
+      "weight": 1.0,
+      "kind": "weak_co_mention",
+      "co_text_units": 1,
+      "source_entity_id": 346,
+      "source_type": "정책",
+      "source_frequency": 1,
+      "target_degree": 2,
+      "rule": "degree-zero entity co-mentioned in the same text unit"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "chunk_size": 1200,
+  "chunk_overlap": 200,
+  "base_compare": "1차(UI우선)",
+  "note": "Only overlap changed from 100 to 200."
+}

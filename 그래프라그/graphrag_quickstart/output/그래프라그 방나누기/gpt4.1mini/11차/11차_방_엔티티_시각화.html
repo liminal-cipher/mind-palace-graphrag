@@ -1,0 +1,3289 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>11차 방/엔티티 시각화</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1f2328;
+      --muted: #667085;
+      --line: #d9dee7;
+      --paper: #fbfcfe;
+      --panel: #ffffff;
+      --green: #1b7f4c;
+      --blue: #2266aa;
+      --amber: #a15c05;
+      --red: #b42318;
+      --violet: #6b3fb3;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Malgun Gothic", system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+    }
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(251, 252, 254, 0.96);
+      backdrop-filter: blur(8px);
+    }
+    .topbar {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 18px 24px 12px;
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      font-weight: 750;
+      letter-spacing: 0;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(240px, 1fr) auto auto auto;
+      gap: 10px;
+      align-items: center;
+    }
+    input, select, button {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+    }
+    input { padding: 0 12px; }
+    select, button { padding: 0 10px; }
+    button { cursor: pointer; }
+    main {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 18px 24px 40px;
+    }
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(140px, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 12px;
+    }
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .metric strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 20px;
+    }
+    .notice {
+      border: 1px solid #efc16b;
+      background: #fff8e8;
+      color: #6f4300;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+    .rooms {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .room {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 16px;
+    }
+    .room-head {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+    }
+    .room-no {
+      margin: 0 0 4px;
+      color: var(--violet);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    h2 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.32;
+      letter-spacing: 0;
+    }
+    .room-stats {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+    .room-stats span, .badge {
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      padding: 5px 9px;
+      background: #fff;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .flow {
+      margin: 12px 0;
+      color: #384152;
+      line-height: 1.58;
+    }
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .core-b { color: var(--green); border-color: #a9d7bd; }
+    .support-b { color: var(--blue); border-color: #abcceb; }
+    .search-b { color: var(--amber); border-color: #e7c48c; }
+    .subzones {
+      margin: 8px 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: #fcfdff;
+    }
+    summary { cursor: pointer; font-weight: 700; }
+    .subzones ul {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 8px;
+      margin: 10px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .subzones li {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      background: #fff;
+      min-width: 0;
+    }
+    .subzones code { color: var(--muted); white-space: nowrap; }
+    .entity-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      align-items: start;
+    }
+    .entity-section {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .section-title {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      padding: 10px 12px;
+      font-weight: 700;
+      background: #f7f9fc;
+    }
+    .entities {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      max-height: 380px;
+      overflow: auto;
+    }
+    .entity {
+      border-bottom: 1px solid #eef1f6;
+    }
+    .entity:last-child { border-bottom: 0; }
+    .entity-main {
+      width: 100%;
+      display: flex;
+      gap: 8px;
+      justify-content: space-between;
+      align-items: center;
+      border: 0;
+      border-radius: 0;
+      padding: 9px 10px;
+      text-align: left;
+      background: #fff;
+    }
+    .entity-main:hover { background: #f7f9fc; }
+    .entity-title {
+      font-weight: 650;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+    .entity-meta {
+      flex: 0 0 auto;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .entity-desc, .entity-reason {
+      display: none;
+      margin: 0;
+      padding: 0 10px 10px;
+      color: #4c5566;
+      line-height: 1.5;
+      font-size: 13px;
+    }
+    .entity.open .entity-desc, .entity.open .entity-reason { display: block; }
+    .entity-reason { color: var(--blue); }
+    .low-confidence .entity-title::after {
+      content: " low";
+      margin-left: 5px;
+      color: var(--red);
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .hidden { display: none !important; }
+    @media (max-width: 980px) {
+      .controls { grid-template-columns: 1fr 1fr; }
+      .summary { grid-template-columns: repeat(2, 1fr); }
+      .entity-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .topbar, main { padding-left: 14px; padding-right: 14px; }
+      .controls, .summary { grid-template-columns: 1fr; }
+      .room-head { flex-direction: column; }
+      .room-stats { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="topbar">
+      <h1>11차 방/엔티티 시각화</h1>
+      <div class="controls">
+        <input id="search" type="search" placeholder="방 제목, 엔티티, 설명 검색" />
+        <select id="level">
+          <option value="all">전체 엔티티</option>
+          <option value="core">Core만</option>
+          <option value="supporting">Supporting만</option>
+          <option value="search_only">Search Only만</option>
+        </select>
+        <button id="expand" type="button">설명 펼치기</button>
+        <button id="collapse" type="button">설명 접기</button>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="summary">
+      <div class="metric"><span>rooms</span><strong>5</strong></div>
+      <div class="metric"><span>validation</span><strong>True</strong></div>
+      <div class="metric"><span>repair actions</span><strong>1</strong></div>
+      <div class="metric"><span>source</span><strong>11차_최종방_엔티티분류_repaired_no_llm.json</strong></div>
+    </section>
+    <div class="notice">
+      Quality patch: {&#x27;enabled&#x27;: True, &#x27;safe_resolution_group_count&#x27;: 4, &#x27;weak_edge_count&#x27;: 117, &#x27;entity_count_after_patch&#x27;: 389, &#x27;relationship_count_after_patch&#x27;: 511}<br />
+      Validation: {&#x27;room_count&#x27;: 5, &#x27;max_rooms&#x27;: 5, &#x27;missing_communities&#x27;: [], &#x27;duplicate_communities&#x27;: [], &#x27;unknown_communities&#x27;: [], &#x27;valid&#x27;: True}
+    </div>
+    <section class="rooms">
+      
+    <article class="room" data-room-title="조선 전기 국가 체제와 왕권 강화">
+      <header class="room-head">
+        <div>
+          <p class="room-no">Room 1</p>
+          <h2>조선 전기 국가 체제와 왕권 강화</h2>
+        </div>
+        <div class="room-stats">
+          <span>61 entities</span>
+          <span>5 communities</span>
+        </div>
+      </header>
+      <p class="flow">조선 건국의 정치 체제 정비에서 출발해 계유정난과 세조의 왕권 강화, 사림의 성장과 향촌 자치, 세종의 문화·과학 혁신까지 이어지는 조선 전기 국가 운영의 큰 흐름을 학습한다.</p>
+      <div class="badges">
+        <span class="badge core-b">core 3</span>
+        <span class="badge support-b">supporting 17</span>
+        <span class="badge search-b">search 41</span>
+      </div>
+      <details class="subzones" open>
+        <summary>Subzones and Source Communities</summary>
+        <ul>
+        <li>
+          <span>조선 건국과 중앙집권 체제</span>
+          <code>[0]</code>
+        </li>
+        
+
+        <li>
+          <span>계유정난과 세조의 왕권 강화</span>
+          <code>[7]</code>
+        </li>
+        
+
+        <li>
+          <span>사림과 향촌 자치</span>
+          <code>[13]</code>
+        </li>
+        
+
+        <li>
+          <span>지리서와 국가 행정</span>
+          <code>[18]</code>
+        </li>
+        
+
+        <li>
+          <span>세종의 문화·과학 혁신</span>
+          <code>[26]</code>
+        </li>
+        </ul>
+      </details>
+      <div class="entity-grid">
+        
+            <section class="entity-section core">
+              <button class="section-title" type="button" data-toggle="core">
+                <span>Core</span>
+                <strong>3</strong>
+              </button>
+              <ul class="entities">
+                
+      <li class="entity" data-entity-title="태종">
+        <button class="entity-main" type="button">
+          <span class="entity-title">태종</span>
+          <span class="entity-meta">인물 · 0.6243</span>
+        </button>
+        <p class="entity-desc">태종은 조선 초기의 3대 왕으로, 왕권 강화와 국가 체제 정비에 중점을 두고 통치하였다. 그는 중앙 집권 체제를 확립하는 데 주력하였으며, 군사적 실력 행사와 사병 철폐, 호패법 시행 등 다양한 제도를 도입하여 왕권을 공고히 하였다. 또한, 효 제도를 엄격히 시행하는 한편, 가묘 설치와 같은 전통적 제도도 정비하여 국가의 질서를 강화하는 데 기여하였다. 태종의 이러한 노력은 조선 초 왕권을 확고히 하여 이후 조선 왕조의 기틀을 다지는 데 큰 역할을 하였다....</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="조선">
+        <button class="entity-main" type="button">
+          <span class="entity-title">조선</span>
+          <span class="entity-meta">기관 · 0.5687</span>
+        </button>
+        <p class="entity-desc">조선은 1392년 이성계에 의해 건국된 왕조 국가로, 성리학에 기반한 유교적 통치 이념과 중앙집권적 관료제 사회를 특징으로 한다. 이러한 통치 이념과 체제는 조선 초기 사회와 문화 발전의 근간이 되었으며, 법치 국가로서의 기틀을 마련하였다. 특히 중앙집권 체제 확립을 통해 국가의 통합과 질서 유지에 힘썼다. 조선은 임진왜란 이후 일본과의 외교에서 왜관을 통해 제한적인 교류를 유지하는 등 외교적 관계에서도 중요한 변화를 경험하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="사림">
+        <button class="entity-main" type="button">
+          <span class="entity-title">사림</span>
+          <span class="entity-meta">기관 · 0.548</span>
+        </button>
+        <p class="entity-desc">사림은 15세기 말부터 조선 정치 무대에 등장한 유학자 집단으로, 주로 지방의 중소 지주층을 중심으로 형성되었다. 이들은 학문과 교육에 힘쓰며 성리학적 이상 정치와 도덕 정치를 강조하고 실천하려 했으며, 이러한 유교적 가치와 도덕, 의리를 숭상하는 태도를 견지하였다. 사림은 조선 전기부터 중기에 걸쳐 정치와 학문에서 공론 형성을 중시하였으며, 성리학을 연구·보급하여 성리학적 통치를 확산시키는데 중요한 역할을 하였다. 사림은 기존의 중앙 권력 중심의 훈구 세...</p>
+        
+      </li>
+    
+              </ul>
+            </section>
+            
+            <section class="entity-section supporting">
+              <button class="section-title" type="button" data-toggle="supporting">
+                <span>Supporting</span>
+                <strong>17</strong>
+              </button>
+              <ul class="entities">
+                
+      <li class="entity" data-entity-title="세종 대왕">
+        <button class="entity-main" type="button">
+          <span class="entity-title">세종 대왕</span>
+          <span class="entity-meta">인물 · 0.4507</span>
+        </button>
+        <p class="entity-desc">세종은 조선 전기의 제4대 왕으로, 조선 왕조의 발전과 문화 창달에 큰 기여를 한 군주이다. 그는 훈민정음 창제를 통해 우리 민족 고유의 문자를 만들어내어 문자와 문화의 큰 발전을 이끌었으며, 이를 통해 백성들의 의사소통과 학습이 획기적으로 향상되었다. 또한 세종은 집현전을 설치하여 학문 연구를 체계적으로 지원하였고, 이를 바탕으로 정치, 경제, 사회 전반에 걸쳐 안정과 발전을 도모하였다. 그의 통치 아래 조선 문화는 중추적인 역할을 하며 융성하였고, 세종...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="의정부">
+        <button class="entity-main" type="button">
+          <span class="entity-title">의정부</span>
+          <span class="entity-meta">기관 · 0.3495</span>
+        </button>
+        <p class="entity-desc">의정부는 조선 시대의 중앙 정치 기관으로, 국가 최고 통치 기구이자 행정의 핵심 기구였다. 초기에는 이방원의 즉위 이후 설치되어 국가 행정과 정책 집행을 총괄하는 역할을 담당하였으며, 3정승의 합의를 통해 중요한 국정 정책을 결정하는 최고 정치 기구로 기능하였다. 그러나 시간이 흐르면서 비변사의 권한이 확대되면서 의정부의 권한은 점차 약화되었다. 그럼에도 불구하고 의정부는 조선 시대 내내 국가 전반의 정책 결정과 행정 운영에 중추적인 역할을 수행한 기구였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="붕당">
+        <button class="entity-main" type="button">
+          <span class="entity-title">붕당</span>
+          <span class="entity-meta">기관 · 0.329</span>
+        </button>
+        <p class="entity-desc">붕당은 16세기 조선의 사림 세력 내에서 인사권과 공론을 둘러싸고 갈라진 정치 집단으로, 동인과 서인으로 나뉘어 조선 후기 정치의 주요 세력으로 발전한 정치 집단이다. 이들은 조선 중기 정치 세력으로서 사림이 형성한 당파 집단을 의미하며, 서로 상호 비판과 견제를 통해 정치적으로 대립하며 정치 세력으로 자리 잡았다. 붕당은 학문과 정책을 바탕으로 형성되었으며, 초기에는 건전한 견제와 비판 기능을 수행하여 조선 정치에 중요한 역할을 하였다. 이러한 붕당의 대...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="성종">
+        <button class="entity-main" type="button">
+          <span class="entity-title">성종</span>
+          <span class="entity-meta">인물 · 0.3287</span>
+        </button>
+        <p class="entity-desc">성종은 조선의 9대 왕으로, 조선 전기 왕에 해당한다. 그는 온건한 유교 정치를 회복하며 사림 세력을 등용하여 중앙 정계에 사림이 진출하는 계기를 마련하였다. 성종은 언론 기관을 통한 정책 비판과 공론 정치의 발전에 기여하는 군주로 평가받는다. 또한, 그는 유교적 질서 확립과 사회 규범 강화를 중시하여 여성의 재혼 금지를 법적으로 명문화하는 등 풍속 교정을 시행하였다. 이러한 노력으로 성종은 조선 초기 정치와 사회 질서 확립에 중요한 역할을 한 군주로 자리...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="세조">
+        <button class="entity-main" type="button">
+          <span class="entity-title">세조</span>
+          <span class="entity-meta">인물 · 0.3089</span>
+        </button>
+        <p class="entity-desc">세조는 조선의 제7대 왕으로, 계유정난을 통해 어린 단종을 폐위시키고 왕위에 오른 군주이다. 그는 왕권 강화를 최우선 과제로 삼아 신숙주 등 유능한 권신들을 등용하였으며, 성삼문 등 왕위에 반대하는 세력들을 제거하여 자신의 정치적 기반을 확고히 다졌다. 세조는 조선 중기 정치 개혁을 적극 추진하여 국가 체제 유지에 힘썼다. 그가 시행한 직전법과 군사력 강화는 중앙 집권적 국가 체제를 공고히 하는 데 중요한 역할을 하였다. 이러한 일련의 개혁과 권력 장악 활...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="경국대전">
+        <button class="entity-main" type="button">
+          <span class="entity-title">경국대전</span>
+          <span class="entity-meta">문물 · 0.3023</span>
+        </button>
+        <p class="entity-desc">경국대전은 조선시대 성종 때 완성된 기본 법전으로, 조선 초기 국가의 통치 조직과 법 체계를 확립한 중요한 법전이다. 이 법전은 조선의 통치 체계와 법질서를 정비하여 국가 운영의 근간을 마련했으며, 왕권 강화를 도모하고 중앙 집권 체제를 뒷받침하는 역할을 했다. 경국대전을 통해 조선은 체계적인 국가 조직과 체계적인 법적 규범을 갖추게 되었으며, 이는 조선 사회 전반에 걸쳐 안정적인 통치와 법의 지배를 실현하는 데 큰 기여를 했다. 따라서 경국대전은 조선 통...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="통신사">
+        <button class="entity-main" type="button">
+          <span class="entity-title">통신사</span>
+          <span class="entity-meta">기관 · 0.2839</span>
+        </button>
+        <p class="entity-desc">통신사는 임진왜란 이후 조선이 일본 에도 막부에 파견한 공식 외교 사절단으로, 한일 국교 정상화와 양국 간 문화 교류에 중요한 역할을 하였다. 조선 시대에 일본에 파견된 이 사절단은 에도 막부의 장군과 만나 외교 관계를 회복하고 유지하는 데 기여하였으며, 이를 통해 양국 간의 안정적인 관계와 활발한 문화 교류를 촉진하였다. 통신사는 한일 양국의 외교와 문화 교류를 담당하는 핵심 역할을 수행함으로써 두 나라 간 상호 이해와 협력 증진에 중요한 기반을 마련하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="이성계">
+        <button class="entity-main" type="button">
+          <span class="entity-title">이성계</span>
+          <span class="entity-meta">인물 · 0.2747</span>
+        </button>
+        <p class="entity-desc">이성계는 고려 말 신흥 무인 세력 출신으로, 위화도 회군을 통해 권력을 장악하고 조선을 건국한 초대 왕이다. 그는 정도전과 조준 등 신진 사대부 세력과 함께 협력하여 기존 고려 체제를 무너뜨리고, 전제 개혁 정책을 바탕으로 새로운 왕조를 세웠다. 이성계의 등장은 고려에서 조선으로의 사회적·정치적 전환을 상징하며, 이러한 변화는 조선왕조의 기틀을 마련하는 중요한 역사적 순간으로 평가받는다.</p>
+        <p class="entity-reason">조선 건국의 핵심 인물이지만 이 방의 초점은 조선 전기 국가 체제와 왕권 강화이므로 건국 배경 인물로서 하위 맥락에 두는 것이 적절합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="양반">
+        <button class="entity-main" type="button">
+          <span class="entity-title">양반</span>
+          <span class="entity-meta">기관 · 0.257</span>
+        </button>
+        <p class="entity-desc">양반은 조선 시대의 지배 계층으로, 주로 과거 시험에 합격한 관료 출신들로 구성되었다. 이들은 정치 권력과 사회적 지위를 독점하며 국가의 통치와 관리에 중요한 역할을 담당하였다. 양반은 조선 사회에서 가장 높은 신분으로 인정받았으며, 토지 소유와 관직 세습을 통해 경제적·사회적 영향력을 유지하였다. 그러나 임진왜란 이후 양반 계층의 위신이 약화되면서 조선의 신분제 붕괴에 영향을 미친 중요한 세력이 되었다. 이러한 변화는 양반의 전통적 권위와 특권이 점차 약...</p>
+        <p class="entity-reason">조선 전기 지배층 이해에 필요하지만 방의 핵심 주제인 왕권 강화 자체보다 사회 구조 설명용입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="훈민정음">
+        <button class="entity-main" type="button">
+          <span class="entity-title">훈민정음</span>
+          <span class="entity-meta">문물 · 0.2389</span>
+        </button>
+        <p class="entity-desc">훈민정음은 조선의 세종 대왕이 창제한 고유한 문자 체계로, 28자의 표음문자로 이루어져 있다. 이 문자는 백성들이 쉽고 편리하게 글을 익힐 수 있도록 고안되었으며, 이를 통해 민족 문화의 발전에 크게 기여하였다. 훈민정음의 창제로 우리 민족은 독자적인 문자 체계를 갖게 되었고, 이는 국문학의 기틀을 마련하는 데 중요한 역할을 하였다. 결과적으로 훈민정음은 단순한 문자 체계를 넘어 한국어와 민족 정체성 형성에 결정적인 영향을 끼친 역사적 유산으로 평가받고 있다.</p>
+        <p class="entity-reason">세종 대의 대표 업적으로 조선 전기 문화·국가 체제 이해에 중요하지만 왕권 강화의 직접 핵심은 아닙니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="훈구 세력">
+        <button class="entity-main" type="button">
+          <span class="entity-title">훈구 세력</span>
+          <span class="entity-meta">기관 · 0.237</span>
+        </button>
+        <p class="entity-desc">훈구 세력은 조선 초기의 집권 세력으로, 개국 공신들과 그 후손들로 구성된 정치 집단이다. 이들은 중앙 권력을 장악하며 국가 통치에 주도적인 역할을 하였고, 특히 성리학을 국가 통치 이념에 반영하는 데 중요한 역할을 하였다. 훈구 세력은 조선 초기 권력 구조를 형성하는 데 핵심적 역할을 했으나, 정치적으로 사림 세력과 대립하였다. 그들은 권력 유지를 위해 노력하며 정치적 갈등을 겪었고, 이 과정에서 사림과의 대립이 두드러졌다. 결국 훈구 세력은 조선 초기 ...</p>
+        <p class="entity-reason">사림과 대비되는 조선 초기 정치 세력으로 방의 정치 구조 이해에 필요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="6조">
+        <button class="entity-main" type="button">
+          <span class="entity-title">6조</span>
+          <span class="entity-meta">기관 · 0.2348</span>
+        </button>
+        <p class="entity-desc">6조는 조선 시대의 중앙 행정을 담당한 6개의 주요 부서로, 각각 이조, 호조, 예조, 병조, 형조, 공조로 구성되어 있다. 이들 부서는 국가 행정을 분장하여 각자의 전문 분야에서 행정 집행을 맡았으며, 의정부가 설치된 이후에는 각 부서가 구체적인 업무를 분담함으로써 관제를 체계적으로 정비하고 왕권 강화를 지원하였다. 6조의 각 부서 판서는 의정부 재상과 함께 국정을 논의하며 조선의 행정 운영에 핵심적인 역할을 수행하였다. 이러한 체계는 조선 시대의 국가 ...</p>
+        <p class="entity-reason">조선 전기 중앙 관제와 왕권 강화의 핵심 제도이므로 하위 구역에서 보여줄 가치가 있습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="태조">
+        <button class="entity-main" type="button">
+          <span class="entity-title">태조</span>
+          <span class="entity-meta">인물 · 0.2226</span>
+        </button>
+        <p class="entity-desc">조선을 건국한 초대 왕으로, 왕위에서 물러나면서 정도전의 계획이 중단되었다.</p>
+        <p class="entity-reason">조선 건국의 초대 왕으로 방의 시대적 출발점 이해에 필요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="신진 사대부">
+        <button class="entity-main" type="button">
+          <span class="entity-title">신진 사대부</span>
+          <span class="entity-meta">기관 · 0.2192</span>
+        </button>
+        <p class="entity-desc">신진 사대부는 고려 말기에 등장한 신흥 정치 세력으로, 조선 건국 과정에서 중요한 역할을 수행한 새로운 관료 집단이다. 이들은 이성계와 협력하여 조선 왕조의 건국을 주도하였으며, 이후 조선 시대의 정치와 사회 변화를 이끈 핵심 계층으로 자리 잡았다. 신진 사대부는 성리학 이념을 바탕으로 하여 왕권 강화를 추구하고 유교를 중심으로 한 통치 체제의 확립에 힘썼다. 이를 통해 조선 왕조의 정치적 안정과 사회 질서 구축에 중요한 기여를 하였으며, 새로운 국가 이념...</p>
+        <p class="entity-reason">조선 건국과 초기 체제 형성에 중요한 세력이지만 방의 전면 핵심보다는 배경 세력으로 보는 편이 적절합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="삼사">
+        <button class="entity-main" type="button">
+          <span class="entity-title">삼사</span>
+          <span class="entity-meta">기관 · 0.206</span>
+        </button>
+        <p class="entity-desc">삼사(三司)는 조선 시대에 사헌부, 사간원, 홍문관을 통칭하는 기관으로, 언론 기능과 관리 감독 업무를 담당하였다. 이들 세 기관은 왕권 견제와 관리 감찰, 그리고 붕당 정치 시기 공론 형성에서 핵심적인 역할을 수행하였다. 특히 홍문관을 중심으로 삼사는 조선 시대 정치적 여론과 공론 형성에 중요한 기여를 했으며, 당파 간 갈등 속에서 공정한 언론 기능을 통해 국정 운영의 투명성을 높이고자 하였다. 삼사는 조선 왕조 내에서 언론과 감시라는 두 가지 중요한 역...</p>
+        <p class="entity-reason">언론·감찰 기능을 통해 조선 정치 구조를 이해하는 데 필요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="사병">
+        <button class="entity-main" type="button">
+          <span class="entity-title">사병</span>
+          <span class="entity-meta">기관 · 0.2009</span>
+        </button>
+        <p class="entity-desc">사병은 조선 초기에 군주 주변에 설치된 개인 군대로, 당시 군주가 직접 통제하는 사적인 군사 조직을 의미한다. 이러한 사병은 왕권과 군사력이 유기적으로 결합된 초기 조선의 군사 체계에서 중요한 역할을 했으나, 태종 이방원이 즉위한 이후 군사적 권한과 왕권의 분리를 위해 철저히 혁파되었다. 이방원은 사병을 폐지함으로써 군사권을 왕권 아래로 완전히 통합하여 중앙 집권적인 통치 체제를 확립하고, 군사적 기반을 강화하는 데 성공하였다. 따라서 사병은 조선 초기의 ...</p>
+        <p class="entity-reason">태종의 왕권 강화와 연결되는 중요한 제도적 대상이므로 방 이해에 필요하지만 핵심 항목까지는 아닙니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="단종">
+        <button class="entity-main" type="button">
+          <span class="entity-title">단종</span>
+          <span class="entity-meta">인물 · 0.198</span>
+        </button>
+        <p class="entity-desc">단종은 조선의 6대 왕으로 어린 나이에 즉위하였으나, 권력 투쟁 과정 속에서 세조에게 왕위를 빼앗기고 폐위된 인물이다. 그의 폐위와 유배는 조선 시대 권력 다툼과 왕권 강화 과정의 중요한 사건을 보여준다. 단종은 폐위 이후에도 복위를 바라는 세력들의 중심에 있었으며, 이와 관련된 사육신 사건이 일어나기도 하였다. 이처럼 단종은 조선 초기 정치 변동과 권력 구도의 핵심적 인물로 기억되고 있다.</p>
+        <p class="entity-reason">세조의 왕위 찬탈과 왕권 재편을 이해하는 데 중요해 하위 맥락으로 적절합니다.</p>
+      </li>
+    
+              </ul>
+            </section>
+            
+            <section class="entity-section search_only">
+              <button class="section-title" type="button" data-toggle="search_only">
+                <span>Search Only</span>
+                <strong>41</strong>
+              </button>
+              <ul class="entities">
+                
+      <li class="entity" data-entity-title="서원">
+        <button class="entity-main" type="button">
+          <span class="entity-title">서원</span>
+          <span class="entity-meta">기관 · 0.2603</span>
+        </button>
+        <p class="entity-desc">서원은 조선 시대 사림 세력이 향촌 지역에서 세운 사설 학문 기관으로, 성리학을 중심으로 한 유교적 학문 연구와 교육, 도덕 교화를 담당하였다. 이 기관들은 지방 양반 자제들의 학문적 소양을 높이고 유교 이념을 널리 전파하는 역할을 하였으며, 사림 세력의 유지와 성장에 중요한 기반이 되었다. 그러나 흥선 대원군의 개혁 시기에 서원들이 갖고 있던 특권과 자율성이 문제시되면서 대부분이 철폐되는 운명을 맞았다. 그럼에도 서원은 조선 시대 유교 교육과 향촌 사회에...</p>
+        <p class="entity-reason">사림 성장과 관련된 제도이지만 조선 전기 왕권 강화 방의 직접 항목으로는 다소 벗어납니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="향약">
+        <button class="entity-main" type="button">
+          <span class="entity-title">향약</span>
+          <span class="entity-meta">정책 · 0.2459</span>
+        </button>
+        <p class="entity-desc">향약은 조선 시대 향촌 사회에서 사림에 의해 보급된 자치 규범이자 사회 조직으로, 지역 사회의 도덕과 질서 유지를 목적으로 한 중요한 정책이었다. 향약은 지방 사회의 자치 규범으로서 백성들의 도덕적 수칙과 공동체 생활에 관한 규범을 제정하여, 향촌 사회의 자치와 교화를 촉진하고 사회 안정을 도모하는 역할을 수행했다. 이를 통해 향약은 조선 시대 지방 사회에서 주민들이 스스로 사회 질서를 유지하고 공동체 의식을 강화하는 데 기여한 핵심적인 제도였다.</p>
+        <p class="entity-reason">향촌 자치와 사림 기반 설명에는 유용하나 방의 전면 주제와는 거리가 있습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="성삼문">
+        <button class="entity-main" type="button">
+          <span class="entity-title">성삼문</span>
+          <span class="entity-meta">인물 · 0.2173</span>
+        </button>
+        <p class="entity-desc">성삼문은 조선 전기의 문신이자 학자로, 조선 초기 충절과 의리를 상징하는 인물이다. 그는 단종 복위를 모의한 사육신 중 한 명으로, 단종이 폐위된 후 이에 반발하여 복위를 시도하였다. 이러한 활동이 발각되어 결국 처형되었으며, 그의 죽음은 조선 초기 정치적 갈등과 충신의 헌신을 대표하는 사건으로 평가된다. 성삼문은 세조 치세 시기에 단종 복위를 시도하다가 제거된 충신으로서, 조선 역사에서 충절과 의리의 상징적인 인물로 기억되고 있다.</p>
+        <p class="entity-reason">단종 복위 사건의 인물로 역사적 연관성은 있으나 이 방의 중심 주제와는 거리가 있습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="농사직설">
+        <button class="entity-main" type="button">
+          <span class="entity-title">농사직설</span>
+          <span class="entity-meta">문물 · 0.216</span>
+        </button>
+        <p class="entity-desc">농사직설은 조선 초기에 간행된 농서로, 당시 우리나라 실정에 맞는 농업 기술과 지식을 체계적으로 정리하여 소개한 책이다. 이 농서는 전국적으로 보급되면서 농업 생산력 향상에 크게 기여하였으며, 조선 시대 농민들에게 실용적인 농사법을 제공하는 중요한 역할을 하였다. 농사직설은 우리 농업의 발전과 농업 기술 전수에 핵심적인 자료로 평가받고 있으며, 조선 초기 농업 정책과 실천에 있어 기반이 되었다.</p>
+        <p class="entity-reason">조선 전기 농업 정책 자료로는 유용하나 왕권 강화 중심 방에서는 직접 노출 필요성이 낮습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="김종직">
+        <button class="entity-main" type="button">
+          <span class="entity-title">김종직</span>
+          <span class="entity-meta">인물 · 0.212</span>
+        </button>
+        <p class="entity-desc">김종직은 조선 전기 성종 시대에 경상도 영남 출신으로 활동한 유학자이다. 그는 뛰어난 학문적 성취와 문장성을 갖추었으며, 사림 세력의 중심 인물이자 지도자로서 많은 제자를 양성하였다. 김종직은 특히 언론 기관에 등용되어 훈구 세력을 비판하는 대표적인 학자로 활약하였으며, 이를 통해 조선 사회 내에서 사림 세력의 입지를 강화하는 데 중요한 역할을 하였다. 그의 학문적 영향력과 사림 세력 내에서의 지도적 위치는 조선 전기 정치와 유교 사상 발전에 큰 기여를 하였다.</p>
+        <p class="entity-reason">사림 형성과 연결되지만 이 방의 핵심 축은 아니므로 검색 보존이 적절합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="용비어천가">
+        <button class="entity-main" type="button">
+          <span class="entity-title">용비어천가</span>
+          <span class="entity-meta">문물 · 0.209</span>
+        </button>
+        <p class="entity-desc">용비어천가는 조선 세종 시대에 훈민정음으로 지어진 최초의 국문학 작품으로, 우리 문학사에서 매우 중요한 위치를 차지한다. 이 작품은 한글 창제 후 처음으로 작성된 문학 작품으로서, 우리 국문학의 새로운 출발점이자 발전의 토대가 되었다. 용비어천가는 국문학이 독자적인 문학 형태로 성장하는 데 기여하였으며, 한국어와 한글의 역사적 발전과 밀접한 관련을 가진 작품으로 평가받는다.</p>
+        <p class="entity-reason">세종 관련 문학 작품으로 조선 전기 맥락은 있으나 방의 핵심 주제와 직접성은 낮습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="월인천강지곡">
+        <button class="entity-main" type="button">
+          <span class="entity-title">월인천강지곡</span>
+          <span class="entity-meta">문물 · 0.206</span>
+        </button>
+        <p class="entity-desc">월인천강지곡은 조선 세종 시대에 훈민정음으로 작성된 불교 음악서로, 조선 전기 국문학과 불교 문화 발전에 크게 기여한 중요한 작품이다. 이 작품은 세종 이후 국문학의 발전에 중요한 역할을 하였으며, 용비어천가에 이어 조선 초기 국문학을 대표하는 중요한 문헌으로 평가받는다. 월인천강지곡은 불교 음악과 관련된 내용을 담고 있어 당시 불교 문화의 확산과 심화에 기여하였으며, 동시에 한글 창제 이후 국문학의 토대를 다지는 데 중요한 역할을 하였다. 이러한 점에서 ...</p>
+        <p class="entity-reason">세종 대 문화 성과로는 의미 있지만 이 방에서는 보조적 참고 수준입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="왜관">
+        <button class="entity-main" type="button">
+          <span class="entity-title">왜관</span>
+          <span class="entity-meta">기관 · 0.1989</span>
+        </button>
+        <p class="entity-desc">왜관은 조선 초기부터 설치된 일본과의 외교 및 무역을 담당하는 기관으로, 임진왜란 이후 조선과 일본 간 교역 및 사신 접대가 이루어진 중요한 장소였다. 이 기관은 일본 사신의 서울 방문을 제한하면서 외교 업무를 집행하였고, 국교 유지에 핵심적인 역할을 수행하였다. 즉, 왜관은 조선과 일본 간의 공식적인 외교 및 무역 관계를 관리하는 중심지로서, 두 나라 간의 왕래와 교류가 원활히 이루어지도록 기여하였다.</p>
+        <p class="entity-reason">대일 외교·무역 관련으로 조선 전기 국가 체제와는 직접성이 낮습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="유향소">
+        <button class="entity-main" type="button">
+          <span class="entity-title">유향소</span>
+          <span class="entity-meta">기관 · 0.1936</span>
+        </button>
+        <p class="entity-desc">유향소는 조선 시대 향촌에서 운영된 자치 조직으로, 지방 백성들의 교화와 수령의 자문 역할을 수행하며 향촌 행정을 지원하는 기관이다. 이 조직은 지방 주민들의 자치기구로서 지방 사회의 자율적 운영을 도모하였고, 특히 사림 세력이 향촌 지역에서 기반을 다지는 데 중요한 역할을 하였다. 유향소는 향민들의 의견을 수렴하고 지방 행정에 반영하는 기능을 하여 지방 통치의 효율성을 높였으며, 지방 사회의 질서 유지와 교화를 통해 지역 공동체의 안정과 발전에 기여하였다...</p>
+        <p class="entity-reason">지방 자치 관련 항목으로 조선 전기 중앙 왕권 강화 방에서는 보조적입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="농업">
+        <button class="entity-main" type="button">
+          <span class="entity-title">농업</span>
+          <span class="entity-meta">정책 · 0.1921</span>
+        </button>
+        <p class="entity-desc">농업은 조선 시대 경제의 근간으로, 농경지 개간과 농업 기술 개선을 통해 생산력을 향상시키고 국가 안정과 백성의 생활 수준 향상에 기여한 중대한 경제 활동이다.</p>
+        <p class="entity-reason">조선 경제 일반 설명으로는 가능하지만 이 방의 핵심 주제와 직접 연결성은 낮습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="계유정난">
+        <button class="entity-main" type="button">
+          <span class="entity-title">계유정난</span>
+          <span class="entity-meta">사건 · 0.1783</span>
+        </button>
+        <p class="entity-desc">계유정난은 1453년에 일어난 왕위 찬탈 사건으로, 수양대군이 어린 단종을 몰아내고 세조로 등극하는 계기가 된 정치적 쿠데타이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="신숙주">
+        <button class="entity-main" type="button">
+          <span class="entity-title">신숙주</span>
+          <span class="entity-meta">인물 · 0.1689</span>
+        </button>
+        <p class="entity-desc">신숙주는 조선 전기의 학자 겸 문신으로, 계유정난 당시 수양대군을 도와 단종을 몰아내고 세조 즉위에 기여한 공신이며 세조의 총애를 받은 정객이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="우왕">
+        <button class="entity-main" type="button">
+          <span class="entity-title">우왕</span>
+          <span class="entity-meta">인물 · 0.1632</span>
+        </button>
+        <p class="entity-desc">우왕은 고려 말기의 왕으로, 위화도 회군으로 인해 권력에서 밀려나면서 조선의 성립에 간접적인 배경이 되었다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="사화">
+        <button class="entity-main" type="button">
+          <span class="entity-title">사화</span>
+          <span class="entity-meta">사건 · 0.1619</span>
+        </button>
+        <p class="entity-desc">사화는 조선 중기 정치적 혼란과 권력 투쟁 과정에서 발생한 네 차례의 정치적 탄압 사건들로, 사림 세력이 훈구 세력과 외척에 의해 희생당한 역사적 사건이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="장시">
+        <button class="entity-main" type="button">
+          <span class="entity-title">장시</span>
+          <span class="entity-meta">사건 · 0.1605</span>
+        </button>
+        <p class="entity-desc">장시는 16세기 이후 조선 전역에 형성된 농산물과 생활 필수품의 시장으로, 농업 생산력 향상에 따른 상공업 발달과 지역 경제 활성화에 중요한 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="무오사화">
+        <button class="entity-main" type="button">
+          <span class="entity-title">무오사화</span>
+          <span class="entity-meta">사건 · 0.1602</span>
+        </button>
+        <p class="entity-desc">무오사화는 연산군 즉위 초기에 훈구 세력이 사림 세력을 대대적으로 탄압한 최초의 사화로, 사림 세력에 큰 피해를 준 사건이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="중종반정">
+        <button class="entity-main" type="button">
+          <span class="entity-title">중종반정</span>
+          <span class="entity-meta">사건 · 0.16</span>
+        </button>
+        <p class="entity-desc">중종반정은 16세기 초에 일어난 정치 변란으로, 연산군 폐위 후 중종이 왕위에 올라 사림 세력을 등용하고 개혁 정치를 시도한 사건이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="조선과 명의 친선 관계">
+        <button class="entity-main" type="button">
+          <span class="entity-title">조선과 명의 친선 관계</span>
+          <span class="entity-meta">사건 · 0.1567</span>
+        </button>
+        <p class="entity-desc">조선 초기 조선과 명나라가 친선 관계를 유지하며 사신을 자주 파견하고 경제, 문화적 실리를 취한 외교적 사건이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="과전법">
+        <button class="entity-main" type="button">
+          <span class="entity-title">과전법</span>
+          <span class="entity-meta">정책 · 0.1565</span>
+        </button>
+        <p class="entity-desc">과전법은 조선 건국 초기 실시된 토지 제도 개혁으로, 신진 사대부와 무인 세력에게 토지를 지급하여 국가 경제 기반을 다지고 왕권을 강화하는 데 목적을 두었다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="직전법">
+        <button class="entity-main" type="button">
+          <span class="entity-title">직전법</span>
+          <span class="entity-meta">정책 · 0.1542</span>
+        </button>
+        <p class="entity-desc">직전법은 세조 때 시행된 토지 제도로, 관리에게 지급된 토지를 직접 전답으로 삼아 재정 수입을 증대하고 군사력을 강화하는 데 목적이 있었다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="국조오례의">
+        <button class="entity-main" type="button">
+          <span class="entity-title">국조오례의</span>
+          <span class="entity-meta">문물 · 0.1534</span>
+        </button>
+        <p class="entity-desc">국조오례의는 조선시대 왕실 의례와 국가 의식을 체계적으로 정리한 책으로, 유교적 통치 이념에 따른 예법 확립에 기여하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="덕치주의">
+        <button class="entity-main" type="button">
+          <span class="entity-title">덕치주의</span>
+          <span class="entity-meta">정책 · 0.153</span>
+        </button>
+        <p class="entity-desc">덕치주의는 성리학 이념에 따른 조선 초기 정치 원리로, 군주의 덕을 바탕으로 한 이상적인 유교 정치 실현을 목표로 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="모내기법">
+        <button class="entity-main" type="button">
+          <span class="entity-title">모내기법</span>
+          <span class="entity-meta">정책 · 0.1515</span>
+        </button>
+        <p class="entity-desc">모내기법은 조선 시대 남부 지방에서 도입된 새로운 논농사 기술로, 모판에서 모종을 길러 논에 옮겨 심어 수확량을 높인 농업 기술이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="조광조">
+        <button class="entity-main" type="button">
+          <span class="entity-title">조광조</span>
+          <span class="entity-meta">인물 · 0.1496</span>
+        </button>
+        <p class="entity-desc">조광조는 중종 때의 개혁가로서 사림 세력을 대표하며 유교적 이상 정치를 추진하였으나 훈구 세력의 반발과 사화로 개혁이 좌절된 인물이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="길재">
+        <button class="entity-main" type="button">
+          <span class="entity-title">길재</span>
+          <span class="entity-meta">인물 · 0.1469</span>
+        </button>
+        <p class="entity-desc">길재는 조선 전기 유학자로 사림 세력의 학통을 이은 인물이며, 주로 지방에서 후진 양성과 학문에 힘썼다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="최영">
+        <button class="entity-main" type="button">
+          <span class="entity-title">최영</span>
+          <span class="entity-meta">인물 · 0.1461</span>
+        </button>
+        <p class="entity-desc">최영은 고려 말기의 무신으로, 위화도 회군 직전 권력을 행사하다가 이성계에게 밀려나면서 조선 건국 전환기의 군사적 상황에 영향을 준 인물이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="정종">
+        <button class="entity-main" type="button">
+          <span class="entity-title">정종</span>
+          <span class="entity-meta">인물 · 0.1461</span>
+        </button>
+        <p class="entity-desc">정종은 조선의 2대 왕으로, 태종에 이어 왕위에 올랐으며 조선 왕조 초기 체제 정비 과정의 주역 중 하나이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="정몽주">
+        <button class="entity-main" type="button">
+          <span class="entity-title">정몽주</span>
+          <span class="entity-meta">인물 · 0.1456</span>
+        </button>
+        <p class="entity-desc">정몽주는 고려 말기의 유학자이자 정치인으로, 조선 건국을 반대하다가 제거됨으로써 조선 건국 과정의 갈등을 상징하는 인물이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="측우기">
+        <button class="entity-main" type="button">
+          <span class="entity-title">측우기</span>
+          <span class="entity-meta">문물 · 0.1406</span>
+        </button>
+        <p class="entity-desc">측우기는 조선 전기에 제작된 강우량 측정 기구로, 세계 최초의 강수량 측정 도구 중 하나이며 농업과 과학 기술 발전에 크게 기여하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="동국여지승람">
+        <button class="entity-main" type="button">
+          <span class="entity-title">동국여지승람</span>
+          <span class="entity-meta">문물 · 0.1386</span>
+        </button>
+        <p class="entity-desc">동국여지승람은 조선 초기 편찬된 지리서로, 전국 각 지역의 자연환경, 인문 지리, 행정 구역 등을 상세히 서술하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="팔도지리지">
+        <button class="entity-main" type="button">
+          <span class="entity-title">팔도지리지</span>
+          <span class="entity-meta">문물 · 0.1381</span>
+        </button>
+        <p class="entity-desc">팔도지리지는 조선 초 편찬된 지리서로, 전국 8도의 지리와 문화를 체계적으로 정리하여 행정과 토지 관리에 활용되었다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="금속활자">
+        <button class="entity-main" type="button">
+          <span class="entity-title">금속활자</span>
+          <span class="entity-meta">문물 · 0.1363</span>
+        </button>
+        <p class="entity-desc">금속활자는 조선 전기에 발달한 인쇄술로, 빠르고 효율적인 책 제작을 가능하게 하여 문화와 학문의 보급에 큰 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="여씨향약">
+        <button class="entity-main" type="button">
+          <span class="entity-title">여씨향약</span>
+          <span class="entity-meta">문물 · 0.1361</span>
+        </button>
+        <p class="entity-desc">여씨향약은 중국에서 유래한 향약의 한 형태로, 조선 초기 사림이 이를 번역하고 개조하여 전국적으로 보급하여 향약 제도의 기초가 되었다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="해시계">
+        <button class="entity-main" type="button">
+          <span class="entity-title">해시계</span>
+          <span class="entity-meta">문물 · 0.1355</span>
+        </button>
+        <p class="entity-desc">해시계는 조선 시대 시각을 측정하기 위해 사용한 기구로, 시간 관리와 천문학 연구에 중요한 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="혼천의">
+        <button class="entity-main" type="button">
+          <span class="entity-title">혼천의</span>
+          <span class="entity-meta">문물 · 0.1354</span>
+        </button>
+        <p class="entity-desc">혼천의는 조선 시대 천체의 운행을 측정하는 과학 기구로, 천문학과 시각 측정 기술의 발전을 보여준다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="사육신">
+        <button class="entity-main" type="button">
+          <span class="entity-title">사육신</span>
+          <span class="entity-meta">기관 · 0.1352</span>
+        </button>
+        <p class="entity-desc">사육신은 계유정난 이후 단종 복위를 위해 모의하다 처형당한 여섯 명의 충신 집단으로, 조선 초기 충절을 대표하는 인물 군이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="물시계">
+        <button class="entity-main" type="button">
+          <span class="entity-title">물시계</span>
+          <span class="entity-meta">문물 · 0.1351</span>
+        </button>
+        <p class="entity-desc">물시계는 조선 시대 시각 측정 기구로, 시간의 흐름을 물의 흐름으로 계산하는 과학 기술의 산물이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="집현전">
+        <button class="entity-main" type="button">
+          <span class="entity-title">집현전</span>
+          <span class="entity-meta">기관 · 0.1341</span>
+        </button>
+        <p class="entity-desc">집현전은 세종 때 설치된 학문 연구 기관으로, 국가 정책 수립과 학문 진흥에 기여하며 유교 정치 구현에 중요한 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="정난 공신">
+        <button class="entity-main" type="button">
+          <span class="entity-title">정난 공신</span>
+          <span class="entity-meta">기관 · 0.133</span>
+        </button>
+        <p class="entity-desc">정난 공신은 계유정난에 참여하여 세조의 왕위 등극에 공헌한 신숙주 등 인물 집단으로, 고위 관직과 영지를 수여받았다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="한양">
+        <button class="entity-main" type="button">
+          <span class="entity-title">한양</span>
+          <span class="entity-meta">기관 · 0.1327</span>
+        </button>
+        <p class="entity-desc">한양은 조선의 도읍지로서, 중앙에 위치하고 수로 교통이 편리하며 산으로 둘러싸여 방어에 유리한 전략적 위치를 가진 행정 중심지이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="계">
+        <button class="entity-main" type="button">
+          <span class="entity-title">계</span>
+          <span class="entity-meta">기관 · 0.1313</span>
+        </button>
+        <p class="entity-desc">계는 조선시대 마을 단위에서 자발적으로 만들어진 상호 부조, 공동체 활동 조직으로, 향약 제도 내에 흡수되어 사회 경제적 안정에 기여하였다.</p>
+        
+      </li>
+    
+              </ul>
+            </section>
+            
+      </div>
+    </article>
+    
+    <article class="room" data-room-title="조선의 군사·교통·문헌 체계">
+      <header class="room-head">
+        <div>
+          <p class="room-no">Room 2</p>
+          <h2>조선의 군사·교통·문헌 체계</h2>
+        </div>
+        <div class="room-stats">
+          <span>24 entities</span>
+          <span>8 communities</span>
+        </div>
+      </header>
+      <p class="flow">국가 방위와 물자·정보 이동을 담당한 군역·정규군·잡색군, 조운과 역원 제도, 그리고 역사서 편찬과 서원 교육을 함께 묶어 조선의 운영 인프라를 이해한다.</p>
+      <div class="badges">
+        <span class="badge core-b">core 1</span>
+        <span class="badge support-b">supporting 4</span>
+        <span class="badge search-b">search 19</span>
+      </div>
+      <details class="subzones" open>
+        <summary>Subzones and Source Communities</summary>
+        <ul>
+        <li>
+          <span>군역과 군사 조직</span>
+          <code>[1, 29]</code>
+        </li>
+        
+
+        <li>
+          <span>조운과 역원</span>
+          <code>[4, 28]</code>
+        </li>
+        
+
+        <li>
+          <span>역사서 편찬과 역사 인식</span>
+          <code>[8, 19]</code>
+        </li>
+        
+
+        <li>
+          <span>서원과 감찰·지방 행정 보조 체계</span>
+          <code>[21, 24]</code>
+        </li>
+        </ul>
+      </details>
+      <div class="entity-grid">
+        
+            <section class="entity-section core">
+              <button class="section-title" type="button" data-toggle="core">
+                <span>Core</span>
+                <strong>1</strong>
+              </button>
+              <ul class="entities">
+                
+      <li class="entity low-confidence" data-entity-title="군역 제도">
+        <button class="entity-main" type="button">
+          <span class="entity-title">군역 제도</span>
+          <span class="entity-meta">정책 · 0.1921</span>
+        </button>
+        <p class="entity-desc">군역 제도는 조선 시대 16세 이상 60세 양인 남성에게 군복무를 의무화한 제도로, 국방력 유지의 기초를 형성하였다.</p>
+        <p class="entity-reason">이 방의 현재 핵심 주제와 직접 일치하는 대표 항목입니다.</p>
+      </li>
+    
+              </ul>
+            </section>
+            
+            <section class="entity-section supporting">
+              <button class="section-title" type="button" data-toggle="supporting">
+                <span>Supporting</span>
+                <strong>4</strong>
+              </button>
+              <ul class="entities">
+                
+      <li class="entity" data-entity-title="역원 제도">
+        <button class="entity-main" type="button">
+          <span class="entity-title">역원 제도</span>
+          <span class="entity-meta">정책 · 0.1897</span>
+        </button>
+        <p class="entity-desc">역원 제도는 조선 시대 육로 교통을 지원하기 위해 설치된 역과 인력 배치 체제로, 공문서 및 관원 이동 편의를 제공하였다.</p>
+        <p class="entity-reason">교통 체계의 핵심 제도로 방 제목과 잘 맞습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="사헌부">
+        <button class="entity-main" type="button">
+          <span class="entity-title">사헌부</span>
+          <span class="entity-meta">기관 · 0.187</span>
+        </button>
+        <p class="entity-desc">사헌부는 조선 초기부터 존재한 기관으로, 관리들의 비행과 부정을 감찰하는 역할을 담당하였다. 이 기관은 조선 시대 정치 질서 유지에 중요한 역할을 하였으며, 관리들의 부정행위와 비리를 조사하여 바로잡는 데 중점을 두었다. 또한 사헌부는 조정 내에서 법과 도덕을 바로잡는 기능을 수행하여 국가의 윤리적 토대를 확립하는 데 기여하였다. 이를 통해 사헌부는 조선 사회의 청렴성과 질서 유지를 위한 핵심적인 감찰 기관으로 자리매김하였다.</p>
+        <p class="entity-reason">삼사 체계의 핵심 기관으로 조선의 감찰 기능을 설명하는 데 중요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="사간원">
+        <button class="entity-main" type="button">
+          <span class="entity-title">사간원</span>
+          <span class="entity-meta">기관 · 0.1825</span>
+        </button>
+        <p class="entity-desc">사간원은 조선 시대에 설치된 왕권 감시 및 권고 기관으로, 국왕과 정치 세력 간의 견제 기능을 수행하였다. 이 기관은 왕권이 부당한 권력을 행사하는 것을 감시하고, 정치 행위에 대한 비판을 통해 바른 정치를 실현하도록 왕에게 조언과 권고를 제공하였다. 사간원은 조선의 정치 감시 기능을 담당하며, 국왕이 올바른 정치를 펼칠 수 있도록 견제와 균형의 역할을 충실히 수행한 중요한 기구였다.</p>
+        <p class="entity-reason">조선의 언론·감찰 체계 이해에 필요한 기관입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="병마절도사">
+        <button class="entity-main" type="button">
+          <span class="entity-title">병마절도사</span>
+          <span class="entity-meta">인물 · 0.1815</span>
+        </button>
+        <p class="entity-desc">병마절도사는 조선 시대 지방 육군을 지휘하는 군사 책임자로, 각 도의 국방을 담당하였다.</p>
+        <p class="entity-reason">지방 군사 지휘 체계 이해에 필요한 인물/직책입니다.</p>
+      </li>
+    
+              </ul>
+            </section>
+            
+            <section class="entity-section search_only">
+              <button class="section-title" type="button" data-toggle="search_only">
+                <span>Search Only</span>
+                <strong>19</strong>
+              </button>
+              <ul class="entities">
+                
+      <li class="entity" data-entity-title="백운동 서원">
+        <button class="entity-main" type="button">
+          <span class="entity-title">백운동 서원</span>
+          <span class="entity-meta">기관 · 0.1754</span>
+        </button>
+        <p class="entity-desc">백운동 서원은 주세붕이 안향을 추모하고 후진 양성을 위해 설립한 조선 초기 서원으로, 후에 이황의 건의로 ‘소수 서원’이라는 현판을 받았다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="조운">
+        <button class="entity-main" type="button">
+          <span class="entity-title">조운</span>
+          <span class="entity-meta">정책 · 0.1725</span>
+        </button>
+        <p class="entity-desc">조운은 조선 시대 지방에서 생산된 세곡을 서울로 운송하는 제도로, 국가 재정 수입과 물자 유통에 핵심적 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="수군절도사">
+        <button class="entity-main" type="button">
+          <span class="entity-title">수군절도사</span>
+          <span class="entity-meta">인물 · 0.1648</span>
+        </button>
+        <p class="entity-desc">수군절도사는 조선 시대 지방 수군을 지휘하는 군사 책임자로, 해상 방어와 해군 조직을 관리하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="주세붕">
+        <button class="entity-main" type="button">
+          <span class="entity-title">주세붕</span>
+          <span class="entity-meta">인물 · 0.1488</span>
+        </button>
+        <p class="entity-desc">주세붕은 조선 초기의 학자이자 관료로, 최초의 서원인 백운동 서원을 세워 성리학 교육과 학문 발전에 기여하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="안향">
+        <button class="entity-main" type="button">
+          <span class="entity-title">안향</span>
+          <span class="entity-meta">인물 · 0.1456</span>
+        </button>
+        <p class="entity-desc">안향은 고려 말 조선 초기의 유학자로서 성리학을 전파하고, 주세붕이 세운 서원에서 추모되는 인물이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="조선왕조실록">
+        <button class="entity-main" type="button">
+          <span class="entity-title">조선왕조실록</span>
+          <span class="entity-meta">문물 · 0.1412</span>
+        </button>
+        <p class="entity-desc">조선왕조실록은 조선 시대의 역사를 연대기별로 기록한 공식 역사서로, 역사 연구와 당시 정치 사회 이해에 핵심 자료이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="동국통감">
+        <button class="entity-main" type="button">
+          <span class="entity-title">동국통감</span>
+          <span class="entity-meta">문물 · 0.1408</span>
+        </button>
+        <p class="entity-desc">동국통감은 조선 초기 편찬된 역사서로, 삼국 시대부터 조선까지의 역사를 종합적으로 서술하고 국가의 역사관을 제시하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="고려사">
+        <button class="entity-main" type="button">
+          <span class="entity-title">고려사</span>
+          <span class="entity-meta">문물 · 0.1395</span>
+        </button>
+        <p class="entity-desc">고려사는 조선 시대에 편찬된 고려 왕조의 공식 역사서로, 고려 시대 정치와 사회를 연구하는 데 중요한 문헌이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="해창">
+        <button class="entity-main" type="button">
+          <span class="entity-title">해창</span>
+          <span class="entity-meta">문물 · 0.1386</span>
+        </button>
+        <p class="entity-desc">해창은 조선 시대 서남 해안에 설치된 세곡 보관 창고로, 배편을 통해 서울로 세곡을 운송하는 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="마패">
+        <button class="entity-main" type="button">
+          <span class="entity-title">마패</span>
+          <span class="entity-meta">문물 · 0.1381</span>
+        </button>
+        <p class="entity-desc">마패는 조선 시대 공무 여행자가 역마를 이용할 때 소지하는 증명서로, 교통 편의를 보장하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="강창">
+        <button class="entity-main" type="button">
+          <span class="entity-title">강창</span>
+          <span class="entity-meta">문물 · 0.1376</span>
+        </button>
+        <p class="entity-desc">강창은 조선 시대 강가에 설치된 세곡 보관 창고로, 조운을 원활히 하기 위해 세곡을 일시 보관하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="고려사절요">
+        <button class="entity-main" type="button">
+          <span class="entity-title">고려사절요</span>
+          <span class="entity-meta">문물 · 0.1367</span>
+        </button>
+        <p class="entity-desc">고려사절요는 고려사에서 중요한 내용을 간추린 역사책으로, 조선 전기 역사 편찬의 한 부분을 이룬다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="소수 서원">
+        <button class="entity-main" type="button">
+          <span class="entity-title">소수 서원</span>
+          <span class="entity-meta">기관 · 0.136</span>
+        </button>
+        <p class="entity-desc">소수 서원은 백운동 서원에 이황의 건의로 부여된 명칭으로, 조선 시대 서원의 대표적 모범 사례이며 학문과 교육의 중심지 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="읍성">
+        <button class="entity-main" type="button">
+          <span class="entity-title">읍성</span>
+          <span class="entity-meta">문물 · 0.1345</span>
+        </button>
+        <p class="entity-desc">읍성은 조선 시대 지방 주요 읍에 축조된 성곽으로, 지역 방어와 치안 유지에 활용되었다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="역">
+        <button class="entity-main" type="button">
+          <span class="entity-title">역</span>
+          <span class="entity-meta">기관 · 0.1343</span>
+        </button>
+        <p class="entity-desc">역은 조선 시대 도로 30리마다 설치된 휴게소 및 마상 교체 장소로, 교통과 통신을 원활하게 하는 기능을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="정규군">
+        <button class="entity-main" type="button">
+          <span class="entity-title">정규군</span>
+          <span class="entity-meta">기관 · 0.1339</span>
+        </button>
+        <p class="entity-desc">정규군은 조선 시대 공식적으로 편성된 중앙 및 지방 군사 조직으로, 평시와 전시 국방을 담당하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="잡색군">
+        <button class="entity-main" type="button">
+          <span class="entity-title">잡색군</span>
+          <span class="entity-meta">기관 · 0.1334</span>
+        </button>
+        <p class="entity-desc">잡색군은 조선 시대 평상시에는 생업에 종사하다가 유사시 징집되는 예비 군사 조직으로, 중앙군과 지방군의 보조 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="5위">
+        <button class="entity-main" type="button">
+          <span class="entity-title">5위</span>
+          <span class="entity-meta">기관 · 0.1319</span>
+        </button>
+        <p class="entity-desc">5위는 조선 시대 수도 서울에 설치된 군사 조직으로, 중앙 군사력의 핵심 역할을 수행하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="원">
+        <button class="entity-main" type="button">
+          <span class="entity-title">원</span>
+          <span class="entity-meta">기관 · 0.1306</span>
+        </button>
+        <p class="entity-desc">원은 조선 시대 교통 요지나 한적한 곳에 설치된 숙박 시설로, 여행자들이 휴식을 취할 수 있도록 마련되었다.</p>
+        
+      </li>
+    
+              </ul>
+            </section>
+            
+      </div>
+    </article>
+    
+    <article class="room" data-room-title="조선 후기 정치 변동과 사회 개혁">
+      <header class="room-head">
+        <div>
+          <p class="room-no">Room 3</p>
+          <h2>조선 후기 정치 변동과 사회 개혁</h2>
+        </div>
+        <div class="room-stats">
+          <span>161 entities</span>
+          <span>11 communities</span>
+        </div>
+      </header>
+      <p class="flow">인조반정과 광해군 정책 변화에서 시작해 영조·정조의 탕평책, 세도 정치의 부패, 실학과 북학파의 개혁, 동학과 개화의 갈등, 갑신정변·갑오개혁까지 조선 후기의 정치·사회 변동을 순차적으로 학습한다.</p>
+      <div class="badges">
+        <span class="badge core-b">core 4</span>
+        <span class="badge support-b">supporting 56</span>
+        <span class="badge search-b">search 101</span>
+      </div>
+      <details class="subzones" open>
+        <summary>Subzones and Source Communities</summary>
+        <ul>
+        <li>
+          <span>중기 권력 재편</span>
+          <code>[9]</code>
+        </li>
+        
+
+        <li>
+          <span>탕평책과 왕권 안정</span>
+          <code>[12, 15]</code>
+        </li>
+        
+
+        <li>
+          <span>세도 정치와 민란</span>
+          <code>[16]</code>
+        </li>
+        
+
+        <li>
+          <span>대외 충돌과 외교·경제 갈등</span>
+          <code>[20]</code>
+        </li>
+        
+
+        <li>
+          <span>실학과 개혁 사상</span>
+          <code>[25]</code>
+        </li>
+        
+
+        <li>
+          <span>동학·개화·근대 개혁</span>
+          <code>[3, 5, 22]</code>
+        </li>
+        
+
+        <li>
+          <span>동학 농민 운동과 농민군의 항쟁과 개혁</span>
+          <code>[2]</code>
+        </li>
+        
+
+        <li>
+          <span>조선 후기 국학 연구와 실학자들의 학문적 성과</span>
+          <code>[10]</code>
+        </li>
+        </ul>
+      </details>
+      <div class="entity-grid">
+        
+            <section class="entity-section core">
+              <button class="section-title" type="button" data-toggle="core">
+                <span>Core</span>
+                <strong>4</strong>
+              </button>
+              <ul class="entities">
+                
+      <li class="entity" data-entity-title="흥선 대원군">
+        <button class="entity-main" type="button">
+          <span class="entity-title">흥선 대원군</span>
+          <span class="entity-meta">인물 · 0.6803</span>
+        </button>
+        <p class="entity-desc">흥선 대원군은 19세기 조선 후기의 정치인이자 왕족으로, 어린 고종의 즉위 후 섭정으로서 국내 혼란을 수습하고 왕권 강화를 목표로 여러 개혁 정책을 추진한 실질적 권력자였다. 그는 세도 정치와 삼정의 문란으로 인해 악화된 국내 질서를 바로잡기 위해 내정 개혁과 국가 재정 확충, 군사력 강화에 중점을 두었으며, 서양과의 통상 수교 요구를 거부하며 조선의 자주성을 지키려는 외교 정책을 펼쳤다. 임오군란 이후 잠시 권력을 잡았으나, 청나라에 의해 납치되어 정치적...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="세도 정치">
+        <button class="entity-main" type="button">
+          <span class="entity-title">세도 정치</span>
+          <span class="entity-meta">사건 · 0.4854</span>
+        </button>
+        <p class="entity-desc">세도 정치는 19세기 조선 후기에 약 60년간 지속된 정치 현상으로, 주로 순조, 헌종, 철종 시기에 걸쳐 안동 김씨 등 일부 외척 가문이 권력을 독점하여 왕권을 약화시키고 국가 기강을 문란하게 만든 상황을 의미한다. 이 시기 어린 왕들의 즉위와 함께 외척 가문이 실질적인 정치 권력을 장악하면서 부패와 정치적 혼란이 심화되었다. 세도 정치로 인해 조선 사회 전반에 부패가 만연하고, 국가 운영이 부실해지면서 백성들의 생활이 파탄에 이르렀으며, 이는 농민 봉기...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="갑신정변">
+        <button class="entity-main" type="button">
+          <span class="entity-title">갑신정변</span>
+          <span class="entity-meta">사건 · 0.4801</span>
+        </button>
+        <p class="entity-desc">갑신정변은 1884년에 조선에서 급진 개화파가 주도한 정치 개혁 시도이자 쿠데타로, 근대적 개혁과 자주 국가 수립을 목표로 하였다. 일본의 지원을 받은 이 사건은 신분제 폐지 등 다양한 개혁 요구를 포함하였으며, 조선 근대화와 정치 변혁의 시발점으로 평가된다. 그러나 3일 만에 청나라 군대의 개입으로 실패하였고, 그 결과로 청의 내정 간섭이 강화되는 계기가 되었다. 갑신정변은 이후 갑오개혁과 동학 농민 운동에 영향을 끼친 중요한 역사적 사건으로, 조선의 근...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="흥선 대원군의 개혁">
+        <button class="entity-main" type="button">
+          <span class="entity-title">흥선 대원군의 개혁</span>
+          <span class="entity-meta">정책 · 0.2652</span>
+        </button>
+        <p class="entity-desc">흥선 대원군의 개혁은 19세기 중반 세도 정치로 인한 사회 혼란을 바로잡고 왕권 강화, 재정 확충, 사회 제도 개선을 목표로 한 종합 개혁 정책이다.&gt;</p>
+        <p class="entity-reason">방 제목과 직접 맞닿는 대표 개혁 주제이므로 핵심으로 올리는 것이 적절합니다.</p>
+      </li>
+    
+              </ul>
+            </section>
+            
+            <section class="entity-section supporting">
+              <button class="section-title" type="button" data-toggle="supporting">
+                <span>Supporting</span>
+                <strong>56</strong>
+              </button>
+              <ul class="entities">
+                
+      <li class="entity" data-entity-title="동학">
+        <button class="entity-main" type="button">
+          <span class="entity-title">동학</span>
+          <span class="entity-meta">사건 · 0.4603</span>
+        </button>
+        <p class="entity-desc">동학은 19세기 중반부터 후반에 걸쳐 조선에서 형성된 민중 중심의 신흥 종교 운동으로, 최제우에 의해 창시되었다. 이 운동은 전통 민간 신앙과 유교, 불교, 도교 사상을 융합하여 민족적이며 반외세적인 성격을 지녔다. 동학은 사람을 하늘과 동등하게 보는 인내천(人乃天) 사상을 중심 교리로 삼아, 사회적 평등과 신분 제도의 타파를 주장하였다. 이러한 평등 사상과 사회 개혁 의지는 부패한 사회 구조와 외세 침략에 맞서던 농민과 서민 계층 사이에서 급속히 확산되었...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="조선 정부">
+        <button class="entity-main" type="button">
+          <span class="entity-title">조선 정부</span>
+          <span class="entity-meta">기관 · 0.4564</span>
+        </button>
+        <p class="entity-desc">조선 정부는 조선 왕조 시대의 중앙 행정 기관으로, 다양한 역사적 시기와 상황에서 국가 권력과 행정의 중심 역할을 수행하였다. 16세기 임진왜란 당시 조선 정부는 일본군의 북진을 막고 국토를 방어하기 위해 중앙집권적 정치 기구로서 국방을 담당했으며, 전쟁 기간 내내 국가의 안보를 지키기 위한 전략적 역할을 수행하였다. 이후 19세기 흥선 대원군 집권기에는 군사 제도를 정비하고 외세의 침략에 대비해 국방 수비를 강화하는 데 힘썼다. 19세기 말이 되면서 조선...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="갑오개혁">
+        <button class="entity-main" type="button">
+          <span class="entity-title">갑오개혁</span>
+          <span class="entity-meta">정책 · 0.4056</span>
+        </button>
+        <p class="entity-desc">갑오개혁은 1894년에 발생한 동학 농민 운동과 갑오년 난리를 계기로 조선 정부가 추진한 근대적 개혁 정책이다. 이 개혁은 조선 후기의 전통 사회를 근대적으로 변화시키기 위해 정치, 사회, 경제 전반에 걸쳐 이루어진 종합적인 개혁이었다. 갑오개혁의 주요 목표는 봉건적 제도를 폐지하고 국가 체제를 근대화하는 데 있었으며, 동학 농민 운동과 개화 운동의 영향을 받아 진행되었다. 이를 통해 조선은 전통적인 사회 구조를 타파하고 근대 국가로서의 기틀을 마련하고자 ...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="정조">
+        <button class="entity-main" type="button">
+          <span class="entity-title">정조</span>
+          <span class="entity-meta">인물 · 0.3915</span>
+        </button>
+        <p class="entity-desc">정조는 조선 후기의 왕으로, 영조의 뒤를 이어 탕평책을 계승하고 강화하여 정치적 혼란을 완화하고 왕권을 확립하는 데 주력하였다. 그는 국왕 권력 강화와 개혁을 추진하며, 규장각 설치와 장용영 창설을 통해 왕권을 강화하고 문예 부흥에 힘썼다. 또한 정조는 실학과 과학 기술을 장려하였으며, 천주교에 대해서는 초기에는 심한 박해를 하지 않고 학문적으로 연구할 수 있도록 허용하는 등 비교적 관용적인 태도를 보였다. 이러한 노력들은 조선 후기 정치와 문화 발전에 중...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="동학 농민 운동">
+        <button class="entity-main" type="button">
+          <span class="entity-title">동학 농민 운동</span>
+          <span class="entity-meta">사건 · 0.3535</span>
+        </button>
+        <p class="entity-desc">동학 농민 운동은 1890년대, 특히 1894년에 조선 후기 농민들이 탐관오리의 부패한 정치와 외세의 침탈에 대항하여 일으킨 대규모 민중 봉기이다. 이 운동은 반봉건적 내정 개혁과 외세 배척을 목표로 삼아 당시 조선 사회의 모순과 일본 등 외세의 침략에 대한 저항의 성격을 지니고 있었다. 농민들은 집강소를 설치하여 자치를 시도하며 사회 혁신을 꾀했으나, 일본의 군사 개입으로 인해 결국 실패로 끝났다. 동학 농민 운동은 조선 말기의 사회 부조리와 민족적 위기...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="남인">
+        <button class="entity-main" type="button">
+          <span class="entity-title">남인</span>
+          <span class="entity-meta">기관 · 0.351</span>
+        </button>
+        <p class="entity-desc">남인은 조선 후기 붕당 정치에서 중요한 역할을 한 정치 세력으로, 서인과 경쟁하며 정치에 참여하였다. 초기에는 권력에서 밀려나기도 했으나, 영조의 탕평책에 의해 온건파로 분류되어 다시 정치 무대에 진출하였다. 비록 후기에는 그 세력이 위축되었지만, 남인은 실학자들을 배출하며 개혁 운동에 기여하는 등 조선 사회의 변화를 이끄는 데 중요한 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="탕평책">
+        <button class="entity-main" type="button">
+          <span class="entity-title">탕평책</span>
+          <span class="entity-meta">정책 · 0.3509</span>
+        </button>
+        <p class="entity-desc">탕평책은 조선 후기 영조와 정조 시기에 본격적으로 시행된 정치 개혁 정책으로, 붕당 간의 대립을 완화하고 왕권을 강화하기 위해 추진되었다. 이 정책의 주요 목적은 당파 간의 갈등을 극복하고 정국의 안정을 도모하는 데 있었으며, 온건하고 타협적인 인물을 등용하여 당의 균형을 유지하는 데 중점을 두었다. 탕평책은 붕당 정치의 폐해를 줄이고 국가의 통치력을 강화하기 위한 방안으로, 조선 사회의 정치적 혼란을 완화하고 왕권을 공고히 하는 데 중요한 역할을 하였다....</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="천주교">
+        <button class="entity-main" type="button">
+          <span class="entity-title">천주교</span>
+          <span class="entity-meta">사건 · 0.3496</span>
+        </button>
+        <p class="entity-desc">천주교는 18세기 말 조선에 전래된 서양계 외래 종교로, 유교적 질서와 충돌하면서도 서민과 여성층을 중심으로 지속적으로 확산된 종교 운동이다. 조선 후기에는 국가 차원에서 금지와 탄압을 받았으나, 민중과 지식인들 사이에서 사회 변혁의 한 축으로 자리 잡으며 널리 전파되었다. 19세기 흥선 대원군 정권 초기에는 다소 온건한 태도를 보였으나 이후 정책적 탄압의 대상이 되었다. 이러한 역사적 과정 속에서 천주교는 조선 사회 내에서 중요한 사회적·종교적 영향력을 ...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="병자호란">
+        <button class="entity-main" type="button">
+          <span class="entity-title">병자호란</span>
+          <span class="entity-meta">사건 · 0.3319</span>
+        </button>
+        <p class="entity-desc">병자호란은 1636년에 청(후금)이 조선을 침략하여 벌어진 전쟁이다. 이 전쟁은 청나라가 조선을 공격함으로써 시작되었고, 조선의 왕 인조는 위협을 피해 남한산성으로 피신하여 약 45일간 항전하였다. 그러나 결국 인조는 항복을 선택하였고, 이로 인해 한양은 청에게 점령당했다. 전쟁은 삼전도에서 굴욕적인 강화 협정 체결로 끝났으며, 이로 인해 조선은 국제적 위기가 심화되고 정치적인 분열이 심각해졌다. 병자호란은 조선의 외교 정책에 큰 변화를 초래하였으며, 청나...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="서인">
+        <button class="entity-main" type="button">
+          <span class="entity-title">서인</span>
+          <span class="entity-meta">기관 · 0.3246</span>
+        </button>
+        <p class="entity-desc">서인(西人)은 조선 시대 사림파 정치 집단의 한 갈래로, 16세기 후반 동인과 대립하며 정치에 막강한 영향력을 행사한 붕당 세력이다. 이들은 조선 중기부터 후기까지 정치 무대에서 중요한 역할을 담당했으며, 특히 인조반정(1623년) 이후 권력을 장악하는 데 성공하였다. 서인은 광해군 정권을 무너뜨리고 인조반정을 주도하여 왕권을 장악했으며, 이후 친명 배금(明나라에 친하고 후금, 즉 청나라에 배척적인) 정책을 펼치면서 국정을 주도하였다. 이러한 서인의 활동은...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="박영효">
+        <button class="entity-main" type="button">
+          <span class="entity-title">박영효</span>
+          <span class="entity-meta">인물 · 0.3236</span>
+        </button>
+        <p class="entity-desc">박영효는 19세기 말 조선의 대표적인 개혁파 정치인으로, 갑신정변의 핵심 개화파 인물 중 한 명이다. 그는 갑신정변 실패 후 일본으로 망명하였으며, 이후 임오군란 직후 일본에 사절로 파견되는 등 외교와 개화 정책 추진에 중요한 역할을 수행하였다. 이 시기 박영효는 태극기 사용의 시작과 근대화 개혁 정책 도입에 영향을 끼쳤다. 청일전쟁 이후에도 일본과 미국으로 망명하였다가 귀국하여 갑오개혁 추진에 적극 참여하며 조선의 근대적 개혁을 진전시키려 노력하였다. 박...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="청">
+        <button class="entity-main" type="button">
+          <span class="entity-title">청</span>
+          <span class="entity-meta">기관 · 0.3211</span>
+        </button>
+        <p class="entity-desc">청은 19세기 말 동아시아의 강국으로, 만주족이 세운 강력한 제국이다. 이 국가는 원래 후금이라 불렸으며, 명나라를 계승하여 국호를 청으로 바꾸었다. 청은 조선과 복잡한 외교 관계를 유지하며 동아시아 국제 질서에 큰 영향을 끼쳤다. 특히 조선에 대해 내정 간섭과 군사·외교 고문 파견을 통해 영향력을 행사하였고, 병자호란을 일으켜 조선을 압박하여 굴욕적인 강화 조약을 체결하게 만든 강대국이었다. 청은 동아시아에서 정치적·군사적으로 중심적인 역할을 수행하며 주...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="전봉준">
+        <button class="entity-main" type="button">
+          <span class="entity-title">전봉준</span>
+          <span class="entity-meta">인물 · 0.3186</span>
+        </button>
+        <p class="entity-desc">전봉준은 19세기 말 동학 농민 운동의 지도자로서, 탐관오리 척결과 농민 권익 보호를 내세우며 1894년 고부 농민 봉기를 주도한 인물이다. 그는 외세와 봉건 체제에 저항하며 민중 봉기를 이끌었고, 농민군을 조직하여 반봉건·반외세 성격의 농민 운동을 실천하였다. 전봉준의 활동과 사상은 근대 한국 사회의 개혁과 민족 의식 형성에 중요한 의미를 지니며, 당시 농민들의 현실적인 고통과 권리 회복을 위해 헌신한 개혁가이자 민중 지도자로 평가받는다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="영조">
+        <button class="entity-main" type="button">
+          <span class="entity-title">영조</span>
+          <span class="entity-meta">인물 · 0.3132</span>
+        </button>
+        <p class="entity-desc">영조는 조선 후기의 왕으로, 붕당 정치의 폐단과 갈등을 직접 경험한 뒤 즉위하여 이를 극복하고자 하였다. 그는 붕당 대립 완화와 왕권 강화를 목표로 탕평책을 본격적으로 실시하였으며, 이를 통해 조선 후기 정치의 안정을 도모한 대표적인 군주로 평가받는다. 영조는 붕당 정치의 폐해를 극복하고자 다양한 정치적 노력을 기울이며 왕권을 강화하는 한편, 당파 간의 균형을 맞추어 국가 운영의 효율성을 높이고 사회적 갈등을 완화하는 데 크게 기여하였다. 이러한 탕평책은 ...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="농민 봉기">
+        <button class="entity-main" type="button">
+          <span class="entity-title">농민 봉기</span>
+          <span class="entity-meta">사건 · 0.3058</span>
+        </button>
+        <p class="entity-desc">농민 봉기는 조선 후기 세도 정치와 삼정의 문란으로 인해 농민들의 생활이 극심하게 곤궁해지자 전국 각지에서 발생한 민중 저항 운동이다. 이 봉기는 삼정의 부패와 불합리한 수취 체계로 인해 농민들이 심각한 경제적 고통과 사회적 억압을 겪으면서 촉발되었으며, 전반적인 사회 부패에 대한 저항의 성격을 띠고 있었다. 농민 봉기는 단순한 반란을 넘어서 조선 후기 사회의 구조적 문제와 부패를 드러내어 사회 변동과 개혁의 필요성을 부각시키는 중요한 역사적 사건이었다. ...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="여진족">
+        <button class="entity-main" type="button">
+          <span class="entity-title">여진족</span>
+          <span class="entity-meta">인물 · 0.3055</span>
+        </button>
+        <p class="entity-desc">여진족은 만주 일대에 거주하던 여러 부족을 통칭하는 명칭으로, 16세기에서 17세기에 걸쳐 중요한 역사적 역할을 했다. 이들은 본래 만주 지역에 살던 유목민 집단으로, 조선 초기에는 압록강과 두만강 유역에 거주하며 자주 조선을 침입하는 세력이었고, 이에 따라 조선은 이들을 토벌하거나 포섭하는 정책을 펼쳤다. 명나라가 쇠약해지면서 여진족은 만주 지역에서 세력을 확장하였으며, 그 중심에 있던 누르하치가 여러 부족을 통일하여 후금(청나라의 전신)을 세웠다. 이 ...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="병인양요">
+        <button class="entity-main" type="button">
+          <span class="entity-title">병인양요</span>
+          <span class="entity-meta">사건 · 0.302</span>
+        </button>
+        <p class="entity-desc">병인양요는 1866년에 조선과 프랑스 사이에 발생한 군사적 충돌로, 프랑스가 조선 내 천주교인 및 선교사 처형을 구실로 삼아 강화도를 침략한 사건이다. 이 사건은 조선 후기 외세의 침략과 이에 대한 항쟁을 대표하는 사례로, 당시 조선의 자주적 외교 정책과 서양 세력과의 갈등 양상을 보여준다. 병인양요는 프랑스가 강화도를 공격함으로써 조선과 서구 열강 간의 긴장이 심화되었으며, 조선 내 천주교 탄압과 외세의 개입 문제를 상징적으로 드러낸 역사적 사건이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="농민군">
+        <button class="entity-main" type="button">
+          <span class="entity-title">농민군</span>
+          <span class="entity-meta">기관 · 0.2988</span>
+        </button>
+        <p class="entity-desc">농민군은 1894년 동학 농민 운동 시기 전봉준 등이 이끈 농민 무장 집단으로, 전라도 지역에서 관군과 일본군에 맞서 전투를 벌였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="후금">
+        <button class="entity-main" type="button">
+          <span class="entity-title">후금</span>
+          <span class="entity-meta">기관 · 0.2967</span>
+        </button>
+        <p class="entity-desc">후금은 17세기 초 만주 지역에 여진족이 세운 국가로, 누르하치가 창립하였다. 이 국가는 만주를 중심으로 군사력을 키우며 명나라에 대항하였고, 조선과 외교 및 군사적 충돌을 일으키기도 하였다. 후금은 이후 청나라의 전신이 되어 동아시아 역사에서 중요한 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="인조반정">
+        <button class="entity-main" type="button">
+          <span class="entity-title">인조반정</span>
+          <span class="entity-meta">사건 · 0.2947</span>
+        </button>
+        <p class="entity-desc">인조반정은 1623년에 일어난 정치적 쿠데타로, 당시 집권 세력 간의 갈등과 국왕 교체를 통해 조선 왕조의 권력 구도가 크게 변화한 사건이다. 이 사건은 광해군을 몰아내고 인조가 즉위하게 만든 중요한 전환점으로 평가된다. 인조반정 과정에서 서인 세력이 주도적으로 광해군 정권을 붕괴시키고 인조를 왕으로 옹립함으로써 새로운 왕권 질서를 수립하였다. 이를 통해 북인 세력은 권력에서 배제되었으며, 정치적 변혁과 함께 국정 운영의 방향이 크게 바뀌었다. 인조반정은 ...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="실학">
+        <button class="entity-main" type="button">
+          <span class="entity-title">실학</span>
+          <span class="entity-meta">사건 · 0.2938</span>
+        </button>
+        <p class="entity-desc">실학은 조선 후기 성리학 일변도의 정치와 사회에 대한 반발로 등장한 학문 운동으로, 현실 문제 해결과 실생활에 유용한 실용적 학문을 강조하였다. 이 사조는 성리학의 경직성을 비판하면서 정치, 경제, 사회 전반에 걸친 개혁안을 제시하고 근대적 사고를 발전시켰다. 실학은 조선 후기 사회의 다양한 현실 문제를 인식하고 이를 해결하기 위해 실용적이고 현실적인 접근 방식을 추구하여 조선 사회의 발전과 변화를 도모하는 데 중요한 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="광해군">
+        <button class="entity-main" type="button">
+          <span class="entity-title">광해군</span>
+          <span class="entity-meta">인물 · 0.291</span>
+        </button>
+        <p class="entity-desc">광해군은 조선 중기의 국왕으로, 임진왜란 이후 변화하는 국제 정세에 능동적으로 대응하였다. 그는 명과 후금 사이에서 중립 외교 정책을 펼치며 외교적 균형을 유지하고자 하였으며, 이를 통해 국가의 안정을 도모하는 데 주력하였다. 이러한 중립 외교는 당시 동아시아의 복잡한 외교 환경 속에서 조선이 외부 충돌로부터 비교적 안전할 수 있도록 하는 데 중요한 역할을 하였다. 광해군의 치세는 전쟁과 외교적 도전에 직면한 조선이 내부 혼란을 최소화하고 지속 가능한 통치...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="삼정의 문란">
+        <button class="entity-main" type="button">
+          <span class="entity-title">삼정의 문란</span>
+          <span class="entity-meta">정책 · 0.2887</span>
+        </button>
+        <p class="entity-desc">삼정의 문란은 조선 후기 농민들이 겪은 과도한 세금과 부패한 지방 관리들의 수탈 문제를 가리키며, 농민 봉기의 주요 원인으로 작용하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="노론">
+        <button class="entity-main" type="button">
+          <span class="entity-title">노론</span>
+          <span class="entity-meta">기관 · 0.2816</span>
+        </button>
+        <p class="entity-desc">노론은 조선 후기 붕당 정치에서 서인에서 분파된 강경하고 보수적인 정치 세력으로, 당대 정치의 주도 세력이었다. 이들은 특정 가문의 권력 독점과 세습을 특징으로 하였으며, 장기간에 걸쳐 정치적 권력을 유지하였다. 특히 영조 시대 탕평책 시행 이전까지 노론은 조선 후기 정치에서 강한 영향력을 행사하며 집권하였다. 노론은 조선 사회와 정치 질서의 안정과 보수를 중시하였으며, 이로 인해 정치적 보수성과 권력 집중이 두드러졌다. 전반적으로 노론은 조선 후기 붕당 ...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="붕당 정치">
+        <button class="entity-main" type="button">
+          <span class="entity-title">붕당 정치</span>
+          <span class="entity-meta">사건 · 0.2791</span>
+        </button>
+        <p class="entity-desc">붕당 정치는 조선 후기 노론을 중심으로 한 정치 세력 간의 대립과 집권 독점 현상을 의미한다. 이는 사림 세력의 내부 분열과 당파 간 갈등에서 비롯된 정치 체제로, 정치적 붕괴와 사회 모순의 심화를 초래하였다. 붕당 정치의 대립은 정치 혼란을 가중시키고 왕권 약화로 이어져 조선 후기 국가 운영에 부정적인 영향을 미쳤다. 결과적으로 붕당 정치는 당파 간의 갈등 심화와 권력 독점 문제로 조선 후기 사회와 정치 전반에 위기를 불러온 주요 요인으로 작용하였다.</p>
+        <p class="entity-reason">조선 후기 정치 변동의 중요한 배경이므로 방 이해에 필요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="인조">
+        <button class="entity-main" type="button">
+          <span class="entity-title">인조</span>
+          <span class="entity-meta">인물 · 0.2698</span>
+        </button>
+        <p class="entity-desc">인조는 조선 시대에 인조반정으로 왕위에 오른 국왕이다. 그는 병자호란 때 청나라 군대의 침입에 맞서 남한산성에서 항전했으며, 이 과정에서 국가적 위기를 겪었다. 남한산성에 피신한 인조는 선전후화론을 주장하는 등 위기 상황 속에서 외교 정책을 결정하며 대응하였다. 결국 삼전도에서 청과의 강화 조약을 맺어 굴욕적인 시기를 맞이하였다. 이러한 사건들은 인조 재위 기간 중 조선의 대외 관계와 내정에 깊은 영향을 끼쳤다.</p>
+        <p class="entity-reason">정묘호란·병자호란과 연결되는 핵심 국왕으로 하위 맥락에 적절합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="청⋅일 전쟁">
+        <button class="entity-main" type="button">
+          <span class="entity-title">청⋅일 전쟁</span>
+          <span class="entity-meta">사건 · 0.2671</span>
+        </button>
+        <p class="entity-desc">청⋅일 전쟁은 1894년 조선에서 벌어진 청나라와 일본 간의 군사 충돌로, 동학 농민 운동과 동아시아 세력 균형 변화에 결정적인 영향을 끼친 전쟁이다. 이 전쟁은 갑신정변 이후 약 10년 만에 청과 일본이 조선을 둘러싸고 벌인 충돌로, 당시 조선을 중심으로 한 동아시아 세력 구도의 변화를 촉진하였다. 청⋅일 전쟁을 통해 일본은 동아시아 내에서의 세력 확장을 가속화하였으며, 청나라의 영향력은 크게 약화되었다. 이로써 한반도와 동아시아 지역의 정치적 판도가 크...</p>
+        <p class="entity-reason">갑오개혁과 조선 말 정치 변동의 국제 배경으로 중요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="신미양요">
+        <button class="entity-main" type="button">
+          <span class="entity-title">신미양요</span>
+          <span class="entity-meta">사건 · 0.2637</span>
+        </button>
+        <p class="entity-desc">신미양요는 1871년 미국이 제너럴 셔먼 호 사건을 빌미로 강화도에 군사적으로 침입하여 발생한 군사 충돌이다. 이 사건은 조선 후기 서양 세력의 침략과 이에 대한 조선의 대응, 특히 군사적 저항을 보여주는 중요한 사례로 평가된다. 미국 함대가 강화도에 진입한 목적은 당시 사건과 관련한 조사 및 조치를 취하기 위한 것이었으나, 조선 측의 강력한 저항으로 이어져 양국 간 무력 충돌이 발생하였다. 신미양요는 조선이 외세의 군사적 위협에 직면하여 주권 수호를 위해...</p>
+        <p class="entity-reason">조선 후기 대외 충돌과 개항기 흐름을 이해하는 데 필요한 사건입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="홍경래의 난">
+        <button class="entity-main" type="button">
+          <span class="entity-title">홍경래의 난</span>
+          <span class="entity-meta">사건 · 0.2631</span>
+        </button>
+        <p class="entity-desc">홍경래의 난은 1811년 평안도에서 몰락 양반 홍경래와 가난한 농민들이 중심이 되어 일으킨 대규모 농민 봉기이다. 이 봉기는 19세기 초반 평안도 지역 농민과 서민이 탐관오리의 부패와 삼정의 문란, 그리고 세도 정치와 지방 차별에 항거하여 일어난 대표적인 민란으로, 당시 양반 중심의 사회 체제 붕괴의 전조로 평가받는다. 홍경래의 난은 몰락한 양반과 가난한 농민이 연합하여 권력층의 부패와 불공정한 사회 구조에 저항했던 중요한 역사적 사건이다.</p>
+        <p class="entity-reason">세도 정치와 사회 모순을 보여주는 대표적 민란입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="진주 농민 봉기">
+        <button class="entity-main" type="button">
+          <span class="entity-title">진주 농민 봉기</span>
+          <span class="entity-meta">사건 · 0.259</span>
+        </button>
+        <p class="entity-desc">진주 농민 봉기는 1862년 조선 철종 때 경상 삼남 지방에서 발생한 대표적인 농민 봉기이다. 이 봉기는 당시 삼정의 문란과 백낙신 등의 관리들이 농민들을 심하게 수탈하자 이에 저항하여 일어난 사건으로, 유계춘을 비롯한 농민들이 주도하였다. 19세기 조선 사회에서 지방 지배층의 부패와 착취에 맞서 농민들이 일으킨 저항 운동 중 하나로, 진주 농민 봉기는 당시 사회적 불평등과 부정에 대한 농민들의 강한 분노와 저항 의지를 보여주는 중요한 역사적 사례로 평가받...</p>
+        <p class="entity-reason">삼정 문란에 대한 농민 저항의 대표 사례로 방 주제와 잘 맞습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="최제우">
+        <button class="entity-main" type="button">
+          <span class="entity-title">최제우</span>
+          <span class="entity-meta">인물 · 0.2584</span>
+        </button>
+        <p class="entity-desc">최제우는 19세기 중반 조선에서 동학을 창시한 인물로, 전통 신앙과 유불도를 통합하여 민중의 사회적 구원과 반외세를 표방한 종교 지도자이자 개혁가이다. 그는 조선 후기 억압받던 농민층을 중심으로 평등과 민중 구원의 메시지를 전하며 새로운 사상을 설파하였다. 최제우의 동학은 당시 사회적 불평등과 외세 침입에 맞서 민중의 권리와 자주성을 강조하는 사상적 토대를 마련하였으며, 그의 활동은 조선 사회 개혁과 민중운동에 큰 영향을 끼쳤다. 그러나 그의 사상과 운동은...</p>
+        <p class="entity-reason">동학 창시자로서 후기 사회 개혁과 민중 운동의 핵심 인물입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="박지원">
+        <button class="entity-main" type="button">
+          <span class="entity-title">박지원</span>
+          <span class="entity-meta">인물 · 0.2527</span>
+        </button>
+        <p class="entity-desc">박지원은 조선 후기 북학파와 중상학파 실학자 중 핵심적인 인물로, 청나라의 선진 문물을 적극적으로 수용하고 이를 바탕으로 상공업 발전과 사회 현실 개혁에 깊은 관심을 기울였다. 그는 경제 활성화를 위해 상업, 수레, 교통의 중요성을 강조하며 현실적인 개혁 방안을 제시하였고, 이러한 사상과 활동을 통해 조선 사회의 진보와 발전을 도모하고자 하였다.</p>
+        <p class="entity-reason">북학파 실학의 대표 인물로 방의 개혁 흐름 이해에 중요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="중상 학파">
+        <button class="entity-main" type="button">
+          <span class="entity-title">중상 학파</span>
+          <span class="entity-meta">기관 · 0.246</span>
+        </button>
+        <p class="entity-desc">중상 학파는 조선 후기 실학자들 중 상공업 진흥과 기술 개발을 강조하며 청 문물 수용을 주장한 집단으로, 북학파로도 불린다.</p>
+        <p class="entity-reason">실학의 주요 분파로 조선 후기 개혁 사상 이해에 중요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="정묘호란">
+        <button class="entity-main" type="button">
+          <span class="entity-title">정묘호란</span>
+          <span class="entity-meta">사건 · 0.2455</span>
+        </button>
+        <p class="entity-desc">정묘호란은 1627년에 후금 군대가 조선에 침입하여 벌어진 전쟁으로, 임진왜란 이후 조선 북방의 안보 위기를 상징하는 중요한 사건이다. 이 전쟁에서 후금은 조선을 침략하였고, 이에 대응하여 조선은 명나라에 구원병을 요청하였다. 정묘호란은 조선 내부에서 강경파와 평화파 간의 대립을 심화시키는 계기가 되었으며, 북방 국방과 외교 정책에 큰 영향을 미쳤다. 이러한 배경 속에서 조선은 국가 안보 강화와 외교 관계를 재정비하는 중요한 전환점을 맞이하였다.</p>
+        <p class="entity-reason">병자호란 전후 대외 관계 맥락을 이해하는 데 필요한 사건입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="방곡령">
+        <button class="entity-main" type="button">
+          <span class="entity-title">방곡령</span>
+          <span class="entity-meta">정책 · 0.2437</span>
+        </button>
+        <p class="entity-desc">방곡령은 19세기 말 조선 정부가 일본 상인들의 곡식 수탈과 경제 침투를 막기 위해 시행한 통상 및 곡물 수출 제한 정책이다. 이 조치는 외세의 경제적 침투를 일부 제어하고, 조선 내 곡물 유출을 방지하기 위한 목적으로 내려졌으며, 특히 일본 상인들의 곡식 수탈을 막는 데 중점을 두었다. 그러나 방곡령의 시행은 국제적인 갈등을 악화시키는 결과를 낳기도 하여 조선과 일본 간의 긴장을 증가시키는 요인이 되었다. 따라서 방곡령은 조선 정부가 외세로부터 자국의 경...</p>
+        <p class="entity-reason">조선 말 경제·외세 대응 정책으로 개혁기 맥락에 포함할 만합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="안동 김씨 세력">
+        <button class="entity-main" type="button">
+          <span class="entity-title">안동 김씨 세력</span>
+          <span class="entity-meta">기관 · 0.2411</span>
+        </button>
+        <p class="entity-desc">안동 김씨 세력은 19세기 조선 후기 세도 정치의 중심이었던 핵심 가문으로, 당시 중앙 권력을 장악하여 왕권을 약화시키는 데 중요한 역할을 한 정치 집단이다. 이들은 조선 정치 권력의 중심 세력으로 부상하여 국정 전반에 걸쳐 큰 영향력을 행사하였으며, 그 결과 부패와 문란이 심화되는 원인을 제공하였다. 안동 김씨 세력은 권력 독점과 세도 정치로 인해 사회적 문제를 초래하였으며, 결국 흥선 대원군의 개혁 대상이 되어 몰아내어졌다. 이러한 개혁은 왕권 강화를 ...</p>
+        <p class="entity-reason">세도 정치의 중심 세력으로 방의 핵심 배경입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="최명길">
+        <button class="entity-main" type="button">
+          <span class="entity-title">최명길</span>
+          <span class="entity-meta">인물 · 0.2335</span>
+        </button>
+        <p class="entity-desc">최명길은 조선 중기의 문신이자 외교가로, 병자호란 당시 중요한 역할을 수행한 인물이다. 그는 병자호란 때 남한산성에서 조선이 청군에 항복하는 과정에서 항복 문서 작성과 항복 주도를 맡았다. 최명길은 명나라와의 의리를 강조하며 외교적으로 유연한 노선을 지지하였는데, 이는 청나라에 맞서는 동시에 명나라와의 관계를 유지하려는 복합적인 외교 전략을 반영한 것이다. 그의 이러한 활동은 조선이 국제관계 속에서 생존을 도모하는 과정에서 중요한 의미를 지닌다. 최명길은 ...</p>
+        <p class="entity-reason">병자호란 당시 주화파를 대표하는 인물로 함께 대비해 보여줄 가치가 있습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="통리기무아문">
+        <button class="entity-main" type="button">
+          <span class="entity-title">통리기무아문</span>
+          <span class="entity-meta">기관 · 0.2255</span>
+        </button>
+        <p class="entity-desc">통리기무아문은 조선 후기 정부가 근대적 개화 정책을 추진하기 위해 설치한 중앙 행정 기관이다. 이 기구는 신식 군대인 별기군을 조직하고, 근대 문물을 도입하는 역할을 담당했으며, 외교 및 군사 개혁을 주도하는 관리 기구로 기능하였다. 통리기무아문은 조선이 서구 문물과 군사 제도의 변화를 수용하고자 하는 과정에서 중심적인 역할을 수행하였으며, 이를 통해 조선 정부는 근대화를 위한 다양한 정책들을 체계적으로 추진할 수 있었다.</p>
+        <p class="entity-reason">개화 정책과 근대 개혁의 출발점으로 하위 맥락에 적절합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="북학파">
+        <button class="entity-main" type="button">
+          <span class="entity-title">북학파</span>
+          <span class="entity-meta">기관 · 0.2252</span>
+        </button>
+        <p class="entity-desc">북학파는 조선 후기 중상 학파와 동일한 집단으로, 청의 발달한 문물을 수용하여 조선 사회 개혁을 추구하였다.</p>
+        <p class="entity-reason">중상 학파와 연결되는 핵심 개혁 사상 집단입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="김상헌">
+        <button class="entity-main" type="button">
+          <span class="entity-title">김상헌</span>
+          <span class="entity-meta">인물 · 0.2233</span>
+        </button>
+        <p class="entity-desc">김상헌은 조선 중기의 문신으로, 정묘호란과 병자호란 시기에 강경한 항전 태도를 견지하며 항복을 반대한 척화파 인물이다. 그는 외세의 침입에 맞서 단호히 저항할 것을 주장하였으며, 특히 병자호란 당시 항복 문서를 찢는 행위로 유명하다. 김상헌은 이러한 강경 개전론과 함께 강직한 언론 활동을 통해 조선의 자주와 명예를 지키려 한 대표적인 인물로 평가받고 있다.</p>
+        <p class="entity-reason">병자호란 척화파를 대표하는 인물로 방의 대외 위기 맥락에 필요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="별기군">
+        <button class="entity-main" type="button">
+          <span class="entity-title">별기군</span>
+          <span class="entity-meta">기관 · 0.223</span>
+        </button>
+        <p class="entity-desc">별기군은 조선 후기 근대적 군사 조직으로 창설된 부대로, 당시 군사력 강화를 목적으로 조직되었으며 개화 정책 실행을 위한 중요한 역할을 담당하였다. 이 부대는 통리기무아문에서 조직한 신식 군대로서, 일본에서 도입한 최신 무기로 훈련받아 19세기 말 조선의 군사 근대화를 상징하는 대표적 군사 조직이었다. 별기군은 전통적인 조선의 군사 체계와는 달리 근대적인 무기와 전술을 채택하였으며, 조선 내부의 개혁과 외세의 위협에 대응하기 위한 군사적 기반을 마련하는 데...</p>
+        <p class="entity-reason">근대 군제 개편의 상징적 조직으로 개화기 개혁 이해에 필요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="김홍집">
+        <button class="entity-main" type="button">
+          <span class="entity-title">김홍집</span>
+          <span class="entity-meta">인물 · 0.221</span>
+        </button>
+        <p class="entity-desc">김홍집은 19세기 말 조선의 주요 관료로서, 특히 1894년 갑오개혁 당시 총리로 내각을 구성하고 개혁 추진을 담당한 인물이다. 그는 조선의 개화 정책 추진에 핵심적인 역할을 하였으며, 일본에 수신사로 파견되어 일본 문명과 제도를 직접 보고한 후 이를 국왕에게 상세히 알렸다. 이러한 경험을 바탕으로 김홍집은 조선 사회의 근대화와 개혁을 적극적으로 이끌며, 조선이 외국의 선진 제도와 문물을 수용하는 데 중요한 기여를 하였다. 그의 활동은 조선이 전통적인 봉건...</p>
+        <p class="entity-reason">갑오개혁 추진의 핵심 인물로 방의 개혁 맥락에 중요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="정약용">
+        <button class="entity-main" type="button">
+          <span class="entity-title">정약용</span>
+          <span class="entity-meta">인물 · 0.2153</span>
+        </button>
+        <p class="entity-desc">정약용은 조선 후기의 대표적인 실학자로서 중농 학파의 중심 인물이었다. 그는 토지 개혁과 행정 제도 개혁 등 다양한 사회 개혁안을 제시하며 조선 후기 사회 발전에 큰 영향을 끼친 개혁가로 평가받는다. 특히, 정약용은 농지의 공동 소유와 경작, 그리고 수확물 분배 방식을 통해 농촌 구조를 개선하는 농촌 개혁을 적극 주장하였다. 이러한 그의 사상과 실천은 중농 학파의 핵심 이념을 반영하며 당시 농민들의 생활 향상과 사회 안정에 기여하였다. 전반적으로 정약용은 ...</p>
+        <p class="entity-reason">조선 후기 개혁 사상을 대표하는 핵심 실학자이므로 하위 구역에서 보여줄 가치가 있습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="성리학">
+        <button class="entity-main" type="button">
+          <span class="entity-title">성리학</span>
+          <span class="entity-meta">문물 · 0.2148</span>
+        </button>
+        <p class="entity-desc">성리학은 조선 건국 초기부터 국가 통치 이념으로 채택된 유교 철학 체계로, 조선 사회의 정치, 사회, 문화 전반에 큰 영향을 미쳤다.</p>
+        <p class="entity-reason">조선 후기 정치·사회 개혁의 사상적 배경으로 중요하지만 전면 핵심은 아닙니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="동경대전">
+        <button class="entity-main" type="button">
+          <span class="entity-title">동경대전</span>
+          <span class="entity-meta">문물 · 0.2067</span>
+        </button>
+        <p class="entity-desc">동경대전은 동학의 핵심 경전으로, 동학의 교리와 교훈을 체계적으로 집대성한 중요한 문헌이다. 이 책은 동학 신앙과 사상을 후대에 전하는 역할을 하며, 동학 운동의 이념적 기반을 제공하였다. 동경대전은 동학 교리를 체계화하여 동학 운동의 방향성과 정신을 확립하는 데 기여하였으며, 동학 신도들에게 중심적인 교리서로서 자리 잡았다. 이를 통해 동학의 철학과 사상이 지속적으로 계승될 수 있었으며, 동학 운동 전체의 이념적 토대를 형성하는 중요한 역할을 수행하였다.</p>
+        <p class="entity-reason">동학의 핵심 경전으로 동학 사상 이해에 필요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="민씨 세력">
+        <button class="entity-main" type="button">
+          <span class="entity-title">민씨 세력</span>
+          <span class="entity-meta">기관 · 0.2063</span>
+        </button>
+        <p class="entity-desc">민씨 세력은 19세기 말 조선 정치에서 중요한 역할을 한 정계 집단으로, 청나라의 지원을 받아 권력을 장악하였다. 이 세력은 흥선 대원군의 퇴진 이후 왕비를 중심으로 형성되었으며, 조선 말기 정치 상황에서 주도적인 역할을 수행하였다. 민씨 세력은 조선의 외교 정책 변화와 개혁 추진에 중요한 영향을 미쳤으며, 청나라와 긴밀한 관계를 유지하면서 정치적 기반을 강화하였다. 이들은 정권을 장악하여 조선 말기의 권력 구조에 큰 변화를 가져왔으며, 당시 조선의 내정과...</p>
+        <p class="entity-reason">조선 말 정치 구도와 세도 정치 이후 흐름을 이해하는 데 필요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="조병갑">
+        <button class="entity-main" type="button">
+          <span class="entity-title">조병갑</span>
+          <span class="entity-meta">인물 · 0.2024</span>
+        </button>
+        <p class="entity-desc">조병갑은 19세기 말 전라도 고부 군수로 재임하면서 부정과 부패를 일삼고 농민들을 억압한 탐관오리이다. 그의 부정부패와 착취는 농민들의 극심한 불만과 고통을 불러일으켰으며, 이는 1894년 동학 농민 운동의 직접적인 배경이 되었다. 조병갑의 부패한 행위와 권력 남용은 당시 농민 봉기의 촉매 역할을 하였고, 이로 인해 그는 역사적으로 부패 관료로 기억되고 있다.</p>
+        <p class="entity-reason">동학 농민 운동의 직접적 배경이 되는 탐관오리로 중요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="남한산성">
+        <button class="entity-main" type="button">
+          <span class="entity-title">남한산성</span>
+          <span class="entity-meta">기관 · 0.1997</span>
+        </button>
+        <p class="entity-desc">남한산성은 조선 시대 병자호란 당시 인조 왕과 조정 신하들이 피신하여 약 45일간 항전한 중요한 요새이다. 이 fortress는 조선의 군사 방어와 국가 안보 위기 관리의 상징적 장소로서, 당시 외세의 침입에 맞서 국가의 존립을 지키려는 결단과 저항의 역사를 대표한다. 남한산성은 병자호란 때 왕과 조정이 피난하여 군사적 대응을 조직한 중심지였으며, 이를 통해 조선의 위기 대응 능력과 군사 전략을 보여주는 중요한 유적으로 평가된다. 오늘날 남한산성은 이러한 ...</p>
+        <p class="entity-reason">병자호란의 상징적 장소로 사건 이해에 중요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="중농 학파">
+        <button class="entity-main" type="button">
+          <span class="entity-title">중농 학파</span>
+          <span class="entity-meta">기관 · 0.1983</span>
+        </button>
+        <p class="entity-desc">중농 학파는 조선 후기 실학자들 중 농업과 토지 개혁에 중점을 두고 현실 개혁을 주장한 집단으로, 유형원, 이익, 정약용 등이 포함된다.</p>
+        <p class="entity-reason">실학의 흐름을 설명하는 데 필요한 분류입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="임오군란">
+        <button class="entity-main" type="button">
+          <span class="entity-title">임오군란</span>
+          <span class="entity-meta">사건 · 0.1974</span>
+        </button>
+        <p class="entity-desc">임오군란은 1882년 구식 군인들이 정부의 차별과 불만으로 일으킨 군사 반란으로, 일본 공사관 습격과 별기군 일본인 교관 살해 등의 사건이 포함된다.</p>
+        <p class="entity-reason">개화 정책과 군제 갈등을 보여주는 중요한 사건입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="군국기무처">
+        <button class="entity-main" type="button">
+          <span class="entity-title">군국기무처</span>
+          <span class="entity-meta">기관 · 0.193</span>
+        </button>
+        <p class="entity-desc">군국기무처는 1894년 갑오개혁 시기에 설치된 임시 개혁 심의 기관으로, 정치, 경제, 사회, 군사 및 국방 분야의 주요 개혁안을 심의하고 추진하는 역할을 맡았다. 이 기관은 갑오개혁 과정에서 다양한 분야에 걸친 개혁안을 단기간에 발표하며 개혁 정책을 주도하였으나, 효율적인 집행에 한계가 있어 실질적인 실행에는 어려움이 있었다. 군국기무처는 개혁의 방향을 설정하고 심의하는 중요한 역할을 담당했으나, 그 짧은 활동 기간과 광범위한 개혁 과제 때문에 전면적인 ...</p>
+        <p class="entity-reason">갑오개혁의 핵심 심의 기관으로 개혁 과정 이해에 중요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="삼정">
+        <button class="entity-main" type="button">
+          <span class="entity-title">삼정</span>
+          <span class="entity-meta">정책 · 0.1924</span>
+        </button>
+        <p class="entity-desc">삼정은 조선 후기 농민들에게 부과된 전세, 군포, 환곡을 통칭하는 세금 체계로, 세도 정치 하에서 심각하게 문란해져 농민 봉기의 주요 쟁점이 되었다.</p>
+        <p class="entity-reason">세도 정치와 농민 봉기의 핵심 배경이므로 중요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="교정청">
+        <button class="entity-main" type="button">
+          <span class="entity-title">교정청</span>
+          <span class="entity-meta">기관 · 0.1916</span>
+        </button>
+        <p class="entity-desc">교정청은 1894년 조선 정부에 의해 설치된 개혁 추진 기관으로, 동학 농민 운동 이후 농민들이 제기한 문제를 해결하고 정치 개혁을 이루기 위한 목적으로 만들어졌다. 특히 갑오개혁 시기에 설치되어 개혁 정책의 추진과 행정 업무를 담당하며 조선 사회의 근본적인 변화를 이끌었다. 교정청은 당시 정치적, 사회적 요구에 대응하여 중앙 집권적 개혁을 추진하는 핵심 기관으로 기능하였으며, 조선 정부가 근대화를 이루고 내부 문제를 해결하는 데 중요한 역할을 수행하였다.</p>
+        <p class="entity-reason">갑오개혁 초기 개혁 추진 기관으로 방의 개혁 흐름에 필요합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="암행어사">
+        <button class="entity-main" type="button">
+          <span class="entity-title">암행어사</span>
+          <span class="entity-meta">기관 · 0.1889</span>
+        </button>
+        <p class="entity-desc">암행어사는 조선 시대에 국왕의 명을 받아 지방 관리들의 비리를 감찰하고 정치 기강을 바로잡기 위해 파견된 비밀 감찰 기관이다. 이 기관은 왕권 강화를 목적으로 설립되어, 지방 관리들의 부정을 조사하고 이를 국왕에게 직접 보고하는 역할을 수행하였다. 암행어사의 활동은 조선 시대 관리 사회의 부패와 비리를 근절하고 정치 질서를 확립하는 데 중요한 역할을 하였으며, 특히 19세기에는 사회 문제를 해결하는 데 역사적으로 중대한 기구로 기능하였다. 이를 통해 암행어...</p>
+        <p class="entity-reason">부패 감찰과 왕권 강화 맥락에서 의미 있는 제도입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="장용영">
+        <button class="entity-main" type="button">
+          <span class="entity-title">장용영</span>
+          <span class="entity-meta">기관 · 0.1868</span>
+        </button>
+        <p class="entity-desc">장용영은 조선 후기 정조가 설치한 친위 군사 조직으로, 왕권 강화를 주요 목적으로 창설된 핵심 군사 기관이다. 이 조직은 정조의 국방력 증강과 왕권 강화를 위해 운영되었으며, 왕실을 직접 수호하고 국가 안정에 기여하는 중요한 역할을 수행하였다. 장용영은 당시 조선 사회와 정치 환경 속에서 왕권을 공고히 하고 내부의 위협에 대응하기 위한 필수적인 군사적 기반으로 자리잡았다.</p>
+        <p class="entity-reason">정조의 왕권 강화와 군사 개혁을 보여주는 중요한 기관입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="최시형">
+        <button class="entity-main" type="button">
+          <span class="entity-title">최시형</span>
+          <span class="entity-meta">인물 · 0.1856</span>
+        </button>
+        <p class="entity-desc">최시형은 동학의 2대 교주로, 동학 교리를 체계화하고 교단을 조직화하여 동학 운동을 활성화시킨 인물로, 19세기 후반 조선 농민 운동과 관련된다.</p>
+        <p class="entity-reason">동학의 교단 체계와 농민 운동 이해에 필요한 인물입니다.</p>
+      </li>
+    
+              </ul>
+            </section>
+            
+            <section class="entity-section search_only">
+              <button class="section-title" type="button" data-toggle="search_only">
+                <span>Search Only</span>
+                <strong>101</strong>
+              </button>
+              <ul class="entities">
+                
+      <li class="entity" data-entity-title="신문고">
+        <button class="entity-main" type="button">
+          <span class="entity-title">신문고</span>
+          <span class="entity-meta">문물 · 0.2786</span>
+        </button>
+        <p class="entity-desc">신문고는 조선 시대에 억울한 백성이 왕에게 직접 자신의 민원을 호소할 수 있도록 설치된 소리 울리는 장치이자 제도이다. 이 제도는 백성과 왕권 사이의 소통 수단으로서 중요한 역할을 수행하였으며, 백성들이 억울한 일을 해결받기 위해 직접 왕에게 의견을 전달할 수 있게 함으로써 민심을 반영하는 통로가 되었다. 특히 조선 후기에는 왕이 행차할 때 백성들의 민원을 효과적으로 알리기 위해 징과 꽹과리 같은 타악기를 사용하여 왕의 관심을 끌기도 하였다. 신문고는 단순...</p>
+        <p class="entity-reason">민원 제도이지만 이 방의 후기 정치 변동·사회 개혁 핵심 축과는 직접성이 낮습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="국학 연구">
+        <button class="entity-main" type="button">
+          <span class="entity-title">국학 연구</span>
+          <span class="entity-meta">사건 · 0.267</span>
+        </button>
+        <p class="entity-desc">국학 연구는 조선 후기 실학자들이 역사, 지리, 언어, 풍속 등 한국 고유의 학문 전반을 체계적으로 연구한 문화적 흐름이다.</p>
+        <p class="entity-reason">실학의 학문 경향 설명에는 유용하나 방의 핵심 주제와는 거리가 있습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="서광범">
+        <button class="entity-main" type="button">
+          <span class="entity-title">서광범</span>
+          <span class="entity-meta">인물 · 0.246</span>
+        </button>
+        <p class="entity-desc">서광범은 19세기 말 개화파 및 개혁파 정치인으로, 조선 말기의 근대적 개혁 운동에 적극 참여한 인물이다. 그는 갑신정변에 참여하여 개화 정책과 개혁 정치 추진에 관여하였으며, 이후 청일 전쟁 후 해외로 망명하였다가 귀국하였다. 귀국 후에는 갑오개혁 추진에 중요한 역할을 하며 조선의 근대화와 정치체제 개편에 기여하였다. 서광범은 개혁파 정치인으로서 당대의 정치적 변혁과 근대화 시기에 중심적인 역할을 수행한 인물이다.</p>
+        <p class="entity-reason">개화파 인물로 관련성은 있으나 방의 전면 노출 대상은 아닙니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="유수원">
+        <button class="entity-main" type="button">
+          <span class="entity-title">유수원</span>
+          <span class="entity-meta">인물 · 0.235</span>
+        </button>
+        <p class="entity-desc">유수원은 조선 후기의 실학자이자 북학파의 대표적인 인물로, 조선 사회의 현실 개혁과 사회 번영을 위해 청의 문물 수용과 상공업 진흥을 적극 주장하였다. 그는 중상학파 실학자로서 경제 발전과 개혁에 중점을 두었으며, 당시 조선에 널리 퍼져 있던 전통적인 가치관과 제도에 도전하며 새로운 지식과 기술을 받아들여 국가 발전에 기여하고자 하였다. 유수원은 청의 선진 문물을 도입함으로써 조선 사회가 경제적으로 자립하고 번영할 수 있는 토대를 마련할 필요성을 강조하였으...</p>
+        <p class="entity-reason">실학자이지만 방의 핵심 사건·정치 변동보다 세부 학자 정보에 가깝습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="허준">
+        <button class="entity-main" type="button">
+          <span class="entity-title">허준</span>
+          <span class="entity-meta">인물 · 0.2341</span>
+        </button>
+        <p class="entity-desc">허준은 조선 중기 의학자로, 광해군의 후원을 받아 동의보감을 편찬한 인물이다. 그는 이 책을 통해 한·중·일 삼국의 의학에 큰 영향을 미쳤으며, 조선 의학의 발전에 중요한 기여를 하였다. 특히 허준은 예방 의학과 전통 약재 치료법을 강조하였고, 이를 바탕으로 동의보감은 체계적이고 실용적인 의서로 자리매김하였다. 그의 업적은 단순한 의서 편찬을 넘어 동아시아 의학 전반에 지대한 영향을 끼친 것으로 평가받는다.</p>
+        <p class="entity-reason">의학 인물로서 방 주제와 직접 관련이 약합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="홍대용">
+        <button class="entity-main" type="button">
+          <span class="entity-title">홍대용</span>
+          <span class="entity-meta">인물 · 0.2274</span>
+        </button>
+        <p class="entity-desc">홍대용은 조선 후기 실학자 중 하나로, 북학파 및 중상학파 실학자 그룹에 속한다. 그는 청나라의 선진 문물과 과학 기술에 주목하며 이를 통해 조선 사회의 개혁 필요성을 강조하였다. 홍대용은 청 문명의 우수성을 깊이 인식하고, 이를 바탕으로 조선의 경제적·사회적 발전을 도모하는 데 관심을 기울였다. 그의 사상은 조선 후기 실학 운동에서 중요한 위치를 차지하며, 당시의 보수적인 질서 속에서 실질적인 변화를 추구하는 데 기여하였다.</p>
+        <p class="entity-reason">실학 관련 인물로 의미는 있으나 이 방에서는 보조적입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="제너럴 셔먼 호">
+        <button class="entity-main" type="button">
+          <span class="entity-title">제너럴 셔먼 호</span>
+          <span class="entity-meta">문물 · 0.2194</span>
+        </button>
+        <p class="entity-desc">제너럴 셔먼 호는 1866년에 미국 상선으로서 조선에 통상을 요구하며 대동강까지 침입한 배이다. 이 배는 19세기 조선과의 외교적 충돌에서 중요한 역할을 하였으며, 신미양요와 병인양요 당시의 역사적 사건과 깊이 연관된 상징물로 여겨진다. 제너럴 셔먼 호는 조선 내에서 통상 요구뿐만 아니라 민가를 약탈하는 행위를 벌여 조선 정부와 민중의 강한 반발을 불러일으켰다. 이로 인해 조선과 미국 간의 긴장이 고조되었고, 이는 이후 신미양요와 병인양요라는 두 차례의 대...</p>
+        <p class="entity-reason">신미양요와 연결되지만 방의 중심 주제보다는 사건 배경 요소입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="박제가">
+        <button class="entity-main" type="button">
+          <span class="entity-title">박제가</span>
+          <span class="entity-meta">인물 · 0.2157</span>
+        </button>
+        <p class="entity-desc">박제가는 조선 후기 중상학파 실학자이자 북학파에 속하는 인물로, 당시 조선 사회의 개혁을 위해 청나라 문화와 문물의 우수성을 인식하고 이를 적극 수용할 필요성을 강조하였다. 그는 상공업의 발전과 외국 문물 수용을 통해 조선 사회의 현실적 문제들을 해결하고 국가 발전을 도모하고자 하였으며, 이를 바탕으로 조선 후기 개혁 사상에 중요한 영향을 끼쳤다. 박제가는 현실적인 방안 모색을 통해 조선 사회의 개혁과 발전을 추구한 대표적인 실학자이다.</p>
+        <p class="entity-reason">실학 인물로는 중요하지만 현재 방에서는 보조적 참고 수준입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="태극기">
+        <button class="entity-main" type="button">
+          <span class="entity-title">태극기</span>
+          <span class="entity-meta">문물 · 0.1944</span>
+        </button>
+        <p class="entity-desc">태극기는 19세기 말 조선에서 공식적으로 사용되기 시작한 국가 상징기로, 조선의 주권과 정체성을 나타내는 중요한 상징물이다. 조선 후기 효가 일본에 사절로 파견될 때 처음 사용된 국기로 알려져 있으며, 이 시기를 기점으로 태극기는 국가를 대표하는 상징으로 자리 잡았다. 이후 태극기는 대한민국의 국가 상징물로 계승되어 오늘날까지도 국가의 정체성과 독립성을 나타내는 중요한 상징으로 활용되고 있다.</p>
+        <p class="entity-reason">국가 상징으로 의미는 있으나 이 방의 정치 변동·사회 개혁 핵심 항목은 아닙니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="노비문서">
+        <button class="entity-main" type="button">
+          <span class="entity-title">노비문서</span>
+          <span class="entity-meta">문물 · 0.1837</span>
+        </button>
+        <p class="entity-desc">노비 문서는 임진왜란 중 불타 사라진 문서로, 조선 후기 신분제 변동과 관련된 중요한 기록물이다. 노비문서는 조선 시대 노비 신분을 증명하는 문서로, 동학 농민 운동의 폐정 개혁안에서 불태워 없애는 대상으로 포함되었다.</p>
+        <p class="entity-reason">신분제 변동과 관련되지만 이 방에서는 보조적 자료 수준입니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="탐관오리">
+        <button class="entity-main" type="button">
+          <span class="entity-title">탐관오리</span>
+          <span class="entity-meta">인물 · 0.1832</span>
+        </button>
+        <p class="entity-desc">탐관오리는 조선 후기 부패한 관리를 지칭하며, 세도 정치 시기 삼정 문란과 세금 착취의 주범이었다.</p>
+        <p class="entity-reason">삼정 문란의 일반적 표현으로 보조 설명에는 가능하지만 핵심 항목은 아닙니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="거문도 사건">
+        <button class="entity-main" type="button">
+          <span class="entity-title">거문도 사건</span>
+          <span class="entity-meta">사건 · 0.1823</span>
+        </button>
+        <p class="entity-desc">거문도 사건은 19세기 말 조선을 둘러싼 국제 열강 간 세력 다툼이 심화된 시기에, 영국이 러시아의 남하 정책을 견제하기 위해 거문도를 점령한 사건으로, 한반도의 지정학적 중요성과 열강의 세력 균형을 이해하는 데 중요하다.</p>
+        <p class="entity-reason">국제 정세 배경으로는 유용하지만 방의 핵심 주제와는 거리가 있습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="의금부">
+        <button class="entity-main" type="button">
+          <span class="entity-title">의금부</span>
+          <span class="entity-meta">기관 · 0.18</span>
+        </button>
+        <p class="entity-desc">의금부는 조선 시대에 왕권을 보호하고 정치적 반역이나 중대한 범죄를 다루는 국가 기관이었다. 이 기관은 조선의 법률 체계 내에서 큰 죄인을 다스리며 국가의 중요한 사법 기능을 수행하였다. 특히 영조의 탕평 정책이 시행되는 과정에서 의금부는 정치적 탄압과 처벌을 담당하여 정치적 균형을 유지하는 역할도 맡았다. 의금부는 왕권 수호와 국가의 법 집행을 책임지는 기관으로서 조선 사회의 안정과 질서 확립에 중추적인 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="정치 기강 문란">
+        <button class="entity-main" type="button">
+          <span class="entity-title">정치 기강 문란</span>
+          <span class="entity-meta">사건 · 0.177</span>
+        </button>
+        <p class="entity-desc">정치 기강 문란은 세도 정치 시기 관직 임명과 과거 시험 부정, 뇌물 수수 등이 만연해 정치가 타락한 현상을 의미한다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="매관매직">
+        <button class="entity-main" type="button">
+          <span class="entity-title">매관매직</span>
+          <span class="entity-meta">사건 · 0.1764</span>
+        </button>
+        <p class="entity-desc">매관매직은 세도 정치 기간에 관직을 뇌물로 사고파는 부정 행위를 일컫는 말로, 국가 부패와 백성 착취의 원인이 되었다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="소론">
+        <button class="entity-main" type="button">
+          <span class="entity-title">소론</span>
+          <span class="entity-meta">기관 · 0.176</span>
+        </button>
+        <p class="entity-desc">소론은 조선 후기 서인 붕당의 또 다른 분파로, 노론과 함께 당시 정치에 큰 영향을 끼친 세력이다. 이들은 조선 후기 붕당 정치에서 온건하고 타협적인 성향을 지닌 정파로 알려져 있다. 소론은 영조의 탕평책에 의해 중용되어 왕권 강화에 중요한 역할을 했으며, 이를 통해 정치적 안정을 도모하는 데 기여하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="개화 정책">
+        <button class="entity-main" type="button">
+          <span class="entity-title">개화 정책</span>
+          <span class="entity-meta">정책 · 0.174</span>
+        </button>
+        <p class="entity-desc">개화 정책은 19세기 말 조선 정부가 일본과 서양의 선진 문물을 받아들여 국가를 근대화하려 한 개혁 정책으로, 개화파가 주도하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="오페르트 사건">
+        <button class="entity-main" type="button">
+          <span class="entity-title">오페르트 사건</span>
+          <span class="entity-meta">사건 · 0.1736</span>
+        </button>
+        <p class="entity-desc">오페르트 사건은 병인양요 후 프랑스 인사들이 조선 흥선 대원군의 아버지 남연군 무덤을 도굴하려다가 실패한 사건이다.&gt;</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="세도가">
+        <button class="entity-main" type="button">
+          <span class="entity-title">세도가</span>
+          <span class="entity-meta">기관 · 0.1726</span>
+        </button>
+        <p class="entity-desc">세도가는 조선 후기 어린 왕과 외척 세력이 권력을 독점한 정치 집단으로, 노론 계열의 안동 김씨와 풍양 조씨 같은 가문들이 주요 세력이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="경복궁 중건">
+        <button class="entity-main" type="button">
+          <span class="entity-title">경복궁 중건</span>
+          <span class="entity-meta">정책 · 0.1709</span>
+        </button>
+        <p class="entity-desc">경복궁 중건은 임진왜란 때 불탄 경복궁을 복원하여 왕실 권위를 회복하고 정치 안정을 꾀한 흥선 대원군의 정치적 노력이다.&gt;</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="대동법">
+        <button class="entity-main" type="button">
+          <span class="entity-title">대동법</span>
+          <span class="entity-meta">정책 · 0.1708</span>
+        </button>
+        <p class="entity-desc">대동법은 조선 후기 토지와 인구를 기준으로 대체적인 세금 제도를 마련한 법으로, 경제적 부담을 합리화하고 세제 개혁에 중요한 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="한성 조약">
+        <button class="entity-main" type="button">
+          <span class="entity-title">한성 조약</span>
+          <span class="entity-meta">정책 · 0.1702</span>
+        </button>
+        <p class="entity-desc">한성 조약은 갑신정변 실패 후 조선 정부와 일본이 맺은 조약으로, 일본의 사죄와 배상금 지불, 그리고 공사관 폭파 사건과 관련된 외교적 조치이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="폐정개혁안">
+        <button class="entity-main" type="button">
+          <span class="entity-title">폐정개혁안</span>
+          <span class="entity-meta">정책 · 0.1653</span>
+        </button>
+        <p class="entity-desc">폐정개혁안은 동학 농민 운동 중 제시된 개혁안으로, 관리 부패 척결과 차별 철폐, 토지 분배 등 사회 개혁 내용을 담았다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="보은 집회">
+        <button class="entity-main" type="button">
+          <span class="entity-title">보은 집회</span>
+          <span class="entity-meta">사건 · 0.1603</span>
+        </button>
+        <p class="entity-desc">보은 집회는 동학 교도와 농민 2만여 명이 참가하여 신앙 자유, 외세 배척, 부패 관리 처벌 등을 요구한 대규모 집회로, 동학 농민 운동의 중요한 전기가 되었다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="삼례 집회">
+        <button class="entity-main" type="button">
+          <span class="entity-title">삼례 집회</span>
+          <span class="entity-meta">사건 · 0.1595</span>
+        </button>
+        <p class="entity-desc">삼례 집회는 동학 교도들이 박해 중단과 교조 최제우의 누명 해소를 요구하며 전라도 삼례에서 개최한 집회로, 동학 운동의 사회적 저변 확대를 보여준다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="청에 원군 요청">
+        <button class="entity-main" type="button">
+          <span class="entity-title">청에 원군 요청</span>
+          <span class="entity-meta">사건 · 0.1595</span>
+        </button>
+        <p class="entity-desc">청에 원군 요청은 1894년 농민군의 진압을 위해 조선 정부가 청나라에 군사적 지원을 요청한 사건으로, 이후 청일 전쟁으로 이어지는 계기가 되었다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="전주 화약">
+        <button class="entity-main" type="button">
+          <span class="entity-title">전주 화약</span>
+          <span class="entity-meta">사건 · 0.1592</span>
+        </button>
+        <p class="entity-desc">전주 화약은 1894년 동학 농민 운동 중 농민군과 정부가 외세 개입을 막기 위해 맺은 휴전 협약으로, 농민군 해산과 진압 시도의 전환점이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="장성 전투">
+        <button class="entity-main" type="button">
+          <span class="entity-title">장성 전투</span>
+          <span class="entity-meta">사건 · 0.1589</span>
+        </button>
+        <p class="entity-desc">장성 전투는 1894년 동학 농민 운동 당시 농민군이 서울에서 내려온 관군을 격퇴한 전투로, 농민군의 세력 확장에 기여하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="전주 점령">
+        <button class="entity-main" type="button">
+          <span class="entity-title">전주 점령</span>
+          <span class="entity-meta">사건 · 0.1583</span>
+        </button>
+        <p class="entity-desc">전주 점령은 1894년 동학 농민 운동 중 농민군이 전라도 일대 주요 지역을 장악하고 최종적으로 전주를 점령한 사건이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="일본의 경제 침투">
+        <button class="entity-main" type="button">
+          <span class="entity-title">일본의 경제 침투</span>
+          <span class="entity-meta">사건 · 0.1583</span>
+        </button>
+        <p class="entity-desc">일본의 경제 침투는 19세기 말부터 조선의 경제에 일본 자본과 상업 세력이 침투한 현상으로, 조선 내 개혁과 저항 운동을 촉발하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="위정척사 운동">
+        <button class="entity-main" type="button">
+          <span class="entity-title">위정척사 운동</span>
+          <span class="entity-meta">사건 · 0.158</span>
+        </button>
+        <p class="entity-desc">위정척사 운동은 19세기 말 조선에서 서양과 일본 문물 수용에 반대하며 유교적 전통 질서를 수호하려 한 반개화 운동이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="우금치 전투">
+        <button class="entity-main" type="button">
+          <span class="entity-title">우금치 전투</span>
+          <span class="entity-meta">사건 · 0.158</span>
+        </button>
+        <p class="entity-desc">우금치 전투는 1894년 동학 농민 운동의 최후 전투 중 하나로, 농민군이 관군과 일본군과 격렬히 싸웠으나 패배한 전투이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="삼전도">
+        <button class="entity-main" type="button">
+          <span class="entity-title">삼전도</span>
+          <span class="entity-meta">사건 · 0.1575</span>
+        </button>
+        <p class="entity-desc">삼전도는 병자호란 후 청과 조선 간에 체결된 굴욕적인 강화 장소로, 조선이 항복과 굴욕을 상징하는 역사적 장소이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="서학">
+        <button class="entity-main" type="button">
+          <span class="entity-title">서학</span>
+          <span class="entity-meta">사건 · 0.1574</span>
+        </button>
+        <p class="entity-desc">서학은 동학에서 천주교를 일컫는 용어로, 서양 세력과 그 문화로부터 우리 것을 지키기 위한 동학 운동의 반외세적 성격을 나타낸다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="척화비">
+        <button class="entity-main" type="button">
+          <span class="entity-title">척화비</span>
+          <span class="entity-meta">문물 · 0.1574</span>
+        </button>
+        <p class="entity-desc">척화비는 서양과의 통상 수교를 거부하는 조선 정부의 정책 의지를 백성들에게 알리기 위해 전국에 세운 비석으로, 자주 외교 정책의 상징 문물이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="황토현 전투">
+        <button class="entity-main" type="button">
+          <span class="entity-title">황토현 전투</span>
+          <span class="entity-meta">사건 · 0.1567</span>
+        </button>
+        <p class="entity-desc">황토현 전투는 1894년 동학 농민 운동 중 농민군이 전주에서 내려온 관군을 상대로 승리한 전투이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="태인 전투">
+        <button class="entity-main" type="button">
+          <span class="entity-title">태인 전투</span>
+          <span class="entity-meta">사건 · 0.1567</span>
+        </button>
+        <p class="entity-desc">태인 전투는 1894년 동학 농민 운동 최후 단계에서 농민군이 결사 항전에 나섰으나 패배한 전투이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="우정국 개국 축하연">
+        <button class="entity-main" type="button">
+          <span class="entity-title">우정국 개국 축하연</span>
+          <span class="entity-meta">사건 · 0.1563</span>
+        </button>
+        <p class="entity-desc">우정국 개국 축하연은 갑신정변을 계획한 개화파가 이를 이용해 정변을 일으킨 계기로, 개혁 시도의 출발점이 되었다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="중립 외교 정책">
+        <button class="entity-main" type="button">
+          <span class="entity-title">중립 외교 정책</span>
+          <span class="entity-meta">정책 · 0.1559</span>
+        </button>
+        <p class="entity-desc">광해군이 명과 후금 사이에서 외교적 갈등을 피하기 위해 시행한 외교 정책으로, 조선의 전란 이후 국방과 국정 안정을 위해 중요하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="상소">
+        <button class="entity-main" type="button">
+          <span class="entity-title">상소</span>
+          <span class="entity-meta">사건 · 0.1554</span>
+        </button>
+        <p class="entity-desc">상소는 인조가 병자호란 후 명과의 의리를 유지하고 치욕을 씻기 위해 학가산에 들어가 올린 공식적인 청원 문서이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="환곡">
+        <button class="entity-main" type="button">
+          <span class="entity-title">환곡</span>
+          <span class="entity-meta">정책 · 0.1548</span>
+        </button>
+        <p class="entity-desc">환곡은 조선 후기 관청이 농민에게 봄에 곡식을 빌려주고 가을에 이자를 붙여 거두는 제도로, 당초 구휼 목적이었으나 세도 정치 시기 부담 증가와 고리대 기능을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="홍범14조">
+        <button class="entity-main" type="button">
+          <span class="entity-title">홍범14조</span>
+          <span class="entity-meta">정책 · 0.1545</span>
+        </button>
+        <p class="entity-desc">홍범14조는 1894년 갑오개혁 당시 발표된 근대적 개혁안으로, 조선의 정치·사회 제도 개혁과 국가 근대화 방향을 제시하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="교육입국조서">
+        <button class="entity-main" type="button">
+          <span class="entity-title">교육입국조서</span>
+          <span class="entity-meta">정책 · 0.1531</span>
+        </button>
+        <p class="entity-desc">교육입국조서는 근대적 교육 제도를 도입하기 위해 1895년에 발표된 문서로, 조선에서 교육의 중요성을 강조하고 근대 교육을 준비하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="친명 배금 정책">
+        <button class="entity-main" type="button">
+          <span class="entity-title">친명 배금 정책</span>
+          <span class="entity-meta">정책 · 0.1529</span>
+        </button>
+        <p class="entity-desc">친명 배금 정책은 서인 정권이 광해군의 중립 외교와 대비하여 명을 위하고 후금(청)에 적대적인 외교 정책이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="광성보">
+        <button class="entity-main" type="button">
+          <span class="entity-title">광성보</span>
+          <span class="entity-meta">기관 · 0.1528</span>
+        </button>
+        <p class="entity-desc">광성보는 신미양요 때 조선군과 미군이 격렬한 전투를 벌인 강화도의 군사 요새로, 조선의 국방과 서양 세력 방어의 중심지이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="선전 후화론">
+        <button class="entity-main" type="button">
+          <span class="entity-title">선전 후화론</span>
+          <span class="entity-meta">정책 · 0.1519</span>
+        </button>
+        <p class="entity-desc">선전 후화론은 병자호란 시기 인조가 주장한 외교 노선으로, 먼저 싸우고 난 뒤에 화의를 추진하자는 입장을 뜻한다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="호포제">
+        <button class="entity-main" type="button">
+          <span class="entity-title">호포제</span>
+          <span class="entity-meta">정책 · 0.1519</span>
+        </button>
+        <p class="entity-desc">호포제는 조선 후기 양반에게도 군포를 부과하여 세금 부담을 공평하게 하려 한 흥선 대원군의 군역 및 재정 개혁 정책이다.&gt;</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="온건 개화파">
+        <button class="entity-main" type="button">
+          <span class="entity-title">온건 개화파</span>
+          <span class="entity-meta">기관 · 0.1515</span>
+        </button>
+        <p class="entity-desc">온건 개화파는 조선 말기에 서구 문물과 제도의 수용을 주장하며 점진적 개혁을 지향한 세력으로, 급진 개혁파와 대비되는 온건한 개화 정책을 추진하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="개화파">
+        <button class="entity-main" type="button">
+          <span class="entity-title">개화파</span>
+          <span class="entity-meta">기관 · 0.1514</span>
+        </button>
+        <p class="entity-desc">개화파는 19세기 말 조선에서 일본과 서양의 선진 문물을 받아들여 국가를 근대화하자고 주장한 개혁 세력이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="정부">
+        <button class="entity-main" type="button">
+          <span class="entity-title">정부</span>
+          <span class="entity-meta">기관 · 0.1514</span>
+        </button>
+        <p class="entity-desc">정부는 동학 농민 운동 시기 조선 통치 기구로, 농민군 진압과 개혁 추진 및 외세 요청 등을 담당한 중앙 행정 기구이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="균역법">
+        <button class="entity-main" type="button">
+          <span class="entity-title">균역법</span>
+          <span class="entity-meta">정책 · 0.1509</span>
+        </button>
+        <p class="entity-desc">균역법은 영조가 시행한 군역 부담 경감 정책으로, 국가 재정을 개혁하고 민생 안정을 위한 중요한 개혁 정책이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="양전">
+        <button class="entity-main" type="button">
+          <span class="entity-title">양전</span>
+          <span class="entity-meta">정책 · 0.1503</span>
+        </button>
+        <p class="entity-desc">양전은 토지의 실제 경작 면적과 지번을 조사하여 정확한 세금 부과를 위한 조선 후기 재정 개혁 정책이다.&gt;</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="여진 정책">
+        <button class="entity-main" type="button">
+          <span class="entity-title">여진 정책</span>
+          <span class="entity-meta">정책 · 0.1501</span>
+        </button>
+        <p class="entity-desc">조선이 여진족에 대해 토벌과 함께 포섭·회유를 병행하여 국경 안정을 도모한 정책이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="수신사">
+        <button class="entity-main" type="button">
+          <span class="entity-title">수신사</span>
+          <span class="entity-meta">기관 · 0.15</span>
+        </button>
+        <p class="entity-desc">수신사는 조선이 일본에 파견한 외교 사절단으로, 일본의 근대화 모습을 시찰하고 조선에 보고하는 임무를 수행하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="환곡제 폐지">
+        <button class="entity-main" type="button">
+          <span class="entity-title">환곡제 폐지</span>
+          <span class="entity-meta">정책 · 0.1497</span>
+        </button>
+        <p class="entity-desc">환곡제 폐지는 조선 후기 곡물 대여와 회수를 중개하는 제도를 폐지하고 대신 사창제를 실시한 정책이다.&gt;</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="안동 김씨">
+        <button class="entity-main" type="button">
+          <span class="entity-title">안동 김씨</span>
+          <span class="entity-meta">인물 · 0.1496</span>
+        </button>
+        <p class="entity-desc">안동 김씨는 조선 후기 대표적인 세도가문 중 하나로, 세도 정치 기간 동안 권력을 독점하며 정치와 사회 부패를 주도하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="명나라">
+        <button class="entity-main" type="button">
+          <span class="entity-title">명나라</span>
+          <span class="entity-meta">기관 · 0.1495</span>
+        </button>
+        <p class="entity-desc">명나라는 중국의 왕조로, 조선과 후금 사이에 외교적 긴장이 높아진 16~17세기 동아시아 국제 관계에서 중요한 세력이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="동의보감">
+        <button class="entity-main" type="button">
+          <span class="entity-title">동의보감</span>
+          <span class="entity-meta">문물 · 0.1487</span>
+        </button>
+        <p class="entity-desc">동의보감은 허준이 광해군의 명으로 편찬한 의학서로, 질병의 예방과 치료에 관한 지식을 집대성하여 조선 의학과 한의학 발전에 큰 영향을 끼쳤다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="이중환">
+        <button class="entity-main" type="button">
+          <span class="entity-title">이중환</span>
+          <span class="entity-meta">인물 · 0.1486</span>
+        </button>
+        <p class="entity-desc">이중환은 조선 후기 실학자로 ‘택리지’를 저술하며 우리나라의 지리와 경제 생활, 풍속을 인과적으로 설명해 국학 연구 발전에 기여하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="안정복">
+        <button class="entity-main" type="button">
+          <span class="entity-title">안정복</span>
+          <span class="entity-meta">인물 · 0.1485</span>
+        </button>
+        <p class="entity-desc">안정복은 조선 후기의 실학자로 우리 역사를 체계적으로 정리한 ‘동사강목’을 저술하여 한국사 연구에 중요한 기틀을 마련하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="김옥균">
+        <button class="entity-main" type="button">
+          <span class="entity-title">김옥균</span>
+          <span class="entity-meta">인물 · 0.1481</span>
+        </button>
+        <p class="entity-desc">김옥균은 갑신정변을 주도한 개화파 인물로, 근대적 개혁과 자주권 확보를 위해 노력하였으나 실패 후 일본으로 망명하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="유득공">
+        <button class="entity-main" type="button">
+          <span class="entity-title">유득공</span>
+          <span class="entity-meta">인물 · 0.1476</span>
+        </button>
+        <p class="entity-desc">유득공은 조선 후기 실학자로 ‘발해고’를 통해 발해를 한국사로 인식하는 계기를 마련하였으며, 남북국 시대 개념을 주장하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="풍양 조씨">
+        <button class="entity-main" type="button">
+          <span class="entity-title">풍양 조씨</span>
+          <span class="entity-meta">인물 · 0.1475</span>
+        </button>
+        <p class="entity-desc">풍양 조씨는 조선 후기 세도가문 중 하나로, 안동 김씨와 함께 세도 정치 하에서 권력을 장악한 외척 가문이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="효">
+        <button class="entity-main" type="button">
+          <span class="entity-title">효</span>
+          <span class="entity-meta">인물 · 0.1473</span>
+        </button>
+        <p class="entity-desc">효는 조선 후기 일본에 사절로 파견된 인물로, 이 때 태극기가 처음 사용된 역사적 사건과 관련되며 조선의 대외 교류와 상징물 사용의 시작을 나타낸다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="프랑스 선교사">
+        <button class="entity-main" type="button">
+          <span class="entity-title">프랑스 선교사</span>
+          <span class="entity-meta">인물 · 0.1472</span>
+        </button>
+        <p class="entity-desc">프랑스 선교사는 조선 후기 비밀리에 천주교를 전파하던 인물들로, 병인양요 때 처형되어 사건의 직접적 원인이 되었다.&gt;</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="이익">
+        <button class="entity-main" type="button">
+          <span class="entity-title">이익</span>
+          <span class="entity-meta">인물 · 0.1471</span>
+        </button>
+        <p class="entity-desc">이익은 조선 후기 중농 학파 실학자로, 농가에 대대로 농사지을 토지를 주고 매매를 금지하는 토지 제도 개혁을 주장하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="김정호">
+        <button class="entity-main" type="button">
+          <span class="entity-title">김정호</span>
+          <span class="entity-meta">인물 · 0.1471</span>
+        </button>
+        <p class="entity-desc">김정호는 조선 후기 지도 제작자인데, ‘대동여지도’를 통해 산맥, 하천, 도로망을 상세히 표시하며 실제적 지리 정보를 제공하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="유형원">
+        <button class="entity-main" type="button">
+          <span class="entity-title">유형원</span>
+          <span class="entity-meta">인물 · 0.147</span>
+        </button>
+        <p class="entity-desc">유형원은 조선 후기 중농 학파 실학자로, 농민에게 일정 면적의 농지를 나누어 주자고 주장하며 토지 제도 개혁을 제안하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="홍경래">
+        <button class="entity-main" type="button">
+          <span class="entity-title">홍경래</span>
+          <span class="entity-meta">인물 · 0.147</span>
+        </button>
+        <p class="entity-desc">홍경래는 19세기 평안도에서 농민과 광부, 품팔이꾼을 이끌어 홍경래의 난을 일으킨 몰락 양반 출신 지도자이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="신경준">
+        <button class="entity-main" type="button">
+          <span class="entity-title">신경준</span>
+          <span class="entity-meta">인물 · 0.1463</span>
+        </button>
+        <p class="entity-desc">신경준은 조선 후기 국어학자로 음운 연구서인 ‘훈민정음운해’를 저술하여 한글 연구와 국어학 발전에 기여하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="백낙신">
+        <button class="entity-main" type="button">
+          <span class="entity-title">백낙신</span>
+          <span class="entity-meta">인물 · 0.1463</span>
+        </button>
+        <p class="entity-desc">백낙신은 경상 우병사로서 진주 농민 봉기 당시 농민을 수탈하여 봉기를 촉발시킨 인물이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="이황">
+        <button class="entity-main" type="button">
+          <span class="entity-title">이황</span>
+          <span class="entity-meta">인물 · 0.1461</span>
+        </button>
+        <p class="entity-desc">이황은 조선 중기의 성리학자이며, 성리학을 체계적으로 발전시키고 교육과 학문에 크게 기여한 대표적 사상가이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="이이">
+        <button class="entity-main" type="button">
+          <span class="entity-title">이이</span>
+          <span class="entity-meta">인물 · 0.1457</span>
+        </button>
+        <p class="entity-desc">이이는 조선 중기의 성리학자로, 실천적 유교사상을 강조하며 정치와 교육에 영향력을 행사한 중요한 학자이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="유희">
+        <button class="entity-main" type="button">
+          <span class="entity-title">유희</span>
+          <span class="entity-meta">인물 · 0.1455</span>
+        </button>
+        <p class="entity-desc">유희는 조선 후기 국어학자로 ‘언문지’를 통해 한글의 우수성과 문화적 자아 의식을 드러내는 연구 활동을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="정상기">
+        <button class="entity-main" type="button">
+          <span class="entity-title">정상기</span>
+          <span class="entity-meta">인물 · 0.1452</span>
+        </button>
+        <p class="entity-desc">정상기는 조선 후기 지리학자로 ‘동국지도’를 제작하여 우리나라 지도 제작 수준을 크게 향상시켰다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="실사구시">
+        <button class="entity-main" type="button">
+          <span class="entity-title">실사구시</span>
+          <span class="entity-meta">정책 · 0.1452</span>
+        </button>
+        <p class="entity-desc">실사구시는 조선 후기 실학자들이 지향한 학문 태도로, 객관적 사실에 근거한 연구와 실용적 학문 성과를 강조하는 방법론이었다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="인목대비">
+        <button class="entity-main" type="button">
+          <span class="entity-title">인목대비</span>
+          <span class="entity-meta">인물 · 0.1451</span>
+        </button>
+        <p class="entity-desc">인목대비는 광해군의 어머니로, 서인 정권에 의해 유폐되어 광해군 정권의 내부 약점을 드러내는 데 관여된 인물이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="홍영식">
+        <button class="entity-main" type="button">
+          <span class="entity-title">홍영식</span>
+          <span class="entity-meta">인물 · 0.1451</span>
+        </button>
+        <p class="entity-desc">홍영식은 갑신정변을 주도한 개화파 인물로, 정치 개혁 시도와 정변 주도에 중요한 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="김개남">
+        <button class="entity-main" type="button">
+          <span class="entity-title">김개남</span>
+          <span class="entity-meta">인물 · 0.1449</span>
+        </button>
+        <p class="entity-desc">김개남은 동학 농민 운동 당시 전봉준과 함께 농민군을 조직하고 활동한 농민 운동 지도자이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="영창대군">
+        <button class="entity-main" type="button">
+          <span class="entity-title">영창대군</span>
+          <span class="entity-meta">인물 · 0.1447</span>
+        </button>
+        <p class="entity-desc">영창대군은 광해군 시기의 왕족으로, 정치적 갈등 속에서 제거되면서 광해군 정권의 도덕성을 약화시킨 인물이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="손화중">
+        <button class="entity-main" type="button">
+          <span class="entity-title">손화중</span>
+          <span class="entity-meta">인물 · 0.1443</span>
+        </button>
+        <p class="entity-desc">손화중은 동학 농민 운동에서 전봉준과 함께 농민군 조직 및 활동에 참여한 주요 인물이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="무속 신앙">
+        <button class="entity-main" type="button">
+          <span class="entity-title">무속 신앙</span>
+          <span class="entity-meta">문물 · 0.1375</span>
+        </button>
+        <p class="entity-desc">무속 신앙은 조선 후기 민간에 깊이 뿌리내린 신앙으로, 무당이 굿과 풀이를 통해 길흉화복을 점치고 재앙을 막는 역할을 하여 19세기 민중의 정신적 지주가 되었다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="당백전">
+        <button class="entity-main" type="button">
+          <span class="entity-title">당백전</span>
+          <span class="entity-meta">문물 · 0.137</span>
+        </button>
+        <p class="entity-desc">당백전은 경복궁 중건 등의 재원 마련을 위해 흥선 대원군이 발행한 백동화로, 인플레이션과 민생 악화의 원인이 되었다.&gt;</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="화성">
+        <button class="entity-main" type="button">
+          <span class="entity-title">화성</span>
+          <span class="entity-meta">문물 · 0.1365</span>
+        </button>
+        <p class="entity-desc">화성은 정조가 수원에 축조한 성곽으로, 왕권 상징과 국방 강화 목적의 건축물이며 조선 후기 대표적 축성 기술을 보여준다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="대전회통">
+        <button class="entity-main" type="button">
+          <span class="entity-title">대전회통</span>
+          <span class="entity-meta">문물 · 0.1362</span>
+        </button>
+        <p class="entity-desc">대전회통은 흥선 대원군이 편찬한 법전으로 조선 후기 통치 규범을 정비하여 행정과 법률 체계를 강화하려 한 중요한 문물이다.&gt;</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="탕평비">
+        <button class="entity-main" type="button">
+          <span class="entity-title">탕평비</span>
+          <span class="entity-meta">문물 · 0.1356</span>
+        </button>
+        <p class="entity-desc">탕평비는 영조가 한양 성균관에 세운 비석으로, 붕당 간 다툼 방지와 탕평책의 중요성을 알리는 상징적 문물이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="대전통편">
+        <button class="entity-main" type="button">
+          <span class="entity-title">대전통편</span>
+          <span class="entity-meta">문물 · 0.1353</span>
+        </button>
+        <p class="entity-desc">대전통편은 정조가 편찬한 법전 편찬 사업의 결과물로, 법과 제도의 통합과 정비에 중요한 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="속대전">
+        <button class="entity-main" type="button">
+          <span class="entity-title">속대전</span>
+          <span class="entity-meta">문물 · 0.1351</span>
+        </button>
+        <p class="entity-desc">속대전은 조선 후기 편찬된 법전으로, 영조 시대 법제 정비를 위해 편찬되어 제도 개선에 기여하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="서양 세력">
+        <button class="entity-main" type="button">
+          <span class="entity-title">서양 세력</span>
+          <span class="entity-meta">기관 · 0.1351</span>
+        </button>
+        <p class="entity-desc">서양 세력은 19세기 조선에 외교와 통상 수교를 요구하며 군사적 압박을 가한 미국과 프랑스 등의 국가들을 의미하며, 조선의 자주적 외교 정책과 충돌했다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="위정척사파">
+        <button class="entity-main" type="button">
+          <span class="entity-title">위정척사파</span>
+          <span class="entity-meta">기관 · 0.1342</span>
+        </button>
+        <p class="entity-desc">위정척사파는 개화기 조선에서 주로 봉건적 질서와 유교적 전통 유지, 외세 배격을 내세운 보수 세력으로, 개화 정책에 강하게 반대하며 전통 수호를 주장하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="러시아">
+        <button class="entity-main" type="button">
+          <span class="entity-title">러시아</span>
+          <span class="entity-meta">기관 · 0.1331</span>
+        </button>
+        <p class="entity-desc">러시아는 19세기 말 남하 정책을 추진한 제국주의 국가로, 조선과 통상 조약을 맺고 경흥 지역을 점령하는 등 조선 내 세력 확장에 적극적이었다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="전주 집강소">
+        <button class="entity-main" type="button">
+          <span class="entity-title">전주 집강소</span>
+          <span class="entity-meta">기관 · 0.133</span>
+        </button>
+        <p class="entity-desc">전주 집강소는 1894년 동학 농민 운동 당시 농민군이 전라도 지역에 설치한 자치 기구로, 농민 자치와 개혁 추진의 상징적 기관이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="규장각">
+        <button class="entity-main" type="button">
+          <span class="entity-title">규장각</span>
+          <span class="entity-meta">기관 · 0.1323</span>
+        </button>
+        <p class="entity-desc">규장각은 정조가 설치한 왕실 학문 연구 기관으로, 수많은 서적을 보유하고 학문 연구와 정치 개혁의 중심 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="집강소">
+        <button class="entity-main" type="button">
+          <span class="entity-title">집강소</span>
+          <span class="entity-meta">기관 · 0.132</span>
+        </button>
+        <p class="entity-desc">집강소는 동학 농민 운동 기간 동학 농민군이 설치한 자치 조직으로, 지역 행정을 담당하며 개혁을 추진하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="시찰단">
+        <button class="entity-main" type="button">
+          <span class="entity-title">시찰단</span>
+          <span class="entity-meta">기관 · 0.1313</span>
+        </button>
+        <p class="entity-desc">시찰단은 조선 정부가 근대화 정책 추진을 위해 외국에 파견한 조사 및 견학 단체로, 개화 정책 실행의 일환이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="6방">
+        <button class="entity-main" type="button">
+          <span class="entity-title">6방</span>
+          <span class="entity-meta">기관 · 0.1308</span>
+        </button>
+        <p class="entity-desc">6방은 조선 후기 국가 조직에서 백성과 왕의 소통을 돕는 행정 조직으로, 국민 의견 수렴과 사회 안정에 기여하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="유학생">
+        <button class="entity-main" type="button">
+          <span class="entity-title">유학생</span>
+          <span class="entity-meta">기관 · 0.1303</span>
+        </button>
+        <p class="entity-desc">유학생은 조선 정부가 근대 문물 습득과 개화 정책 추진을 위해 해외로 보낸 학생 집단이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="서얼">
+        <button class="entity-main" type="button">
+          <span class="entity-title">서얼</span>
+          <span class="entity-meta">기관 · 0.1251</span>
+        </button>
+        <p class="entity-desc">서얼은 조선의 신분 제도상 천민과 양인의 중간 신분으로, 정조가 차별을 줄이는 정책을 추진하여 사회 통합에 기여하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="종묘 사직">
+        <button class="entity-main" type="button">
+          <span class="entity-title">종묘 사직</span>
+          <span class="entity-meta">기관 · 0.125</span>
+        </button>
+        <p class="entity-desc">종묘 사직은 조선의 국가적 제사와 상징의 장소로, 당시 윤리와 기강이 무너지면서 위기에 처한 조선의 상황을 보여 준다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="대상인">
+        <button class="entity-main" type="button">
+          <span class="entity-title">대상인</span>
+          <span class="entity-meta">기관 · 0.1237</span>
+        </button>
+        <p class="entity-desc">대상인은 조선 후기 도시에 등장한 상인 계층으로, 상공업을 지배하며 부를 축적한 사회 경제 세력이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="진주">
+        <button class="entity-main" type="button">
+          <span class="entity-title">진주</span>
+          <span class="entity-meta">기관 · 0.1231</span>
+        </button>
+        <p class="entity-desc">진주는 진주 농민 봉기가 발생한 경상도 지역 중심 도시로, 봉기의 중심지가 되었다.</p>
+        
+      </li>
+    
+              </ul>
+            </section>
+            
+      </div>
+    </article>
+    
+    <article class="room" data-room-title="임진왜란과 조선의 국방 대응">
+      <header class="room-head">
+        <div>
+          <p class="room-no">Room 4</p>
+          <h2>임진왜란과 조선의 국방 대응</h2>
+        </div>
+        <div class="room-stats">
+          <span>34 entities</span>
+          <span>5 communities</span>
+        </div>
+      </header>
+      <p class="flow">임진왜란의 해상전, 육상 방어전, 의병 활동, 그리고 전쟁 이후 북벌 운동까지 이어지는 조선의 국방 대응과 전쟁 기억을 학습한다.</p>
+      <div class="badges">
+        <span class="badge core-b">core 3</span>
+        <span class="badge support-b">supporting 3</span>
+        <span class="badge search-b">search 28</span>
+      </div>
+      <details class="subzones" open>
+        <summary>Subzones and Source Communities</summary>
+        <ul>
+        <li>
+          <span>해상 전투와 수군</span>
+          <code>[6]</code>
+        </li>
+        
+
+        <li>
+          <span>육상 방어전</span>
+          <code>[11, 14]</code>
+        </li>
+        
+
+        <li>
+          <span>의병과 민족 저항</span>
+          <code>[17]</code>
+        </li>
+        
+
+        <li>
+          <span>전쟁 이후 국방 의식</span>
+          <code>[23]</code>
+        </li>
+        </ul>
+      </details>
+      <div class="entity-grid">
+        
+            <section class="entity-section core">
+              <button class="section-title" type="button" data-toggle="core">
+                <span>Core</span>
+                <strong>3</strong>
+              </button>
+              <ul class="entities">
+                
+      <li class="entity" data-entity-title="임진왜란">
+        <button class="entity-main" type="button">
+          <span class="entity-title">임진왜란</span>
+          <span class="entity-meta">사건 · 0.558</span>
+        </button>
+        <p class="entity-desc">임진왜란은 1592년부터 1598년까지 일본이 조선을 침략하여 일어난 전쟁으로, 조선, 일본, 그리고 명나라가 얽힌 동아시아 국제 질서 변화의 핵심 사건이다. 이 전쟁은 조선의 국방력 약화와 내부 구조에 큰 영향을 미쳤으며, 한중일 삼국 간의 정치적·군사적 관계 변화를 이해하는 데 중요한 역할을 한다. 조선 수군과 의병의 활약으로 침략에 맞서 극복하였으며, 이러한 저항은 조선의 민족적 결속과 방어 전략의 변화를 촉진하였다. 임진왜란은 동아시아 국제 질서뿐만...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="이순신">
+        <button class="entity-main" type="button">
+          <span class="entity-title">이순신</span>
+          <span class="entity-meta">인물 · 0.2674</span>
+        </button>
+        <p class="entity-desc">이순신은 임진왜란 시기 조선 수군을 지휘하여 해상에서 다수 승리를 이끈 장군으로, 조선 해군력과 전쟁 승리에 결정적 기여를 하였다.</p>
+        <p class="entity-reason">임진왜란과 조선 수군을 대표하는 핵심 인물이므로 핵심으로 올릴 수 있습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="조선 수군">
+        <button class="entity-main" type="button">
+          <span class="entity-title">조선 수군</span>
+          <span class="entity-meta">기관 · 0.2329</span>
+        </button>
+        <p class="entity-desc">조선 수군은 조선 초기 왜구의 노략질을 막기 위해 강화된 군사 조직으로 시작되었다. 이후 임진왜란 당시에는 해상에서 왜군과 싸우며 중요한 역할을 수행하였다. 특히 조선 수군은 제해권 장악과 적의 보급로 차단에 핵심적인 임무를 담당하여 전쟁의 승리에 크게 기여하였다. 이러한 역할을 통해 조선 수군은 조선 왕조의 해상 방어와 국토 수호에 중추적인 군사 조직으로 자리매김하였다.</p>
+        <p class="entity-reason">임진왜란 국방 대응의 핵심 축이므로 전면 노출이 적절합니다.</p>
+      </li>
+    
+              </ul>
+            </section>
+            
+            <section class="entity-section supporting">
+              <button class="section-title" type="button" data-toggle="supporting">
+                <span>Supporting</span>
+                <strong>3</strong>
+              </button>
+              <ul class="entities">
+                
+      <li class="entity" data-entity-title="의병">
+        <button class="entity-main" type="button">
+          <span class="entity-title">의병</span>
+          <span class="entity-meta">기관 · 0.2937</span>
+        </button>
+        <p class="entity-desc">의병은 임진왜란 당시 지방에서 자발적으로 조직된 민간 군사 조직으로, 향토 방어와 전쟁 대응에 중요한 역할을 하였다. 주로 외침이 있을 때 지역 주민들이 자발적으로 모여 구성한 민병대 형태로 활동하였으며, 국난 극복에 큰 기여를 하였다. 이러한 의병 활동은 단순한 군사적 대응을 넘어 민족 저항의 상징으로 평가되며, 지역 사회의 자주적 방어 정신과 애국심을 대표한다. 의병은 임진왜란 시기에 특히 활발히 조직되어 일본 침략에 맞서 싸움으로써 조선 사회의 결속과...</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="정발">
+        <button class="entity-main" type="button">
+          <span class="entity-title">정발</span>
+          <span class="entity-meta">인물 · 0.2015</span>
+        </button>
+        <p class="entity-desc">정발은 임진왜란 초기에 조선을 방어하는 데 중요한 역할을 한 조선의 무신이자 장군이다. 그는 특히 부산진 전투와 동래성 전투에서 왜군과 맞서 싸우며 초기 방어에 크게 기여하였다. 정발은 이러한 전투에서 조선군을 이끌며 적의 침략을 저지하려는 노력으로 당시 조선의 군사적 저항에 중요한 역할을 수행하였다.</p>
+        <p class="entity-reason">임진왜란 초기 방어의 대표 인물로 하위 맥락에 적절합니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="송상현">
+        <button class="entity-main" type="button">
+          <span class="entity-title">송상현</span>
+          <span class="entity-meta">인물 · 0.1974</span>
+        </button>
+        <p class="entity-desc">송상현은 임진왜란 당시 동래성 방어에 참여한 조선의 장군으로, 왜군의 침략에 맞서 용감히 싸웠다. 그는 동래성 전투에서 조선군 수비를 지휘하며 적극적으로 전투에 임하였고, 결국 적군과의 격렬한 교전 중에 전사하였다. 송상현은 임진왜란 초기 왜군의 남하를 막기 위해 중요한 역할을 수행한 인물로서, 동래성 방어 전투에서 보여준 그의 헌신과 희생은 조선의 항일 역사에서 의미 있는 업적으로 평가받고 있다.</p>
+        <p class="entity-reason">동래성 방어의 핵심 인물로 임진왜란 이해에 필요합니다.</p>
+      </li>
+    
+              </ul>
+            </section>
+            
+            <section class="entity-section search_only">
+              <button class="section-title" type="button" data-toggle="search_only">
+                <span>Search Only</span>
+                <strong>28</strong>
+              </button>
+              <ul class="entities">
+                
+      <li class="entity" data-entity-title="북벌 운동">
+        <button class="entity-main" type="button">
+          <span class="entity-title">북벌 운동</span>
+          <span class="entity-meta">정책 · 0.1958</span>
+        </button>
+        <p class="entity-desc">북벌 운동은 조선 후기 청에 대한 복수와 국력 회복을 목표로 한 군사적 정책으로, 효종이 이를 국정의 중요한 목표로 삼고 군사력을 강화하였다.</p>
+        <p class="entity-reason">임진왜란 이후의 후속 대외 정책으로, 이 방의 직접 주제인 임진왜란 대응과는 시기상 거리가 있습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="노비문서">
+        <button class="entity-main" type="button">
+          <span class="entity-title">노비문서</span>
+          <span class="entity-meta">문물 · 0.1841</span>
+        </button>
+        <p class="entity-desc">노비 문서는 임진왜란 중 불타 사라진 문서로, 조선 후기 신분제 변동과 관련된 중요한 기록물이다. 노비문서는 조선 시대 노비 신분을 증명하는 문서로, 동학 농민 운동의 폐정 개혁안에서 불태워 없애는 대상으로 포함되었다.</p>
+        <p class="entity-reason">임진왜란과 직접 관련된 핵심 항목으로 보기 어렵습니다.</p>
+      </li>
+    
+      <li class="entity" data-entity-title="진주성 전투">
+        <button class="entity-main" type="button">
+          <span class="entity-title">진주성 전투</span>
+          <span class="entity-meta">사건 · 0.1625</span>
+        </button>
+        <p class="entity-desc">진주성 전투는 임진왜란 중 김시민이 지휘하는 조선군이 왜군을 격퇴한 방어전으로 전쟁의 국면 전환에 중요한 의미가 있다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="옥포 해전">
+        <button class="entity-main" type="button">
+          <span class="entity-title">옥포 해전</span>
+          <span class="entity-meta">사건 · 0.1608</span>
+        </button>
+        <p class="entity-desc">옥포 해전은 임진왜란 초기 이순신이 조선 수군을 지휘하여 왜군을 상대로 첫 승리를 거둔 해상 전투이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="행주산성 전투">
+        <button class="entity-main" type="button">
+          <span class="entity-title">행주산성 전투</span>
+          <span class="entity-meta">사건 · 0.1586</span>
+        </button>
+        <p class="entity-desc">행주산성 전투는 임진왜란 기간 권율이 이끄는 조선군이 왜군을 물리친 중요한 전투이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="명량 해전">
+        <button class="entity-main" type="button">
+          <span class="entity-title">명량 해전</span>
+          <span class="entity-meta">사건 · 0.1579</span>
+        </button>
+        <p class="entity-desc">명량 해전은 임진왜란 중 이순신이 재기용되어 조선 수군을 이끌고 왜군을 대파한 해상 전투이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="노량 해전">
+        <button class="entity-main" type="button">
+          <span class="entity-title">노량 해전</span>
+          <span class="entity-meta">사건 · 0.1575</span>
+        </button>
+        <p class="entity-desc">노량 해전은 임진왜란 마지막 해전으로, 이순신이 퇴각하는 왜군을 격멸하다 전사한 전투이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="도요토미 히데요시">
+        <button class="entity-main" type="button">
+          <span class="entity-title">도요토미 히데요시</span>
+          <span class="entity-meta">인물 · 0.157</span>
+        </button>
+        <p class="entity-desc">도요토미 히데요시는 일본 전국 시대를 통일한 장군으로, 대륙 진출 야욕으로 조선을 침략하여 임진왜란을 일으킨 인물이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="쓰시마 섬 토벌">
+        <button class="entity-main" type="button">
+          <span class="entity-title">쓰시마 섬 토벌</span>
+          <span class="entity-meta">사건 · 0.1568</span>
+        </button>
+        <p class="entity-desc">세종 때 조선 수군이 왜구의 주요 근거지인 쓰시마 섬을 공격하여 해상 방어를 강화한 사건이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="한산도 대첩">
+        <button class="entity-main" type="button">
+          <span class="entity-title">한산도 대첩</span>
+          <span class="entity-meta">사건 · 0.1565</span>
+        </button>
+        <p class="entity-desc">한산도 대첩은 임진왜란 중 조선 수군이 거북선을 사용해 왜군 함대를 크게 무찌른 대표적 해전이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="정유재란">
+        <button class="entity-main" type="button">
+          <span class="entity-title">정유재란</span>
+          <span class="entity-meta">사건 · 0.1561</span>
+        </button>
+        <p class="entity-desc">정유재란은 임진왜란 이후인 1597년에 일본이 다시 조선을 침략하며 일어난 전쟁의 재개 국면이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="사천 해전">
+        <button class="entity-main" type="button">
+          <span class="entity-title">사천 해전</span>
+          <span class="entity-meta">사건 · 0.1557</span>
+        </button>
+        <p class="entity-desc">사천 해전은 임진왜란 중 조선 수군이 거북선 등의 선박을 활용해 왜군에게 승리한 해전 중 하나이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="당포 해전">
+        <button class="entity-main" type="button">
+          <span class="entity-title">당포 해전</span>
+          <span class="entity-meta">사건 · 0.1557</span>
+        </button>
+        <p class="entity-desc">당포 해전은 임진왜란 당시 이순신이 이끄는 조선 수군이 왜군을 무찌른 해전이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="효종">
+        <button class="entity-main" type="button">
+          <span class="entity-title">효종</span>
+          <span class="entity-meta">인물 · 0.1536</span>
+        </button>
+        <p class="entity-desc">효종은 조선의 국왕으로 북벌 운동을 추진하며 청에 대한 복수와 국력 회복을 도모하였으나, 실질적인 군사 행동으로는 이어지지 못하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="김시민">
+        <button class="entity-main" type="button">
+          <span class="entity-title">김시민</span>
+          <span class="entity-meta">인물 · 0.1506</span>
+        </button>
+        <p class="entity-desc">김시민은 임진왜란 시기 진주성 전투에서 왜군을 격퇴한 장군으로, 명군 도착 전 조선군을 지휘하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="권율">
+        <button class="entity-main" type="button">
+          <span class="entity-title">권율</span>
+          <span class="entity-meta">인물 · 0.1505</span>
+        </button>
+        <p class="entity-desc">권율은 임진왜란 때 행주산성 전투에서 승리를 거둔 장군으로, 조선군 재건과 반격에 핵심 인물이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="곽재우">
+        <button class="entity-main" type="button">
+          <span class="entity-title">곽재우</span>
+          <span class="entity-meta">인물 · 0.1474</span>
+        </button>
+        <p class="entity-desc">곽재우는 임진왜란 때 경상도에서 의병 활동을 처음으로 일으킨 지도자로, 의병 전쟁의 상징적 인물이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="이완">
+        <button class="entity-main" type="button">
+          <span class="entity-title">이완</span>
+          <span class="entity-meta">인물 · 0.1465</span>
+        </button>
+        <p class="entity-desc">이완은 조선 후기의 장군으로 북벌 운동기에 군사력 양성과 국방 강화에 기여하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="유정(사명대사)">
+        <button class="entity-main" type="button">
+          <span class="entity-title">유정(사명대사)</span>
+          <span class="entity-meta">인물 · 0.1462</span>
+        </button>
+        <p class="entity-desc">유정(사명대사)은 임진왜란 당시 승려 출신 의병장이자 외교사절로서 군사와 외교 양면에서 활약하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="명나라 원군">
+        <button class="entity-main" type="button">
+          <span class="entity-title">명나라 원군</span>
+          <span class="entity-meta">기관 · 0.1462</span>
+        </button>
+        <p class="entity-desc">명나라 원군은 임진왜란 당시 조선을 지원하기 위해 파견된 명나라 군사로, 조선의 반격과 전쟁 승리에 기여하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="정문부">
+        <button class="entity-main" type="button">
+          <span class="entity-title">정문부</span>
+          <span class="entity-meta">인물 · 0.1461</span>
+        </button>
+        <p class="entity-desc">정문부는 임진왜란 당시 의병장으로, 지역사회 방어와 전투에서 중요한 역할을 하였다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="송시열">
+        <button class="entity-main" type="button">
+          <span class="entity-title">송시열</span>
+          <span class="entity-meta">인물 · 0.1453</span>
+        </button>
+        <p class="entity-desc">송시열은 조선 후기의 유학자로 북벌 운동에 참여하며 군사력 강화와 국방에 힘쓴 인물이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="조헌">
+        <button class="entity-main" type="button">
+          <span class="entity-title">조헌</span>
+          <span class="entity-meta">인물 · 0.1445</span>
+        </button>
+        <p class="entity-desc">조헌은 임진왜란 당시 의병장으로 여러 지역에서 왜군에 맞서 싸운 인물이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="고경명">
+        <button class="entity-main" type="button">
+          <span class="entity-title">고경명</span>
+          <span class="entity-meta">인물 · 0.1434</span>
+        </button>
+        <p class="entity-desc">고경명은 임진왜란 기간 의병장으로 활약하며 지방 방어에 기여한 장군이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="조총">
+        <button class="entity-main" type="button">
+          <span class="entity-title">조총</span>
+          <span class="entity-meta">문물 · 0.1402</span>
+        </button>
+        <p class="entity-desc">조총은 16세기 일본에서 서양으로부터 전래되어 군사력 강화를 가능케 한 화기 무기로, 임진왜란 당시 왜군의 주요 무장 수단이었다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="거북선">
+        <button class="entity-main" type="button">
+          <span class="entity-title">거북선</span>
+          <span class="entity-meta">문물 · 0.1382</span>
+        </button>
+        <p class="entity-desc">거북선은 임진왜란 시기 조선 수군이 사용한 전투선으로, 방어와 공격 능력이 뛰어난 조선의 군사 기술 중 하나이다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="사고">
+        <button class="entity-main" type="button">
+          <span class="entity-title">사고</span>
+          <span class="entity-meta">문물 · 0.1345</span>
+        </button>
+        <p class="entity-desc">사고는 서적과 문서를 보관하는 조선의 중앙 관리 시설이며, 임진왜란 중 불타 많은 자료가 소실되었다.</p>
+        
+      </li>
+    
+      <li class="entity" data-entity-title="불국사">
+        <button class="entity-main" type="button">
+          <span class="entity-title">불국사</span>
+          <span class="entity-meta">문물 · 0.1335</span>
+        </button>
+        <p class="entity-desc">불국사는 조선 시대 문화유산인 사찰로, 임진왜란 중 일본군에 의해 파괴된 대표적 문화재이다.</p>
+        
+      </li>
+    
+              </ul>
+            </section>
+            
+      </div>
+    </article>
+    
+    <article class="room" data-room-title="조선 지방 행정과 향리 체계">
+      <header class="room-head">
+        <div>
+          <p class="room-no">Room 5</p>
+          <h2>조선 지방 행정과 향리 체계</h2>
+        </div>
+        <div class="room-stats">
+          <span>2 entities</span>
+          <span>1 communities</span>
+        </div>
+      </header>
+      <p class="flow">조선 지방 통치의 실제 운영을 담당한 수령과 향리의 역할을 통해 지방 행정의 구조와 실무 체계를 이해한다.</p>
+      <div class="badges">
+        <span class="badge core-b">core 1</span>
+        <span class="badge support-b">supporting 0</span>
+        <span class="badge search-b">search 1</span>
+      </div>
+      <details class="subzones" open>
+        <summary>Subzones and Source Communities</summary>
+        <ul>
+        <li>
+          <span>수령과 향리의 분업</span>
+          <code>[27]</code>
+        </li>
+        </ul>
+      </details>
+      <div class="entity-grid">
+        
+            <section class="entity-section core">
+              <button class="section-title" type="button" data-toggle="core">
+                <span>Core</span>
+                <strong>1</strong>
+              </button>
+              <ul class="entities">
+                
+      <li class="entity low-confidence" data-entity-title="수령">
+        <button class="entity-main" type="button">
+          <span class="entity-title">수령</span>
+          <span class="entity-meta">인물 · 0.1669</span>
+        </button>
+        <p class="entity-desc">조선 지방 행정을 담당한 관리로, 행정, 사법, 군사를 총괄하며 조세 징수와 농업 장려 등을 수행하였다.</p>
+        <p class="entity-reason">방 전면 표시를 위해 방 내 최고 점수 엔티티를 최소 core로 보장</p>
+      </li>
+    
+              </ul>
+            </section>
+            
+            <section class="entity-section supporting">
+              <button class="section-title" type="button" data-toggle="supporting">
+                <span>Supporting</span>
+                <strong>0</strong>
+              </button>
+              <ul class="entities">
+                
+              </ul>
+            </section>
+            
+            <section class="entity-section search_only">
+              <button class="section-title" type="button" data-toggle="search_only">
+                <span>Search Only</span>
+                <strong>1</strong>
+              </button>
+              <ul class="entities">
+                
+      <li class="entity" data-entity-title="향리">
+        <button class="entity-main" type="button">
+          <span class="entity-title">향리</span>
+          <span class="entity-meta">인물 · 0.1654</span>
+        </button>
+        <p class="entity-desc">지방 행정의 실무를 담당한 하급 관료로, 수령의 지시를 받아 지역 행정을 담당하였다.</p>
+        
+      </li>
+    
+              </ul>
+            </section>
+            
+      </div>
+    </article>
+    
+    </section>
+  </main>
+  <script>
+    const search = document.getElementById('search');
+    const level = document.getElementById('level');
+    const applyFilters = () => {
+      const q = search.value.trim().toLowerCase();
+      const selected = level.value;
+      document.querySelectorAll('.room').forEach(room => {
+        let roomMatch = room.dataset.roomTitle.toLowerCase().includes(q);
+        let anyEntity = false;
+        room.querySelectorAll('.entity-section').forEach(section => {
+          const sectionLevel = section.classList.contains('core') ? 'core' :
+            section.classList.contains('supporting') ? 'supporting' : 'search_only';
+          const sectionAllowed = selected === 'all' || selected === sectionLevel;
+          section.classList.toggle('hidden', !sectionAllowed);
+          section.querySelectorAll('.entity').forEach(entity => {
+            const text = entity.textContent.toLowerCase();
+            const match = !q || text.includes(q) || roomMatch;
+            entity.classList.toggle('hidden', !match);
+            anyEntity = anyEntity || (sectionAllowed && match);
+          });
+        });
+        room.classList.toggle('hidden', q && !roomMatch && !anyEntity);
+      });
+    };
+    search.addEventListener('input', applyFilters);
+    level.addEventListener('change', applyFilters);
+    document.querySelectorAll('.entity-main').forEach(button => {
+      button.addEventListener('click', () => button.closest('.entity').classList.toggle('open'));
+    });
+    document.getElementById('expand').addEventListener('click', () => {
+      document.querySelectorAll('.entity').forEach(entity => entity.classList.add('open'));
+    });
+    document.getElementById('collapse').addEventListener('click', () => {
+      document.querySelectorAll('.entity').forEach(entity => entity.classList.remove('open'));
+    });
+  </script>
+</body>
+</html>

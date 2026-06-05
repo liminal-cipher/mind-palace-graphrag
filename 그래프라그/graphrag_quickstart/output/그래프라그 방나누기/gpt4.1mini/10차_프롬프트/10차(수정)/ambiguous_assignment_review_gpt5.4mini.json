@@ -1,0 +1,175 @@
+{
+  "created_at": "2026-06-03T09:05:29",
+  "usage": {
+    "completion_tokens": 553,
+    "prompt_tokens": 4269,
+    "total_tokens": 4822,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    },
+    "latency_checkpoint": {
+      "engine_tbt_ms": 4,
+      "engine_ttft_ms": 72,
+      "engine_ttlt_ms": 2361,
+      "pre_inference_ms": 89,
+      "service_tbt_ms": 4,
+      "service_ttft_ms": 221,
+      "service_ttlt_ms": 2504,
+      "total_duration_ms": 2425,
+      "user_visible_ttft_ms": 132
+    }
+  },
+  "review": {
+    "decisions": [
+      {
+        "community": 9,
+        "decision": "move",
+        "target_room_no": 9,
+        "target_room_title": "흥선 대원군의 개혁과 외세 대응",
+        "confidence": 0.97,
+        "reason": "인조반정·광해군의 중립외교는 병자호란 전후의 대외 관계와 연결되며, 현재 방보다 흥선 대원군 이전의 조선 후기 대외 대응 흐름에 더 가깝다."
+      },
+      {
+        "community": 10,
+        "decision": "move",
+        "target_room_no": 3,
+        "target_room_title": "조선 전기 문화와 제도 정비",
+        "confidence": 0.95,
+        "reason": "국학 연구와 실학자들의 성과는 조선 후기 주제이지만, 제시된 방들 중 문화·학문 정비 성격의 방보다 더 적절한 기존 방이 없어 현재 배치보다도 방 3의 문화·학문 정비 축과는 일부 연관성이 있으나 시기상 부적합하다."
+      },
+      {
+        "community": 25,
+        "decision": "move",
+        "target_room_no": 9,
+        "target_room_title": "흥선 대원군의 개혁과 외세 대응",
+        "confidence": 0.99,
+        "reason": "실학과 북학파의 경제·사회 개혁은 대원군 개혁과 직접적 연속성은 약하지만, 조선 후기 개혁 담론으로서 현재 방들 중 가장 가까운 것은 후기 개혁과 외세 대응을 다루는 방 9이다."
+      },
+      {
+        "community": 2,
+        "decision": "keep",
+        "target_room_no": 10,
+        "target_room_title": "동학과 개화, 근대 개혁의 시작",
+        "confidence": 0.99,
+        "reason": "동학 농민 운동은 동학과 개화, 갑오개혁으로 이어지는 조선 말기 근대 개혁 흐름의 핵심이므로 현재 방이 자연스럽다."
+      },
+      {
+        "community": 29,
+        "decision": "move",
+        "target_room_no": 4,
+        "target_room_title": "조선 전기 군사·교통·재정 제도",
+        "confidence": 0.98,
+        "reason": "정규군과 잡색군은 군사 조직 제도에 관한 내용으로, 동학·개화보다 군사 제도를 다루는 방 4가 주제 일관성에 맞다."
+      },
+      {
+        "community": 0,
+        "decision": "keep",
+        "target_room_no": 1,
+        "target_room_title": "조선 건국과 왕권 강화",
+        "confidence": 0.99,
+        "reason": "조선 건국과 초기 왕권 강화, 중앙집권 체제 정비를 다루므로 현재 방과 정확히 일치한다."
+      }
+    ],
+    "candidate_selection": {
+      "threshold": 0.09,
+      "max_candidates": 8,
+      "candidates": [
+        {
+          "community": 9,
+          "current_room_no": 6,
+          "current_room_title": "병자호란과 북벌, 대외 관계",
+          "assignment_score": 0.0276
+        },
+        {
+          "community": 10,
+          "current_room_no": 3,
+          "current_room_title": "조선 전기 문화와 제도 정비",
+          "assignment_score": 0.0284
+        },
+        {
+          "community": 25,
+          "current_room_no": 9,
+          "current_room_title": "흥선 대원군의 개혁과 외세 대응",
+          "assignment_score": 0.0286
+        },
+        {
+          "community": 2,
+          "current_room_no": 10,
+          "current_room_title": "동학과 개화, 근대 개혁의 시작",
+          "assignment_score": 0.0367
+        },
+        {
+          "community": 29,
+          "current_room_no": 10,
+          "current_room_title": "동학과 개화, 근대 개혁의 시작",
+          "assignment_score": 0.08
+        },
+        {
+          "community": 0,
+          "current_room_no": 1,
+          "current_room_title": "조선 건국과 왕권 강화",
+          "assignment_score": 0.0856
+        }
+      ]
+    },
+    "valid_decisions": [
+      {
+        "community": 9,
+        "decision": "move",
+        "target_room_no": 9,
+        "target_room_title": "흥선 대원군의 개혁과 외세 대응",
+        "confidence": 0.97,
+        "reason": "인조반정·광해군의 중립외교는 병자호란 전후의 대외 관계와 연결되며, 현재 방보다 흥선 대원군 이전의 조선 후기 대외 대응 흐름에 더 가깝다."
+      },
+      {
+        "community": 10,
+        "decision": "move",
+        "target_room_no": 3,
+        "target_room_title": "조선 전기 문화와 제도 정비",
+        "confidence": 0.95,
+        "reason": "국학 연구와 실학자들의 성과는 조선 후기 주제이지만, 제시된 방들 중 문화·학문 정비 성격의 방보다 더 적절한 기존 방이 없어 현재 배치보다도 방 3의 문화·학문 정비 축과는 일부 연관성이 있으나 시기상 부적합하다."
+      },
+      {
+        "community": 25,
+        "decision": "move",
+        "target_room_no": 9,
+        "target_room_title": "흥선 대원군의 개혁과 외세 대응",
+        "confidence": 0.99,
+        "reason": "실학과 북학파의 경제·사회 개혁은 대원군 개혁과 직접적 연속성은 약하지만, 조선 후기 개혁 담론으로서 현재 방들 중 가장 가까운 것은 후기 개혁과 외세 대응을 다루는 방 9이다."
+      },
+      {
+        "community": 2,
+        "decision": "keep",
+        "target_room_no": 10,
+        "target_room_title": "동학과 개화, 근대 개혁의 시작",
+        "confidence": 0.99,
+        "reason": "동학 농민 운동은 동학과 개화, 갑오개혁으로 이어지는 조선 말기 근대 개혁 흐름의 핵심이므로 현재 방이 자연스럽다."
+      },
+      {
+        "community": 29,
+        "decision": "move",
+        "target_room_no": 4,
+        "target_room_title": "조선 전기 군사·교통·재정 제도",
+        "confidence": 0.98,
+        "reason": "정규군과 잡색군은 군사 조직 제도에 관한 내용으로, 동학·개화보다 군사 제도를 다루는 방 4가 주제 일관성에 맞다."
+      },
+      {
+        "community": 0,
+        "decision": "keep",
+        "target_room_no": 1,
+        "target_room_title": "조선 건국과 왕권 강화",
+        "confidence": 0.99,
+        "reason": "조선 건국과 초기 왕권 강화, 중앙집권 체제 정비를 다루므로 현재 방과 정확히 일치한다."
+      }
+    ],
+    "unresolved_decisions": []
+  },
+  "raw_response": "{\"decisions\":[{\"community\":9,\"decision\":\"move\",\"target_room_no\":9,\"target_room_title\":\"흥선 대원군의 개혁과 외세 대응\",\"confidence\":0.97,\"reason\":\"인조반정·광해군의 중립외교는 병자호란 전후의 대외 관계와 연결되며, 현재 방보다 흥선 대원군 이전의 조선 후기 대외 대응 흐름에 더 가깝다.\"},{\"community\":10,\"decision\":\"move\",\"target_room_no\":3,\"target_room_title\":\"조선 전기 문화와 제도 정비\",\"confidence\":0.95,\"reason\":\"국학 연구와 실학자들의 성과는 조선 후기 주제이지만, 제시된 방들 중 문화·학문 정비 성격의 방보다 더 적절한 기존 방이 없어 현재 배치보다도 방 3의 문화·학문 정비 축과는 일부 연관성이 있으나 시기상 부적합하다.\"},{\"community\":25,\"decision\":\"move\",\"target_room_no\":9,\"target_room_title\":\"흥선 대원군의 개혁과 외세 대응\",\"confidence\":0.99,\"reason\":\"실학과 북학파의 경제·사회 개혁은 대원군 개혁과 직접적 연속성은 약하지만, 조선 후기 개혁 담론으로서 현재 방들 중 가장 가까운 것은 후기 개혁과 외세 대응을 다루는 방 9이다.\"},{\"community\":2,\"decision\":\"keep\",\"target_room_no\":10,\"target_room_title\":\"동학과 개화, 근대 개혁의 시작\",\"confidence\":0.99,\"reason\":\"동학 농민 운동은 동학과 개화, 갑오개혁으로 이어지는 조선 말기 근대 개혁 흐름의 핵심이므로 현재 방이 자연스럽다.\"},{\"community\":29,\"decision\":\"move\",\"target_room_no\":4,\"target_room_title\":\"조선 전기 군사·교통·재정 제도\",\"confidence\":0.98,\"reason\":\"정규군과 잡색군은 군사 조직 제도에 관한 내용으로, 동학·개화보다 군사 제도를 다루는 방 4가 주제 일관성에 맞다.\"},{\"community\":0,\"decision\":\"keep\",\"target_room_no\":1,\"target_room_title\":\"조선 건국과 왕권 강화\",\"confidence\":0.99,\"reason\":\"조선 건국과 초기 왕권 강화, 중앙집권 체제 정비를 다루므로 현재 방과 정확히 일치한다.\"}]}"
+}

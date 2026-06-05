@@ -1,0 +1,492 @@
+{
+  "created_at": "2026-06-03T09:05:11",
+  "source_judgement": "output\\그래프라그 방나누기\\gpt4.1mini\\10차_프롬프트\\10차(수정)\\merge_judgement_gpt5.4mini.md",
+  "original_community_count": 30,
+  "final_room_count": 10,
+  "rooms": [
+    {
+      "room_no": 1,
+      "title": "조선 건국과 왕권 강화",
+      "period_order": "조선 전기 초반",
+      "core_content": "건국, 왕권 강화, 중앙·지방 통치 체제 정비",
+      "main_entities": [
+        "이성계",
+        "정도전",
+        "태조",
+        "태종",
+        "세종",
+        "경국대전",
+        "과전법",
+        "6조",
+        "의정부",
+        "4군 6진"
+      ],
+      "subzones": [
+        "건국과 왕권 강화",
+        "중앙 정치 제도",
+        "지방 행정·군사 제도",
+        "사림 성장의 전사"
+      ],
+      "source_communities": [
+        0,
+        7,
+        18,
+        24,
+        27
+      ]
+    },
+    {
+      "room_no": 2,
+      "title": "조선 전기 성리학과 향촌 질서",
+      "period_order": "조선 전기 중반",
+      "core_content": "사림의 성장, 성리학 확산, 서원과 향촌 자치",
+      "main_entities": [
+        "사림",
+        "훈구",
+        "성리학",
+        "서원",
+        "소수 서원",
+        "백운동 서원",
+        "향촌 자치",
+        "향약"
+      ],
+      "subzones": [
+        "사림과 훈구의 대립",
+        "서원과 교육",
+        "향촌 자치"
+      ],
+      "source_communities": [
+        13,
+        21
+      ]
+    },
+    {
+      "room_no": 3,
+      "title": "조선 전기 문화와 제도 정비",
+      "period_order": "조선 전기",
+      "core_content": "세종 대 문화·과학 혁신, 역사서 편찬, 국가 의례와 제도 정비",
+      "main_entities": [
+        "한글",
+        "과학",
+        "농업 혁신",
+        "국조오례의",
+        "삼강행실도",
+        "속오례의",
+        "동문선",
+        "동국문헌비고",
+        "규장전운",
+        "역사서 편찬"
+      ],
+      "subzones": [
+        "세종의 문화 혁신",
+        "국가 의례와 문물 정비",
+        "역사서 편찬과 역사 인식"
+      ],
+      "source_communities": [
+        8,
+        19,
+        26
+      ]
+    },
+    {
+      "room_no": 4,
+      "title": "조선 전기 군사·교통·재정 제도",
+      "period_order": "조선 전기~중기",
+      "core_content": "군역, 정규군·잡색군, 조운, 역원, 봉수 등 국가 운영 인프라",
+      "main_entities": [
+        "군역",
+        "정규군",
+        "잡색군",
+        "수군",
+        "조운",
+        "세곡",
+        "역원",
+        "봉수 제도",
+        "전세",
+        "군포"
+      ],
+      "subzones": [
+        "군역과 군사 조직",
+        "조운과 세곡 운송",
+        "역원과 교통·통신"
+      ],
+      "source_communities": [
+        1,
+        4,
+        28,
+        29
+      ]
+    },
+    {
+      "room_no": 5,
+      "title": "임진왜란과 조선의 방어",
+      "period_order": "조선 중기",
+      "core_content": "임진왜란의 전개, 해전, 육상 전투, 의병 활동",
+      "main_entities": [
+        "임진왜란",
+        "이순신",
+        "조선 수군",
+        "행주산성",
+        "권율",
+        "진주성",
+        "김시민",
+        "의병",
+        "왜군"
+      ],
+      "subzones": [
+        "해전과 수군",
+        "행주산성 전투",
+        "진주성 전투",
+        "의병 활동"
+      ],
+      "source_communities": [
+        6,
+        11,
+        14,
+        17
+      ]
+    },
+    {
+      "room_no": 6,
+      "title": "병자호란과 북벌, 대외 관계",
+      "period_order": "조선 중기 후반",
+      "core_content": "청·후금과의 전쟁, 병자호란, 북벌 운동, 외교 갈등",
+      "main_entities": [
+        "병자호란",
+        "청",
+        "후금",
+        "효종",
+        "북벌",
+        "통신사",
+        "왜관",
+        "유정"
+      ],
+      "subzones": [
+        "청·후금과의 전쟁",
+        "병자호란",
+        "북벌 운동",
+        "외교 관계"
+      ],
+      "source_communities": [
+        20,
+        23
+      ]
+    },
+    {
+      "room_no": 7,
+      "title": "조선 후기 탕평정치와 왕권 강화",
+      "period_order": "조선 후기 중반",
+      "core_content": "영조·정조의 탕평책, 정치 안정, 왕권 강화",
+      "main_entities": [
+        "영조",
+        "정조",
+        "탕평책",
+        "규장각",
+        "장용영",
+        "왕권 강화"
+      ],
+      "subzones": [
+        "영조의 탕평책",
+        "정조의 탕평책",
+        "왕권 강화 정책"
+      ],
+      "source_communities": [
+        12,
+        15
+      ]
+    },
+    {
+      "room_no": 8,
+      "title": "조선 후기 세도 정치와 농민 봉기",
+      "period_order": "조선 후기 후반",
+      "core_content": "세도 정치, 삼정의 문란, 농민 봉기, 민란",
+      "main_entities": [
+        "세도 정치",
+        "안동 김씨",
+        "풍양 조씨",
+        "삼정의 문란",
+        "탐관오리",
+        "농민 봉기",
+        "홍경래의 난",
+        "진주 농민 봉기"
+      ],
+      "subzones": [
+        "세도 정치와 권력 구조",
+        "삼정의 문란",
+        "농민 봉기와 민란"
+      ],
+      "source_communities": [
+        16
+      ]
+    },
+    {
+      "room_no": 9,
+      "title": "흥선 대원군의 개혁과 외세 대응",
+      "period_order": "조선 후기 말",
+      "core_content": "대원군 개혁, 통상 수교 거부, 병인양요·신미양요, 척화 정책",
+      "main_entities": [
+        "흥선 대원군",
+        "고종",
+        "경복궁 중건",
+        "당백전",
+        "대전회통",
+        "병인양요",
+        "신미양요",
+        "척화비",
+        "서양 세력"
+      ],
+      "subzones": [
+        "내정 개혁",
+        "통상 수교 거부",
+        "병인양요와 신미양요"
+      ],
+      "source_communities": [
+        3,
+        9
+      ]
+    },
+    {
+      "room_no": 10,
+      "title": "동학과 개화, 근대 개혁의 시작",
+      "period_order": "조선 말기",
+      "core_content": "동학의 성립과 확산, 개화 정책, 갑신정변, 갑오개혁",
+      "main_entities": [
+        "동학",
+        "최제우",
+        "최시형",
+        "동경대전",
+        "용담유사",
+        "개화 정책",
+        "개화파",
+        "위정척사",
+        "갑신정변",
+        "갑오개혁",
+        "강화도 조약"
+      ],
+      "subzones": [
+        "동학의 성립과 보급",
+        "동학 농민 운동",
+        "개화 정책과 개화파",
+        "갑신정변과 갑오개혁"
+      ],
+      "source_communities": [
+        2,
+        5,
+        10,
+        22,
+        25
+      ]
+    }
+  ],
+  "diagnostics": {
+    "method": "lexical verifier with small LLM-proposal bonus",
+    "assigned_count": 30,
+    "missing_after_reconcile": [],
+    "duplicate_after_reconcile": [],
+    "assignment_scores": {
+      "0": 0.0856,
+      "1": 0.1172,
+      "2": 0.0367,
+      "3": 0.2214,
+      "4": 0.1679,
+      "5": 0.1402,
+      "6": 0.1789,
+      "7": 0.1095,
+      "8": 0.1668,
+      "9": 0.0276,
+      "10": 0.0284,
+      "11": 0.1859,
+      "12": 0.1274,
+      "13": 0.1972,
+      "14": 0.1815,
+      "15": 0.1875,
+      "16": 0.2113,
+      "17": 0.1279,
+      "18": 0.1198,
+      "19": 0.1405,
+      "20": 0.1326,
+      "21": 0.1883,
+      "22": 0.167,
+      "23": 0.1545,
+      "24": 0.0976,
+      "25": 0.0286,
+      "26": 0.1584,
+      "27": 0.1165,
+      "28": 0.1656,
+      "29": 0.08
+    }
+  },
+  "anomaly_section": "- 엔티티:\n  - 계\n  - 역\n  - 원\n  - 효\n  - 청\n  - 중상학파\n  - 국조오례의\n  - 군포\n  - 규장전운\n  - 동국문헌비고\n  - 동문선\n  - 동문휘고\n  - 동인\n  - 류큐\n  - 문음\n  - 미륵불 신앙\n  - 봉수 제도\n  - 부농\n  - 북인\n  - 사창제\n  - 삼강행실도\n  - 소수 특정 가문\n  - 속오례의\n  - 수군\n  - 수호 통상 조약\n  - 승정원\n  - 시암(타이)\n  - 역졸\n  - 연해주\n  - 왜란\n  - 위정척사\n  - 유향소(향청)\n  - 이수광\n  - 이제마\n  - 인지의\n  - 일본 도요토미 히데요시\n  - 자와(자바)\n  - 잡과\n  - 전세\n  - 조선책략\n- 처리: 유지 / alias / 이동 / 제외\n- 이유:\n  - `효` → alias: `효종`으로 처리\n    - 같은 커뮤니티 후보가 직접 존재하고, 짧은 인명으로 잘린 형태이므로 `효종`이 가장 타당합니다.\n  - `역` → alias: `역졸`로 처리하지 않음, 유지 또는 제외 보류\n    - 후보 `역졸`이 있으나 community/source 근거가 약하고, 단독 1글자 엔티티로서 불안정합니다.\n  - `원` → 유지 또는 제외 보류\n    - `서원`, `소수 서원` 등과 형태상 유사하지만 community/source 근거가 약해 단정 alias는 피합니다.\n  - `청` → 유지\n    - `청`은 조선 후기 청나라 맥락일 가능성이 크지만, 단독 1글자라서 alias 확정은 위험합니다.\n  - `중상학파` → 이동: 25로 이동\n    - 실학·북학파와 같은 경제 개혁 맥락에 더 가깝습니다.\n  - `왜란` → alias: `임진왜란`으로 처리\n    - 더 긴 엔티티명의 일부로 보이며 후보 근거가 있습니다.\n  - `위정척사` → alias: `위정척사파` 또는 관련 개념으로 유지\n    - 갑신정변·개화 정책 단원과 연결되므로 22로 이동 검토 가능하나, 단독 개념으로도 의미가 있어 유지가 무난합니다.\n  - `국조오례의`, `규장전운`, `동국문헌비고`, `동문선`, `동문휘고`, `삼강행실도`, `속오례의`, `조선책략` → 유지\n    - 교과서 문물·서적·정책 용어로 보이며, 별도 이상 엔티티로 제외할 근거는 부족합니다.\n  - `군포`, `전세`, `문음`, `잡과`, `봉수 제도`, `사창제`, `승정원`, `유향소(향청)` → 유지\n    - 제도명으로서 정상 엔티티 가능성이 높습니다.\n  - `동인`, `북인`, `부농`, `소수 특정 가문`, `연해주`, `류큐`, `시암(타이)`, `자와(자바)`, `이수광`, `이제마`, `인지의`, `미륵불 신앙` → 유지\n    - 단독으로는 다소 넓거나 맥락이 약하지만, 현재 분석만으로 제외할 수준은 아닙니다.",
+  "reviewed_ambiguous_assignments": {
+    "decisions": [
+      {
+        "community": 9,
+        "decision": "move",
+        "target_room_no": 9,
+        "target_room_title": "흥선 대원군의 개혁과 외세 대응",
+        "confidence": 0.97,
+        "reason": "인조반정·광해군의 중립외교는 병자호란 전후의 대외 관계와 연결되며, 현재 방보다 흥선 대원군 이전의 조선 후기 대외 대응 흐름에 더 가깝다."
+      },
+      {
+        "community": 10,
+        "decision": "move",
+        "target_room_no": 3,
+        "target_room_title": "조선 전기 문화와 제도 정비",
+        "confidence": 0.95,
+        "reason": "국학 연구와 실학자들의 성과는 조선 후기 주제이지만, 제시된 방들 중 문화·학문 정비 성격의 방보다 더 적절한 기존 방이 없어 현재 배치보다도 방 3의 문화·학문 정비 축과는 일부 연관성이 있으나 시기상 부적합하다."
+      },
+      {
+        "community": 25,
+        "decision": "move",
+        "target_room_no": 9,
+        "target_room_title": "흥선 대원군의 개혁과 외세 대응",
+        "confidence": 0.99,
+        "reason": "실학과 북학파의 경제·사회 개혁은 대원군 개혁과 직접적 연속성은 약하지만, 조선 후기 개혁 담론으로서 현재 방들 중 가장 가까운 것은 후기 개혁과 외세 대응을 다루는 방 9이다."
+      },
+      {
+        "community": 2,
+        "decision": "keep",
+        "target_room_no": 10,
+        "target_room_title": "동학과 개화, 근대 개혁의 시작",
+        "confidence": 0.99,
+        "reason": "동학 농민 운동은 동학과 개화, 갑오개혁으로 이어지는 조선 말기 근대 개혁 흐름의 핵심이므로 현재 방이 자연스럽다."
+      },
+      {
+        "community": 29,
+        "decision": "move",
+        "target_room_no": 4,
+        "target_room_title": "조선 전기 군사·교통·재정 제도",
+        "confidence": 0.98,
+        "reason": "정규군과 잡색군은 군사 조직 제도에 관한 내용으로, 동학·개화보다 군사 제도를 다루는 방 4가 주제 일관성에 맞다."
+      },
+      {
+        "community": 0,
+        "decision": "keep",
+        "target_room_no": 1,
+        "target_room_title": "조선 건국과 왕권 강화",
+        "confidence": 0.99,
+        "reason": "조선 건국과 초기 왕권 강화, 중앙집권 체제 정비를 다루므로 현재 방과 정확히 일치한다."
+      }
+    ],
+    "candidate_selection": {
+      "threshold": 0.09,
+      "max_candidates": 8,
+      "candidates": [
+        {
+          "community": 9,
+          "current_room_no": 6,
+          "current_room_title": "병자호란과 북벌, 대외 관계",
+          "assignment_score": 0.0276
+        },
+        {
+          "community": 10,
+          "current_room_no": 3,
+          "current_room_title": "조선 전기 문화와 제도 정비",
+          "assignment_score": 0.0284
+        },
+        {
+          "community": 25,
+          "current_room_no": 9,
+          "current_room_title": "흥선 대원군의 개혁과 외세 대응",
+          "assignment_score": 0.0286
+        },
+        {
+          "community": 2,
+          "current_room_no": 10,
+          "current_room_title": "동학과 개화, 근대 개혁의 시작",
+          "assignment_score": 0.0367
+        },
+        {
+          "community": 29,
+          "current_room_no": 10,
+          "current_room_title": "동학과 개화, 근대 개혁의 시작",
+          "assignment_score": 0.08
+        },
+        {
+          "community": 0,
+          "current_room_no": 1,
+          "current_room_title": "조선 건국과 왕권 강화",
+          "assignment_score": 0.0856
+        }
+      ]
+    },
+    "valid_decisions": [
+      {
+        "community": 9,
+        "decision": "move",
+        "target_room_no": 9,
+        "target_room_title": "흥선 대원군의 개혁과 외세 대응",
+        "confidence": 0.97,
+        "reason": "인조반정·광해군의 중립외교는 병자호란 전후의 대외 관계와 연결되며, 현재 방보다 흥선 대원군 이전의 조선 후기 대외 대응 흐름에 더 가깝다."
+      },
+      {
+        "community": 10,
+        "decision": "move",
+        "target_room_no": 3,
+        "target_room_title": "조선 전기 문화와 제도 정비",
+        "confidence": 0.95,
+        "reason": "국학 연구와 실학자들의 성과는 조선 후기 주제이지만, 제시된 방들 중 문화·학문 정비 성격의 방보다 더 적절한 기존 방이 없어 현재 배치보다도 방 3의 문화·학문 정비 축과는 일부 연관성이 있으나 시기상 부적합하다."
+      },
+      {
+        "community": 25,
+        "decision": "move",
+        "target_room_no": 9,
+        "target_room_title": "흥선 대원군의 개혁과 외세 대응",
+        "confidence": 0.99,
+        "reason": "실학과 북학파의 경제·사회 개혁은 대원군 개혁과 직접적 연속성은 약하지만, 조선 후기 개혁 담론으로서 현재 방들 중 가장 가까운 것은 후기 개혁과 외세 대응을 다루는 방 9이다."
+      },
+      {
+        "community": 2,
+        "decision": "keep",
+        "target_room_no": 10,
+        "target_room_title": "동학과 개화, 근대 개혁의 시작",
+        "confidence": 0.99,
+        "reason": "동학 농민 운동은 동학과 개화, 갑오개혁으로 이어지는 조선 말기 근대 개혁 흐름의 핵심이므로 현재 방이 자연스럽다."
+      },
+      {
+        "community": 29,
+        "decision": "move",
+        "target_room_no": 4,
+        "target_room_title": "조선 전기 군사·교통·재정 제도",
+        "confidence": 0.98,
+        "reason": "정규군과 잡색군은 군사 조직 제도에 관한 내용으로, 동학·개화보다 군사 제도를 다루는 방 4가 주제 일관성에 맞다."
+      },
+      {
+        "community": 0,
+        "decision": "keep",
+        "target_room_no": 1,
+        "target_room_title": "조선 건국과 왕권 강화",
+        "confidence": 0.99,
+        "reason": "조선 건국과 초기 왕권 강화, 중앙집권 체제 정비를 다루므로 현재 방과 정확히 일치한다."
+      }
+    ],
+    "unresolved_decisions": []
+  },
+  "semantic_quality_review_applied": {
+    "applied_actions": [
+      {
+        "community": 25,
+        "action": "split_out",
+        "target_room_no": 10,
+        "reason": "실학·북학파는 대원군 개혁보다 조선 후기 사상사/경제개혁 주제에 더 가까움"
+      },
+      {
+        "community": 10,
+        "action": "move",
+        "target_room_no": 10,
+        "reason": "조선 후기 국학 연구는 세종 중심 전기 문화정비와 시대가 맞지 않음"
+      },
+      {
+        "community": 2,
+        "action": "keep",
+        "target_room_no": 10,
+        "reason": "동학 농민 운동은 조선 말기 근대 개혁 흐름의 핵심 축으로 함께 학습 가능"
+      }
+    ],
+    "skipped_actions": [],
+    "id_validation": {
+      "missing": [],
+      "duplicates": []
+    }
+  }
+}
