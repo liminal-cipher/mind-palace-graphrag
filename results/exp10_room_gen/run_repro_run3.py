@@ -18,12 +18,28 @@ from __future__ import annotations
 
 import argparse
 import io
+import os
 import sys
 import time
 from pathlib import Path
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 sys.path.insert(0, str(Path(__file__).parent))
+
+
+def _load_dotenv(path: str = '.env') -> None:
+    p = Path(path)
+    if not p.exists():
+        return
+    for line in p.read_text(encoding='utf-8').splitlines():
+        line = line.strip()
+        if not line or line.startswith('#') or '=' not in line:
+            continue
+        k, v = line.split('=', 1)
+        os.environ.setdefault(k.strip(), v.strip())
+
+
+_load_dotenv()
 
 from room_gen import (  # noqa: E402
     base_cluster,
