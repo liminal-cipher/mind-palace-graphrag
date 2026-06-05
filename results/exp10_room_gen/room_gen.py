@@ -395,7 +395,217 @@ def derive_rubric(
     model: str,
     cache_path: str | Path | None = None,
 ) -> dict:
-    raise NotImplementedError('derive_rubric: added in next commit')
+    """Stage A: LLM-derived keep/demote rubric (1 call). Domain is passed as
+    a free-text string; no domain-specific rules embedded.
+
+    If `cache_path` exists, load and return it. Otherwise call, save, return.
+    exp7 showed 3 runs converge so a single derivation suffices.
+    """
+    if cache_path:
+        cp = Path(cache_path)
+        if cp.exists():
+            return json.loads(cp.read_text(encoding='utf-8'))
+
+    sample_lines = '\n'.join(
+        f'- {e["title"]} ({e["type"]})' for e in sample_entities
+    )
+    sys_p = (
+        '당신은 학습 자료 분석가다. 주어진 도메인의 한 학생이 자료를 외운다고 할 때, '
+        "엔티티들 중 어떤 부류가 '콕 집어 이름까지 외울 대상'이 되고 어떤 부류가 "
+        "'배경/맥락'으로 흐를지 가르는 기준(rubric)을 스스로 도출하라. "
+        '외부에서 미리 정한 축에 끼워 맞추지 말고 도메인 학습 맥락에서 자연스럽게 도출하라.'
+    )
+    user_p = (
+        f'도메인: {domain}\n\n'
+        f'샘플 {len(sample_entities)}개:\n{sample_lines}\n\n'
+        '지시:\n'
+        '- keep(콕 집어 외울 대상) vs demote(배경) 기준 3~5개.\n'
+        '- 각 기준에 도메인 예시 2~3개씩 (keep, demote 양쪽) 붙여라.\n\n'
+        '출력 JSON:\n'
+        '{\n'
+        '  "rubric": [\n'
+        '    {"id":"R1","rule":"...","examples_keep":["..."],"examples_demote":["..."]}\n'
+        '  ],\n'
+        '  "notes": "..."\n'
+        '}'
+    )
+    raw, usage = call_json(llm_client, model, sys_p, user_p)
+    obj = json.loads(raw)
+    obj['_usage'] = usage
+    if cache_path:
+        cp = Path(cache_path)
+        cp.parent.mkdir(parents=True, exist_ok=True)
+        cp.write_text(
+            json.dumps(obj, ensure_ascii=False, indent=2), encoding='utf-8'
+        )
+    return obj
+
+
+def _stage_b_prompt(
+    domain: str,
+    rubric: dict,
+    cid: int,
+    members_payload: list[dict],
+    node_budget: int,
+) -> tuple[str, str]:
+    sys_p = (
+        '당신은 학습 자료 분석가다. 주어진 rubric에 따라 한 클러스터의 멤버를 '
+        'keep/demote로 분류하고, 짧은 주제 이름을 붙이고, 응집도를 판정하라.\n'
+        '\n'
+        '규칙:\n'
+        '- rubric만 적용. 본인의 다른 기준 끼우지 마라.\n'
+        f'- keep은 최대 {node_budget}개. 절대 {node_budget}을 넘기지 마라.\n'
+        '- 중요도 판단은 구체적이고 고유한 명칭(인물·사건·발명품·문헌·문화재 등 학습자가 '
+        '콕 집어 외울 만한 것)을 우선. 추상 개념·일반 지명·집단명·시대는 demote.\n'
+        '- degree는 참고 신호일 뿐 유일 기준이 아님. 일반어가 degree 높을 수 있다.\n'
+        '- members 출력: keep은 중요도 내림차순으로 최대 N개, 나머지는 demote.\n'
+        '- 입력 title과 정확히 일치해야 함. 누락·중복·창작 금지.'
+    )
+    rubric_text = json.dumps(
+        {'rubric': rubric.get('rubric', []), 'notes': rubric.get('notes', '')},
+        ensure_ascii=False, indent=2,
+    )
+    member_text = '\n'.join(
+        f'{i + 1}. {m["title"]} (type={m["type"]}, degree={m["degree"]}) - {m["desc"]}'
+        for i, m in enumerate(members_payload)
+    )
+    user_p = (
+        f'도메인: {domain}\n\n'
+        f'[rubric]\n{rubric_text}\n\n'
+        f'[클러스터 {cid} 멤버 {len(members_payload)}개]\n{member_text}\n\n'
+        f'keep 상한: {node_budget}\n\n'
+        '출력 JSON:\n'
+        '{\n'
+        '  "room_name": "15자 이내",\n'
+        '  "coherence": "coherent|grab-bag|type-pile",\n'
+        '  "coherence_reason": "한 줄",\n'
+        '  "members": [{"title":"...","classification":"keep|demote"}]\n'
+        '}'
+    )
+    return sys_p, user_p
+
+
+def _stage_b_retry_prompt(
+    domain: str,
+    cid: int,
+    missing: list[dict],
+) -> tuple[str, str]:
+    sys_p = (
+        '이전 응답에서 누락된 멤버들을 keep 또는 demote로 분류하라. 입력 title과 '
+        '정확히 일치해야 한다. 누락·중복·창작 금지.'
+    )
+    member_text = '\n'.join(
+        f'{i + 1}. {m["title"]} (type={m["type"]}, degree={m["degree"]})'
+        for i, m in enumerate(missing)
+    )
+    user_p = (
+        f'도메인: {domain}\n클러스터 {cid}.\n'
+        f'누락 멤버 {len(missing)}개:\n{member_text}\n\n'
+        '출력 JSON:\n'
+        '{ "members":[{"title":"...","classification":"keep|demote"}] }'
+    )
+    return sys_p, user_p
+
+
+def _run_stage_b_once(
+    cid: int,
+    members_payload: list[dict],
+    domain: str,
+    rubric: dict,
+    node_budget: int,
+    llm_client,
+    model: str,
+    max_complete_retries: int = 3,
+) -> dict:
+    input_set = {m['title'] for m in members_payload}
+    sys_p, user_p = _stage_b_prompt(domain, rubric, cid, members_payload, node_budget)
+    raw, _ = call_json(llm_client, model, sys_p, user_p)
+    obj = json.loads(raw)
+
+    members_out = obj.get('members', [])
+    keep_order = [m['title'] for m in members_out
+                  if m.get('classification') == 'keep' and m.get('title') in input_set]
+    demote_set = {m['title'] for m in members_out
+                  if m.get('classification') == 'demote' and m.get('title') in input_set}
+
+    # Completeness retry loop: any input title not in keep or demote → ask LLM again.
+    for _ in range(max_complete_retries):
+        seen = set(keep_order) | demote_set
+        missing_titles = input_set - seen
+        if not missing_titles:
+            break
+        miss_payload = [m for m in members_payload if m['title'] in missing_titles]
+        sys_p2, user_p2 = _stage_b_retry_prompt(domain, cid, miss_payload)
+        raw2, _ = call_json(llm_client, model, sys_p2, user_p2)
+        try:
+            obj2 = json.loads(raw2)
+            for m in obj2.get('members', []):
+                t = m.get('title')
+                if t not in missing_titles:
+                    continue
+                if m.get('classification') == 'keep':
+                    keep_order.append(t)
+                elif m.get('classification') == 'demote':
+                    demote_set.add(t)
+        except (json.JSONDecodeError, KeyError, TypeError):
+            continue
+
+    # Force-demote anything still missing.
+    forced = input_set - set(keep_order) - demote_set
+    if forced:
+        demote_set |= forced
+
+    return {
+        'room_name': str(obj.get('room_name', '')).strip() or '(unnamed)',
+        'coherence': obj.get('coherence', 'unknown'),
+        'coherence_reason': obj.get('coherence_reason', ''),
+        'keep_order': keep_order,
+        'demote_set': demote_set,
+        'n_forced_demote': len(forced),
+    }
+
+
+def _resolve_keep_membership(
+    runs: list[dict],
+    input_set: set[str],
+    node_budget: int,
+) -> tuple[list[str], set[str], int]:
+    """Combine n runs into a single (keep_order, demote_set, n_forced).
+
+    Single run: take LLM order as-is; cut tail beyond node_budget to demote.
+    Multiple runs: majority vote on keep membership; order by vote-desc with
+    first run's order as tiebreaker; cut tail beyond budget by same order.
+    """
+    if len(runs) == 1:
+        r = runs[0]
+        keep_order = list(r['keep_order'])
+        demote_set = set(r['demote_set'])
+        if len(keep_order) > node_budget:
+            overflow = keep_order[node_budget:]
+            keep_order = keep_order[:node_budget]
+            demote_set |= set(overflow)
+        forced = input_set - set(keep_order) - demote_set
+        if forced:
+            demote_set |= forced
+        return keep_order, demote_set, len(forced) + r['n_forced_demote']
+
+    threshold = len(runs) / 2.0
+    votes: dict[str, int] = defaultdict(int)
+    for r in runs:
+        for t in r['keep_order']:
+            votes[t] += 1
+    majority_keep = {t for t, v in votes.items() if v > threshold}
+
+    run0_order = {t: i for i, t in enumerate(runs[0]['keep_order'])}
+    keep_sorted = sorted(
+        majority_keep,
+        key=lambda t: (-votes[t], run0_order.get(t, 1_000_000), t),
+    )
+    if len(keep_sorted) > node_budget:
+        keep_sorted = keep_sorted[:node_budget]
+    demote_set = input_set - set(keep_sorted)
+    total_forced = sum(r['n_forced_demote'] for r in runs)
+    return keep_sorted, demote_set, total_forced
 
 
 def assign_rooms(
@@ -407,8 +617,83 @@ def assign_rooms(
     node_budget: int,
     llm_client,
     model: str,
+    source_ids: list[list[int]] | None = None,
 ) -> list[dict]:
-    raise NotImplementedError('assign_rooms: added in next commit')
+    """Stage B for every final cluster. Enforces:
+    - kept ∪ demoted == cluster input entities (completeness, no drops)
+    - len(kept) <= node_budget per room (backstop after retries)
+    - n_runs > 1: majority vote on keep membership; LLM order for tiebreak
+
+    source_ids: optional parallel list naming the pre-merge cluster IDs that
+    composed each final cluster. Defaults to [[i] for i in range(len(final))].
+    """
+    if n_runs < 1:
+        raise ValueError(f'n_runs must be >= 1, got {n_runs}')
+    if source_ids is None:
+        source_ids = [[i] for i in range(len(final_clusters))]
+    if len(source_ids) != len(final_clusters):
+        raise ValueError('source_ids length must match final_clusters length')
+
+    rooms: list[dict] = []
+    for room_id, cluster_idx in enumerate(final_clusters):
+        members_payload = [
+            {
+                'title': entities[i]['title'],
+                'type': entities[i]['type'],
+                'degree': entities[i]['degree'],
+                'desc': entities[i]['description'][:200],
+            }
+            for i in cluster_idx
+        ]
+        input_set = {m['title'] for m in members_payload}
+
+        runs = [
+            _run_stage_b_once(
+                room_id, members_payload, domain, rubric, node_budget,
+                llm_client, model,
+            )
+            for _ in range(n_runs)
+        ]
+
+        keep_order, demote_set, n_forced = _resolve_keep_membership(
+            runs, input_set, node_budget,
+        )
+
+        title_to_e = {entities[i]['title']: entities[i] for i in cluster_idx}
+        kept = [
+            {
+                'id': title_to_e[t]['id'],
+                'title': t,
+                'type': title_to_e[t]['type'],
+                'degree': title_to_e[t]['degree'],
+            }
+            for t in keep_order
+        ]
+        demoted = [
+            {
+                'id': title_to_e[t]['id'],
+                'title': t,
+                'type': title_to_e[t]['type'],
+                'degree': title_to_e[t]['degree'],
+            }
+            for t in sorted(demote_set, key=lambda x: -title_to_e[x]['degree'])
+        ]
+
+        rooms.append({
+            'room_id': room_id,
+            'name': runs[0]['room_name'],
+            'kept': kept,
+            'demoted': demoted,
+            'source_clusters': list(source_ids[room_id]),
+            'coherence_flag': runs[0]['coherence'],
+            '_meta': {
+                'coherence_reason': runs[0]['coherence_reason'],
+                'n_forced_demote': n_forced,
+                'n_runs': n_runs,
+                'all_run_names': [r['room_name'] for r in runs] if n_runs > 1 else None,
+            },
+        })
+    return rooms
 
 
 def generate_rooms(
