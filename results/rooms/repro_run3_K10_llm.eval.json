@@ -1,0 +1,201 @@
+{
+  "spec_run_id": "repro_run3_K10_llm",
+  "anchors_domain": "한국사",
+  "completeness": {
+    "total_entities": 357,
+    "snapshot_entities": 357,
+    "ok": true,
+    "forced_demote": 0
+  },
+  "should_show": {
+    "hits": 13,
+    "total": 14,
+    "rows": [
+      {
+        "name": "측우기",
+        "status": "present",
+        "classification": "keep",
+        "room_id": 4,
+        "room_name": "조선 인물·제도·과학기기",
+        "correct": true
+      },
+      {
+        "name": "자격루",
+        "status": "present",
+        "classification": "keep",
+        "room_id": 4,
+        "room_name": "조선 인물·제도·과학기기",
+        "correct": true
+      },
+      {
+        "name": "앙부일구",
+        "status": "present",
+        "classification": "keep",
+        "room_id": 4,
+        "room_name": "조선 인물·제도·과학기기",
+        "correct": true
+      },
+      {
+        "name": "혼천의",
+        "status": "present",
+        "classification": "keep",
+        "room_id": 4,
+        "room_name": "조선 인물·제도·과학기기",
+        "correct": true
+      },
+      {
+        "name": "인지의",
+        "status": "present",
+        "classification": "keep",
+        "room_id": 5,
+        "room_name": "조선 토지·시험·제도",
+        "correct": true
+      },
+      {
+        "name": "이순신",
+        "status": "present",
+        "classification": "keep",
+        "room_id": 2,
+        "room_name": "임진왜란과 조선 군사",
+        "correct": true
+      },
+      {
+        "name": "권율",
+        "status": "present",
+        "classification": "keep",
+        "room_id": 2,
+        "room_name": "임진왜란과 조선 군사",
+        "correct": true
+      },
+      {
+        "name": "곽재우",
+        "status": "present",
+        "classification": "keep",
+        "room_id": 3,
+        "room_name": "조선 의병과 지도자",
+        "correct": true
+      },
+      {
+        "name": "김시민",
+        "status": "present",
+        "classification": "keep",
+        "room_id": 2,
+        "room_name": "임진왜란과 조선 군사",
+        "correct": true
+      },
+      {
+        "name": "정도전",
+        "status": "present",
+        "classification": "keep",
+        "room_id": 4,
+        "room_name": "조선 인물·제도·과학기기",
+        "correct": true
+      },
+      {
+        "name": "이성계",
+        "status": "present",
+        "classification": "demote",
+        "room_id": 2,
+        "room_name": "임진왜란과 조선 군사",
+        "correct": false
+      },
+      {
+        "name": "임진왜란",
+        "status": "present",
+        "classification": "keep",
+        "room_id": 2,
+        "room_name": "임진왜란과 조선 군사",
+        "correct": true
+      },
+      {
+        "name": "훈민정음",
+        "status": "present",
+        "classification": "keep",
+        "room_id": 1,
+        "room_name": "조선 초기 법전·문헌·인물",
+        "correct": true
+      },
+      {
+        "name": "거북선",
+        "status": "present",
+        "classification": "keep",
+        "room_id": 2,
+        "room_name": "임진왜란과 조선 군사",
+        "correct": true
+      }
+    ]
+  },
+  "should_demote": {
+    "hits": 7,
+    "total": 8,
+    "rows": [
+      {
+        "name": "조선",
+        "status": "present",
+        "classification": "keep",
+        "room_id": 0,
+        "room_name": "조선시대 인물·사건·제도",
+        "correct": false
+      },
+      {
+        "name": "백성",
+        "status": "present",
+        "classification": "demote",
+        "room_id": 0,
+        "room_name": "조선시대 인물·사건·제도",
+        "correct": true
+      },
+      {
+        "name": "백성들",
+        "status": "present",
+        "classification": "demote",
+        "room_id": 8,
+        "room_name": "조선 후기 수원 화성과 인물",
+        "correct": true
+      },
+      {
+        "name": "성리학",
+        "status": "present",
+        "classification": "demote",
+        "room_id": 0,
+        "room_name": "조선시대 인물·사건·제도",
+        "correct": true
+      },
+      {
+        "name": "붕당정치",
+        "status": "present",
+        "classification": "demote",
+        "room_id": 0,
+        "room_name": "조선시대 인물·사건·제도",
+        "correct": true
+      },
+      {
+        "name": "경상도",
+        "status": "present",
+        "classification": "demote",
+        "room_id": 8,
+        "room_name": "조선 후기 수원 화성과 인물",
+        "correct": true
+      },
+      {
+        "name": "전라도",
+        "status": "present",
+        "classification": "demote",
+        "room_id": 8,
+        "room_name": "조선 후기 수원 화성과 인물",
+        "correct": true
+      },
+      {
+        "name": "함경도",
+        "status": "present",
+        "classification": "demote",
+        "room_id": 2,
+        "room_name": "임진왜란과 조선 군사",
+        "correct": true
+      }
+    ]
+  },
+  "coherence_flags": {
+    "coherent": 10
+  }
+}
