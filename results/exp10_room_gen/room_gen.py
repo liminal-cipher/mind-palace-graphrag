@@ -448,9 +448,15 @@ def _stage_b_prompt(
     members_payload: list[dict],
     node_budget: int,
 ) -> tuple[str, str]:
+    """Stage B prompt. Output emits only the keep list (not full per-member
+    classification); demote is derived as set-difference. This keeps the
+    response under any output-token ceiling even for ~100+ member clusters
+    and removes a class of completeness bugs (a missing member is, by
+    definition, a demote).
+    """
     sys_p = (
-        '당신은 학습 자료 분석가다. 주어진 rubric에 따라 한 클러스터의 멤버를 '
-        'keep/demote로 분류하고, 짧은 주제 이름을 붙이고, 응집도를 판정하라.\n'
+        '당신은 학습 자료 분석가다. 주어진 rubric에 따라 한 클러스터에서 keep할 '
+        '멤버만 골라 출력하고, 짧은 주제 이름과 응집도를 판정하라.\n'
         '\n'
         '규칙:\n'
         '- rubric만 적용. 본인의 다른 기준 끼우지 마라.\n'
@@ -458,8 +464,8 @@ def _stage_b_prompt(
         '- 중요도 판단은 구체적이고 고유한 명칭(인물·사건·발명품·문헌·문화재 등 학습자가 '
         '콕 집어 외울 만한 것)을 우선. 추상 개념·일반 지명·집단명·시대는 demote.\n'
         '- degree는 참고 신호일 뿐 유일 기준이 아님. 일반어가 degree 높을 수 있다.\n'
-        '- members 출력: keep은 중요도 내림차순으로 최대 N개, 나머지는 demote.\n'
-        '- 입력 title과 정확히 일치해야 함. 누락·중복·창작 금지.'
+        '- keep_titles는 중요도 내림차순. 입력 title과 정확히 일치해야 함. 창작 금지.\n'
+        '- demote는 출력에 안 넣어도 됨 (시스템이 keep 외 멤버를 자동 demote로 처리).'
     )
     rubric_text = json.dumps(
         {'rubric': rubric.get('rubric', []), 'notes': rubric.get('notes', '')},
@@ -479,30 +485,8 @@ def _stage_b_prompt(
         '  "room_name": "15자 이내",\n'
         '  "coherence": "coherent|grab-bag|type-pile",\n'
         '  "coherence_reason": "한 줄",\n'
-        '  "members": [{"title":"...","classification":"keep|demote"}]\n'
+        f'  "keep_titles": ["중요도 1위", "2위", ...]   // 최대 {node_budget}개\n'
         '}'
-    )
-    return sys_p, user_p
-
-
-def _stage_b_retry_prompt(
-    domain: str,
-    cid: int,
-    missing: list[dict],
-) -> tuple[str, str]:
-    sys_p = (
-        '이전 응답에서 누락된 멤버들을 keep 또는 demote로 분류하라. 입력 title과 '
-        '정확히 일치해야 한다. 누락·중복·창작 금지.'
-    )
-    member_text = '\n'.join(
-        f'{i + 1}. {m["title"]} (type={m["type"]}, degree={m["degree"]})'
-        for i, m in enumerate(missing)
-    )
-    user_p = (
-        f'도메인: {domain}\n클러스터 {cid}.\n'
-        f'누락 멤버 {len(missing)}개:\n{member_text}\n\n'
-        '출력 JSON:\n'
-        '{ "members":[{"title":"...","classification":"keep|demote"}] }'
     )
     return sys_p, user_p
 
@@ -515,45 +499,46 @@ def _run_stage_b_once(
     node_budget: int,
     llm_client,
     model: str,
-    max_complete_retries: int = 3,
+    max_retries_on_empty: int = 2,
 ) -> dict:
+    """One Stage-B call. Completeness is automatic: any input title not in
+    keep_titles becomes demote. We only need to: (a) drop hallucinated
+    titles not in the input set, (b) retry if LLM returned 0 keeps for a
+    non-empty cluster (likely a parse/format failure).
+    """
     input_set = {m['title'] for m in members_payload}
     sys_p, user_p = _stage_b_prompt(domain, rubric, cid, members_payload, node_budget)
-    raw, _ = call_json(llm_client, model, sys_p, user_p)
-    obj = json.loads(raw)
 
-    members_out = obj.get('members', [])
-    keep_order = [m['title'] for m in members_out
-                  if m.get('classification') == 'keep' and m.get('title') in input_set]
-    demote_set = {m['title'] for m in members_out
-                  if m.get('classification') == 'demote' and m.get('title') in input_set}
+    obj: dict = {}
+    keep_order: list[str] = []
+    hallucinated: list[str] = []
 
-    # Completeness retry loop: any input title not in keep or demote → ask LLM again.
-    for _ in range(max_complete_retries):
-        seen = set(keep_order) | demote_set
-        missing_titles = input_set - seen
-        if not missing_titles:
-            break
-        miss_payload = [m for m in members_payload if m['title'] in missing_titles]
-        sys_p2, user_p2 = _stage_b_retry_prompt(domain, cid, miss_payload)
-        raw2, _ = call_json(llm_client, model, sys_p2, user_p2)
+    for attempt in range(max_retries_on_empty + 1):
+        raw, _ = call_json(llm_client, model, sys_p, user_p)
         try:
-            obj2 = json.loads(raw2)
-            for m in obj2.get('members', []):
-                t = m.get('title')
-                if t not in missing_titles:
-                    continue
-                if m.get('classification') == 'keep':
-                    keep_order.append(t)
-                elif m.get('classification') == 'demote':
-                    demote_set.add(t)
-        except (json.JSONDecodeError, KeyError, TypeError):
-            continue
+            obj = json.loads(raw)
+        except json.JSONDecodeError:
+            obj = {}
 
-    # Force-demote anything still missing.
-    forced = input_set - set(keep_order) - demote_set
-    if forced:
-        demote_set |= forced
+        keep_raw = obj.get('keep_titles', []) if isinstance(obj, dict) else []
+        keep_order = []
+        seen_keep: set[str] = set()
+        hallucinated = []
+        for t in keep_raw:
+            if not isinstance(t, str):
+                continue
+            if t in input_set:
+                if t not in seen_keep:
+                    keep_order.append(t)
+                    seen_keep.add(t)
+            else:
+                hallucinated.append(t)
+
+        if keep_order or not input_set:
+            break
+        # else: empty keep on a non-empty cluster → retry once or twice
+
+    demote_set = input_set - set(keep_order)
 
     return {
         'room_name': str(obj.get('room_name', '')).strip() or '(unnamed)',
@@ -561,7 +546,8 @@ def _run_stage_b_once(
         'coherence_reason': obj.get('coherence_reason', ''),
         'keep_order': keep_order,
         'demote_set': demote_set,
-        'n_forced_demote': len(forced),
+        'n_forced_demote': 0,  # automatic via set-difference; kept for schema parity
+        'n_hallucinated': len(hallucinated),
     }
 
 
@@ -689,6 +675,7 @@ def assign_rooms(
             '_meta': {
                 'coherence_reason': runs[0]['coherence_reason'],
                 'n_forced_demote': n_forced,
+                'n_hallucinated': sum(r.get('n_hallucinated', 0) for r in runs),
                 'n_runs': n_runs,
                 'all_run_names': [r['room_name'] for r in runs] if n_runs > 1 else None,
             },
