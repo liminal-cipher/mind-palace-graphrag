@@ -121,7 +121,52 @@ def split_oversized(
     entities: list[dict],
     max_cluster_size: int,
 ) -> list[list[int]]:
-    raise NotImplementedError('split_oversized: added in next commit')
+    """Any cluster larger than max_cluster_size is re-clustered (ward) within
+    itself until every piece fits. Size-only criterion, domain-agnostic.
+
+    Uses ceil(size / max_cluster_size) as the split fanout; recurses to handle
+    skewed splits (one big chunk + crumbs). Pre-existing under-size clusters
+    pass through untouched, preserving deterministic order.
+    """
+    if max_cluster_size < 2:
+        raise ValueError(f'max_cluster_size must be >= 2, got {max_cluster_size}')
+
+    out: list[list[int]] = []
+    for cluster in clusters:
+        out.extend(_split_one(cluster, entities, max_cluster_size))
+    return out
+
+
+def _split_one(
+    cluster_idx: list[int],
+    entities: list[dict],
+    max_cluster_size: int,
+) -> list[list[int]]:
+    if len(cluster_idx) <= max_cluster_size:
+        return [cluster_idx]
+
+    k = -(-len(cluster_idx) // max_cluster_size)  # ceil
+    k = max(2, k)
+    mat_n = _stack_normalized(entities, cluster_idx)
+    Z = linkage(mat_n, method='ward', metric='euclidean')
+    labels = fcluster(Z, t=k, criterion='maxclust')
+
+    by_label: dict[int, list[int]] = defaultdict(list)
+    for idx, lab in zip(cluster_idx, labels):
+        by_label[int(lab)].append(idx)
+    pieces = [by_label[lab] for lab in sorted(by_label.keys())]
+
+    # If a split was degenerate (one piece still oversized), recurse on that piece.
+    final: list[list[int]] = []
+    for piece in pieces:
+        if len(piece) > max_cluster_size and len(piece) < len(cluster_idx):
+            final.extend(_split_one(piece, entities, max_cluster_size))
+        elif len(piece) >= len(cluster_idx):
+            # No progress; bail to avoid infinite loop. Caller can lower max.
+            final.append(piece)
+        else:
+            final.append(piece)
+    return final
 
 
 def merge_to_k(
