@@ -139,7 +139,7 @@ exp10 report.md:
 | exp10 실측 시간 ~105초 | exp10 report L72 | 검증 불가 | spec.json 어디에도 elapsed 저장 안 됨. 재실행 시 LLM 응답 시간 변동. **아티팩트로 검증 불가** |
 | exp9 "자료 품질 confound" | EXPERIMENTS.md L118 / L122 / inventory L115 | 한계 명시 | 본문 스스로 "확정 아니라 confound 있는 추정"이라 적음. **주장 아님** |
 
-## 4. n=1 (LLM 레이어) 결과 한꺼번 모음 — 증거 약함 카테고리
+## 4. n=1 (LLM 레이어) 결과 한꺼번 모음: 증거 약함 카테고리
 
 exp10 4 combo eval은 모두 단일 LLM 실행. 다음 수치들은 LLM 흔들림으로 변할 수 있음 (재실행 시 변동은 정상, 불일치 처리 X):
 
@@ -158,7 +158,7 @@ exp10 4 combo eval은 모두 단일 LLM 실행. 다음 수치들은 LLM 흔들�
 - 없음 (이번 패스에서 검증한 결정적 수치 16개 + LLM 결과 12개 항목 모두 저장 파일과 일치)
 
 ### 과장
-- (약) EXPERIMENTS.md L21 "max_cluster_size를 바꿔 가며 N=3으로 자연 편차를 측정" — 03_repro_step3_summary가 "max의 순수 효과 = 0"이라고 분리했음에도, 한 문장으로 묶으면서 max 변경과 cache-fresh 재실행이 같은 차원처럼 읽힘. 사실 N=3 자연 편차는 max=15 동일 + cache fresh 조건에서 잡힌 것. **수정 제안**: 줄을 두 문장으로 — "max는 효과 없었고 (Step 1), 같은 max에서 cache 새로 N=3 했을 때 ±10 흔들림 (Step 2)."
+- (약) EXPERIMENTS.md L21 "max_cluster_size를 바꿔 가며 N=3으로 자연 편차를 측정". 03_repro_step3_summary가 "max의 순수 효과 = 0"이라고 분리했음에도, 한 문장으로 묶으면서 max 변경과 cache-fresh 재실행이 같은 차원처럼 읽힘. 사실 N=3 자연 편차는 max=15 동일 + cache fresh 조건에서 잡힌 것. **수정 제안**: 줄을 두 문장으로. "max는 효과 없었고 (Step 1), 같은 max에서 cache 새로 N=3 했을 때 ±10 흔들림 (Step 2)."
 
 ### 증거 약함 (LLM 단일 실행)
 - exp10 4 combo의 모든 should_show / should_demote 수치, 방 이름, 회귀 사례(이성계 demote, 조선 keep) → 본문은 이미 "n_runs=3은 다음 단계"라 명시. 추가 보강은 다음 회차에서 자연스럽게 해결.
@@ -170,14 +170,14 @@ exp10 4 combo eval은 모두 단일 LLM 실행. 다음 수치들은 LLM 흔들�
 - 33회 호출 수치는 산수로 ±1 검증, 정확값은 런타임 로그가 보존되지 않아 확인 불가
 
 ### 한계 본인이 명시
-- exp9 "자료 품질 confound" — 본문 스스로 "확정 아님" 표시
-- exp7 cluster 6 grab-bag, K=10에서 LLM 변동 — 보고서가 흔들림을 정량화해 적시
-- exp10 "n_runs=3 안정성은 다음 단계" — 본인 한계 표시
+- exp9 "자료 품질 confound": 본문 스스로 "확정 아님" 표시
+- exp7 cluster 6 grab-bag, K=10에서 LLM 변동: 보고서가 흔들림을 정량화해 적시
+- exp10 "n_runs=3 안정성은 다음 단계": 본인 한계 표시
 
 ### 약한 모호함 (수정 제안만)
 - EXPERIMENTS.md "베이스 스냅샷"(repro_run3, max=15)과 "baseline"(00_baseline.md, max=10)의 max 차이를 명시 안 함. 한 줄 보강 권고.
 - 큰 덩어리: exp6 "160"(K=10)과 STATUS.md "194"(K=8)는 같은 LCC를 다른 K로 자른 두 단면. cross-reference 한 줄 권고.
-- STATUS.md L41~45 "K=5/8 양쪽, run 2회, 매 시도 4회 전부 실패" — 산술적으로는 맞지만 "매 시도 4회"가 다소 모호함. "K∈{5,8} × run∈{a,b} × 4 attempts = 16/16 실패"로 풀어쓰면 명료.
+- STATUS.md L41~45 "K=5/8 양쪽, run 2회, 매 시도 4회 전부 실패". 산술적으로는 맞지만 "매 시도 4회"가 다소 모호함. "K∈{5,8} × run∈{a,b} × 4 attempts = 16/16 실패"로 풀어쓰면 명료.
 
 ## 6. 노트
 - 이번 패스는 결정적 부분만 재실행 (`ward linkage`, `_merge_embedding`, parquet/json 직접 읽기). LLM 호출은 비용·변동 사유로 생략.

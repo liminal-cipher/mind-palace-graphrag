@@ -23,8 +23,8 @@ python -c "...stage1 title 추출..."                                # community
 
 ```
 python results/exp5/exp5_embed.py                                 # LLM 없음, $0. 임베딩 ward 병합 stage2 (K=5/8/10) 생성. 비교 baseline
-python results/exp5/exp5_llm.py                                   # LLM $ — v1 partition (K=5/8 × run_a/run_b × 4시도, 전부 실패함)
-python results/exp5/exp5_llm_v2.py                                # LLM $ — v2 assignment (K=5 × 3런, valid 통과)
+python results/exp5/exp5_llm.py                                   # LLM $: v1 partition (K=5/8 × run_a/run_b × 4시도, 전부 실패함)
+python results/exp5/exp5_llm_v2.py                                # LLM $: v2 assignment (K=5 × 3런, valid 통과)
 python results/exp5/type_select_test.py                           # LLM 없음, $0. entity type 분류 점검 (entity_breakdown_v2.html 생성)
 ```
 

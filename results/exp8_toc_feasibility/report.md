@@ -1,8 +1,8 @@
-# exp8 — 목차 방 feasibility
+# exp8: 목차 방 feasibility
 
 베이스: `input\국사교과서_조선_본문_정제.txt` (전체 20921자), `results\snapshots\repro_run3/text_units.parquet` (12 units), `entities.parquet` (357 entities). PDF팀 구조 보존 없이 지금 원문 + repro_run3만으로 목차 → 섹션 → 엔티티 사슬이 잡히나.
 
-## 1. 헤더 파싱 — 섹션 목록
+## 1. 헤더 파싱: 섹션 목록
 
 총 헤더 46개 (roman=2, number=4, sub=40).
 
@@ -125,7 +125,7 @@ unit은 1200 토큰 단위 청크라 섹션 경계를 가로지른다. unit이 �
 | 44 | sub | VI. 조선 사회의 변동 > 1. 붕당 정치와 탕평책 > 국학 연구 | 2 | 41 |
 | 45 | sub | VI. 조선 사회의 변동 > 1. 붕당 정치와 탕평책 > 실학의 의의 | 1 | 15 |
 
-## 4. 엔티티 — 몇 개 섹션에 걸치나
+## 4. 엔티티: 몇 개 섹션에 걸치나
 
 총 357개 엔티티 중:
 

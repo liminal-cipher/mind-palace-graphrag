@@ -23,7 +23,7 @@ next: use_lcc=true 시도(실험 4).
 snapshot: null
 ---
 
-## GraphRAG 실험 결과 — Step 1-B 스냅샷 (max=20, 추출 캐시 hit)
+## GraphRAG 실험 결과: Step 1-B 스냅샷 (max=20, 추출 캐시 hit)
 
 **실험 정보**: 2026-06-02 / 국사교과서_조선_본문_정제.txt (20,921자) / gpt-4.1-mini / text-embedding-3-small / entity_types=7, max_gleanings=2, use_lcc=false, **max_cluster_size=20** / **cache 유지 (실험 2의 캐시 재사용)**
 
@@ -34,7 +34,7 @@ snapshot: null
 
 ### (2) 상세
 
-**추출 결과** (실험 2 / snap_max10 와 완전 동일 — cache hit 검증)
+**추출 결과** (실험 2 / snap_max10 와 완전 동일, cache hit 검증)
 | 항목 | 수 | (실험2 max=15) | (snap_max10) |
 |---|---|---|---|
 | Entities | 408 | 408 ✅ | 408 ✅ |
@@ -61,7 +61,7 @@ snapshot: null
 - 누적 LLM input $0.5948 / output $0.5265 / 임베딩 $0.0071 = $1.1284
 - snap_max10 누적 $1.0751 → **이번 회차 추가 ≈ $0.053** (community 수 59개로 더 적어 community_reports 비용 더 작음)
 
-**Level 0 방 이름** (30개) — snap_max10과 완전 동일 (community 번호·크기·제목 모두 일치)
+**Level 0 방 이름** (30개), snap_max10과 완전 동일 (community 번호·크기·제목 모두 일치)
 
 **관찰**
 - **Level 0 = 30, 또 동일**: max=10/15/20 모두 같은 추출 위에서 level 0 = 30. **max_cluster_size는 level 0에 전혀 영향 안 줌.**

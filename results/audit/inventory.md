@@ -96,7 +96,7 @@ EXPERIMENTS.md 작성 시점(이후)과 어긋날 수 있어 따로 본다.
 |---|---|---|
 | 임베딩 병합 결정적, ward가 average보다 좋음 (silhouette K=5 0.083 / K=8 0.099 / K=10 0.098) | `results/exp5/embed_silhouette_summary.json`, `embed_reliability.json`, `stage2_emb_K{5,8,10}.json`, 비교용 `stage2_emb_K8_alt_average.json` | 실물 있음 |
 | LLM partition 병합 v1 4회 시도 전부 실패 (누락/중복) | `results/exp5/llm_reliability.json` | 실물 있음 |
-| LLM partition v1 stage2 JSON은 생성 안 됨 (성공 0회) | `results/exp5/` 에 v1 stage2 파일이 없음 (v2 K5 run1/2/3만 있음) — 부재가 곧 증거 | 실물 있음 (부재로 확인) |
+| LLM partition v1 stage2 JSON은 생성 안 됨 (성공 0회) | `results/exp5/` 에 v1 stage2 파일이 없음 (v2 K5 run1/2/3만 있음). 부재가 곧 증거 | 실물 있음 (부재로 확인) |
 | 194 덩어리 (community {4,5,9,10,13,17,23,24,27,29,30,33,34} 한 덩어리 size 194) | `results/exp5/stage2_emb_K10.json` 의 멤버 리스트 + `results/snapshots/repro_run3/communities.parquet` 의 community size 합산 | 실물 있음 (parquet으로 재계산 가능, JSON에 직접 size=194는 적혀있지 않음) |
 | LLM v2 (assignment 방식)을 다음 할 일로 적시 (실제 실행됐는지 별개) | `results/exp5/stage2_llm_v2_K5_run{1,2,3}.json` + `llm_v2_reliability.json` + `exp5_llm_v2.py` + `llm_v2_raw/` 가 모두 존재 → 실행됨 | 실물 있음 (계획이 실행으로 옮겨졌고 결과까지 저장됨) |
 

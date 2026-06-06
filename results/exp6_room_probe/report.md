@@ -1,10 +1,10 @@
-# exp6 — 방 토대 프로브: 직접 엔티티 클러스터 vs community 병합
+# exp6: 방 토대 프로브: 직접 엔티티 클러스터 vs community 병합
 
 베이스: `repro_run3` (357 엔티티, 31 orphan 포함). 비교 대상: `results/exp5/stage2_emb_K10.json`. 임베딩: lancedb `entity_description` (1536-dim, L2 정규화 후 scipy ward euclidean).
 
 질문: 방을 graph community 대신 엔티티 임베딩으로 직접 클러스터하면 (1) orphan 녹나, (2) 거대 덩어리 갈라지나, (3) 묶음이 주제별이냐 타입별이냐.
 
-## 1. 직접 클러스터 K=10 — 멤버·타입 분포
+## 1. 직접 클러스터 K=10: 멤버·타입 분포
 
 ### 클러스터 0 (size=45, orphan=4)
 
@@ -623,7 +623,7 @@ community 병합 최대 건물: **건물 7 (size=160)**. 그 멤버들이 직접
 
 **모드 클러스터 3: 4/7** (not-found 제외)
 
-## 5. orphan 31개 — 직접 클러스터 어디에 묶이나
+## 5. orphan 31개: 직접 클러스터 어디에 묶이나
 
 | orphan | type | 클러스터 | 그 클러스터 size | 같은 클러스터 다른 멤버 (degree 큰 5명) |
 |---|---|---|---|---|

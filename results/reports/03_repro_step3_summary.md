@@ -4,7 +4,7 @@ id: 03_repro_step3_summary
 date: 2026-06-02
 ---
 
-# Step 3 — 종합: max_cluster_size 효과는 자연 편차에 묻힌다
+# Step 3, 종합: max_cluster_size 효과는 자연 편차에 묻힌다
 
 ## 한눈에
 
@@ -46,7 +46,7 @@ date: 2026-06-02
 ## 다음 단계 권고
 
 1. **실험 4 진행 (use_lcc=true)**: max_cluster_size는 baseline 값(10) 유지. cache는 비우거나(자연 편차 ±10 위에서) 유지(추출 고정 비교) 중 선택.
-   - 권장: cache 유지 — 같은 추출(408 entities) 위에서 use_lcc=true가 level 0을 얼마나 줄이는지 통제 비교 가능. 사라진 엔티티도 명확히 식별 가능 (snap_max10의 entities와 use_lcc=true 후의 entities 비교).
+   - 권장: cache 유지. 같은 추출(408 entities) 위에서 use_lcc=true가 level 0을 얼마나 줄이는지 통제 비교 가능. 사라진 엔티티도 명확히 식별 가능 (snap_max10의 entities와 use_lcc=true 후의 entities 비교).
 2. **재현성 보강 (선택)**: 만약 실험 4 결과가 흥미로우면, 그것도 N=2~3으로 자연 편차 확인. 비용 추가 $1.5~2.
 
 ## 파일 인덱스

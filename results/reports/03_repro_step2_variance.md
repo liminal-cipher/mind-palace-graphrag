@@ -4,7 +4,7 @@ id: 03_repro_step2_variance
 date: 2026-06-02
 ---
 
-# Step 2 — 재현성 측정 (max=15 동일 설정 N=3)
+# Step 2: 재현성 측정 (max=15 동일 설정 N=3)
 
 같은 입력·모델·설정으로 cache+output 비우고 3번 인덱싱. 회차 간 차이가 LLM 비결정성에 의한 "자연 편차".
 
@@ -40,4 +40,4 @@ date: 2026-06-02
 - **N=3은 표본이 작음**: 통계 신뢰도 한계. 정밀하게 보려면 N≥10 필요하지만, 비용·시간 대비 정성적 결론은 이걸로 충분 ("±10 정도 흔들린다").
 
 ## 백업
-`results/snapshots/{exp2_max15, repro_run2, repro_run3}/` — 각 회차 parquet/cache/log
+`results/snapshots/{exp2_max15, repro_run2, repro_run3}/`: 각 회차 parquet/cache/log
