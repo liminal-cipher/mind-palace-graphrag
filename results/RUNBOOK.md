@@ -16,8 +16,10 @@
 
 ### exp1: baseline 인덱싱
 
+설정: `settings.yaml`에 `max_cluster_size=10`, `use_lcc=false`.
+
 ```
-graphrag index --root .                                           # LLM $ 재인덱싱: 16분, $1.02. settings.yaml = max=10, use_lcc=false.
+graphrag index --root .                                           # LLM $ 재인덱싱: 16분, $1.02.
 ```
 
 산출: `output/*.parquet` + `output/lancedb/`, `logs/run_baseline.{stdout,stderr,exit}`, `logs/indexing-engine.log`. **스냅샷 안 만듦** (이 회차는 재현 불가).
@@ -65,10 +67,10 @@ graphrag index --root .                                           # LLM $ 묶기
 상세는 `results/exp5/COMMANDS.md`. 요약:
 
 ```
-python results/exp5/exp5_embed.py                                 # LLM $ 임베딩 ward 병합 stage2(K=5/8/10). 결정적.
+python results/exp5/exp5_embed.py                                 # LLM 없음, $0. 사전 lancedb 임베딩 read-only, ward 병합 stage2(K=5/8/10). 결정적.
 python results/exp5/exp5_llm.py                                   # LLM $ v1 partition (16/16 전부 실패 기록용).
 python results/exp5/exp5_llm_v2.py                                # LLM $ v2 assignment (K=5 × 3런, valid 통과).
-python results/exp5/type_select_test.py                           # LLM $ entity type keep/demote 분류 점검.
+python results/exp5/type_select_test.py                           # LLM 없음, $0. entity type keep/demote 분류 점검(API 0건).
 ```
 
 산출: `results/exp5/stage2_emb_K{5,8,10}.json`, `stage2_llm_v2_K5_run{1,2,3}.json`, `llm_reliability.json`, `llm_v2_reliability.json`, `embed_silhouette_summary.json`, `embed_reliability.json`, `entity_breakdown_v2.html`, `llm_v2_raw/run{1,2,3}.txt`, `llm_merge_probe.md`.
@@ -103,8 +105,8 @@ python results/exp8_toc_feasibility/probe.py                      # 결정적, L
 python results/exp9_rechunk/build_inputs.py                       # LLM 없음. input/ → proj_{semantic,pagesplit}/input/*_docs.json.
 python results/exp9_rechunk/run_verify.py                         # LLM 없음. text_units 행 수 사전검증.
 python results/exp9_rechunk/run_full.py                           # LLM $ 재인덱싱 (community_reports 빠진 풀 파이프라인). semantic ~7분, pagesplit ~18분. ±10 흔들림.
-python results/exp9_rechunk/eval_run.py --label semantic_run1     # LLM 없음. eval_semantic_run1.json 생성.
-python results/exp9_rechunk/eval_run.py --label pagesplit_run1    # LLM 없음. eval_pagesplit_run1.json 생성.
+python results/exp9_rechunk/eval_run.py semantic_run1             # LLM 없음. eval_semantic_run1.json 생성. (positional 인자, --label 없음)
+python results/exp9_rechunk/eval_run.py pagesplit_run1            # LLM 없음. eval_pagesplit_run1.json 생성.
 ```
 
 산출: `results/snapshots/{semantic,pagesplit}_run1/` (entity_description.lance 포함, community_reports/text_unit_text 테이블 없음), `results/exp9_rechunk/eval_{semantic,pagesplit}_run1.json`, `comparison.md`, `logs/exp9_*.log`, `logs/{semantic_run1,pagesplit_run1}/indexing-engine.log`.
