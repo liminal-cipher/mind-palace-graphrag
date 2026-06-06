@@ -22,10 +22,10 @@ python -c "...stage1 title 추출..."                                # community
 `.env`에 `GRAPHRAG_API_KEY`, `GRAPHRAG_API_BASE` 필요. 입력은 `results/snapshots/repro_run3/`. CWD = repo 루트 (`C:/Users/AJourney/Desktop/graphrag/`). 4 스크립트가 `Path('results/snapshots/repro_run3')` 식 repo 루트 기준 상대경로를 쓰므로 `results/exp5/`에서 돌리면 실패함.
 
 ```
-python exp5_embed.py                                              # LLM $ — 임베딩 ward 병합 stage2 (K=5/8/10) 생성. 비교 baseline
-python exp5_llm.py                                                # LLM $ — v1 partition (K=5/8 × run_a/run_b × 4시도, 전부 실패함)
-python exp5_llm_v2.py                                             # LLM $ — v2 assignment (K=5 × 3런, valid 통과)
-python type_select_test.py                                        # LLM $ — entity type 분류 점검 (entity_breakdown_v2.html 생성)
+python results/exp5/exp5_embed.py                                 # LLM 없음, $0. 임베딩 ward 병합 stage2 (K=5/8/10) 생성. 비교 baseline
+python results/exp5/exp5_llm.py                                   # LLM $ — v1 partition (K=5/8 × run_a/run_b × 4시도, 전부 실패함)
+python results/exp5/exp5_llm_v2.py                                # LLM $ — v2 assignment (K=5 × 3런, valid 통과)
+python results/exp5/type_select_test.py                           # LLM 없음, $0. entity type 분류 점검 (entity_breakdown_v2.html 생성)
 ```
 
 산출 위치: `stage2_emb_K{5,8,10}.json`, `stage2_llm_K{5,8}_run_{a,b}.json` (v1은 검증 통과만 저장, 실제로는 0개), `stage2_llm_v2_K5_run{1,2,3}.json`, `llm_reliability.json`, `llm_v2_reliability.json`, `embed_reliability.json`, `embed_silhouette_summary.json`, `entity_breakdown_v2.html`.
