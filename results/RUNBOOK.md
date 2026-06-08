@@ -1,5 +1,7 @@
 # RUNBOOK: 실험 재현 명령 한 장
 
+> Caveat: exp11~13 및 reorg(expNN_slug 패딩 네이밍) 후 변경된 경로·명령은 이 패스에서 스모크 재검증을 돌리지 않았다. 비용·시간이 드는 인덱싱/LLM 명령은 실제 실행 전 한 번 더 확인할 것.
+
 팀원이 실험별로 무슨 명령을 돌리는지 찾는 한 페이지. 한 줄 = 한 명령 + 한 줄 설명. `LLM $` = Azure OpenAI 호출(비용 발생).
 
 ## 사전 준비 (한 번)
@@ -120,6 +122,33 @@ python results/exp10_room_gen/eval_rooms.py --spec results/rooms/<run_id>.json -
 ```
 
 산출: `results/rooms/repro_run3_K{5,10}_{embedding,llm}.{json,md,eval.json}` (4 combo × 3 파일), rubric 캐시 `cache/exp10_room_gen/rubric_repro_run3.json` (한 번만 도출), `results/rooms/dump_repro_run3_K10_embedding.txt` (사람 읽기용 덤프).
+
+### exp11: K(방 수) sweep
+
+```
+python results/exp11_k_sweep/sweep_runner.py                       # LLM 없음. K=2..10 결정적 sweep(embedding merge). 같은 K 두 번 호출해 결정성 점검 포함.
+python results/exp11_k_sweep/sweep_analyze.py                      # LLM 없음. sweep 결과 + results/rooms/ 기존 K5/K10 embedding 결과 읽어 분석 출력.
+```
+
+산출: `results/exp11_k_sweep/sweep_K{2..10}.json` (9개), 리포트 `results/exp11_k_sweep/report.md`.
+
+### exp12: Stage B n=3 안정성
+
+```
+python results/exp12_n3_stability/run_n3.py                        # LLM $ K∈{10,5} × n=3 × 클러스터 10 = 60 호출 (rubric 캐시 hit, Stage A 0회).
+python results/exp12_n3_stability/aggregate_n3.py                  # LLM 없음. 다수결 + flip rate + 앵커 hit 재계산.
+```
+
+산출: `results/exp12_n3_stability/K{10,5}_run{1,2,3}.json` (6개), 리포트 `results/exp12_n3_stability/report.md`. rubric 캐시는 `cache/exp10_room_gen/rubric_repro_run3.json`(exp10에서 1회 도출).
+
+### exp13: generic 사전 제거(degree pre-cut)
+
+```
+python results/exp13_generic_filter/run_filter.py                  # LLM 없음. N∈{0,10,20,30} degree 상위 제거 후 같은 결정적 파이프라인(K=10).
+python results/exp13_generic_filter/analyze_filter.py              # LLM 없음. 앵커 부작용·방 균형·이성계 위치 변화 분석.
+```
+
+산출: `results/exp13_generic_filter/filter_N{0,10,20,30}.json` (4개), 리포트 `results/exp13_generic_filter/report.md`.
 
 ## 분석 보조(루트)
 
