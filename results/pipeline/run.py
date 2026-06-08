@@ -532,16 +532,18 @@ def build_cost_report(result: dict, model: str) -> dict:
 def build_report_md(cost: dict, result: dict) -> str:
     m = cost['meta']
     t = cost['totals']
+    pending_note = (
+        ' (input_per_1m/output_per_1m 미설정이라 cost는 "pending" 표기)'
+        if t['cost_usd'] == 'pending' else ''
+    )
     lines = [
-        f'# Pipeline cost report: {m["run_id"]}',
+        f'# 파이프라인 비용 리포트: {m["run_id"]}',
         '',
         f'- model: `{m["model"]}` | n_runs: {m["n_runs"]} | parallel_stage_b: {m["parallel_stage_b"]}',
         f'- generated_at: {m["generated_at"]}',
-        f'- pricing source: {m["pricing"].get("_source") or "n/a"}'
-        + ('  (cost shown as "pending" because input_per_1m/output_per_1m unset)'
-           if t['cost_usd'] == 'pending' else ''),
+        f'- 가격 출처: {m["pricing"].get("_source") or "n/a"}{pending_note}',
         '',
-        '## Per-stage',
+        '## 단계별',
         '',
         '| stage | wall s | call_sum s | LLM calls | prompt tok | completion tok | cost $ |',
         '|---|---:|---:|---:|---:|---:|---:|',
@@ -554,17 +556,19 @@ def build_report_md(cost: dict, result: dict) -> str:
         )
     sb = cost['stages']['stage_b']
     lines.append('')
-    lines.append(f'stage_b note: {result["n"]} passes serial; wall = sum of call durations '
-                 f'({sb["call_seconds"]} s) since parallel={sb["parallel"]}. '
-                 f'Per-pass wall {sb["per_pass_wall_seconds"]} s.')
+    lines.append(
+        f'stage_b 메모: {result["n"]} pass serial 실행; parallel={sb["parallel"]}이므로 '
+        f'wall = call duration 합 ({sb["call_seconds"]} s). '
+        f'pass별 wall {sb["per_pass_wall_seconds"]} s.'
+    )
     lines.append('')
-    lines.append('## Totals')
+    lines.append('## 합계')
     lines.append('')
     lines.append(f'- wall: **{t["wall_seconds"]} s**')
-    lines.append(f'- LLM calls: **{t["llm_calls"]}** (prompt {t["prompt_tokens"]} + completion {t["completion_tokens"]} tokens)')
+    lines.append(f'- LLM calls: **{t["llm_calls"]}** (prompt {t["prompt_tokens"]} + completion {t["completion_tokens"]} tok)')
     lines.append(f'- cost: **${t["cost_usd"]}**')
     lines.append('')
-    lines.append('## Pipeline settings (locked)')
+    lines.append('## 파이프라인 설정 (고정)')
     lines.append('')
     spec_meta = result['spec']['meta']
     lines.append(f'- snapshot: `{spec_meta["snapshot"]}`')
@@ -574,9 +578,9 @@ def build_report_md(cost: dict, result: dict) -> str:
                  f'node_budget={spec_meta["node_budget"]}')
     lines.append(f'- domain: {spec_meta["domain"]}')
     lines.append('')
-    lines.append('## Rooms summary')
+    lines.append('## 방 요약')
     lines.append('')
-    lines.append('| id | name | kept | demoted | coherence |')
+    lines.append('| id | 이름 | 유지 | 강등 | 정합성 |')
     lines.append('|---|---|---:|---:|---|')
     for r in result['spec']['rooms']:
         lines.append(f'| {r["room_id"]} | {r["name"]} | {len(r["kept"])} | '
@@ -584,60 +588,75 @@ def build_report_md(cost: dict, result: dict) -> str:
     total = sum(len(r['kept']) + len(r['demoted']) for r in result['spec']['rooms'])
     snap_n = spec_meta['snapshot_meta']['n_entities']
     lines.append('')
-    lines.append(f'total entities {total}/{snap_n} (전수보존 {"OK" if total == snap_n else "FAIL"})')
+    lines.append(f'총 엔티티 {total}/{snap_n} (전수보존 {"OK" if total == snap_n else "FAIL"})')
 
-    # Concurrency
+    # 동시성
     conc = m.get('concurrency') or {}
     lines.append('')
-    lines.append('## Concurrency')
+    lines.append('## 동시성')
     lines.append('')
     lines.append(f'- mode: **{conc.get("mode")}**')
     lines.append(f'- rooms: {conc.get("rooms")}')
     lines.append(f'- passes_per_room: {conc.get("passes_per_room")}')
     lines.append(f'- evidence: {conc.get("evidence")}')
 
-    # Stage B agreement + majority effect
+    # Stage B n-pass 일치도 + 다수결 효과
     agr = cost.get('stage_b_agreement', {})
     agg = agr.get('aggregate', {})
     per_room = agr.get('per_room', [])
     lines.append('')
-    lines.append('## Stage B n-pass agreement')
+    lines.append('## Stage B n-pass 일치도')
     lines.append('')
     lines.append(f'- spec: {agg.get("spec")}')
-    lines.append(f'- overall mean pair-jaccard: **{agg.get("overall_mean_pair_jaccard")}**')
-    lines.append(f'- overall min pair-jaccard: **{agg.get("overall_min_pair_jaccard")}**')
-    lines.append(f'- split entities (not unanimous across passes): '
+    lines.append(f'- 전체 평균 pair-jaccard: **{agg.get("overall_mean_pair_jaccard")}**')
+    lines.append(f'- 전체 최소 pair-jaccard: **{agg.get("overall_min_pair_jaccard")}**')
+    lines.append(f'- split 엔티티 (pass 간 불일치): '
                  f'**{agg.get("total_split_titles")}/{agg.get("total_entities")}** '
                  f'({agg.get("split_fraction")})')
     lines.append('')
-    lines.append('## Majority vote effect')
+    lines.append('## 다수결 효과')
     lines.append('')
-    lines.append(f'- entities the 2/3 majority changed vs unanimous-only: '
+    lines.append(f'- 다수결(2/3)이 만장일치 대비 바꾼 엔티티: '
                  f'**{agg.get("majority_changed_count")}**')
     if agg.get('majority_no_op'):
-        lines.append('- **mode-lock**: 3 passes unanimous on every entity; majority vote was a no-op.')
+        lines.append('- **mode-lock**: 모든 엔티티에 3 pass 만장일치, 다수결은 no-op.')
     else:
-        lines.append('- majority decided non-trivially (entity classifications were not unanimous).')
+        lines.append('- 다수결이 실제로 분류에 관여 (일부 엔티티가 pass 간 불일치).')
     mismatches = agg.get('implementation_mismatches') or []
     if mismatches:
-        lines.append('- **IMPLEMENTATION MISMATCH:**')
+        lines.append('- **구현 불일치:**')
         for m_ in mismatches:
             lines.append(f'  - {m_}')
     else:
-        lines.append('- implementation verified: actual kept set matches majority spec (>= 2/3) within node_budget cap.')
+        lines.append('- 구현 확인: 실제 keep set이 다수결 spec(>= 2/3)과 일치 (node_budget 한도 내).')
     lines.append('')
-    lines.append('### Per-room')
+    lines.append('### 방별')
     lines.append('')
-    lines.append('| room | size | keep sizes per pass | mean jacc | min jacc | split | maj changed | name unanim |')
+    lines.append('| room | size | pass별 keep 크기 | mean jacc | min jacc | split | maj 변경 | 이름 일치 |')
     lines.append('|---|---:|---|---:|---:|---:|---:|---|')
     for pr in per_room:
         lines.append(
             f'| {pr["room_id"]} | {pr["cluster_size"]} | {pr["keep_sizes_per_pass"]} | '
             f'{pr["mean_pair_jaccard"]} | {pr["min_pair_jaccard"]} | '
             f'{pr["split_titles_count"]} | {pr["majority_changed_vs_unanimous"]} | '
-            f'{"yes" if pr["name_unanimous"] else "no"} |'
+            f'{"예" if pr["name_unanimous"] else "아니오"} |'
         )
     return '\n'.join(lines) + '\n'
+
+
+def render_from_disk(out_dir: Path) -> int:
+    """Re-render report.md from existing cost_report.json + rooms.json (no LLM)."""
+    cost_path = out_dir / 'cost_report.json'
+    rooms_path = out_dir / 'rooms.json'
+    if not cost_path.exists() or not rooms_path.exists():
+        print(f'render-only: 산출물 누락 ({cost_path}, {rooms_path}) — 먼저 파이프라인 실행 필요')
+        return 1
+    cost = json.loads(cost_path.read_text(encoding='utf-8'))
+    spec = json.loads(rooms_path.read_text(encoding='utf-8'))
+    result = {'spec': spec, 'n': cost['meta']['n_runs']}
+    (out_dir / 'report.md').write_text(build_report_md(cost, result), encoding='utf-8')
+    print(f'render-only: report.md 재생성 완료 (LLM 0회, cost_report.json + rooms.json 기반)')
+    return 0
 
 
 # ---------------------------------------------------------------------------
@@ -715,10 +734,15 @@ def main() -> int:
     ap.add_argument('--out-dir', default='results/pipeline')
     ap.add_argument('--pricing', default='results/pipeline/pricing.json')
     ap.add_argument('--rubric-cache', default='results/pipeline/rubric.json')
+    ap.add_argument('--render-only', action='store_true',
+                    help='재실행 없이 cost_report.json + rooms.json에서 report.md만 재생성 (LLM 0회)')
     args = ap.parse_args()
 
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
+
+    if args.render_only:
+        return render_from_disk(out_dir)
 
     result = run_pipeline(
         snapshot=args.snapshot, K=args.K, n=args.n, node_budget=args.node_budget,
