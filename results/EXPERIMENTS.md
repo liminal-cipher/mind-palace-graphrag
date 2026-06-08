@@ -206,6 +206,10 @@
 
 **그래서**: LLM-only 설계는 **구조(방 수·이름·학습 흐름 척추)엔 믿을 만하지만 엔티티 단위 배정·노출은 temp=0에도 평균 ~21% 출렁여 못 믿음** — 온도로 못 고친다. 또 357 전수보존이 구조적으로 보장되지 않음(exp10 `check_invariants`의 keep ∪ demoted == 357과 대비). 결론: 방-만들기는 구조 재현은 LLM에 맡길 수 있어도 엔티티 배정·노출은 결정적 단계로 끊어야 한다. 자세한 표·런별 방 이름은 `results/exp14_overlap200_stability/report.md`.
 
+## exp15: 목차 챕터 단위 결정적 occurrence (진단)
+
+**가설**: exp8에서 357 엔티티가 평균 5.12 섹션에 흩어진 건 1200 토큰 청크가 섹션보다 커서다. 한 단계 거친 챕터 단위로 묶으면 같은 occurrence 매핑으로도 엔티티가 한 dominant 챕터로 모인다. **방법**: exp8과 같은 텍스트 occurrence 경로(엔티티 `text_unit_ids` × text_unit 의 char span ↔ 섹션 overlap)를 그대로 쓰고, 챕터 = 섹션의 결정적 rollup. LLM·임베딩 0회. 챕터 파티션은 문서 헤딩 계층에서 결정적으로 도출한 두 granularity (A=V.1/V.2/V.3/VI.1 4개, B=V.1만 문서 묶음 헤딩 "조선의 통치 제도"·"15세기 민족 문화의 발달" 경계로 3분할한 ~6개). dominant_chapter = argmax 카운트, 동점은 학습흐름 앞선 챕터로 깸. **판정 (B 기준)**: clean_landing_rate(dominance_ratio>=0.5) 0.9944 (357/357 거의 전수, 임계 0.80), mean n_chapters_touched 1.6078 (임계 2.0, exp8 섹션 평균 5.12에서 ~3배 붕괴), 이성계 B1_V1_건국 ratio 1.0 착지, dominance_ratio_B<0.5 인 앵커 0개 → **GO**. 자세한 표·앵커별 dominant·붕괴 비교는 `results/exp15_toc_chapters/REPORT.md`.
+
 ## 확정 파이프라인 러너 참조
 
 위 결정들(K=10, n=3, embedding merge, repro_run3)을 한 줄로 잇는 confirmed-pipeline 러너는 `results/pipeline/`에 있다. 단계별 wall·LLM 호출·토큰·다수결 효과·per-room jaccard 등 실측치는 `results/pipeline/report.md`(자동 생성)에 있어 여기서 중복 기재하지 않는다.

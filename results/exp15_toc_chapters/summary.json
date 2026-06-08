@@ -1,0 +1,87 @@
+{
+  "partition_A": {
+    "label": "A (4 chapters)",
+    "dominance_ratio": {
+      "mean": 0.9064,
+      "median": 1.0,
+      "frac_ge_0.5": 0.9944,
+      "frac_ge_0.6": 0.8964,
+      "frac_ge_0.8": 0.8964
+    },
+    "n_chapters_touched": {
+      "mean": 1.3361,
+      "median": 1,
+      "frac_eq_1": 0.6723,
+      "frac_le_2": 0.9916
+    },
+    "clean_landing_rate_ge_0.5": 0.9944,
+    "clean_landing_rate_ge_0.6": 0.8964
+  },
+  "partition_B": {
+    "label": "B (6 chapters)",
+    "dominance_ratio": {
+      "mean": 0.8078,
+      "median": 0.8,
+      "frac_ge_0.5": 0.9944,
+      "frac_ge_0.6": 0.8936,
+      "frac_ge_0.8": 0.6275
+    },
+    "n_chapters_touched": {
+      "mean": 1.6078,
+      "median": 2,
+      "frac_eq_1": 0.4034,
+      "frac_le_2": 0.9888
+    },
+    "clean_landing_rate_ge_0.5": 0.9944,
+    "clean_landing_rate_ge_0.6": 0.8936
+  },
+  "collapse_comparison": {
+    "n_sections_touched_exp8": {
+      "mean": 5.1176,
+      "median": 5
+    },
+    "n_chapters_touched_A": {
+      "mean": 1.3361,
+      "median": 1
+    },
+    "n_chapters_touched_B": {
+      "mean": 1.6078,
+      "median": 2
+    }
+  },
+  "isunggye": {
+    "in_snapshot": true,
+    "dominant_A": "A1_V1_조선의_성립",
+    "dominance_A": 1.0,
+    "dominant_B": "B1_V1_건국",
+    "dominance_B": 1.0,
+    "expected_A": "A1_V1_조선의_성립",
+    "expected_B": "B1_V1_건국",
+    "matches_expectation": true
+  },
+  "verdict": {
+    "verdict": "GO",
+    "thresholds": {
+      "clean_landing_rate_ge_0.5_min": 0.8,
+      "mean_n_chapters_touched_max": 2.0,
+      "isunggye_expected_A": "A1_V1_조선의_성립",
+      "isunggye_expected_B": "B1_V1_건국"
+    },
+    "observed_B": {
+      "clean_landing_rate_ge_0.5": 0.9944,
+      "mean_n_chapters_touched": 1.6078,
+      "isunggye_lands_correctly": true,
+      "split_anchors_count": 0,
+      "split_anchors": []
+    }
+  },
+  "n_entities": 357,
+  "n_sections": 46,
+  "inputs": {
+    "corpus": "input/국사교과서_조선_본문_정제.txt",
+    "entities": "results/snapshots/repro_run3/entities.parquet",
+    "text_units": "results/snapshots/repro_run3/text_units.parquet",
+    "sections_source": "results/exp08_toc_feasibility/probe.py",
+    "anchors": "results/exp10_room_gen/anchors_korean_history.json"
+  }
+}
