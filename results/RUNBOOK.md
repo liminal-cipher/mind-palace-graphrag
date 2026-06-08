@@ -150,6 +150,18 @@ python results/exp13_generic_filter/analyze_filter.py              # LLM 없음.
 
 산출: `results/exp13_generic_filter/filter_N{0,10,20,30}.json` (4개), 리포트 `results/exp13_generic_filter/report.md`.
 
+### exp14: overlap200 step-3 재현성(n=3)
+
+overlap200 아이디어의 step-3(LLM이 GraphRAG 커뮤니티+엔티티를 받아 학습용 방을 설계)에 대한 충실 재구현 + 같은 frozen 입력에 3런 일치도 측정. 팀원 최종 코드와 동일 동작은 보장 안 함, 접근 방식 재현성만. 모델 `gpt-4.1-mini`, temp=0. 입력은 `results/snapshots/repro_run3/`의 level-0 커뮤니티(40) + community report + 엔티티 357.
+
+```
+.venv/Scripts/python.exe results/exp14_overlap200_stability/build_input.py     # LLM 없음. snapshot → frozen_input.json (3런 공통 입력 고정).
+.venv/Scripts/python.exe results/exp14_overlap200_stability/run_design.py --n 3 # LLM $ 한 런 = 1 호출, 3런 = 3 호출. 합 prompt~91K + completion~43K 토큰, 런당 ~2분.
+.venv/Scripts/python.exe results/exp14_overlap200_stability/analyze.py         # LLM 없음. 자카드 greedy 매칭 + 앵커·이성계 stability.
+```
+
+`run_design.py`는 부분 재실행 옵션 있음: `--n 1 --start 3`이면 run3만 다시 돈다. 산출: `results/exp14_overlap200_stability/frozen_input.json`, `run{1,2,3}.json`, `agreement.json`, 리포트 `report.md`. 재실행 없이 산출만 확인하려면 커밋된 JSON을 그대로 읽으면 됨.
+
 ## 분석 보조(루트)
 
 ```
