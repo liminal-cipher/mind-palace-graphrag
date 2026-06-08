@@ -85,6 +85,29 @@ def _instrumented_call_json(*args, **kw):
 room_gen.call_json = _instrumented_call_json
 
 
+# Capture individual Stage B pass results per room. assign_rooms calls
+# _run_stage_b_once n_runs times per room and then aggregates; without this
+# wrapper the per-pass keep sets are discarded.
+_per_room_passes: dict[int, list[dict]] = defaultdict(list)
+_orig_stage_b = room_gen._run_stage_b_once
+
+
+def _instrumented_stage_b(cid, *args, **kw):
+    result = _orig_stage_b(cid, *args, **kw)
+    _per_room_passes[cid].append({
+        'room_name': result['room_name'],
+        'coherence': result['coherence'],
+        'keep_order': list(result['keep_order']),
+        'keep_set': set(result['keep_order']),
+        'demote_set': set(result['demote_set']),
+        'n_hallucinated': result.get('n_hallucinated', 0),
+    })
+    return result
+
+
+room_gen._run_stage_b_once = _instrumented_stage_b
+
+
 # ---------------------------------------------------------------------------
 # Pricing + cost calc
 # ---------------------------------------------------------------------------
@@ -107,6 +130,138 @@ def stage_cost(usage: dict, pricing: dict) -> str | float:
     pt = usage['prompt_tokens'] / 1_000_000.0 * pricing['input_per_1m']
     ct = usage['completion_tokens'] / 1_000_000.0 * pricing['output_per_1m']
     return round(pt + ct, 6)
+
+
+# ---------------------------------------------------------------------------
+# Per-pass agreement + majority effect
+# ---------------------------------------------------------------------------
+
+
+def _jaccard(a: set, b: set) -> float:
+    if not a and not b:
+        return 1.0
+    inter = len(a & b)
+    union = len(a | b)
+    return inter / union if union else 1.0
+
+
+def analyze_passes(
+    merged: list[list[int]],
+    entities: list[dict],
+    final_rooms: list[dict],
+    n: int,
+    node_budget: int,
+) -> dict:
+    """For each room: pair-wise jaccard on keep sets, split entities (not
+    unanimous across passes), majority verification, and the count of
+    entities the majority vote actually changed vs unanimous.
+    """
+    per_room: list[dict] = []
+    total_split = 0
+    total_majority_changed = 0
+    total_entities = 0
+    jacc_means: list[float] = []
+    jacc_mins: list[float] = []
+    impl_mismatches: list[str] = []
+
+    for room_id, cluster_idx in enumerate(merged):
+        passes = _per_room_passes.get(room_id, [])
+        input_set = {entities[i]['title'] for i in cluster_idx}
+        total_entities += len(input_set)
+
+        keep_sets = [p['keep_set'] for p in passes]
+
+        # pair-wise jaccard
+        pair_j: list[float] = []
+        for i in range(len(keep_sets)):
+            for j in range(i + 1, len(keep_sets)):
+                pair_j.append(_jaccard(keep_sets[i], keep_sets[j]))
+        mean_j = sum(pair_j) / len(pair_j) if pair_j else 1.0
+        min_j = min(pair_j) if pair_j else 1.0
+        jacc_means.append(mean_j)
+        jacc_mins.append(min_j)
+
+        # per-title vote tally
+        votes = {t: 0 for t in input_set}
+        for ks in keep_sets:
+            for t in ks:
+                if t in votes:
+                    votes[t] += 1
+
+        # split = not unanimous (some passes keep, some demote)
+        split_titles = [t for t, v in votes.items() if 0 < v < n]
+        total_split += len(split_titles)
+
+        # majority effect: titles where majority decision differs from
+        # the unanimous-keep set (=titles unanimous_keep would NOT include
+        # but majority does, plus vice versa). Since 3-vote unanimous keep
+        # = {t : v==3} and majority keep = {t : v>=2}, the differ set is
+        # exactly {t : v==2} (majority keeps, unanimous-only would demote).
+        # Plus, demote unanimous = {t : v==0}; majority demote = {t : v<2};
+        # differ on demote side = {t : v==1} (majority demotes, unanimous-demote
+        # would not). Both together = {t : v==1 or v==2} = split_titles.
+        # So majority_changed_count == split_titles_count when within budget.
+
+        # Implementation verification: actual kept_set from final_rooms[room_id]
+        actual_kept = {k['title'] for k in final_rooms[room_id]['kept']}
+        threshold = n / 2.0
+        expected_majority = {t for t, v in votes.items() if v > threshold}
+        if len(expected_majority) <= node_budget:
+            if actual_kept != expected_majority:
+                impl_mismatches.append(
+                    f'room {room_id}: actual_kept {sorted(actual_kept)[:5]}... '
+                    f'!= expected_majority {sorted(expected_majority)[:5]}...'
+                )
+        else:
+            if not actual_kept.issubset(expected_majority):
+                impl_mismatches.append(
+                    f'room {room_id}: actual_kept not subset of expected_majority'
+                )
+            if len(actual_kept) != node_budget:
+                impl_mismatches.append(
+                    f'room {room_id}: budget cap expected len={node_budget}, '
+                    f'got {len(actual_kept)}'
+                )
+
+        majority_changed = len(split_titles)  # within-budget case; see comment above
+        if len(expected_majority) > node_budget:
+            # over budget: majority "did" the cut as well; count titles in
+            # expected_majority that didn't make actual_kept as additional changes.
+            cut = expected_majority - actual_kept
+            majority_changed += len(cut)
+        total_majority_changed += majority_changed
+
+        # name agreement across passes
+        names = [p['room_name'] for p in passes]
+        name_unanimous = len(set(names)) == 1
+
+        per_room.append({
+            'room_id': room_id,
+            'cluster_size': len(input_set),
+            'n_passes': len(passes),
+            'keep_sizes_per_pass': [len(ks) for ks in keep_sets],
+            'mean_pair_jaccard': round(mean_j, 4),
+            'min_pair_jaccard': round(min_j, 4),
+            'split_titles_count': len(split_titles),
+            'split_titles': sorted(split_titles)[:20],  # cap for readability
+            'majority_changed_vs_unanimous': majority_changed,
+            'pass_names': names,
+            'name_unanimous': name_unanimous,
+        })
+
+    agg = {
+        'overall_mean_pair_jaccard': round(sum(jacc_means) / len(jacc_means), 4)
+                                     if jacc_means else 1.0,
+        'overall_min_pair_jaccard': round(min(jacc_mins), 4) if jacc_mins else 1.0,
+        'total_split_titles': total_split,
+        'total_entities': total_entities,
+        'split_fraction': round(total_split / total_entities, 4) if total_entities else 0.0,
+        'majority_changed_count': total_majority_changed,
+        'majority_no_op': total_majority_changed == 0,
+        'implementation_mismatches': impl_mismatches,
+        'spec': 'keep iff votes > n/2 (= >= ceil((n+1)/2)); for n=3 means >= 2/3.',
+    }
+    return {'per_room': per_room, 'aggregate': agg}
 
 
 # ---------------------------------------------------------------------------
@@ -185,6 +340,9 @@ def run_pipeline(
     # aggregate (majority vote happens inside assign_rooms; reported separately = 0)
     timings['aggregate'] = 0.0  # folded into stage_b call
 
+    # n-pass agreement + majority effect (per-room then aggregated)
+    agreement = analyze_passes(merged, entities, rooms, n, node_budget)
+
     # invariants
     check_invariants(rooms, len(entities), K, node_budget)
 
@@ -237,6 +395,13 @@ def run_pipeline(
         'run_id': run_id,
         'n': n,
         'parallel': False,
+        'agreement': agreement,
+        'concurrency': {
+            'mode': 'serial',
+            'rooms': 'sequential for-loop in room_gen.assign_rooms',
+            'passes_per_room': 'sequential list comprehension over n_runs',
+            'evidence': 'stage_b wall_seconds ≈ call_seconds; no thread/async pool used',
+        },
     }
 
 
@@ -348,6 +513,7 @@ def build_cost_report(result: dict, model: str) -> dict:
             'model': model,
             'n_runs': result['n'],
             'parallel_stage_b': result.get('parallel', False),
+            'concurrency': result.get('concurrency', {}),
             'pricing': pricing,
             'generated_at': datetime.now(timezone.utc).isoformat(),
         },
@@ -359,6 +525,7 @@ def build_cost_report(result: dict, model: str) -> dict:
             'completion_tokens': total_tokens['completion'],
             'cost_usd': total_cost,
         },
+        'stage_b_agreement': result.get('agreement', {}),
     }
 
 
@@ -418,6 +585,58 @@ def build_report_md(cost: dict, result: dict) -> str:
     snap_n = spec_meta['snapshot_meta']['n_entities']
     lines.append('')
     lines.append(f'total entities {total}/{snap_n} (전수보존 {"OK" if total == snap_n else "FAIL"})')
+
+    # Concurrency
+    conc = m.get('concurrency') or {}
+    lines.append('')
+    lines.append('## Concurrency')
+    lines.append('')
+    lines.append(f'- mode: **{conc.get("mode")}**')
+    lines.append(f'- rooms: {conc.get("rooms")}')
+    lines.append(f'- passes_per_room: {conc.get("passes_per_room")}')
+    lines.append(f'- evidence: {conc.get("evidence")}')
+
+    # Stage B agreement + majority effect
+    agr = cost.get('stage_b_agreement', {})
+    agg = agr.get('aggregate', {})
+    per_room = agr.get('per_room', [])
+    lines.append('')
+    lines.append('## Stage B n-pass agreement')
+    lines.append('')
+    lines.append(f'- spec: {agg.get("spec")}')
+    lines.append(f'- overall mean pair-jaccard: **{agg.get("overall_mean_pair_jaccard")}**')
+    lines.append(f'- overall min pair-jaccard: **{agg.get("overall_min_pair_jaccard")}**')
+    lines.append(f'- split entities (not unanimous across passes): '
+                 f'**{agg.get("total_split_titles")}/{agg.get("total_entities")}** '
+                 f'({agg.get("split_fraction")})')
+    lines.append('')
+    lines.append('## Majority vote effect')
+    lines.append('')
+    lines.append(f'- entities the 2/3 majority changed vs unanimous-only: '
+                 f'**{agg.get("majority_changed_count")}**')
+    if agg.get('majority_no_op'):
+        lines.append('- **mode-lock**: 3 passes unanimous on every entity; majority vote was a no-op.')
+    else:
+        lines.append('- majority decided non-trivially (entity classifications were not unanimous).')
+    mismatches = agg.get('implementation_mismatches') or []
+    if mismatches:
+        lines.append('- **IMPLEMENTATION MISMATCH:**')
+        for m_ in mismatches:
+            lines.append(f'  - {m_}')
+    else:
+        lines.append('- implementation verified: actual kept set matches majority spec (>= 2/3) within node_budget cap.')
+    lines.append('')
+    lines.append('### Per-room')
+    lines.append('')
+    lines.append('| room | size | keep sizes per pass | mean jacc | min jacc | split | maj changed | name unanim |')
+    lines.append('|---|---:|---|---:|---:|---:|---:|---|')
+    for pr in per_room:
+        lines.append(
+            f'| {pr["room_id"]} | {pr["cluster_size"]} | {pr["keep_sizes_per_pass"]} | '
+            f'{pr["mean_pair_jaccard"]} | {pr["min_pair_jaccard"]} | '
+            f'{pr["split_titles_count"]} | {pr["majority_changed_vs_unanimous"]} | '
+            f'{"yes" if pr["name_unanimous"] else "no"} |'
+        )
     return '\n'.join(lines) + '\n'
 
 
@@ -440,6 +659,29 @@ def validate(cost: dict, result: dict) -> list[str]:
     for s in ('snapshot_load', 'clustering', 'aggregate', 'export'):
         if cost['stages'][s]['cost_usd'] not in (0, 0.0):
             errors.append(f'{s} cost_usd should be 0, got {cost["stages"][s]["cost_usd"]}')
+    # New required fields: concurrency + stage_b_agreement
+    if not cost['meta'].get('concurrency', {}).get('mode'):
+        errors.append('cost_report.meta.concurrency.mode missing')
+    agr = cost.get('stage_b_agreement') or {}
+    if not agr:
+        errors.append('cost_report.stage_b_agreement missing')
+    else:
+        agg = agr.get('aggregate') or {}
+        for k in ('overall_mean_pair_jaccard', 'overall_min_pair_jaccard',
+                  'total_split_titles', 'majority_changed_count', 'majority_no_op'):
+            if k not in agg:
+                errors.append(f'stage_b_agreement.aggregate.{k} missing')
+        per_room = agr.get('per_room') or []
+        if result['n'] > 1 and len(per_room) != len(result['spec']['rooms']):
+            errors.append(f'stage_b_agreement.per_room length {len(per_room)} '
+                          f'!= rooms {len(result["spec"]["rooms"])}')
+        if result['n'] > 1:
+            for pr in per_room:
+                if pr.get('n_passes') != result['n']:
+                    errors.append(f'room {pr.get("room_id")}: n_passes {pr.get("n_passes")} != {result["n"]}')
+        if agg.get('implementation_mismatches'):
+            for m_ in agg['implementation_mismatches']:
+                errors.append(f'majority impl mismatch: {m_}')
     # totals consistency
     t = cost['totals']
     sum_calls = sum(cost['stages'][s]['llm_calls'] for s in required)

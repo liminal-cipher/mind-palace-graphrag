@@ -4,17 +4,23 @@
     "model": "gpt-4.1-mini",
     "n_runs": 3,
     "parallel_stage_b": false,
+    "concurrency": {
+      "mode": "serial",
+      "rooms": "sequential for-loop in room_gen.assign_rooms",
+      "passes_per_room": "sequential list comprehension over n_runs",
+      "evidence": "stage_b wall_seconds ≈ call_seconds; no thread/async pool used"
+    },
     "pricing": {
       "input_per_1m": null,
       "output_per_1m": null,
       "_note": "Per-1M-token USD prices for the LLM. Embedding cost is out of scope (snapshot already built). When values are null the cost_report.json leaves $ as 'pending' and only records tokens. Fill from Azure OpenAI pricing page or Azure Cost Management for the deployment in use.",
       "_source": "set when known; null leaves $ as 'pending'"
     },
-    "generated_at": "2026-06-08T02:19:04.821800+00:00"
+    "generated_at": "2026-06-08T02:47:03.113501+00:00"
   },
   "stages": {
     "snapshot_load": {
-      "wall_seconds": 1.459,
+      "wall_seconds": 1.244,
       "call_seconds": 0.0,
       "llm_calls": 0,
       "prompt_tokens": 0,
@@ -22,7 +28,7 @@
       "cost_usd": 0.0
     },
     "clustering": {
-      "wall_seconds": 0.282,
+      "wall_seconds": 0.169,
       "call_seconds": 0.0,
       "llm_calls": 0,
       "prompt_tokens": 0,
@@ -30,21 +36,21 @@
       "cost_usd": 0.0
     },
     "stage_a": {
-      "wall_seconds": 16.666,
-      "call_seconds": 16.653,
-      "llm_calls": 1,
-      "prompt_tokens": 925,
-      "completion_tokens": 913,
-      "cost_usd": "pending"
+      "wall_seconds": 0.003,
+      "call_seconds": 0.0,
+      "llm_calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "cost_usd": 0.0
     },
     "stage_b": {
-      "wall_seconds": 66.666,
-      "call_seconds": 66.636,
+      "wall_seconds": 77.812,
+      "call_seconds": 77.791,
       "llm_calls": 30,
       "prompt_tokens": 101799,
-      "completion_tokens": 4880,
+      "completion_tokens": 4776,
       "cost_usd": "pending",
-      "per_pass_wall_seconds": 22.222,
+      "per_pass_wall_seconds": 25.937,
       "parallel": false
     },
     "aggregate": {
@@ -56,7 +62,7 @@
       "cost_usd": 0.0
     },
     "export": {
-      "wall_seconds": 0.08,
+      "wall_seconds": 0.116,
       "call_seconds": 0.0,
       "llm_calls": 0,
       "prompt_tokens": 0,
@@ -65,10 +71,266 @@
     }
   },
   "totals": {
-    "wall_seconds": 85.153,
-    "llm_calls": 31,
-    "prompt_tokens": 102724,
-    "completion_tokens": 5793,
+    "wall_seconds": 79.344,
+    "llm_calls": 30,
+    "prompt_tokens": 101799,
+    "completion_tokens": 4776,
     "cost_usd": "pending"
+  },
+  "stage_b_agreement": {
+    "per_room": [
+      {
+        "room_id": 0,
+        "cluster_size": 82,
+        "n_passes": 3,
+        "keep_sizes_per_pass": [
+          20,
+          20,
+          20
+        ],
+        "mean_pair_jaccard": 0.7172,
+        "min_pair_jaccard": 0.6667,
+        "split_titles_count": 10,
+        "split_titles": [
+          "규장각",
+          "길재",
+          "남인",
+          "동인",
+          "백운동 서원",
+          "서원",
+          "성리학",
+          "안향",
+          "조광조",
+          "훈구 세력"
+        ],
+        "majority_changed_vs_unanimous": 10,
+        "pass_names": [
+          "조선 정치·학문 세력",
+          "조선 정치·학문 세력",
+          "조선 정치·학문 세력"
+        ],
+        "name_unanimous": true
+      },
+      {
+        "room_id": 1,
+        "cluster_size": 34,
+        "n_passes": 3,
+        "keep_sizes_per_pass": [
+          20,
+          20,
+          20
+        ],
+        "mean_pair_jaccard": 1.0,
+        "min_pair_jaccard": 1.0,
+        "split_titles_count": 0,
+        "split_titles": [],
+        "majority_changed_vs_unanimous": 0,
+        "pass_names": [
+          "조선 법전과 문헌·인물",
+          "조선 법전과 문헌·인물",
+          "조선 법전과 문헌·인물"
+        ],
+        "name_unanimous": true
+      },
+      {
+        "room_id": 2,
+        "cluster_size": 93,
+        "n_passes": 3,
+        "keep_sizes_per_pass": [
+          20,
+          20,
+          20
+        ],
+        "mean_pair_jaccard": 0.8788,
+        "min_pair_jaccard": 0.8182,
+        "split_titles_count": 4,
+        "split_titles": [
+          "계유정난",
+          "광해군",
+          "동의보감",
+          "세조"
+        ],
+        "majority_changed_vs_unanimous": 4,
+        "pass_names": [
+          "임진왜란과 조선 군사",
+          "임진왜란과 조선 군사",
+          "임진왜란과 조선 군사"
+        ],
+        "name_unanimous": true
+      },
+      {
+        "room_id": 3,
+        "cluster_size": 13,
+        "n_passes": 3,
+        "keep_sizes_per_pass": [
+          7,
+          7,
+          7
+        ],
+        "mean_pair_jaccard": 1.0,
+        "min_pair_jaccard": 1.0,
+        "split_titles_count": 0,
+        "split_titles": [],
+        "majority_changed_vs_unanimous": 0,
+        "pass_names": [
+          "조선 의병과 지도자",
+          "조선 의병과 지도자",
+          "조선 의병과 지도자"
+        ],
+        "name_unanimous": true
+      },
+      {
+        "room_id": 4,
+        "cluster_size": 39,
+        "n_passes": 3,
+        "keep_sizes_per_pass": [
+          8,
+          13,
+          13
+        ],
+        "mean_pair_jaccard": 0.7436,
+        "min_pair_jaccard": 0.6154,
+        "split_titles_count": 5,
+        "split_titles": [
+          "앙부일구",
+          "자격루",
+          "조준",
+          "측우기",
+          "혼천의"
+        ],
+        "majority_changed_vs_unanimous": 5,
+        "pass_names": [
+          "조선 주요 인물·제도·문서",
+          "조선 주요 인물·제도·문서",
+          "조선 주요 인물·제도·문서"
+        ],
+        "name_unanimous": true
+      },
+      {
+        "room_id": 5,
+        "cluster_size": 23,
+        "n_passes": 3,
+        "keep_sizes_per_pass": [
+          18,
+          18,
+          18
+        ],
+        "mean_pair_jaccard": 1.0,
+        "min_pair_jaccard": 1.0,
+        "split_titles_count": 0,
+        "split_titles": [],
+        "majority_changed_vs_unanimous": 0,
+        "pass_names": [
+          "조선 제도와 실학 인물",
+          "조선 제도와 실학 인물",
+          "조선 제도와 실학 인물"
+        ],
+        "name_unanimous": true
+      },
+      {
+        "room_id": 6,
+        "cluster_size": 24,
+        "n_passes": 3,
+        "keep_sizes_per_pass": [
+          15,
+          15,
+          13
+        ],
+        "mean_pair_jaccard": 0.7647,
+        "min_pair_jaccard": 0.6471,
+        "split_titles_count": 6,
+        "split_titles": [
+          "6방",
+          "관청",
+          "군·현",
+          "유향소(향청)",
+          "전국 8도",
+          "향약"
+        ],
+        "majority_changed_vs_unanimous": 6,
+        "pass_names": [
+          "조선 행정과 제도",
+          "조선 행정과 제도",
+          "조선 행정과 제도"
+        ],
+        "name_unanimous": true
+      },
+      {
+        "room_id": 7,
+        "cluster_size": 20,
+        "n_passes": 3,
+        "keep_sizes_per_pass": [
+          15,
+          15,
+          14
+        ],
+        "mean_pair_jaccard": 0.9556,
+        "min_pair_jaccard": 0.9333,
+        "split_titles_count": 1,
+        "split_titles": [
+          "원"
+        ],
+        "majority_changed_vs_unanimous": 1,
+        "pass_names": [
+          "조선 북방 군사와 교통 제도",
+          "조선 북방 군사와 교통 제도",
+          "조선 북방 군사와 교통 제도"
+        ],
+        "name_unanimous": true
+      },
+      {
+        "room_id": 8,
+        "cluster_size": 11,
+        "n_passes": 3,
+        "keep_sizes_per_pass": [
+          6,
+          6,
+          6
+        ],
+        "mean_pair_jaccard": 1.0,
+        "min_pair_jaccard": 1.0,
+        "split_titles_count": 0,
+        "split_titles": [],
+        "majority_changed_vs_unanimous": 0,
+        "pass_names": [
+          "조선 후기 수원과 지도",
+          "조선 후기 수원과 지도",
+          "조선 초기 이주와 수원 화성"
+        ],
+        "name_unanimous": false
+      },
+      {
+        "room_id": 9,
+        "cluster_size": 18,
+        "n_passes": 3,
+        "keep_sizes_per_pass": [
+          11,
+          11,
+          11
+        ],
+        "mean_pair_jaccard": 1.0,
+        "min_pair_jaccard": 1.0,
+        "split_titles_count": 0,
+        "split_titles": [],
+        "majority_changed_vs_unanimous": 0,
+        "pass_names": [
+          "조선-일본 교역과 외교",
+          "조선-일본 교역과 외교",
+          "조선-일본 교역과 외교"
+        ],
+        "name_unanimous": true
+      }
+    ],
+    "aggregate": {
+      "overall_mean_pair_jaccard": 0.906,
+      "overall_min_pair_jaccard": 0.6154,
+      "total_split_titles": 26,
+      "total_entities": 357,
+      "split_fraction": 0.0728,
+      "majority_changed_count": 26,
+      "majority_no_op": false,
+      "implementation_mismatches": [],
+      "spec": "keep iff votes > n/2 (= >= ceil((n+1)/2)); for n=3 means >= 2/3."
+    }
   }
 }
