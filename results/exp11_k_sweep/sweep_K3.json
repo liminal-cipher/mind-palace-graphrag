@@ -1,0 +1,2172 @@
+{
+  "meta": {
+    "snapshot": "results/snapshots/repro_run3",
+    "K": 3,
+    "k_base": 12,
+    "max_cluster_size": 55,
+    "merge_strategy": "embedding",
+    "n_entities": 357
+  },
+  "rooms": [
+    {
+      "room_id": 0,
+      "size": 222,
+      "members": [
+        {
+          "id": "269f9a56-e1fa-4097-bb8a-f3788f1b928a",
+          "title": "조선",
+          "type": "국가, 왕조",
+          "degree": 41
+        },
+        {
+          "id": "c6ea7fe3-5d4e-47d0-bbcb-ffe97e3496e2",
+          "title": "사림",
+          "type": "사회집단, 정치세력",
+          "degree": 17
+        },
+        {
+          "id": "11ebce52-bd45-4adb-8ac3-092905019c40",
+          "title": "정조",
+          "type": "인물, 군주, 정치인",
+          "degree": 17
+        },
+        {
+          "id": "d158642e-096f-4e91-84b6-825dd6447817",
+          "title": "임진왜란",
+          "type": "사건, 전쟁",
+          "degree": 16
+        },
+        {
+          "id": "f3414ab4-d14a-424d-857d-864f22271a60",
+          "title": "영조",
+          "type": "인물, 군주",
+          "degree": 12
+        },
+        {
+          "id": "bfb7447b-854d-4acb-8815-7be08f6dfcdd",
+          "title": "의병",
+          "type": "군사 집단",
+          "degree": 11
+        },
+        {
+          "id": "5a31bb11-4669-4cc0-95d9-c0e367b431f3",
+          "title": "붕당 정치",
+          "type": "정치 체제, 사회 현상",
+          "degree": 9
+        },
+        {
+          "id": "27eab09b-0ac3-430b-bf79-71edadf2a0a9",
+          "title": "광해군",
+          "type": "인물, 군주",
+          "degree": 8
+        },
+        {
+          "id": "243b29d7-c171-4fbd-9235-59805b285549",
+          "title": "왜군",
+          "type": "군사 집단",
+          "degree": 8
+        },
+        {
+          "id": "c725fd4a-11cc-4d97-9ddd-d01e0eb19bb0",
+          "title": "중상 학파",
+          "type": "학문 집단_사상파",
+          "degree": 8
+        },
+        {
+          "id": "92655a43-ffd5-4bdd-8208-cd731c0ce60c",
+          "title": "농업",
+          "type": "산업 분야",
+          "degree": 7
+        },
+        {
+          "id": "c7a8afe9-2c53-478f-b6f6-58f138659fc4",
+          "title": "붕당",
+          "type": "사회집단, 정치세력",
+          "degree": 7
+        },
+        {
+          "id": "ae65d9d7-1e11-4392-bbf0-2382911f176c",
+          "title": "실학",
+          "type": "학문, 사상 운동",
+          "degree": 7
+        },
+        {
+          "id": "9bb93259-36b8-4d45-9469-8780da33154b",
+          "title": "이순신",
+          "type": "인물, 군사 지휘관",
+          "degree": 7
+        },
+        {
+          "id": "2581af62-0824-4b1f-92d5-079f2ca61fe7",
+          "title": "홍문관",
+          "type": "조직, 자문 기관",
+          "degree": 7
+        },
+        {
+          "id": "7f887d0d-fb6d-4d28-9a05-f81d4cc26649",
+          "title": "성리학",
+          "type": "이념, 철학",
+          "degree": 6
+        },
+        {
+          "id": "11eafc93-2a5b-4f79-bbf2-d69a970a340e",
+          "title": "세조",
+          "type": "인물, 국왕",
+          "degree": 6
+        },
+        {
+          "id": "48e25312-9dcf-47e5-b8ed-679cc3de390c",
+          "title": "세종",
+          "type": "인물, 국왕",
+          "degree": 6
+        },
+        {
+          "id": "f36f0a72-c2cd-4f4b-8600-288f0fb58cf0",
+          "title": "양반",
+          "type": "사회계층, 집단",
+          "degree": 6
+        },
+        {
+          "id": "616e1664-7ba0-4e03-99e5-884533a65090",
+          "title": "함경도",
+          "type": "장소, 지역",
+          "degree": 6
+        },
+        {
+          "id": "83aff83d-cab3-4731-ab76-de2b1a328c4c",
+          "title": "서인",
+          "type": "사회집단",
+          "degree": 5
+        },
+        {
+          "id": "3627afd2-c194-4772-ad29-b91924858e82",
+          "title": "성종",
+          "type": "인물, 국왕",
+          "degree": 5
+        },
+        {
+          "id": "7f957b7d-57c6-40ed-ae50-c33e2450b9d7",
+          "title": "여진족",
+          "type": "민족, 세력",
+          "degree": 5
+        },
+        {
+          "id": "fb13af38-b872-4480-b241-b79818f357bf",
+          "title": "이성계",
+          "type": "인물, 정치인, 군인",
+          "degree": 5
+        },
+        {
+          "id": "d4643c9b-7c90-4b0b-8852-45f1db99872d",
+          "title": "국학 연구",
+          "type": "학문 영역_연구 분야",
+          "degree": 4
+        },
+        {
+          "id": "6ae6b7ff-7163-4197-bac6-371aa1757b52",
+          "title": "노론",
+          "type": "붕당, 정치 세력",
+          "degree": 4
+        },
+        {
+          "id": "e8fc484d-1417-4da6-b957-416155aa9ea5",
+          "title": "동국여지승람",
+          "type": "문서, 지리서적",
+          "degree": 4
+        },
+        {
+          "id": "397430a5-f2c8-46b0-a14d-efdcf3495f9c",
+          "title": "북벌 운동",
+          "type": "정책, 군사운동",
+          "degree": 4
+        },
+        {
+          "id": "63403019-421d-4a0e-b229-077bf2706ef1",
+          "title": "사간원",
+          "type": "조직, 감찰 기관",
+          "degree": 4
+        },
+        {
+          "id": "f6d46ea1-c399-40a6-a755-7ea9f094d211",
+          "title": "삼사",
+          "type": "조직 집합체",
+          "degree": 4
+        },
+        {
+          "id": "96f1e888-6db8-4c2f-816a-d17b59fe4291",
+          "title": "실학자",
+          "type": "인물 집단_학자",
+          "degree": 4
+        },
+        {
+          "id": "25abacaa-08be-4ce5-84a1-341ba769de15",
+          "title": "조선 수군",
+          "type": "군사 조직",
+          "degree": 4
+        },
+        {
+          "id": "df1154c3-cf97-49c4-95f4-dab2d237ddb4",
+          "title": "태조",
+          "type": "인물, 국왕",
+          "degree": 4
+        },
+        {
+          "id": "41871e0d-d70d-4133-9011-a81164cc4427",
+          "title": "훈구 세력",
+          "type": "사회집단, 정치세력",
+          "degree": 4
+        },
+        {
+          "id": "e9b7536a-f34f-42f2-b82a-3591e0fea2a2",
+          "title": "훈민정음",
+          "type": "문자, 문화",
+          "degree": 4
+        },
+        {
+          "id": "bc206da2-0ec3-43db-ae4e-de7f735734f5",
+          "title": "국문학",
+          "type": "문화, 문학",
+          "degree": 3
+        },
+        {
+          "id": "5021e24f-45a8-41bf-a0fa-83d755875ac3",
+          "title": "남인",
+          "type": "붕당, 정치 세력",
+          "degree": 3
+        },
+        {
+          "id": "977c5926-23c0-4229-91f0-e15b2d72700e",
+          "title": "단종",
+          "type": "인물, 국왕",
+          "degree": 3
+        },
+        {
+          "id": "2cea7387-0af1-4a20-a6f6-fde3b1c55022",
+          "title": "동래성",
+          "type": "장소, 군사 요충지",
+          "degree": 3
+        },
+        {
+          "id": "96768766-e8dd-4528-9824-f8d4737a7506",
+          "title": "명의 원군",
+          "type": "군사 지원 세력",
+          "degree": 3
+        },
+        {
+          "id": "15e60fbb-b3e2-4a2b-b754-515478a853e1",
+          "title": "부산진",
+          "type": "장소, 군사 요충지",
+          "degree": 3
+        },
+        {
+          "id": "65b5bb65-ef07-4ad4-8c23-5dbf7b003d20",
+          "title": "서원",
+          "type": "기관, 교육기관",
+          "degree": 3
+        },
+        {
+          "id": "9154894c-ec6a-49c3-a27b-7507e29a2121",
+          "title": "왕",
+          "type": "권력자, 인물",
+          "degree": 3
+        },
+        {
+          "id": "6ae0a7be-007b-4e1f-b7a2-1c3823fd904e",
+          "title": "이조 전랑",
+          "type": "관직, 정치기구",
+          "degree": 3
+        },
+        {
+          "id": "05b03f8b-82b7-4cb8-ad78-ddb4aff67487",
+          "title": "이황",
+          "type": "인물, 학자",
+          "degree": 3
+        },
+        {
+          "id": "38d486dd-dafe-403a-bfcb-10373a0d3c8e",
+          "title": "정유재란",
+          "type": "사건, 전쟁",
+          "degree": 3
+        },
+        {
+          "id": "46392e9d-d3a6-460a-bd16-c069c62bfe0c",
+          "title": "조광조",
+          "type": "인물, 유학자",
+          "degree": 3
+        },
+        {
+          "id": "06fc4483-f55b-4c80-93ed-9db42cc7daca",
+          "title": "청",
+          "type": "국가, 국제세력",
+          "degree": 3
+        },
+        {
+          "id": "7214a41e-22d2-42a9-8230-a3049bbac94c",
+          "title": "경국대전",
+          "type": "법률, 법전",
+          "degree": 2
+        },
+        {
+          "id": "670f1f69-4cde-4508-88be-7f921ab4ff70",
+          "title": "교육 기관",
+          "type": "기관, 조직",
+          "degree": 2
+        },
+        {
+          "id": "32c38e9d-3e6c-45e7-aa43-2e1638385128",
+          "title": "김종직",
+          "type": "인물, 유학자",
+          "degree": 2
+        },
+        {
+          "id": "5a62e83e-020a-4e55-8471-c9b99c319297",
+          "title": "동의보감",
+          "type": "문서, 의학서적, 문화유산",
+          "degree": 2
+        },
+        {
+          "id": "acf45e3c-260c-4952-bdfa-0d2520954b2a",
+          "title": "명",
+          "type": "국가",
+          "degree": 2
+        },
+        {
+          "id": "8f3e6073-4c16-40f1-a8d9-4d0aa561b30f",
+          "title": "명나라",
+          "type": "국가",
+          "degree": 2
+        },
+        {
+          "id": "dfdb183a-6885-4041-a0ea-137a0190b428",
+          "title": "무오사화",
+          "type": "사건, 정치사건",
+          "degree": 2
+        },
+        {
+          "id": "ac979c47-beff-453b-8a35-4b983cd2a874",
+          "title": "방원 (태종)",
+          "type": "인물, 국왕",
+          "degree": 2
+        },
+        {
+          "id": "da46bfe6-e50f-40f4-92ab-79e5a8b5e96d",
+          "title": "백운동 서원",
+          "type": "교육기관, 장소",
+          "degree": 2
+        },
+        {
+          "id": "4d734c07-1e16-49d8-a104-83d3711d3e56",
+          "title": "병자호란",
+          "type": "사건, 전쟁",
+          "degree": 2
+        },
+        {
+          "id": "b1b5e8e2-cf8c-4f73-95b3-f53166c338cf",
+          "title": "북인",
+          "type": "붕당, 정치 세력",
+          "degree": 2
+        },
+        {
+          "id": "3c6ec882-1093-498f-a36a-b927d8236d43",
+          "title": "비변사",
+          "type": "조직, 정치 기구",
+          "degree": 2
+        },
+        {
+          "id": "c5658548-a497-4c52-ba35-852d6a98134e",
+          "title": "사명대사 유정",
+          "type": "인물, 승려, 외교관",
+          "degree": 2
+        },
+        {
+          "id": "02234562-b6fb-4826-80bd-38ccc0b689ef",
+          "title": "성균관",
+          "type": "조직, 교육 기관",
+          "degree": 2
+        },
+        {
+          "id": "b5e51430-25f7-4411-bd6e-5888953b1608",
+          "title": "소론",
+          "type": "붕당, 정치 세력",
+          "degree": 2
+        },
+        {
+          "id": "86826a0d-40e3-4688-8f00-2f49872ede3a",
+          "title": "소수 서원",
+          "type": "교육기관, 장소",
+          "degree": 2
+        },
+        {
+          "id": "daa36c42-ff0a-4ac1-b4ef-8b80651a1048",
+          "title": "신문고",
+          "type": "제도",
+          "degree": 2
+        },
+        {
+          "id": "7215dff4-5c77-4d55-810e-619cb6bd7498",
+          "title": "안정복",
+          "type": "인물_학자_역사학자",
+          "degree": 2
+        },
+        {
+          "id": "d1a665eb-c72f-4705-b441-417747dea981",
+          "title": "연산군",
+          "type": "인물, 왕",
+          "degree": 2
+        },
+        {
+          "id": "f4f8fde9-ef35-4186-815b-83e4e451ef19",
+          "title": "용비어천가",
+          "type": "문학작품, 문화재",
+          "degree": 2
+        },
+        {
+          "id": "354a4d10-808b-4923-b041-f7dafb73795c",
+          "title": "월인천강지곡",
+          "type": "문학작품, 문화재",
+          "degree": 2
+        },
+        {
+          "id": "303840e7-5aaa-4ecb-abff-5695683bffd6",
+          "title": "유교 정치",
+          "type": "정치이념, 사회체계",
+          "degree": 2
+        },
+        {
+          "id": "07f5955f-4be8-4fab-a841-636a7541056f",
+          "title": "유득공",
+          "type": "인물_학자_역사학자",
+          "degree": 2
+        },
+        {
+          "id": "1a86b78e-6d5f-4d18-9484-b2897e5c5827",
+          "title": "이이",
+          "type": "인물, 학자",
+          "degree": 2
+        },
+        {
+          "id": "77461a9d-185c-4b83-aa84-efcc309084d6",
+          "title": "인사권",
+          "type": "사회제도, 권한",
+          "degree": 2
+        },
+        {
+          "id": "ce4d0028-9f5d-47fe-8315-a4b792a22e83",
+          "title": "인조",
+          "type": "인물, 군주, 정치인",
+          "degree": 2
+        },
+        {
+          "id": "e33850c9-fb8c-4246-8c91-fd4de6b5d18b",
+          "title": "조선 왕조",
+          "type": "제도, 국가",
+          "degree": 2
+        },
+        {
+          "id": "dd91cfb3-d0c1-4476-bacf-e813e47f264f",
+          "title": "중앙 정치 무대",
+          "type": "장소, 정치",
+          "degree": 2
+        },
+        {
+          "id": "c0d3c44d-185b-4325-8df2-d54b980bfb82",
+          "title": "중종반정",
+          "type": "사건, 정치사건",
+          "degree": 2
+        },
+        {
+          "id": "77972ddb-076a-4ad5-af90-7c5fdc36c92d",
+          "title": "지방군",
+          "type": "군사 조직",
+          "degree": 2
+        },
+        {
+          "id": "811bd5d8-e024-4196-818a-fd347385323d",
+          "title": "탕평책",
+          "type": "정책, 정치 개혁",
+          "degree": 2
+        },
+        {
+          "id": "50624a94-450d-4803-ae2d-e2c848832f57",
+          "title": "향교",
+          "type": "교육 기관",
+          "degree": 2
+        },
+        {
+          "id": "7e551a15-1c9c-4ff5-996b-db59eb6d1867",
+          "title": "허준",
+          "type": "인물, 의학자, 학자",
+          "degree": 2
+        },
+        {
+          "id": "d5864ab4-b577-4e94-b866-3e18f44775b5",
+          "title": "후금",
+          "type": "국가, 민족집단, 군사세력",
+          "degree": 2
+        },
+        {
+          "id": "b90a5361-ab0d-4b88-b2cd-ed3f9f33210c",
+          "title": "강홍립",
+          "type": "군인, 정치인",
+          "degree": 1
+        },
+        {
+          "id": "f7e696e9-560c-46f5-949a-e40552d2141b",
+          "title": "강희맹",
+          "type": "인물, 학자",
+          "degree": 1
+        },
+        {
+          "id": "f51c2244-9944-4e8a-879f-d6175f977389",
+          "title": "개화 사상가",
+          "type": "인물 집단, 사상가",
+          "degree": 1
+        },
+        {
+          "id": "8142f018-5459-4add-b9d7-5577212bf9b7",
+          "title": "거북선",
+          "type": "무기, 군함",
+          "degree": 1
+        },
+        {
+          "id": "d6123eb2-2714-4eef-8a6c-c181edcafbf7",
+          "title": "경상도 해안 지방",
+          "type": "지역, 지리적 장소",
+          "degree": 1
+        },
+        {
+          "id": "27b71198-0281-4be0-ad10-b5021d6f426d",
+          "title": "계유정난",
+          "type": "역사적 사건, 정치 사건",
+          "degree": 1
+        },
+        {
+          "id": "d705e38e-aee2-4031-81dd-019b32912525",
+          "title": "고경명",
+          "type": "인물, 군사 지도자",
+          "degree": 1
+        },
+        {
+          "id": "055f544c-fadb-4364-8397-a1a7b5c58852",
+          "title": "공론 정치",
+          "type": "정치형태, 이념",
+          "degree": 1
+        },
+        {
+          "id": "e85e8d88-dbae-4ee6-88aa-c2368cff573e",
+          "title": "공신",
+          "type": "집단, 정치 세력",
+          "degree": 1
+        },
+        {
+          "id": "9cb10a70-cdee-4c9e-946d-1890c08023e4",
+          "title": "곽재우",
+          "type": "인물, 군사 지도자",
+          "degree": 1
+        },
+        {
+          "id": "00f6152e-0917-4d92-86cb-8039d23f0639",
+          "title": "국가",
+          "type": "조직, 정치체",
+          "degree": 1
+        },
+        {
+          "id": "1d9f3776-bbc9-4d78-9b49-c4b518a528ee",
+          "title": "국가 기틀",
+          "type": "사회 구조, 통치 기반",
+          "degree": 1
+        },
+        {
+          "id": "97b58395-0ab9-4a56-9219-7202be769e32",
+          "title": "국방력",
+          "type": "개념, 사회 자원",
+          "degree": 1
+        },
+        {
+          "id": "62bb9d1e-2f57-4c30-b3a1-39e9b84c9bbe",
+          "title": "군량미 비축",
+          "type": "정책, 군사 행위",
+          "degree": 1
+        },
+        {
+          "id": "93efe32c-3aa1-4cbc-9468-b2cdcad0a73e",
+          "title": "군사 훈련",
+          "type": "활동, 군사",
+          "degree": 1
+        },
+        {
+          "id": "18c15b21-2c17-431e-a3d7-c8cf2499a57f",
+          "title": "군사력",
+          "type": "정치 및 국방 요소",
+          "degree": 1
+        },
+        {
+          "id": "7d16db6d-762f-4209-af34-91b5a45026e1",
+          "title": "권율",
+          "type": "인물, 군사 지휘관",
+          "degree": 1
+        },
+        {
+          "id": "7ed31210-67f0-4eab-959a-f6932a9a21b9",
+          "title": "규장각",
+          "type": "조직, 학술 기관, 정치 기구",
+          "degree": 1
+        },
+        {
+          "id": "16014916-b17b-41df-965c-2b6254cd5cd8",
+          "title": "규장전운",
+          "type": "문서, 편찬물",
+          "degree": 1
+        },
+        {
+          "id": "79e8685d-4225-4d08-a378-33575973180c",
+          "title": "기술 교육 기관",
+          "type": "교육 기관",
+          "degree": 1
+        },
+        {
+          "id": "a2baf05b-8cb7-4664-ba3e-3cfee0181021",
+          "title": "길재",
+          "type": "인물, 유학자",
+          "degree": 1
+        },
+        {
+          "id": "a5071436-90f7-423a-8d95-9c1e792da3d3",
+          "title": "김시민",
+          "type": "인물, 군사 지휘관",
+          "degree": 1
+        },
+        {
+          "id": "e39799ec-1565-49c1-8edb-acd105bd05c5",
+          "title": "나선 정벌",
+          "type": "군사 작전, 역사적 사건",
+          "degree": 1
+        },
+        {
+          "id": "9262412c-5b5f-488f-80a1-e96caf243659",
+          "title": "남한산성",
+          "type": "장소, 군사시설",
+          "degree": 1
+        },
+        {
+          "id": "190a6177-d09a-42ac-8b0b-50f64aab82b9",
+          "title": "노사신",
+          "type": "인물, 학자",
+          "degree": 1
+        },
+        {
+          "id": "00d36af2-f233-4bcc-a989-da79b7b5efeb",
+          "title": "농민",
+          "type": "사회 계층",
+          "degree": 1
+        },
+        {
+          "id": "8dfb53b3-1db7-4cbb-81c1-1abfe0dad428",
+          "title": "누르하치",
+          "type": "인물, 군주, 민족 지도자",
+          "degree": 1
+        },
+        {
+          "id": "7e50a892-cb30-469f-8481-0f46668c1da0",
+          "title": "당포 해전",
+          "type": "사건, 전투",
+          "degree": 1
+        },
+        {
+          "id": "9926e8bd-b823-4e2d-a391-7a66402cfd32",
+          "title": "대전통편",
+          "type": "문서, 편찬물",
+          "degree": 1
+        },
+        {
+          "id": "eb478fa1-636c-4773-b445-d0ddc65dfc0d",
+          "title": "덕치주의",
+          "type": "이념, 정치 원리",
+          "degree": 1
+        },
+        {
+          "id": "c1f940ba-6d98-4509-95c8-272b6608bd94",
+          "title": "동국문헌비고",
+          "type": "문서, 백과사전",
+          "degree": 1
+        },
+        {
+          "id": "88cb2a1b-a03f-4fa4-8d80-bdeaa1b8cf2b",
+          "title": "동문휘고",
+          "type": "문서, 사전",
+          "degree": 1
+        },
+        {
+          "id": "cfbd75c4-28d9-4c9a-8011-619fd2bcc70f",
+          "title": "동인",
+          "type": "사회집단",
+          "degree": 1
+        },
+        {
+          "id": "6abcca1c-f2f2-4d6e-b676-0056db7259bd",
+          "title": "문화",
+          "type": "사회 현상",
+          "degree": 1
+        },
+        {
+          "id": "f8cf7060-9edc-41b7-bfe6-9050926c5a03",
+          "title": "박제가",
+          "type": "인물_학자_실학자",
+          "degree": 1
+        },
+        {
+          "id": "693507b8-c695-461f-80ab-2eaf780ca702",
+          "title": "박지원",
+          "type": "인물_학자_실학자",
+          "degree": 1
+        },
+        {
+          "id": "1716f15a-d5d6-45da-b3d9-af908514f12b",
+          "title": "반란",
+          "type": "사회 사건",
+          "degree": 1
+        },
+        {
+          "id": "b094c5f1-7326-4c15-b7ea-ca14d2b901cd",
+          "title": "발해고",
+          "type": "저서, 문헌",
+          "degree": 1
+        },
+        {
+          "id": "1e95626f-9f07-4a42-8051-0a7c47216661",
+          "title": "백성",
+          "type": "사회 구성원",
+          "degree": 1
+        },
+        {
+          "id": "83c0cc9c-bc4a-4798-b146-d275b79fbf40",
+          "title": "병력",
+          "type": "군사 자원",
+          "degree": 1
+        },
+        {
+          "id": "59da0253-fcad-45d9-972a-967d5e426700",
+          "title": "병마절도사",
+          "type": "관직, 직위",
+          "degree": 1
+        },
+        {
+          "id": "906669b2-16f8-4af9-834a-e43c5ab417be",
+          "title": "북학파",
+          "type": "학문 집단_사상파",
+          "degree": 1
+        },
+        {
+          "id": "f23975df-557d-4302-91ef-f4a7e7e51039",
+          "title": "북한산성",
+          "type": "장소, 군사시설",
+          "degree": 1
+        },
+        {
+          "id": "e36c3965-78e0-4af6-9f80-ea806d3b7d31",
+          "title": "불교",
+          "type": "종교, 사상",
+          "degree": 1
+        },
+        {
+          "id": "4fed1b52-0272-4232-8afa-ef5858ac8425",
+          "title": "불국사",
+          "type": "문화재, 장소",
+          "degree": 1
+        },
+        {
+          "id": "b5542e0f-93c0-4237-a5ca-6ea231c515bf",
+          "title": "사고",
+          "type": "문화재, 장소",
+          "degree": 1
+        },
+        {
+          "id": "b2b5881f-d90f-4108-bedd-eeb868deb0e2",
+          "title": "사상의학",
+          "type": "의학 이론, 사상",
+          "degree": 1
+        },
+        {
+          "id": "013167a1-afd8-4e5b-957b-420aafed8ce8",
+          "title": "사서",
+          "type": "문헌, 교육자료",
+          "degree": 1
+        },
+        {
+          "id": "4c64477b-9d62-4ba7-805b-576bd8dc1ea4",
+          "title": "사천 해전",
+          "type": "사건, 전투",
+          "degree": 1
+        },
+        {
+          "id": "cfba6739-9213-424b-a36e-bb14f03ab39c",
+          "title": "사화",
+          "type": "사건, 정치사",
+          "degree": 1
+        },
+        {
+          "id": "1a655b04-3b51-4499-9697-e0fa95e4a77c",
+          "title": "삼사 관리",
+          "type": "사회 집단, 관리 집단",
+          "degree": 1
+        },
+        {
+          "id": "2b99ec34-b5a7-4f51-b082-4a98cd1c9c79",
+          "title": "상민",
+          "type": "사회 계층",
+          "degree": 1
+        },
+        {
+          "id": "7a656a17-95c6-411a-85e9-f8adb1227c61",
+          "title": "생원과 진사",
+          "type": "신분, 직위",
+          "degree": 1
+        },
+        {
+          "id": "e94c243a-5e85-48ac-b0e6-bea436461236",
+          "title": "서거정",
+          "type": "인물, 학자",
+          "degree": 1
+        },
+        {
+          "id": "b0be6efd-5195-4f34-a62e-00d85a38eed4",
+          "title": "서당",
+          "type": "교육 기관",
+          "degree": 1
+        },
+        {
+          "id": "984c78a0-aac6-493e-99eb-a302a81c3b29",
+          "title": "서울 5위",
+          "type": "군사 조직",
+          "degree": 1
+        },
+        {
+          "id": "21ebc960-9359-4fd3-b760-dd1ba1e39f5a",
+          "title": "선조",
+          "type": "인물, 왕",
+          "degree": 1
+        },
+        {
+          "id": "6aacbf77-c1ca-4e85-959e-3d161d670122",
+          "title": "성리학 윤리 교과서",
+          "type": "문헌, 교육 자료",
+          "degree": 1
+        },
+        {
+          "id": "6f36ab1d-02f9-42b3-99a9-fdfb9f0bdb0a",
+          "title": "성삼문",
+          "type": "인물, 학자, 정치인",
+          "degree": 1
+        },
+        {
+          "id": "07d6f0be-69b9-48d6-bc77-14c8e0528aae",
+          "title": "세종 대왕",
+          "type": "인물, 군주",
+          "degree": 1
+        },
+        {
+          "id": "f25bdc17-9e92-447f-a63e-6998870340a1",
+          "title": "소학",
+          "type": "문헌, 교육 자료",
+          "degree": 1
+        },
+        {
+          "id": "0809d770-6264-4a14-a7bd-d433fe8d76bc",
+          "title": "속대전",
+          "type": "법전, 문서",
+          "degree": 1
+        },
+        {
+          "id": "6af0a34f-fcae-4dff-af2b-6c124b0da0ae",
+          "title": "속오례의",
+          "type": "법전, 문서",
+          "degree": 1
+        },
+        {
+          "id": "f9cd247d-7ae2-4235-9cb1-8fe84d2dd243",
+          "title": "송상현",
+          "type": "인물, 군인",
+          "degree": 1
+        },
+        {
+          "id": "bf8209e9-383f-4e5a-900e-74e2ea42d5f3",
+          "title": "송시열",
+          "type": "학자, 정치인",
+          "degree": 1
+        },
+        {
+          "id": "de05d268-02b8-4169-af37-1d881dcfd001",
+          "title": "수군절도사",
+          "type": "관직, 직위",
+          "degree": 1
+        },
+        {
+          "id": "f2e8d999-d8f4-4883-b82b-0486eade1bd4",
+          "title": "숙종",
+          "type": "인물, 군주",
+          "degree": 1
+        },
+        {
+          "id": "8ab5975a-a003-4b8d-9ab2-77937348ec76",
+          "title": "승려",
+          "type": "사회 계층",
+          "degree": 1
+        },
+        {
+          "id": "7e40b75e-6072-45ba-af1a-03e956d4619f",
+          "title": "승정원",
+          "type": "조직, 행정 기관",
+          "degree": 1
+        },
+        {
+          "id": "0da407cd-ca04-4573-82c1-74109038dcbe",
+          "title": "신경준",
+          "type": "인물, 학자",
+          "degree": 1
+        },
+        {
+          "id": "0279faa9-915a-4921-942b-5f6883d21bf6",
+          "title": "실사구시",
+          "type": "학문 태도, 사상",
+          "degree": 1
+        },
+        {
+          "id": "63420fb8-cd5d-4e07-83b9-e008cd536c82",
+          "title": "쓰시마 섬",
+          "type": "장소, 섬",
+          "degree": 1
+        },
+        {
+          "id": "f81ddb9e-5eb8-4d22-a217-947a99b2b174",
+          "title": "언문지",
+          "type": "저서, 문헌",
+          "degree": 1
+        },
+        {
+          "id": "ec395690-0884-4b47-b3cc-ea4e20687c66",
+          "title": "영창 대군",
+          "type": "인물, 왕족",
+          "degree": 1
+        },
+        {
+          "id": "d47a96fc-523a-4b70-a533-a216a49e9a2c",
+          "title": "예송",
+          "type": "정치 사건, 학문적 논쟁",
+          "degree": 1
+        },
+        {
+          "id": "ad0a9ec6-46a0-4695-a64e-01da8d62394e",
+          "title": "옥포 해전",
+          "type": "사건, 전투",
+          "degree": 1
+        },
+        {
+          "id": "92d1afbb-8750-498b-9820-dd821178c096",
+          "title": "왕의 외척",
+          "type": "사회집단, 정치세력",
+          "degree": 1
+        },
+        {
+          "id": "c99aabf8-3d9c-4d30-a7e2-001ad7995812",
+          "title": "우왕",
+          "type": "인물, 고려 왕",
+          "degree": 1
+        },
+        {
+          "id": "b1eea9be-4ce5-46c8-a8b6-f30ab5810703",
+          "title": "유수원",
+          "type": "인물_학자_실학자",
+          "degree": 1
+        },
+        {
+          "id": "fc529242-b81a-45da-9fa7-f669f9f0db51",
+          "title": "유정 (사명대사)",
+          "type": "인물, 승려, 군사 지도자",
+          "degree": 1
+        },
+        {
+          "id": "4732bc06-dccc-47ed-be0a-e44d8d27076c",
+          "title": "유학자",
+          "type": "사회 계층",
+          "degree": 1
+        },
+        {
+          "id": "0f2f1fa2-b100-4368-b084-3c6a85e5bc91",
+          "title": "유희",
+          "type": "인물, 학자",
+          "degree": 1
+        },
+        {
+          "id": "ddb7074c-8b09-4714-9d43-45730e6c1f2d",
+          "title": "의주",
+          "type": "장소, 피란지",
+          "degree": 1
+        },
+        {
+          "id": "08d214e5-7cf4-4c49-b57f-494158e583a4",
+          "title": "이괄",
+          "type": "군인, 반란 주도자",
+          "degree": 1
+        },
+        {
+          "id": "5d767c07-ce96-4456-aa12-c8d8f94687eb",
+          "title": "이방원",
+          "type": "인물, 정치가",
+          "degree": 1
+        },
+        {
+          "id": "e70c4c75-435b-41c0-a4fe-dcbd742d3019",
+          "title": "이수광",
+          "type": "인물_학자",
+          "degree": 1
+        },
+        {
+          "id": "cbf37880-cc5b-4960-bd92-823f4d1ef506",
+          "title": "이완",
+          "type": "정치인, 군인",
+          "degree": 1
+        },
+        {
+          "id": "432eda8a-10dd-4ea4-8a22-3b2813af28b1",
+          "title": "이제마",
+          "type": "인물, 학자",
+          "degree": 1
+        },
+        {
+          "id": "8f9045cf-5ca1-49b9-9912-0f70bf42eda0",
+          "title": "잡색군",
+          "type": "군사 조직",
+          "degree": 1
+        },
+        {
+          "id": "f302e6ea-30fd-4e7f-a46a-fb4b97e878a7",
+          "title": "장용영",
+          "type": "군사 조직, 친위 부대, 정치 군사 기구",
+          "degree": 1
+        },
+        {
+          "id": "d4d58617-7f8c-46ac-967e-6f8bf30767bf",
+          "title": "전직 관료",
+          "type": "사회 계층",
+          "degree": 1
+        },
+        {
+          "id": "78ad50c9-c477-4936-8c79-78d312c808ef",
+          "title": "정몽주",
+          "type": "인물, 정치가",
+          "degree": 1
+        },
+        {
+          "id": "c8f04dbb-f608-4757-aea6-abc13f982b60",
+          "title": "정묘호란",
+          "type": "사건, 전쟁",
+          "degree": 1
+        },
+        {
+          "id": "f518b18d-ff03-4d24-a2ea-4eb6fcc2005a",
+          "title": "정문부",
+          "type": "인물, 군사 지도자",
+          "degree": 1
+        },
+        {
+          "id": "e1c890de-c892-47e5-8a69-550525b45274",
+          "title": "정발",
+          "type": "인물, 군인",
+          "degree": 1
+        },
+        {
+          "id": "06c6804f-3605-4d35-820a-36ab9632f58b",
+          "title": "정종",
+          "type": "인물, 국왕",
+          "degree": 1
+        },
+        {
+          "id": "977de1b2-8ec5-4676-b6ef-dd9b9858ddd6",
+          "title": "조선 후기",
+          "type": "시기_시대",
+          "degree": 1
+        },
+        {
+          "id": "bc229d9e-6130-49d1-b646-5878258e24a1",
+          "title": "조식",
+          "type": "인물, 학자",
+          "degree": 1
+        },
+        {
+          "id": "6c5912c4-6b6e-4811-82cf-919695e4fbab",
+          "title": "조총 부대",
+          "type": "군사 조직",
+          "degree": 1
+        },
+        {
+          "id": "a11e1a63-0ef4-4ecf-a65f-9c3491d5ce2c",
+          "title": "조헌",
+          "type": "인물, 군사 지도자",
+          "degree": 1
+        },
+        {
+          "id": "45200c03-1a4d-4ec3-90bf-121a4c5e49cb",
+          "title": "주세붕",
+          "type": "인물, 교육자",
+          "degree": 1
+        },
+        {
+          "id": "7bfcd01b-95d4-4026-a84c-89cf48dddbc5",
+          "title": "중국",
+          "type": "국가",
+          "degree": 1
+        },
+        {
+          "id": "b033fe64-8ac5-4679-b98b-afa160a87a72",
+          "title": "중앙군",
+          "type": "군사 조직",
+          "degree": 1
+        },
+        {
+          "id": "453eb341-c0a2-4ff2-b207-f1dbff3f14b4",
+          "title": "중인",
+          "type": "사회 계층",
+          "degree": 1
+        },
+        {
+          "id": "56d2d78d-e282-4e2d-9636-c5da8edaf720",
+          "title": "중종",
+          "type": "인물, 군주",
+          "degree": 1
+        },
+        {
+          "id": "61199ea5-548d-4ada-a7b7-0eafe6ed0f5c",
+          "title": "진주",
+          "type": "장소, 군사 요충지",
+          "degree": 1
+        },
+        {
+          "id": "dd310e3c-9372-4031-aa56-689ae60f76cd",
+          "title": "집현전",
+          "type": "조직, 학문 기관",
+          "degree": 1
+        },
+        {
+          "id": "8a5dd26c-7771-4b0e-a6b2-14b39959c7bf",
+          "title": "최영",
+          "type": "인물, 군인",
+          "degree": 1
+        },
+        {
+          "id": "b8879f54-badf-4a2d-8dda-110b433a52e8",
+          "title": "탁지지",
+          "type": "문서, 경제 책",
+          "degree": 1
+        },
+        {
+          "id": "30c07328-a399-448f-b2c4-a9cafae47be0",
+          "title": "평양",
+          "type": "장소, 도시",
+          "degree": 1
+        },
+        {
+          "id": "c63eb279-f310-4f0c-8289-27b007ddfdaf",
+          "title": "한문학",
+          "type": "문학 분야, 문화",
+          "degree": 1
+        },
+        {
+          "id": "cfd3b680-2e69-4548-8d6d-8ec48eaa3757",
+          "title": "한산도 해전",
+          "type": "사건, 전투",
+          "degree": 1
+        },
+        {
+          "id": "525f6203-af5a-4d42-94f6-7a8ba7c96906",
+          "title": "한양",
+          "type": "장소, 수도",
+          "degree": 1
+        },
+        {
+          "id": "8d4ed98a-981b-4f14-a083-8757403f78e4",
+          "title": "함경도 지방",
+          "type": "지역",
+          "degree": 1
+        },
+        {
+          "id": "9bf02131-e815-48f0-8304-4c2fe9afefe2",
+          "title": "행주 산성",
+          "type": "장소, 군사 요충지",
+          "degree": 1
+        },
+        {
+          "id": "acac38cf-6a7a-460b-8fd5-b93363b2cafe",
+          "title": "현종",
+          "type": "인물, 군주",
+          "degree": 1
+        },
+        {
+          "id": "6c259a16-fab9-44ea-8966-2e36220329cc",
+          "title": "홍대용",
+          "type": "인물_학자_실학자",
+          "degree": 1
+        },
+        {
+          "id": "931b8bcb-fd81-40e4-9ac5-fde1d973d044",
+          "title": "환국",
+          "type": "정치 사건, 권력 교체",
+          "degree": 1
+        },
+        {
+          "id": "118420e1-cdce-411b-bfb8-f0e74aded183",
+          "title": "황해안",
+          "type": "지역, 해안선",
+          "degree": 1
+        },
+        {
+          "id": "0f47453f-202d-461f-a321-f515552564c0",
+          "title": "효종",
+          "type": "인물, 군주",
+          "degree": 1
+        },
+        {
+          "id": "302064c2-eae7-45d7-85df-c2f2e78a98e2",
+          "title": "훈민정음운해",
+          "type": "저서, 문헌",
+          "degree": 1
+        },
+        {
+          "id": "5ae7714a-04f5-4c27-b77c-adb1d68cd415",
+          "title": "고려사",
+          "type": "문서, 역사기록",
+          "degree": 0
+        },
+        {
+          "id": "da660609-6a25-4053-8347-a39b19df5030",
+          "title": "고려사절요",
+          "type": "문서, 역사기록",
+          "degree": 0
+        },
+        {
+          "id": "d740ae54-b908-40a8-8157-dc8f59154637",
+          "title": "국조오례의",
+          "type": "문서, 의례서",
+          "degree": 0
+        },
+        {
+          "id": "2b067b18-d61b-4e9a-a66b-2c026cd4be33",
+          "title": "군사",
+          "type": "사회 계층, 기능 집단",
+          "degree": 0
+        },
+        {
+          "id": "46ae7c71-35f6-4489-96cf-7897b47d2865",
+          "title": "군사 제도",
+          "type": "제도, 행정",
+          "degree": 0
+        },
+        {
+          "id": "cc77e2b0-01b2-4c1e-a9ea-ae742640a2ba",
+          "title": "군사권",
+          "type": "정치 권력 요소",
+          "degree": 0
+        },
+        {
+          "id": "83d66aa1-4fd5-4b10-a9e6-dda3328f38af",
+          "title": "동국통감",
+          "type": "문서, 역사기록",
+          "degree": 0
+        },
+        {
+          "id": "326bad84-705f-4a42-8f62-643de556d4c2",
+          "title": "동문선",
+          "type": "문집, 문학작품",
+          "degree": 0
+        },
+        {
+          "id": "a92388b9-904c-4c4c-8024-4d0c09296eb2",
+          "title": "명나라 원군",
+          "type": "군사 지원 세력",
+          "degree": 0
+        },
+        {
+          "id": "a19080bb-8b75-4e36-8245-bb1992aa3b79",
+          "title": "사병",
+          "type": "군사 조직",
+          "degree": 0
+        },
+        {
+          "id": "8e4c21f4-2ef6-4707-a39e-b3f7ca38f7a4",
+          "title": "삼강행실도",
+          "type": "문서, 교화서",
+          "degree": 0
+        },
+        {
+          "id": "4d16dcff-c740-4290-9665-e759bdb211b2",
+          "title": "안향",
+          "type": "인물, 유학자",
+          "degree": 0
+        },
+        {
+          "id": "d72e7c9c-7e5b-4ff7-a8df-59eb48586546",
+          "title": "왜구",
+          "type": "민족, 세력",
+          "degree": 0
+        },
+        {
+          "id": "108ea4fa-2157-469a-bf29-6351b3e560ac",
+          "title": "조선 초기",
+          "type": "시대, 시기",
+          "degree": 0
+        },
+        {
+          "id": "56e0d2da-2b00-418d-a00b-ef0f868705f4",
+          "title": "조선왕조실록",
+          "type": "문서, 역사기록",
+          "degree": 0
+        },
+        {
+          "id": "c8d1fcb4-ef72-4d4f-be39-b3fbb0df322f",
+          "title": "충과 효",
+          "type": "윤리 개념",
+          "degree": 0
+        },
+        {
+          "id": "1c3c9478-4750-413c-abf0-30bd03c86ad2",
+          "title": "팔도지리지",
+          "type": "문서, 지리서적",
+          "degree": 0
+        },
+        {
+          "id": "4a81c635-4eb6-4c1a-99a3-8eea6bbea51e",
+          "title": "한문",
+          "type": "언어, 문화",
+          "degree": 0
+        },
+        {
+          "id": "fcabe976-0d1a-4eff-a2ea-7a1ffdd8df96",
+          "title": "한반도",
+          "type": "지역",
+          "degree": 0
+        }
+      ]
+    },
+    {
+      "room_id": 1,
+      "size": 117,
+      "members": [
+        {
+          "id": "f671291b-1295-4412-b436-bac657e58d0b",
+          "title": "과거 시험",
+          "type": "제도",
+          "degree": 6
+        },
+        {
+          "id": "76210fd3-bd2c-4cac-900d-0ed60ac2c72d",
+          "title": "군역 제도",
+          "type": "제도, 행정",
+          "degree": 6
+        },
+        {
+          "id": "ce975771-9d14-4cbd-a3d0-a64e7091c2bd",
+          "title": "수령",
+          "type": "인물, 행정 관료",
+          "degree": 5
+        },
+        {
+          "id": "9e56d29d-ee3f-4c53-9d9d-02858106e3db",
+          "title": "역원 제도",
+          "type": "교통, 행정 제도",
+          "degree": 5
+        },
+        {
+          "id": "1222924c-8f46-46fb-8368-b90b865ef0e9",
+          "title": "유향소",
+          "type": "기관, 조직",
+          "degree": 5
+        },
+        {
+          "id": "7131f85a-7bd4-4709-bab6-1a63aa99287d",
+          "title": "정도전",
+          "type": "인물, 정치가, 학자",
+          "degree": 5
+        },
+        {
+          "id": "ddb9800d-2644-4266-9518-c574f79c464b",
+          "title": "중농 학파",
+          "type": "학문 집단_사상파",
+          "degree": 5
+        },
+        {
+          "id": "eac6a6b8-83bf-428f-b2bd-a8fe7172e332",
+          "title": "평안도",
+          "type": "지역",
+          "degree": 4
+        },
+        {
+          "id": "5234559c-fbbc-4ffd-83cb-9c5ba0063c10",
+          "title": "경상도",
+          "type": "지역",
+          "degree": 3
+        },
+        {
+          "id": "1add7846-04ab-4f22-b8b8-945a7c82d9f6",
+          "title": "사헌부",
+          "type": "조직, 감찰 기관",
+          "degree": 3
+        },
+        {
+          "id": "e7c2a5ce-89dc-4e07-9bd8-8bd1ac6582d7",
+          "title": "전라도",
+          "type": "지역",
+          "degree": 3
+        },
+        {
+          "id": "589ae494-640d-4f95-9345-2954cfadbe57",
+          "title": "지방 양반",
+          "type": "사회 계층",
+          "degree": 3
+        },
+        {
+          "id": "f4ff6cf6-ee9c-4306-82d8-6c42bdd84ed1",
+          "title": "지방 행정",
+          "type": "제도, 행정",
+          "degree": 3
+        },
+        {
+          "id": "0c20856e-32dc-4eee-95cf-c5aef67466e1",
+          "title": "충청도",
+          "type": "지역",
+          "degree": 3
+        },
+        {
+          "id": "2672c709-a006-4d50-a1ef-1da8a8ed20c1",
+          "title": "향약",
+          "type": "사회제도, 자치기구",
+          "degree": 3
+        },
+        {
+          "id": "97276706-e72a-4e68-9b3a-3e477f5ed092",
+          "title": "6조",
+          "type": "조직, 행정기관",
+          "degree": 2
+        },
+        {
+          "id": "2971f8cf-cc60-4fa6-9207-b8c8c7dd3ee7",
+          "title": "강창",
+          "type": "시설",
+          "degree": 2
+        },
+        {
+          "id": "6acf8c48-c53c-461f-b2f6-164db7d4ee04",
+          "title": "경창",
+          "type": "시설, 장소",
+          "degree": 2
+        },
+        {
+          "id": "34f9f031-9170-4ac6-80d6-f578c12c9167",
+          "title": "군·현",
+          "type": "지역 행정 구역",
+          "degree": 2
+        },
+        {
+          "id": "84ccd318-a3e3-4d8e-9ddc-4957ddc90236",
+          "title": "김육",
+          "type": "인물_정치가_실학자",
+          "degree": 2
+        },
+        {
+          "id": "c5d4332a-7de8-4c3f-a2a3-386d82e45fa0",
+          "title": "김종서",
+          "type": "인물, 장군",
+          "degree": 2
+        },
+        {
+          "id": "145afdb1-7906-4f3b-8abe-309615957d90",
+          "title": "도시",
+          "type": "지리 공간_사회 경제 집단",
+          "degree": 2
+        },
+        {
+          "id": "66aac3ff-03cd-43b8-9b92-6e8215be85aa",
+          "title": "두만강",
+          "type": "지리, 자연환경",
+          "degree": 2
+        },
+        {
+          "id": "475c9d98-3451-46a4-ad76-1f6aac47f0b6",
+          "title": "러시아",
+          "type": "국가, 국제세력",
+          "degree": 2
+        },
+        {
+          "id": "3670fabe-8a4d-4935-a0d9-9695fd611709",
+          "title": "무과",
+          "type": "시험 종류",
+          "degree": 2
+        },
+        {
+          "id": "9925bb4e-ea47-4d71-a6df-a4f0c1ae5a1b",
+          "title": "문과",
+          "type": "시험 종류",
+          "degree": 2
+        },
+        {
+          "id": "901f493d-cc18-4758-a4dc-a6c7bc0db488",
+          "title": "백성들",
+          "type": "사회 집단",
+          "degree": 2
+        },
+        {
+          "id": "f0ab3500-7f28-4473-94aa-ddc7e93941bb",
+          "title": "수원읍성",
+          "type": "건축물, 장소",
+          "degree": 2
+        },
+        {
+          "id": "1ecb5822-cf20-475f-b45d-d349d64eb5cc",
+          "title": "압록강",
+          "type": "지리, 자연환경",
+          "degree": 2
+        },
+        {
+          "id": "19ab01d7-08e5-44d2-8947-263c20b7f38e",
+          "title": "역",
+          "type": "시설",
+          "degree": 2
+        },
+        {
+          "id": "b7786d80-0ba0-4291-9d41-bd8716d1531f",
+          "title": "의정부",
+          "type": "조직, 행정기관",
+          "degree": 2
+        },
+        {
+          "id": "5a0987b8-a45d-4e6d-9aa3-b0d23b9a24c1",
+          "title": "이익",
+          "type": "인물_학자",
+          "degree": 2
+        },
+        {
+          "id": "59af2bb3-e2e9-4c1d-8f1e-6d6893a8978d",
+          "title": "잡과",
+          "type": "시험 종류",
+          "degree": 2
+        },
+        {
+          "id": "1b186c05-fdb5-441b-9f1c-82e3cedff453",
+          "title": "전국 8도",
+          "type": "지역 행정 구역",
+          "degree": 2
+        },
+        {
+          "id": "dc8c4ee9-330d-4ff1-83f1-b7233369c519",
+          "title": "조운",
+          "type": "교통, 물류 제도",
+          "degree": 2
+        },
+        {
+          "id": "e503fa24-bf1f-4e5a-bc0e-5b505f0dd807",
+          "title": "중국 논농사 기술",
+          "type": "농업기술",
+          "degree": 2
+        },
+        {
+          "id": "f3d55a3f-2469-4963-a45f-5f5647bcc911",
+          "title": "최윤덕",
+          "type": "인물, 장군",
+          "degree": 2
+        },
+        {
+          "id": "6cd52cc0-a668-48f3-9a8a-0e9f1c04d940",
+          "title": "해창",
+          "type": "시설",
+          "degree": 2
+        },
+        {
+          "id": "d6795bc1-d909-45f8-84ab-f9515e5a103f",
+          "title": "향리",
+          "type": "인물, 공무원",
+          "degree": 2
+        },
+        {
+          "id": "41b54d8c-05d5-4f12-a45a-c1d7ae3b2157",
+          "title": "호패법",
+          "type": "제도",
+          "degree": 2
+        },
+        {
+          "id": "af42bd81-ba96-44bd-8bca-43dbe5e25d83",
+          "title": "4군",
+          "type": "군사 조직",
+          "degree": 1
+        },
+        {
+          "id": "6bab78f6-8cf9-4337-ae93-88795f7cae04",
+          "title": "6진",
+          "type": "군사 조직",
+          "degree": 1
+        },
+        {
+          "id": "f3f73c5e-32db-4455-90f6-3a10eb60ff04",
+          "title": "가난한 농민",
+          "type": "사회 계층",
+          "degree": 1
+        },
+        {
+          "id": "935e9dac-1f48-47fe-83dd-cfa97355e445",
+          "title": "계",
+          "type": "사회조직, 자치기구",
+          "degree": 1
+        },
+        {
+          "id": "49f87012-ce7e-48df-a9fc-c190763b0a24",
+          "title": "과수 및 약초 재배",
+          "type": "경제활동, 산업",
+          "degree": 1
+        },
+        {
+          "id": "8ce5c222-bc15-46b4-87b3-045a49c54d04",
+          "title": "과전법",
+          "type": "제도, 법률",
+          "degree": 1
+        },
+        {
+          "id": "e3bc9edc-f081-41ac-9970-7c42533aaa2d",
+          "title": "관청",
+          "type": "기관",
+          "degree": 1
+        },
+        {
+          "id": "83db9c67-a92f-4deb-bd52-72b5d8de4e76",
+          "title": "광산 개발",
+          "type": "경제 활동, 산업 발전",
+          "degree": 1
+        },
+        {
+          "id": "1ae7b5c7-bee3-4ef3-8224-0e2228aac511",
+          "title": "교통 수단",
+          "type": "기술_사회 자원",
+          "degree": 1
+        },
+        {
+          "id": "d4e94855-be85-45a0-b0de-c67ff50f292e",
+          "title": "김정호",
+          "type": "인물, 학자",
+          "degree": 1
+        },
+        {
+          "id": "696b0c5f-8096-469c-8c31-759dbc75b9a5",
+          "title": "노비 차별 완화",
+          "type": "사회 제도, 인권 개선",
+          "degree": 1
+        },
+        {
+          "id": "f23d7c4a-05b8-4f55-9ab7-79658a9d1a4f",
+          "title": "농사직설",
+          "type": "문서, 농서",
+          "degree": 1
+        },
+        {
+          "id": "09e53d87-32cf-4adf-be0e-67940efb65f2",
+          "title": "농업 발전",
+          "type": "경제 활동, 정책",
+          "degree": 1
+        },
+        {
+          "id": "dff8ac0d-93de-4811-8fc0-d7ccd944e15a",
+          "title": "농촌",
+          "type": "지리 공간_사회 경제 집단",
+          "degree": 1
+        },
+        {
+          "id": "1b94c9e3-52bd-45b1-887f-c537a475487f",
+          "title": "대동법",
+          "type": "정책_법제",
+          "degree": 1
+        },
+        {
+          "id": "f640c5a6-208e-47a8-bc74-5125ba5cd4ac",
+          "title": "대동여지도",
+          "type": "지도, 기록물",
+          "degree": 1
+        },
+        {
+          "id": "ba2c82a8-27dd-4e8c-82de-63c939f7368b",
+          "title": "대상인",
+          "type": "사회 경제 집단",
+          "degree": 1
+        },
+        {
+          "id": "3015f166-2231-4f2d-852f-ec7ebe7001d3",
+          "title": "동국지도",
+          "type": "지도, 기록물",
+          "degree": 1
+        },
+        {
+          "id": "f49eb7c7-6401-4bb0-a640-793fad5d43f3",
+          "title": "동아시아 국제 정세",
+          "type": "정치 상황, 국제 관계",
+          "degree": 1
+        },
+        {
+          "id": "2f90667e-669e-4651-bed1-e31f3ad2c66e",
+          "title": "마패",
+          "type": "공문서, 교통 수단",
+          "degree": 1
+        },
+        {
+          "id": "fe0f1b2f-1d5f-400a-9704-7d28ffbb5b92",
+          "title": "모내기법",
+          "type": "농업기술",
+          "degree": 1
+        },
+        {
+          "id": "6d306c63-043a-4514-b098-54ae039ef805",
+          "title": "목화 재배",
+          "type": "경제활동, 산업",
+          "degree": 1
+        },
+        {
+          "id": "262f0309-85a0-4f17-afaa-ecb47c22ebca",
+          "title": "문음",
+          "type": "인물 추천 제도",
+          "degree": 1
+        },
+        {
+          "id": "cbfeea91-507a-448a-822e-d8a26526d969",
+          "title": "사도 세자",
+          "type": "인물, 왕족",
+          "degree": 1
+        },
+        {
+          "id": "3e9f15db-df98-40aa-8bca-89eef3b0aeb4",
+          "title": "사리원",
+          "type": "지명, 장소",
+          "degree": 1
+        },
+        {
+          "id": "ffe332e9-62b5-4b16-8896-a6dad3801a9c",
+          "title": "산업 진흥",
+          "type": "정책, 경제 발전",
+          "degree": 1
+        },
+        {
+          "id": "873c9b4c-45d3-4196-8509-cfbb15a7a612",
+          "title": "상공업 진흥론",
+          "type": "사상_경제 정책",
+          "degree": 1
+        },
+        {
+          "id": "d0e62655-c558-434f-bab2-e940c97f34ad",
+          "title": "상업 자유화",
+          "type": "경제 정책, 상업 발전",
+          "degree": 1
+        },
+        {
+          "id": "9aa95a91-dc81-470a-968d-d6d6f4a7c1c7",
+          "title": "서얼 차별 완화",
+          "type": "사회 제도, 인권 개선",
+          "degree": 1
+        },
+        {
+          "id": "749fccd1-9d1d-41e7-a464-6e6f434f1d03",
+          "title": "서울 인구 증가",
+          "type": "사회 변화, 인구 현상",
+          "degree": 1
+        },
+        {
+          "id": "4c680533-0612-4da6-8fd6-82382a5925eb",
+          "title": "수원 화성",
+          "type": "건축물, 도시, 군사 요새",
+          "degree": 1
+        },
+        {
+          "id": "d66caf8f-ee56-4547-b8da-c77d442828d4",
+          "title": "신진 사대부",
+          "type": "사회집단, 정치세력",
+          "degree": 1
+        },
+        {
+          "id": "e07f8382-0de7-42fb-b2bf-267161881830",
+          "title": "양인 남자",
+          "type": "사회 계층",
+          "degree": 1
+        },
+        {
+          "id": "5f91cf20-2c9c-4150-ab93-40f1fbe39f0c",
+          "title": "역졸",
+          "type": "인물 직위",
+          "degree": 1
+        },
+        {
+          "id": "e82f6bb8-4597-4903-94a6-2beef20cd223",
+          "title": "영세 상인",
+          "type": "사회 경제 집단",
+          "degree": 1
+        },
+        {
+          "id": "ac673cfb-c030-413c-a88d-45331fa1cc67",
+          "title": "원",
+          "type": "시설",
+          "degree": 1
+        },
+        {
+          "id": "763dc28b-1c81-4575-b4e6-d977501355b3",
+          "title": "유향소(향청)",
+          "type": "조직, 지방 자치 기구",
+          "degree": 1
+        },
+        {
+          "id": "9724df44-aa9c-485b-854f-b141d38d82ae",
+          "title": "유형원",
+          "type": "인물_학자",
+          "degree": 1
+        },
+        {
+          "id": "b8b5f265-97e5-4327-b74f-410030c788ef",
+          "title": "읍성",
+          "type": "군사 시설",
+          "degree": 1
+        },
+        {
+          "id": "f638de31-7f8b-4e25-8d56-be9f344f6838",
+          "title": "의금부",
+          "type": "조직, 사법 기관",
+          "degree": 1
+        },
+        {
+          "id": "5f8201d9-5840-404f-89e9-281406ca6683",
+          "title": "이중환",
+          "type": "인물, 학자",
+          "degree": 1
+        },
+        {
+          "id": "c78619d1-d370-4233-8149-a0d5c0f9b7dd",
+          "title": "장시",
+          "type": "경제활동, 시장",
+          "degree": 1
+        },
+        {
+          "id": "7d8c5b48-a6c4-47db-aac4-bbeeafe687f8",
+          "title": "장호원",
+          "type": "지명, 장소",
+          "degree": 1
+        },
+        {
+          "id": "81c4eab2-1901-41fc-96be-45d057ae5b2e",
+          "title": "전국",
+          "type": "지리적 단위",
+          "degree": 1
+        },
+        {
+          "id": "1872bb5d-172b-4729-9f42-aa68baf12bf0",
+          "title": "전라도 곡창 지대",
+          "type": "지역, 농업 지대",
+          "degree": 1
+        },
+        {
+          "id": "096941d7-026f-46c0-a1f1-832031150f23",
+          "title": "정상기",
+          "type": "인물, 학자",
+          "degree": 1
+        },
+        {
+          "id": "7ae53fdc-68fc-4cd5-b33e-dcd984cdc791",
+          "title": "정약용",
+          "type": "인물_학자_실학자",
+          "degree": 1
+        },
+        {
+          "id": "2fb61ec0-9333-4c95-987d-578c87484b44",
+          "title": "조선 정부",
+          "type": "조직, 국가 기관",
+          "degree": 1
+        },
+        {
+          "id": "36ad6ffa-9690-464a-800d-c5e15e4ba69c",
+          "title": "조준",
+          "type": "인물, 정치가",
+          "degree": 1
+        },
+        {
+          "id": "63923143-048f-4682-b20b-b512721f1ba0",
+          "title": "중국 대륙",
+          "type": "지역, 장소",
+          "degree": 1
+        },
+        {
+          "id": "f429af82-f42e-4a67-a9e1-57ea2c65cd75",
+          "title": "중소 지주",
+          "type": "사회집단, 경제주체",
+          "degree": 1
+        },
+        {
+          "id": "e06835d9-36a5-4109-ac8d-9bcf8f9f0b34",
+          "title": "직전법",
+          "type": "제도, 법률",
+          "degree": 1
+        },
+        {
+          "id": "19288242-c77c-40f7-8ed9-ef6b44213be9",
+          "title": "천거",
+          "type": "인물 추천 제도",
+          "degree": 1
+        },
+        {
+          "id": "fccb819e-0763-4020-8761-347887880999",
+          "title": "춘추관",
+          "type": "조직, 역사 편찬 기관",
+          "degree": 1
+        },
+        {
+          "id": "10af0166-bfe7-4ed0-864f-a9548efc4863",
+          "title": "충주 방어선",
+          "type": "군사 시설",
+          "degree": 1
+        },
+        {
+          "id": "26553c4a-5818-4ec2-a573-2fc341c9c880",
+          "title": "탕평비",
+          "type": "기념물, 정치 상징",
+          "degree": 1
+        },
+        {
+          "id": "a89f2055-8c1f-4819-8ed2-2738982cc554",
+          "title": "택리지",
+          "type": "저서, 문헌",
+          "degree": 1
+        },
+        {
+          "id": "0e60429b-31d0-4c8d-bae2-2e4129ebf83b",
+          "title": "토지 제도",
+          "type": "제도_사회 구조",
+          "degree": 1
+        },
+        {
+          "id": "fe732a3f-d7d1-4aca-a229-59b9b3a7f535",
+          "title": "판서",
+          "type": "인물, 공무원",
+          "degree": 1
+        },
+        {
+          "id": "c0339e6c-85be-4f06-82c3-4a1c0169d22a",
+          "title": "한강 포구 증가",
+          "type": "사회 변화, 경제 발전",
+          "degree": 1
+        },
+        {
+          "id": "57a7f25f-c49a-4d3c-92df-cb58ac947ed3",
+          "title": "한성부",
+          "type": "조직, 행정 기관",
+          "degree": 1
+        },
+        {
+          "id": "7853f5e1-6875-4d3c-b5d3-dc6c77536fc9",
+          "title": "향약 4대 덕목",
+          "type": "사회규범, 윤리",
+          "degree": 1
+        },
+        {
+          "id": "31f4f377-6f96-468d-9a8a-41b197fb17e3",
+          "title": "향토 방위",
+          "type": "군사 활동, 전략",
+          "degree": 1
+        },
+        {
+          "id": "4c58e3d3-30e6-4977-939e-2214845b3437",
+          "title": "향회",
+          "type": "행사, 조직",
+          "degree": 1
+        },
+        {
+          "id": "1db99e6b-3e9e-4689-b713-44b803db0d85",
+          "title": "화성부",
+          "type": "행정 구역, 장소",
+          "degree": 1
+        },
+        {
+          "id": "18867eda-f28d-4101-8265-6d2087b61cb5",
+          "title": "6방",
+          "type": "조직, 행정 부서",
+          "degree": 0
+        },
+        {
+          "id": "2d59d79f-cfee-42cf-87c6-40ffd7fc871d",
+          "title": "국방비",
+          "type": "재정",
+          "degree": 0
+        },
+        {
+          "id": "2e52c90a-7521-479e-b962-c408b214fa8e",
+          "title": "금속활자",
+          "type": "기술, 인쇄술",
+          "degree": 0
+        },
+        {
+          "id": "f93db710-3550-4218-a747-1b8233c3b9d0",
+          "title": "봉수 제도",
+          "type": "통신, 군사 제도",
+          "degree": 0
+        },
+        {
+          "id": "6acb851d-ded0-411f-aa5a-4da0c80506e6",
+          "title": "사신 접대비",
+          "type": "재정",
+          "degree": 0
+        },
+        {
+          "id": "73ff0591-f44d-41b6-bb35-be126a6f3afe",
+          "title": "앙부일구",
+          "type": "과학기기, 해시계",
+          "degree": 0
+        },
+        {
+          "id": "7b77dbf8-088a-4abd-8d9e-fc177b6914e9",
+          "title": "인지의",
+          "type": "과학기기, 측량기기",
+          "degree": 0
+        },
+        {
+          "id": "ea246c9e-ff86-4fa6-a159-543099607781",
+          "title": "자격루",
+          "type": "과학기기, 물시계",
+          "degree": 0
+        },
+        {
+          "id": "20b4d2b2-ee8b-42a7-80c8-43ab171a06b5",
+          "title": "조선 전기",
+          "type": "시대, 시기",
+          "degree": 0
+        },
+        {
+          "id": "513493e2-ca35-42d6-b6b5-80773560c0f3",
+          "title": "지역",
+          "type": "장소, 행정 구역",
+          "degree": 0
+        },
+        {
+          "id": "0bf9a9ec-654b-41fe-aa4e-20d784202908",
+          "title": "측우기",
+          "type": "과학기기, 발명품",
+          "degree": 0
+        },
+        {
+          "id": "8ade4032-d21c-43a0-8ca9-dd613ad74597",
+          "title": "혼천의",
+          "type": "과학기기, 관측기구",
+          "degree": 0
+        }
+      ]
+    },
+    {
+      "room_id": 2,
+      "size": 18,
+      "members": [
+        {
+          "id": "408fd9bd-e11f-4292-a0e9-f52cbe427b48",
+          "title": "일본",
+          "type": "국가",
+          "degree": 9
+        },
+        {
+          "id": "34880d74-1e03-4953-ba73-8f1d22716bc2",
+          "title": "통신사",
+          "type": "조직, 외교단",
+          "degree": 4
+        },
+        {
+          "id": "9d10d109-6c7c-4e9d-a1f2-30dde41d35d5",
+          "title": "교역",
+          "type": "경제 활동, 대외 관계",
+          "degree": 2
+        },
+        {
+          "id": "c0a4de65-7004-4cfe-a494-59eb6610fd1f",
+          "title": "도요토미 히데요시",
+          "type": "인물, 군주",
+          "degree": 2
+        },
+        {
+          "id": "bd84932f-6cbe-4607-9403-d28736e7a0e6",
+          "title": "도쿠가와 막부",
+          "type": "조직, 정치 기관",
+          "degree": 2
+        },
+        {
+          "id": "d99eecda-aee2-422f-9ba4-6ea0b64dca20",
+          "title": "조총",
+          "type": "무기, 군사물자",
+          "degree": 2
+        },
+        {
+          "id": "8a47e458-f0ff-48f2-be74-59231efb309b",
+          "title": "철포",
+          "type": "무기, 군사 물자",
+          "degree": 2
+        },
+        {
+          "id": "4250b8ca-46bb-4d72-993c-10f6ecec8c3c",
+          "title": "포르투갈 상인",
+          "type": "인물, 집단",
+          "degree": 2
+        },
+        {
+          "id": "31f4a73e-c58a-4c5b-bfd0-fc92b38f498e",
+          "title": "대외 관계",
+          "type": "정책, 활동",
+          "degree": 1
+        },
+        {
+          "id": "b7acd107-b3dd-4434-984c-3341c39e81be",
+          "title": "류큐",
+          "type": "국가, 지역",
+          "degree": 1
+        },
+        {
+          "id": "9e496559-f736-4d45-82ba-34e1712c0ea4",
+          "title": "부산포",
+          "type": "장소, 항구",
+          "degree": 1
+        },
+        {
+          "id": "17c4b1f6-e86d-4a85-8d43-6c8aedace8dc",
+          "title": "시암(타이)",
+          "type": "국가, 지역",
+          "degree": 1
+        },
+        {
+          "id": "08149f4e-1792-45f0-b23d-a6f01e94418b",
+          "title": "에도(도쿄)",
+          "type": "지역, 도시",
+          "degree": 1
+        },
+        {
+          "id": "77e74fb4-b110-419b-a5c4-f17e5351f53f",
+          "title": "염포(울산)",
+          "type": "장소, 항구",
+          "degree": 1
+        },
+        {
+          "id": "0003a136-63bd-4b61-8c2e-33a39806afb4",
+          "title": "자와(자바)",
+          "type": "국가, 지역",
+          "degree": 1
+        },
+        {
+          "id": "8df1cdab-1e4c-4180-9407-fd6710d1743d",
+          "title": "제포(진해)",
+          "type": "장소, 항구",
+          "degree": 1
+        },
+        {
+          "id": "eccdbfc4-0686-4c50-af8f-15f298a4e49a",
+          "title": "조선인 포로",
+          "type": "사람, 집단",
+          "degree": 1
+        },
+        {
+          "id": "38cf27ae-d850-43af-8515-65ef28417e71",
+          "title": "포르투갈",
+          "type": "국가",
+          "degree": 1
+        }
+      ]
+    }
+  ]
+}
