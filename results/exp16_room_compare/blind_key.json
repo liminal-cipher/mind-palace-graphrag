@@ -1,0 +1,72 @@
+{
+  "set1": {
+    "method": "toc",
+    "rooms": {
+      "set1_room1": {
+        "method": "toc",
+        "real_room_id": "toc_1",
+        "chapter_id": "B1_V1_건국",
+        "chapter_title": "V. 조선의 성립과 발전"
+      },
+      "set1_room2": {
+        "method": "toc",
+        "real_room_id": "toc_2",
+        "chapter_id": "B2_V1_조선의_통치_제도",
+        "chapter_title": "V. 조선의 성립과 발전 > 1. 조선의 성립 > 조선의 통치 제도"
+      },
+      "set1_room3": {
+        "method": "toc",
+        "real_room_id": "toc_3",
+        "chapter_id": "B3_V1_15세기_민족_문화의_발달",
+        "chapter_title": "V. 조선의 성립과 발전 > 1. 조선의 성립 > 15세기 민족 문화의 발달"
+      },
+      "set1_room4": {
+        "method": "toc",
+        "real_room_id": "toc_4",
+        "chapter_id": "B4_V2_사림_세력의_성장",
+        "chapter_title": "V. 조선의 성립과 발전 > 2. 사림 세력의 성장"
+      },
+      "set1_room5": {
+        "method": "toc",
+        "real_room_id": "toc_5",
+        "chapter_id": "B5_V3_왜란과_호란의_극복",
+        "chapter_title": "V. 조선의 성립과 발전 > 3. 왜란과 호란의 극복"
+      },
+      "set1_room6": {
+        "method": "toc",
+        "real_room_id": "toc_6",
+        "chapter_id": "B6_VI1_붕당_정치와_탕평책",
+        "chapter_title": "VI. 조선 사회의 변동"
+      }
+    }
+  },
+  "set2": {
+    "method": "graph_ward",
+    "rooms": {
+      "set2_room1": {
+        "method": "graph_ward",
+        "real_room_id": "graph_1"
+      },
+      "set2_room2": {
+        "method": "graph_ward",
+        "real_room_id": "graph_2"
+      },
+      "set2_room3": {
+        "method": "graph_ward",
+        "real_room_id": "graph_3"
+      },
+      "set2_room4": {
+        "method": "graph_ward",
+        "real_room_id": "graph_4"
+      },
+      "set2_room5": {
+        "method": "graph_ward",
+        "real_room_id": "graph_5"
+      },
+      "set2_room6": {
+        "method": "graph_ward",
+        "real_room_id": "graph_6"
+      }
+    }
+  }
+}

@@ -1,0 +1,254 @@
+{
+  "n_entities": 357,
+  "n_rooms_toc": 6,
+  "n_rooms_graph": 6,
+  "anchor_coverage": {
+    "should_show": {
+      "toc": {
+        "n_total": 14,
+        "n_present": 14,
+        "n_missing": 0,
+        "missing_titles": [],
+        "rooms_used_count": 4,
+        "distribution": {
+          "toc_1": 2,
+          "toc_2": 1,
+          "toc_3": 5,
+          "toc_5": 6
+        },
+        "per_anchor": {
+          "측우기": "toc_3",
+          "자격루": "toc_3",
+          "앙부일구": "toc_3",
+          "혼천의": "toc_3",
+          "인지의": "toc_3",
+          "이순신": "toc_5",
+          "권율": "toc_5",
+          "곽재우": "toc_5",
+          "김시민": "toc_5",
+          "정도전": "toc_1",
+          "이성계": "toc_1",
+          "임진왜란": "toc_5",
+          "훈민정음": "toc_2",
+          "거북선": "toc_5"
+        }
+      },
+      "graph": {
+        "n_total": 14,
+        "n_present": 14,
+        "n_missing": 0,
+        "missing_titles": [],
+        "rooms_used_count": 5,
+        "distribution": {
+          "graph_1": 1,
+          "graph_2": 6,
+          "graph_3": 1,
+          "graph_4": 5,
+          "graph_5": 1
+        },
+        "per_anchor": {
+          "측우기": "graph_4",
+          "자격루": "graph_4",
+          "앙부일구": "graph_4",
+          "혼천의": "graph_4",
+          "인지의": "graph_3",
+          "이순신": "graph_2",
+          "권율": "graph_2",
+          "곽재우": "graph_1",
+          "김시민": "graph_2",
+          "정도전": "graph_4",
+          "이성계": "graph_2",
+          "임진왜란": "graph_2",
+          "훈민정음": "graph_5",
+          "거북선": "graph_2"
+        }
+      }
+    },
+    "should_demote": {
+      "toc": {
+        "n_total": 8,
+        "n_present": 8,
+        "n_missing": 0,
+        "missing_titles": [],
+        "rooms_used_count": 3,
+        "distribution": {
+          "toc_1": 4,
+          "toc_2": 3,
+          "toc_6": 1
+        },
+        "per_anchor": {
+          "조선": "toc_1",
+          "백성": "toc_1",
+          "백성들": "toc_2",
+          "성리학": "toc_1",
+          "붕당 정치": "toc_6",
+          "경상도": "toc_2",
+          "전라도": "toc_2",
+          "함경도": "toc_1"
+        }
+      },
+      "graph": {
+        "n_total": 8,
+        "n_present": 8,
+        "n_missing": 0,
+        "missing_titles": [],
+        "rooms_used_count": 3,
+        "distribution": {
+          "graph_1": 4,
+          "graph_2": 1,
+          "graph_4": 3
+        },
+        "per_anchor": {
+          "조선": "graph_1",
+          "백성": "graph_1",
+          "백성들": "graph_4",
+          "성리학": "graph_1",
+          "붕당 정치": "graph_1",
+          "경상도": "graph_4",
+          "전라도": "graph_4",
+          "함경도": "graph_2"
+        }
+      }
+    }
+  },
+  "anchor_cohabitation": {
+    "건국": {
+      "toc": {
+        "members": [
+          "이성계",
+          "정도전"
+        ],
+        "rooms_per_member": {
+          "이성계": "toc_1",
+          "정도전": "toc_1"
+        },
+        "all_same_room": true,
+        "unique_rooms": [
+          "toc_1"
+        ],
+        "n_unique_rooms": 1
+      },
+      "graph": {
+        "members": [
+          "이성계",
+          "정도전"
+        ],
+        "rooms_per_member": {
+          "이성계": "graph_2",
+          "정도전": "graph_4"
+        },
+        "all_same_room": false,
+        "unique_rooms": [
+          "graph_2",
+          "graph_4"
+        ],
+        "n_unique_rooms": 2
+      }
+    },
+    "전쟁": {
+      "toc": {
+        "members": [
+          "이순신",
+          "권율",
+          "곽재우",
+          "김시민",
+          "임진왜란",
+          "거북선"
+        ],
+        "rooms_per_member": {
+          "이순신": "toc_5",
+          "권율": "toc_5",
+          "곽재우": "toc_5",
+          "김시민": "toc_5",
+          "임진왜란": "toc_5",
+          "거북선": "toc_5"
+        },
+        "all_same_room": true,
+        "unique_rooms": [
+          "toc_5"
+        ],
+        "n_unique_rooms": 1
+      },
+      "graph": {
+        "members": [
+          "이순신",
+          "권율",
+          "곽재우",
+          "김시민",
+          "임진왜란",
+          "거북선"
+        ],
+        "rooms_per_member": {
+          "이순신": "graph_2",
+          "권율": "graph_2",
+          "곽재우": "graph_1",
+          "김시민": "graph_2",
+          "임진왜란": "graph_2",
+          "거북선": "graph_2"
+        },
+        "all_same_room": false,
+        "unique_rooms": [
+          "graph_1",
+          "graph_2"
+        ],
+        "n_unique_rooms": 2
+      }
+    },
+    "15세기_과학": {
+      "toc": {
+        "members": [
+          "측우기",
+          "자격루",
+          "앙부일구",
+          "혼천의",
+          "인지의"
+        ],
+        "rooms_per_member": {
+          "측우기": "toc_3",
+          "자격루": "toc_3",
+          "앙부일구": "toc_3",
+          "혼천의": "toc_3",
+          "인지의": "toc_3"
+        },
+        "all_same_room": true,
+        "unique_rooms": [
+          "toc_3"
+        ],
+        "n_unique_rooms": 1
+      },
+      "graph": {
+        "members": [
+          "측우기",
+          "자격루",
+          "앙부일구",
+          "혼천의",
+          "인지의"
+        ],
+        "rooms_per_member": {
+          "측우기": "graph_4",
+          "자격루": "graph_4",
+          "앙부일구": "graph_4",
+          "혼천의": "graph_4",
+          "인지의": "graph_3"
+        },
+        "all_same_room": false,
+        "unique_rooms": [
+          "graph_3",
+          "graph_4"
+        ],
+        "n_unique_rooms": 2
+      }
+    }
+  },
+  "reproducibility": {
+    "toc": {
+      "deterministic": true,
+      "note": "exp15 partition B assignments reused, identical by construction."
+    },
+    "graph": {
+      "deterministic": true,
+      "two_runs_identical": true,
+      "note": "ward linkage on L2-normalized embeddings, fcluster maxclust. No randomness."
+    }
+  }
+}

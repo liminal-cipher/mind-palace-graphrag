@@ -210,6 +210,10 @@
 
 **가설**: exp8에서 357 엔티티가 평균 5.12 섹션에 흩어진 건 1200 토큰 청크가 섹션보다 커서다. 한 단계 거친 챕터 단위로 묶으면 같은 occurrence 매핑으로도 엔티티가 한 dominant 챕터로 모인다. **방법**: exp8과 같은 텍스트 occurrence 경로(엔티티 `text_unit_ids` × text_unit 의 char span ↔ 섹션 overlap)를 그대로 쓰고, 챕터 = 섹션의 결정적 rollup. LLM·임베딩 0회. 챕터 파티션은 문서 헤딩 계층에서 결정적으로 도출한 두 granularity (A=V.1/V.2/V.3/VI.1 4개, B=V.1만 문서 묶음 헤딩 "조선의 통치 제도"·"15세기 민족 문화의 발달" 경계로 3분할한 ~6개). dominant_chapter = argmax 카운트, 동점은 학습흐름 앞선 챕터로 깸. **판정 (B 기준)**: clean_landing_rate(dominance_ratio>=0.5) 0.9944 (357/357 거의 전수, 임계 0.80), mean n_chapters_touched 1.6078 (임계 2.0, exp8 섹션 평균 5.12에서 ~3배 붕괴), 이성계 B1_V1_건국 ratio 1.0 착지, dominance_ratio_B<0.5 인 앵커 0개 → **GO**. 자세한 표·앵커별 dominant·붕괴 비교는 `results/exp15_toc_chapters/REPORT.md`.
 
+## exp16: 방-만들기 head-to-head (TOC vs 그래프 ward)
+
+**질문**: 같은 코퍼스(repro_run3, 357 엔티티)에서 결정적 두 방식(TOC = exp15 B 파티션 재사용, 그래프 = exp10 ward) 으로 6개 방씩 뽑아 같은 형식으로 떨구면, "같이 있어야 할" 앵커 그룹이 어느 쪽에서 한 방에 모이고 어느 쪽에서 갈리나. 사람 블라인드 비교용 데이터까지 이번에 같이 만든다. LLM 호출 0. **한 일**: 357 전수배정으로 TOC 6방(exp15 `dominant_chapter_B`)과 그래프 ward K=6 (`room_gen.base_cluster`, 같은 임베딩 재사용) 산출. 그래프는 두 번 돌려 클러스터 멤버 완전 동일 확인. 앵커 동거 그룹 = 건국(이성계·정도전), 전쟁(이순신·권율·곽재우·김시민·임진왜란·거북선), 15세기 과학(측우기·자격루·앙부일구·혼천의·인지의). **결과**: 방 크기 TOC [94, 89, 83, 34, 34, 23] / 그래프 [95, 93, 67, 50, 34, 18]. 둘 다 357 전수, should_show 14/14·should_demote 8/8 모두 배정됨. 앵커 동거 3그룹 모두 TOC=한 방, 그래프=두 방으로 갈림 (그래프에서 정도전이 건국 그룹과 떨어지고, 곽재우가 다른 의병들과 떨어지고, 인지의가 다른 과학기기 4종과 떨어짐). 둘 다 결정적 (TOC 재사용, ward 두 번 돌려 동일). **그래서**: 방-만들기에서 "그룹이 한 방에 모이나" 라는 단순 척도로는 TOC가 그래프 raw ward를 이긴다 (이번 앵커 표본 한정). 학습 흐름·방 응집도 같은 사람 블라인드 평가용 데이터(`blind_compare.json` + `blind_key.json`)는 같이 떨궜고, 뷰어·판정은 별도 단계로 남긴다. 자세한 표·앵커별 방 배정·블라인드 운영 절차는 `results/exp16_room_compare/REPORT.md`.
+
 ## 확정 파이프라인 러너 참조
 
 위 결정들(K=10, n=3, embedding merge, repro_run3)을 한 줄로 잇는 confirmed-pipeline 러너는 `results/pipeline/`에 있다. 단계별 wall·LLM 호출·토큰·다수결 효과·per-room jaccard 등 실측치는 `results/pipeline/report.md`(자동 생성)에 있어 여기서 중복 기재하지 않는다.
