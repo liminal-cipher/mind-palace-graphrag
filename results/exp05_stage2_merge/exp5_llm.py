@@ -8,7 +8,7 @@ K=5, K=8 각각에 대해 run_a/run_b 두 번 호출하고, 검증 실패 시 �
 
 핵심 입출력:
 - 입력: results/snapshots/repro_run3/ (stage1을 거쳐 만든 텍스트 페이로드).
-- 출력: results/exp5/stage2_llm_K{K}_{run_a,run_b}.json (검증 통과 시), llm_reliability.json
+- 출력: results/exp05_stage2_merge/stage2_llm_K{K}_{run_a,run_b}.json (검증 통과 시), llm_reliability.json
   (K별 두 런의 시도 로그와 재현성 결과). 또한 같은 디렉터리에 input_payload.txt와
   stage1_payloads.json도 감사용으로 남긴다.
 

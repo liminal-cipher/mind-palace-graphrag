@@ -10,3 +10,5 @@ logs/
 
 # 입력 자료 (저작물)
 input/
+proj_pagesplit/input/
+proj_semantic/input/

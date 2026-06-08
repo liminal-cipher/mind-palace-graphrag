@@ -10,7 +10,7 @@
 입출력:
 - 입력 베이스: results/snapshots/repro_run3 (entities.parquet, communities.parquet,
   community_reports.parquet, lancedb/). 이 스냅샷은 재추출 금지, 항상 입력으로만 쓴다.
-- 출력 디렉터리: results/exp5/.
+- 출력 디렉터리: results/exp05_stage2_merge/.
 """
 from __future__ import annotations
 import json
@@ -20,7 +20,7 @@ import numpy as np
 import lancedb
 
 BASE = Path('results/snapshots/repro_run3')
-OUT = Path('results/exp5')
+OUT = Path('results/exp05_stage2_merge')
 OUT.mkdir(parents=True, exist_ok=True)
 
 

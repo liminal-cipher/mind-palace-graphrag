@@ -36,13 +36,13 @@ level 0 커뮤니티를 "건물"로 써서 1인칭 3D 기억의 궁전으로 만
 ### 임베딩 병합 — 성공, 결정적
 - `community_full_content` 방 벡터(level 0, 40×1536, L2 정규화)를 scipy hierarchical로 클러스터링.
 - ward linkage가 average보다 좋음 (silhouette K=5 0.083 / K=8 0.099 / K=10 0.098).
-- 두 번 돌려 완전히 동일(run_a == run_b). 결과: `results/exp5/stage2_emb_K{5,8,10}.json`.
+- 두 번 돌려 완전히 동일(run_a == run_b). 결과: `results/exp05_stage2_merge/stage2_emb_K{5,8,10}.json`.
 
 ### LLM 병합 (partition 방식) — 완전 실패
 - gpt-4.1-mini에 방 40개 주고 "K개 그룹 만들고 멤버 ID 다 나열" 시킴.
 - K∈{5,8} × run∈{a,b} × 4시도 = 16/16 전부 실패. 매번 다른 community 누락/중복.
 - temp=0인데도 재시도 피드백이 prompt를 바꿔 응답이 변함.
-- 원인: LLM은 40개 ID를 빠짐없이 분배하는 "부기" 작업에 약함. 로그: `results/exp5/llm_reliability.json`.
+- 원인: LLM은 40개 ID를 빠짐없이 분배하는 "부기" 작업에 약함. 로그: `results/exp05_stage2_merge/llm_reliability.json`.
 - LLM stage2 파일은 생성 안 됨(성공 0회).
 
 ## 확정된 설계 결정
@@ -95,5 +95,5 @@ level 0 커뮤니티를 "건물"로 써서 1인칭 3D 기억의 궁전으로 만
 - exp4_lcc_true: use_lcc=true 테스트. 핵심 31% 소실로 탈락. 스냅샷 `snapshots/exp4_lcc_true`.
 - repro_run2 / repro_run3: 재현성 확인 런. run3 = 실험 5 베이스(357 ent, 40방).
 - snap_max10 / snap_max20: max_cluster_size 스냅샷.
-- exp5: 방 병합 실험 (현재). 코드는 `results/exp5/` 아래 `exp5_lib.py` / `exp5_embed.py` / `exp5_llm.py` / `exp5_llm_v2.py` / `type_select_test.py`.
+- exp5: 방 병합 실험 (현재). 코드는 `results/exp05_stage2_merge/` 아래 `exp5_lib.py` / `exp5_embed.py` / `exp5_llm.py` / `exp5_llm_v2.py` / `type_select_test.py`.
 - 리포트(`results/reports/`): `00_baseline`, `01_max15`, `02_snap_max10`, `02_snap_max20`, `03_repro_step{1_snapshot, 2_variance, 3_summary}`, `04_use_lcc`, `05_exp5_data_contract`. 규약과 매핑은 `REPORT_TEMPLATE.md`, `INDEX.md`.

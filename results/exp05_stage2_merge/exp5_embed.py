@@ -8,7 +8,7 @@ hierarchical clustering으로 묶어 K=5/8/10 MergeResult를 만든다.
 
 핵심 입출력:
 - 입력: results/snapshots/repro_run3/ (lancedb 포함).
-- 출력: results/exp5/stage2_emb_K{K}.json (winner 채택), stage2_emb_K8_alt_{loser}.json (비교용),
+- 출력: results/exp05_stage2_merge/stage2_emb_K{K}.json (winner 채택), stage2_emb_K8_alt_{loser}.json (비교용),
   embed_silhouette_summary.json (ward/average × K 매트릭스).
 """
 from __future__ import annotations

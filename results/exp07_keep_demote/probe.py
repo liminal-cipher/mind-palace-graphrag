@@ -3,7 +3,7 @@ keep/demote rubric 스스로 도출, (B) 클러스터마다 rubric 적용해 방
 A+B를 3번 독립 실행해 안정성 본다.
 
 입력: repro_run3 (entities, communities, lancedb/entity_description).
-출력: results/exp7/report.md, results/exp7/raw/run{n}/stage_a.txt, stage_b_cluster{i}.txt.
+출력: results/exp07_keep_demote/report.md, results/exp07_keep_demote/raw/run{n}/stage_a.txt, stage_b_cluster{i}.txt.
 """
 from __future__ import annotations
 import os, sys, io, json, random
@@ -17,7 +17,7 @@ from scipy.cluster.hierarchy import linkage, fcluster
 from openai import AzureOpenAI
 
 BASE = Path('results/snapshots/repro_run3')
-OUT = Path('results/exp7')
+OUT = Path('results/exp07_keep_demote')
 RAW = OUT / 'raw'
 OUT.mkdir(parents=True, exist_ok=True)
 RAW.mkdir(parents=True, exist_ok=True)
@@ -233,7 +233,7 @@ def find_class(run, name):
 md = []
 md.append('# exp7 — 의미 방 위 LLM 레이어')
 md.append('')
-md.append(f'베이스: `repro_run3`. 입력 클러스터: exp6 직접 ward K=10 (357 엔티티). LLM: Azure {DEPLOYMENT}, temp=0. 도메인: "{DOMAIN}". 3런 독립 실행. raw 응답은 `results/exp7/raw/run{{n}}/`.')
+md.append(f'베이스: `repro_run3`. 입력 클러스터: exp6 직접 ward K=10 (357 엔티티). LLM: Azure {DEPLOYMENT}, temp=0. 도메인: "{DOMAIN}". 3런 독립 실행. raw 응답은 `results/exp07_keep_demote/raw/run{{n}}/`.')
 md.append('')
 md.append('2단계: **A** = LLM이 도메인 받고 샘플 보고 keep/demote rubric 스스로 도출. **B** = 클러스터마다 rubric 적용해 방이름·분류·coherence.')
 md.append('')

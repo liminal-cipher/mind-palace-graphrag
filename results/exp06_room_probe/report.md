@@ -1,6 +1,6 @@
 # exp6: 방 토대 프로브: 직접 엔티티 클러스터 vs community 병합
 
-베이스: `repro_run3` (357 엔티티, 31 orphan 포함). 비교 대상: `results/exp5/stage2_emb_K10.json`. 임베딩: lancedb `entity_description` (1536-dim, L2 정규화 후 scipy ward euclidean).
+베이스: `repro_run3` (357 엔티티, 31 orphan 포함). 비교 대상: `results/exp05_stage2_merge/stage2_emb_K10.json`. 임베딩: lancedb `entity_description` (1536-dim, L2 정규화 후 scipy ward euclidean).
 
 질문: 방을 graph community 대신 엔티티 임베딩으로 직접 클러스터하면 (1) orphan 녹나, (2) 거대 덩어리 갈라지나, (3) 묶음이 주제별이냐 타입별이냐.
 

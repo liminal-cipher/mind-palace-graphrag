@@ -1,8 +1,8 @@
 """exp6 방 토대 프로브. graph community 우회하고 entity embedding을 직접 ward 클러스터해서
 stage2_emb_K10(community 병합)이랑 비교. orphan 통합·거대 덩어리 분해·주제 응집을 본다.
 입력: repro_run3 (entities, communities, lancedb/entity_description),
-      results/exp5/stage2_emb_K10.json (비교용).
-출력: results/exp6_room_probe/report.md.
+      results/exp05_stage2_merge/stage2_emb_K10.json (비교용).
+출력: results/exp06_room_probe/report.md.
 """
 from __future__ import annotations
 import sys, io, json
@@ -15,8 +15,8 @@ import lancedb
 from scipy.cluster.hierarchy import linkage, fcluster
 
 BASE = Path('results/snapshots/repro_run3')
-EXP5 = Path('results/exp5')
-OUT = Path('results/exp6_room_probe')
+EXP5 = Path('results/exp05_stage2_merge')
+OUT = Path('results/exp06_room_probe')
 OUT.mkdir(parents=True, exist_ok=True)
 
 
@@ -154,7 +154,7 @@ for cid, n in orphan_dist.most_common():
 md = []
 md.append('# exp6 — 방 토대 프로브: 직접 엔티티 클러스터 vs community 병합')
 md.append('')
-md.append('베이스: `repro_run3` (357 엔티티, 31 orphan 포함). 비교 대상: `results/exp5/stage2_emb_K10.json`. 임베딩: lancedb `entity_description` (1536-dim, L2 정규화 후 scipy ward euclidean).')
+md.append('베이스: `repro_run3` (357 엔티티, 31 orphan 포함). 비교 대상: `results/exp05_stage2_merge/stage2_emb_K10.json`. 임베딩: lancedb `entity_description` (1536-dim, L2 정규화 후 scipy ward euclidean).')
 md.append('')
 md.append('질문: 방을 graph community 대신 엔티티 임베딩으로 직접 클러스터하면 (1) orphan 녹나, (2) 거대 덩어리 갈라지나, (3) 묶음이 주제별이냐 타입별이냐.')
 md.append('')

@@ -46,8 +46,8 @@
 | K=10에서 embedding/llm 사실상 동일 (방 이름·구성) | exp10 report L53 | 검증됨 | 두 eval.json의 14개 should_show 행이 동일 room_id·room_name·classification, 8개 should_demote도 동일. `final_sizes` 도 동일 [93,82,39,34,24,23,20,18,13,11] |
 | K=5 embedding은 측우기·자격루·앙부일구·혼천의 keep / K=5 llm은 demote | exp10 report L55,56 | 검증됨 | K5_emb eval: 4종 모두 keep (room "조선 제도·인물·문서·지명"). K5_llm eval: 4종 모두 demote (room "조선 의병과 지도자") |
 | 회귀: K=10에서 이성계 demote (exp7은 3런 모두 keep) | exp10 report L61~62 | 검증됨 | K10_emb·K10_llm 두 eval 모두 이성계 `classification=demote, correct=false`, room "임진왜란과 조선 군사" |
-| exp7 cluster 2 jaccard 0.98, cluster 3 0.17, cluster 9 0.00 | EXPERIMENTS.md L74 | 검증됨 (한 회차 보고서) | `results/exp7/report.md` (raw run1/2/3 디렉토리 존재) |
-| exp7 run3에서 이순신·임진왜란·거북선·권율·김시민·곽재우 missing | EXPERIMENTS.md L76 | 검증됨 (한 회차 보고서) | `results/exp7/raw/run3/` raw 응답 |
+| exp7 cluster 2 jaccard 0.98, cluster 3 0.17, cluster 9 0.00 | EXPERIMENTS.md L74 | 검증됨 (한 회차 보고서) | `results/exp07_keep_demote/report.md` (raw run1/2/3 디렉토리 존재) |
+| exp7 run3에서 이순신·임진왜란·거북선·권율·김시민·곽재우 missing | EXPERIMENTS.md L76 | 검증됨 (한 회차 보고서) | `results/exp07_keep_demote/raw/run3/` raw 응답 |
 | exp7 비용 3런 × (rubric 1 + 클러스터 10) = 33회 호출 | EXPERIMENTS.md L77 | 검증됨 (산수) | 곱셈 33 = 3×11 |
 | exp5 LLM partition v1 4회 시도 전부 실패 | STATUS.md L41~45 | 검증됨 (단, "4회"는 표현 정리 필요) | `llm_reliability.json`: K∈{5,8} × run∈{a,b} × attempt∈{1..4} = 16개 모두 `ok=false`. STATUS.md "K=5/8 양쪽, run 2회, 매 시도 4회 전부 실패"는 산술적으로 맞지만, 한 줄로 읽으면 4회 시도로 오해할 수 있음 |
 | exp5 LLM v2 (assignment) 결과 보존 | STATUS.md L70 ("다음 할 일") | 한계 명시 + 약함 | run1/2/3 모두 `parsed=true valid=true`이긴 한데 run1은 `groups_used=4` (라벨 4개만 사용, 실효 K=4), run3도 4개. 3런 사이에 결과(파티션)가 동일하지 않음. STATUS.md는 v2를 "다음 할 일"로만 두고 결과 평가는 안 했음 |

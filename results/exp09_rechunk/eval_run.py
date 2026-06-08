@@ -1,6 +1,6 @@
 """exp9 step 3: run별 eval.
 입력: results/snapshots/{semantic,pagesplit}_run1 스냅샷 (entities + lancedb).
-산출: results/exp9_rechunk/eval_{label}.json — 엔티티 수, orphan율(degree0),
+산출: results/exp09_rechunk/eval_{label}.json — 엔티티 수, orphan율(degree0),
 ward K=10 클러스터 크기, 클러스터별 top-15 (degree 내림차순), 앵커 체크리스트.
 
 앵커 (한국사 자료 기준):
@@ -19,7 +19,7 @@ import lancedb
 from scipy.cluster.hierarchy import linkage, fcluster
 
 REPO = Path('.').resolve()
-OUT_DIR = REPO / 'results/exp9_rechunk'
+OUT_DIR = REPO / 'results/exp09_rechunk'
 
 SHOULD_SHOW = ['측우기', '자격루', '앙부일구', '혼천의',
                '곽재우', '이순신', '거북선', '훈민정음']

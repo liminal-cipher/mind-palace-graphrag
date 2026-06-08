@@ -1,6 +1,6 @@
 # exp7: 의미 방 위 LLM 레이어
 
-베이스: `repro_run3`. 입력 클러스터: exp6 직접 ward K=10 (357 엔티티). LLM: Azure gpt-4.1-mini, temp=0. 도메인: "한국사". 3런 독립 실행. raw 응답은 `results/exp7/raw/run{n}/`.
+베이스: `repro_run3`. 입력 클러스터: exp6 직접 ward K=10 (357 엔티티). LLM: Azure gpt-4.1-mini, temp=0. 도메인: "한국사". 3런 독립 실행. raw 응답은 `results/exp07_keep_demote/raw/run{n}/`.
 
 2단계: **A** = LLM이 도메인 받고 샘플 보고 keep/demote rubric 스스로 도출. **B** = 클러스터마다 rubric 적용해 방이름·분류·coherence.
 

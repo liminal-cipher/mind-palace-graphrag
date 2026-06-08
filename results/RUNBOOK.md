@@ -64,52 +64,52 @@ graphrag index --root .                                           # LLM $ 묶기
 
 ### exp5: 방 병합(type · 임베딩 · LLM)
 
-상세는 `results/exp5/COMMANDS.md`. 요약:
+상세는 `results/exp05_stage2_merge/COMMANDS.md`. 요약:
 
 ```
-python results/exp5/exp5_embed.py                                 # LLM 없음, $0. 사전 lancedb 임베딩 read-only, ward 병합 stage2(K=5/8/10). 결정적.
-python results/exp5/exp5_llm.py                                   # LLM $ v1 partition (16/16 전부 실패 기록용).
-python results/exp5/exp5_llm_v2.py                                # LLM $ v2 assignment (K=5 × 3런, valid 통과).
-python results/exp5/type_select_test.py                           # LLM 없음, $0. entity type keep/demote 분류 점검(API 0건).
+python results/exp05_stage2_merge/exp5_embed.py                                 # LLM 없음, $0. 사전 lancedb 임베딩 read-only, ward 병합 stage2(K=5/8/10). 결정적.
+python results/exp05_stage2_merge/exp5_llm.py                                   # LLM $ v1 partition (16/16 전부 실패 기록용).
+python results/exp05_stage2_merge/exp5_llm_v2.py                                # LLM $ v2 assignment (K=5 × 3런, valid 통과).
+python results/exp05_stage2_merge/type_select_test.py                           # LLM 없음, $0. entity type keep/demote 분류 점검(API 0건).
 ```
 
-산출: `results/exp5/stage2_emb_K{5,8,10}.json`, `stage2_llm_v2_K5_run{1,2,3}.json`, `llm_reliability.json`, `llm_v2_reliability.json`, `embed_silhouette_summary.json`, `embed_reliability.json`, `entity_breakdown_v2.html`, `llm_v2_raw/run{1,2,3}.txt`, `llm_merge_probe.md`.
+산출: `results/exp05_stage2_merge/stage2_emb_K{5,8,10}.json`, `stage2_llm_v2_K5_run{1,2,3}.json`, `llm_reliability.json`, `llm_v2_reliability.json`, `embed_silhouette_summary.json`, `embed_reliability.json`, `entity_breakdown_v2.html`, `llm_v2_raw/run{1,2,3}.txt`, `llm_merge_probe.md`.
 
 ### exp6: 직접 ward vs community 병합
 
 ```
-python results/exp6_room_probe/probe.py                           # 결정적, LLM 없음. 약 30초.
+python results/exp06_room_probe/probe.py                           # 결정적, LLM 없음. 약 30초.
 ```
 
-산출: `results/exp6_room_probe/report.md`.
+산출: `results/exp06_room_probe/report.md`.
 
 ### exp7: 방 위 LLM 레이어(rubric · 3런 안정성)
 
 ```
-python results/exp7/probe.py                                      # LLM $ 3런 × (rubric 1 + 클러스터 10) = 33회 호출.
+python results/exp07_keep_demote/probe.py                                      # LLM $ 3런 × (rubric 1 + 클러스터 10) = 33회 호출.
 ```
 
-산출: `results/exp7/report.md`, `results/exp7/raw/run{1,2,3}/{stage_a.txt, stage_b_cluster{0..9}.txt}`.
+산출: `results/exp07_keep_demote/report.md`, `results/exp07_keep_demote/raw/run{1,2,3}/{stage_a.txt, stage_b_cluster{0..9}.txt}`.
 
 ### exp8: 목차/섹션 feasibility
 
 ```
-python results/exp8_toc_feasibility/probe.py                      # 결정적, LLM 없음. 텍스트 정규식 + parquet 매핑.
+python results/exp08_toc_feasibility/probe.py                      # 결정적, LLM 없음. 텍스트 정규식 + parquet 매핑.
 ```
 
-산출: `results/exp8_toc_feasibility/report.md`.
+산출: `results/exp08_toc_feasibility/report.md`.
 
 ### exp9: 청킹 비교(semantic vs pagesplit)
 
 ```
-python results/exp9_rechunk/build_inputs.py                       # LLM 없음. input/ → proj_{semantic,pagesplit}/input/*_docs.json.
-python results/exp9_rechunk/run_verify.py                         # LLM 없음. text_units 행 수 사전검증.
-python results/exp9_rechunk/run_full.py                           # LLM $ 재인덱싱 (community_reports 빠진 풀 파이프라인). semantic ~7분, pagesplit ~18분. ±10 흔들림.
-python results/exp9_rechunk/eval_run.py semantic_run1             # LLM 없음. eval_semantic_run1.json 생성. (positional 인자, --label 없음)
-python results/exp9_rechunk/eval_run.py pagesplit_run1            # LLM 없음. eval_pagesplit_run1.json 생성.
+python results/exp09_rechunk/build_inputs.py                       # LLM 없음. input/ → proj_{semantic,pagesplit}/input/*_docs.json.
+python results/exp09_rechunk/run_verify.py                         # LLM 없음. text_units 행 수 사전검증.
+python results/exp09_rechunk/run_full.py                           # LLM $ 재인덱싱 (community_reports 빠진 풀 파이프라인). semantic ~7분, pagesplit ~18분. ±10 흔들림.
+python results/exp09_rechunk/eval_run.py semantic_run1             # LLM 없음. eval_semantic_run1.json 생성. (positional 인자, --label 없음)
+python results/exp09_rechunk/eval_run.py pagesplit_run1            # LLM 없음. eval_pagesplit_run1.json 생성.
 ```
 
-산출: `results/snapshots/{semantic,pagesplit}_run1/` (entity_description.lance 포함, community_reports/text_unit_text 테이블 없음), `results/exp9_rechunk/eval_{semantic,pagesplit}_run1.json`, `comparison.md`, `logs/exp9_*.log`, `logs/{semantic_run1,pagesplit_run1}/indexing-engine.log`.
+산출: `results/snapshots/{semantic,pagesplit}_run1/` (entity_description.lance 포함, community_reports/text_unit_text 테이블 없음), `results/exp09_rechunk/eval_{semantic,pagesplit}_run1.json`, `comparison.md`, `logs/exp9_*.log`, `logs/{semantic_run1,pagesplit_run1}/indexing-engine.log`.
 
 ### exp10: end-to-end 방 제너레이터
 

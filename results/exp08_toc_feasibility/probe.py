@@ -2,7 +2,7 @@
 헤더로 섹션 잘라, text_unit → 섹션 → 엔티티 사슬 매핑이 되는지 / 그 분포가 방으로 쓸 만한지 확인.
 
 입력: input/국사교과서_조선_본문_정제.txt, repro_run3/text_units.parquet, entities.parquet.
-출력: results/exp8_toc_feasibility/report.md.
+출력: results/exp08_toc_feasibility/report.md.
 """
 from __future__ import annotations
 import sys, io, re, json
@@ -14,7 +14,7 @@ import pandas as pd
 ROOT = Path('.')
 BASE = Path('results/snapshots/repro_run3')
 TXT_PATH = Path('input/국사교과서_조선_본문_정제.txt')
-OUT = Path('results/exp8_toc_feasibility')
+OUT = Path('results/exp08_toc_feasibility')
 OUT.mkdir(parents=True, exist_ok=True)
 
 

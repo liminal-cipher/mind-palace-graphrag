@@ -12,7 +12,7 @@ apples-to-apples 비교가 목적.
 
 핵심 입출력:
 - 입력: results/snapshots/repro_run3/ (stage1을 거쳐 만든 텍스트 페이로드).
-- 출력: results/exp5/stage2_llm_v2_K{K}_run{n}.json (검증 통과한 런만),
+- 출력: results/exp05_stage2_merge/stage2_llm_v2_K{K}_run{n}.json (검증 통과한 런만),
   llm_v2_reliability.json (3런 요약), llm_v2_raw/run{n}.txt (각 런 raw 응답, 파싱 전에 저장).
 """
 from __future__ import annotations

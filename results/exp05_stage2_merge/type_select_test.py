@@ -1,8 +1,8 @@
 """type 선택 일회성 프로브. degree top-N vs type 버킷(keep)만 거르기 비교.
 repro_run3 위에서 읽기 전용으로만 동작. 공유 lib에 들어가는 매퍼가 아니라 이 실험용.
 입력: repro_run3 (entities, communities, lancedb/entity_description),
-      results/exp5/stage2_emb_K10.json (이미 만들어진 ward K=10 partition).
-출력: results/exp5/type_select_test.md.
+      results/exp05_stage2_merge/stage2_emb_K10.json (이미 만들어진 ward K=10 partition).
+출력: results/exp05_stage2_merge/type_select_test.md.
 """
 from __future__ import annotations
 import json
@@ -15,7 +15,7 @@ import numpy as np
 import lancedb
 
 BASE = Path('results/snapshots/repro_run3')
-OUT = Path('results/exp5')
+OUT = Path('results/exp05_stage2_merge')
 
 
 # === 데이터 로드 ===

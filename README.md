@@ -32,15 +32,15 @@ graphrag index --root .
 
 임베딩 기반 (성공, 결정적):
 ```
-python results/exp5/exp5_embed.py
+python results/exp05_stage2_merge/exp5_embed.py
 ```
-→ `results/exp5/stage2_emb_K{5,8,10}.json` + `embed_silhouette_summary.json` + `embed_reliability.json`
+→ `results/exp05_stage2_merge/stage2_emb_K{5,8,10}.json` + `embed_silhouette_summary.json` + `embed_reliability.json`
 
 LLM 기반 partition 방식 (현 시점 실패 기록용):
 ```
-python results/exp5/exp5_llm.py
+python results/exp05_stage2_merge/exp5_llm.py
 ```
-→ `results/exp5/llm_reliability.json` (stage2 LLM 파일은 성공 시에만 생성)
+→ `results/exp05_stage2_merge/llm_reliability.json` (stage2 LLM 파일은 성공 시에만 생성)
 
 ### 분석 보조
 ```
@@ -51,5 +51,5 @@ python extract_results.py      # 결과 추출
 ## 절대 건드리지 말 것
 
 - `results/snapshots/` (특히 `repro_run3/`): 실험 5 베이스. 재추출하면 ±10 흔들려 재현 불가.
-- `results/exp5/*.json`: 실험 결과 기록.
-- `results/exp5/exp5_lib.py` / `exp5_embed.py` / `exp5_llm.py`: 경로가 repo 루트 기준으로 하드코딩됨. 실행 시 repo 루트 CWD에서 호출해야 함.
+- `results/exp05_stage2_merge/*.json`: 실험 결과 기록.
+- `results/exp05_stage2_merge/exp5_lib.py` / `exp5_embed.py` / `exp5_llm.py`: 경로가 repo 루트 기준으로 하드코딩됨. 실행 시 repo 루트 CWD에서 호출해야 함.
