@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "run_id": "pipeline_K10_n3_embedding",
+    "model": "gpt-4.1-mini",
+    "n_runs": 3,
+    "parallel_stage_b": false,
+    "pricing": {
+      "input_per_1m": null,
+      "output_per_1m": null,
+      "_note": "Per-1M-token USD prices for the LLM. Embedding cost is out of scope (snapshot already built). When values are null the cost_report.json leaves $ as 'pending' and only records tokens. Fill from Azure OpenAI pricing page or Azure Cost Management for the deployment in use.",
+      "_source": "set when known; null leaves $ as 'pending'"
+    },
+    "generated_at": "2026-06-08T02:19:04.821800+00:00"
+  },
+  "stages": {
+    "snapshot_load": {
+      "wall_seconds": 1.459,
+      "call_seconds": 0.0,
+      "llm_calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "cost_usd": 0.0
+    },
+    "clustering": {
+      "wall_seconds": 0.282,
+      "call_seconds": 0.0,
+      "llm_calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "cost_usd": 0.0
+    },
+    "stage_a": {
+      "wall_seconds": 16.666,
+      "call_seconds": 16.653,
+      "llm_calls": 1,
+      "prompt_tokens": 925,
+      "completion_tokens": 913,
+      "cost_usd": "pending"
+    },
+    "stage_b": {
+      "wall_seconds": 66.666,
+      "call_seconds": 66.636,
+      "llm_calls": 30,
+      "prompt_tokens": 101799,
+      "completion_tokens": 4880,
+      "cost_usd": "pending",
+      "per_pass_wall_seconds": 22.222,
+      "parallel": false
+    },
+    "aggregate": {
+      "wall_seconds": 0.0,
+      "call_seconds": 0.0,
+      "llm_calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "cost_usd": 0.0
+    },
+    "export": {
+      "wall_seconds": 0.08,
+      "call_seconds": 0.0,
+      "llm_calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "cost_usd": 0.0
+    }
+  },
+  "totals": {
+    "wall_seconds": 85.153,
+    "llm_calls": 31,
+    "prompt_tokens": 102724,
+    "completion_tokens": 5793,
+    "cost_usd": "pending"
+  }
+}

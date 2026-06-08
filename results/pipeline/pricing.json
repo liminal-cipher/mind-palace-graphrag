@@ -1,0 +1,8 @@
+{
+  "_note": "Per-1M-token USD prices for the LLM. Embedding cost is out of scope (snapshot already built). When values are null the cost_report.json leaves $ as 'pending' and only records tokens. Fill from Azure OpenAI pricing page or Azure Cost Management for the deployment in use.",
+  "gpt-4.1-mini": {
+    "input_per_1m": null,
+    "output_per_1m": null,
+    "_source": "set when known; null leaves $ as 'pending'"
+  }
+}
