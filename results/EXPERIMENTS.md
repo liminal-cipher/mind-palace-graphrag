@@ -117,6 +117,30 @@
 
 **그래서**: 어떻게 자르냐(semantic vs pagesplit)는 영향이 있지만, 더 큰 레버는 입력 자료 품질로 보인다. 두 run 모두 정치 주제 거대 덩어리는 그대로 갖고 있다. (단 exp9는 같은 자료·다른 청킹 비교라 청킹 변수만 격리되어 있고, baseline(repro_run3)은 다른 자료(정제 교과서)라 "자료 품질" 변수가 분리되지 않는다. 따라서 확정이 아니라 confound 있는 추정.) 후속 방 병합 베이스로는 임진왜란 묶임이 깔끔하고 균형도 더 좋은 pagesplit이 다루기 쉬워 보인다.
 
+## exp10: end-to-end 룸 제너레이터 (모듈화 + 4 combo 비교)
+
+**질문**: exp6(임베딩 클러스터)·exp7(LLM rubric·이름·keep 선별) 결과를 한 줄 파이프라인으로 묶으면 (1) 4 combo(K=10/5 × embedding/llm merge)에서 결과 모양이 어떻게 달라지나, (2) exp7 run3에서 이순신·임진왜란·거북선이 통째로 사라진 누락 사고를 코드 가드로 막을 수 있나, (3) 도메인 무관 모듈로 짤 수 있나.
+
+**한 일**: repro_run3 357 엔티티에 `load_snapshot → base_cluster(k_base=12) → split_oversized(max=55) → merge_to_k(embedding|llm, K) → derive_rubric(stage A) → assign_rooms(stage B) → check_invariants`로 잇는 importable 모듈(`room_gen.py`)을 짜고, 4 combo로 진입점(`run_repro_run3.py`) + 도메인 무관 평가기(`eval_rooms.py`) + 외부 앵커 JSON(`anchors_korean_history.json`, should_show 14/should_demote 8)을 분리. 불변식 가드: kept ∪ demoted == 입력(누락 0), 방 수 ≤ K ≤ 10, 방당 kept ≤ node_budget(=20). Stage B 출력은 keep_titles만 받고 demote는 set-difference로 자동 도출(누락 사고의 구조적 봉쇄).
+
+**결과**
+| combo | final sizes | coherent | should_show | should_demote |
+| --- | --- | --- | --- | --- |
+| K=10 embedding | [93,82,39,34,24,23,20,18,13,11] | 10/10 | 13/14 | 7/8 |
+| K=10 llm | [93,82,39,34,24,23,20,18,13,11] | 10/10 | 13/14 | 7/8 |
+| K=5 embedding | [116,106,106,18,11] | 5/5 | 11/14 | 8/8 |
+| K=5 llm | [108,79,63,63,44] | 5/5 | 8/14 | 8/8 |
+
+- 전수보존: 4 combo 모두 357/357, forced_demote=0. exp7 run3의 통째 누락(이순신·임진왜란·거북선) 재발 없음.
+- 두 메트릭이 비대칭. should_demote는 K=5가 8/8로 깔끔(K=10은 `조선`을 잘못 keep으로 분류해 7/8), should_show는 K=10이 13/14로 우세. K=10이 더 낫다고 단정하기 어려움.
+- K=10에선 embedding과 llm 두 merge 전략이 거의 같은 결과(방 이름·구성). k_base 12에서 K 10으로 가는 merge가 트리비얼해서 그렇다.
+- K=5에선 두 전략이 명확히 다르다: embedding은 측우기·자격루·앙부일구·혼천의를 한 방(`조선 제도·인물·문서·지명`)의 keep으로 살리고, llm은 같은 4종을 `조선 의병과 지도자`로 묶고 keep으로 안 살림. 라벨이 좁아지면 그 안의 도구류가 demote로 밀려난다.
+- merge_to_k의 embedding 전략은 클러스터 centroid 위 ward linkage. 초기 greedy nearest-centroid는 K=5에서 [285,23,20,18,11]로 체이닝됐고, ward-on-centroids로 바꿔 [116,106,106,18,11]까지 회복.
+- 회귀 1건: K=10에서 이성계가 demote로 분류됨(exp7은 3런 모두 keep). 새 프롬프트가 "콕 집어 외울 대상" 기준을 더 좁게 잡으면서 건국자 같은 큰 분류가 demote로 밀린 영향으로 추정 → 안정성은 exp12에서 추적.
+- 비용: 4 combo + 캐시 rubric 1회 = 총 33회 호출(rubric 1 + LLM-merge 2 + Stage B 4×K), 실측 시간 합 ~105초.
+
+**그래서**: 결정적 파이프라인 + LLM 선별기를 한 줄로 잇는 도메인 무관 모듈이 동작. 누락 사고는 keep-only 프롬프트 + set-difference로 구조적으로 봉쇄. 4 combo 중 K=10이 should_show에서, K=5가 should_demote에서 우세해 한쪽으로 확정 못함. 이성계 demote 회귀는 단일 패스 흔들림인지 패스 간 일관 결과인지 측정 필요 → exp12. 자세한 표·산출은 `results/exp10_room_gen/report.md`, `results/rooms/`.
+
 ## exp11: K(방 수) 자동 결정 신호 찾기
 
 **질문**: K(방 수)는 사람이 정해야 하는 값이었다. 실루엣·엘보 같은 일반 지표 대신 3D 인테리어 제작 제약(방 ≤10, 방 크기 균형)에 맞춰 자동으로 고를 신호가 있나? 그러려면 K가 결과 모양을 어떻게 바꾸는지부터 본다.
