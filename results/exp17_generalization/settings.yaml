@@ -1,0 +1,144 @@
+### exp17 generalization: same Azure/model stack as repro_run3. Corpus + entity
+### types swapped; community_reports/extract_covariates dropped. Project root is
+### this directory; paths below are relative to it.
+
+completion_models:
+  default_completion_model:
+    model_provider: azure
+    model: gpt-4.1-mini
+    azure_deployment_name: gpt-4.1-mini
+    api_base: ${GRAPHRAG_API_BASE}
+    api_version: 2024-12-01-preview
+    auth_method: api_key
+    api_key: ${GRAPHRAG_API_KEY}
+    retry:
+      type: exponential_backoff
+    rate_limit:
+      type: sliding_window
+      requests_per_period: 60
+      tokens_per_period: 100000
+      period_in_seconds: 60
+
+embedding_models:
+  default_embedding_model:
+    model_provider: azure
+    model: text-embedding-3-small
+    azure_deployment_name: text-embedding-3-small
+    api_base: ${GRAPHRAG_API_BASE}
+    api_version: 2024-12-01-preview
+    auth_method: api_key
+    api_key: ${GRAPHRAG_API_KEY}
+    retry:
+      type: exponential_backoff
+
+input:
+  type: text
+
+chunking:
+  type: tokens
+  size: 1200
+  overlap: 100
+  encoding_model: o200k_base
+
+input_storage:
+  type: file
+  base_dir: "../../input/ai_gyoan"
+
+output_storage:
+  type: file
+  base_dir: "output"
+
+reporting:
+  type: file
+  base_dir: "logs"
+
+cache:
+  type: json
+  storage:
+    type: file
+    base_dir: "cache"
+
+vector_store:
+  type: lancedb
+  db_uri: "output/lancedb"
+  index_schema:
+    entity_description:
+      index_name: entity_description
+      vector_size: 1536
+
+### Workflow allowlist: drop create_community_reports (skipped per doctrine) and
+### extract_covariates (claims disabled). Keep create_communities to preserve DAG.
+workflows:
+  - load_input_documents
+  - create_base_text_units
+  - create_final_documents
+  - extract_graph
+  - finalize_graph
+  - create_communities
+  - create_final_text_units
+  - generate_text_embeddings
+
+embed_text:
+  embedding_model_id: default_embedding_model
+  names:
+    - entity_description
+
+### Local prompts folder, isolated from baseline (<REPO>/prompts/). Both
+### extract_graph and summarize_descriptions point here so prompt-tune cannot
+### overwrite baseline.
+extract_graph:
+  completion_model_id: default_completion_model
+  prompt: "prompts/extract_graph.txt"
+  entity_types: [개념, 기법, 분포, 지표, 사례, 인물]
+  max_gleanings: 1
+
+summarize_descriptions:
+  completion_model_id: default_completion_model
+  prompt: "prompts/summarize_descriptions.txt"
+  max_length: 500
+
+cluster_graph:
+  max_cluster_size: 15
+  use_lcc: false
+
+extract_claims:
+  enabled: false
+  completion_model_id: default_completion_model
+  prompt: "../../prompts/extract_claims.txt"
+  description: "Any claims or facts that could be relevant to information discovery."
+  max_gleanings: 1
+
+### community_reports workflow is excluded above; leave path pointing at baseline
+### so prompt-tune doesn't touch it (no-op).
+community_reports:
+  completion_model_id: default_completion_model
+  graph_prompt: "../../prompts/community_report_graph.txt"
+  text_prompt: "../../prompts/community_report_text.txt"
+  max_length: 2000
+  max_input_length: 8000
+
+snapshots:
+  graphml: false
+  embeddings: false
+
+local_search:
+  completion_model_id: default_completion_model
+  embedding_model_id: default_embedding_model
+  prompt: "../../prompts/local_search_system_prompt.txt"
+
+global_search:
+  completion_model_id: default_completion_model
+  map_prompt: "../../prompts/global_search_map_system_prompt.txt"
+  reduce_prompt: "../../prompts/global_search_reduce_system_prompt.txt"
+  knowledge_prompt: "../../prompts/global_search_knowledge_system_prompt.txt"
+
+drift_search:
+  completion_model_id: default_completion_model
+  embedding_model_id: default_embedding_model
+  prompt: "../../prompts/drift_search_system_prompt.txt"
+  reduce_prompt: "../../prompts/drift_search_reduce_prompt.txt"
+
+basic_search:
+  completion_model_id: default_completion_model
+  embedding_model_id: default_embedding_model
+  prompt: "../../prompts/basic_search_system_prompt.txt"

@@ -1,0 +1,331 @@
+
+-Goal-
+Given a text document that is potentially relevant to this activity, first identify all entities needed from the text in order to capture the information and ideas in the text.
+Next, report all relationships among the identified entities.
+
+-Steps-
+1. Identify all entities. For each identified entity, extract the following information:
+- entity_name: Name of the entity, capitalized
+- entity_type: Suggest several labels or categories for the entity. The categories should not be specific, but should be as general as possible.
+- entity_description: Comprehensive description of the entity's attributes and activities
+Format each entity as ("entity"<|><entity_name><|><entity_type><|><entity_description>)
+
+2. From the entities identified in step 1, identify all pairs of (source_entity, target_entity) that are *clearly related* to each other.
+For each pair of related entities, extract the following information:
+- source_entity: name of the source entity, as identified in step 1
+- target_entity: name of the target entity, as identified in step 1
+- relationship_description: explanation as to why you think the source entity and the target entity are related to each other
+- relationship_strength: a numeric score indicating strength of the relationship between the source entity and target entity
+Format each relationship as ("relationship"<|><source_entity><|><target_entity><|><relationship_description><|><relationship_strength>)
+
+3. Return output in Korean as a single list of all the entities and relationships identified in steps 1 and 2. Use **##** as the list delimiter.
+
+4. If you have to translate into Korean, just translate the descriptions, nothing else!
+
+5. When finished, output <|COMPLETE|>.
+
+-Examples-
+######################
+
+Example 1:
+
+text:
+통계 기초
+
+강명호
+
+통계의 기본 개념
+
+추정과 가설검정 상관분석
+
+통계학은 데이터를 수집, 분석, 해석 및 표현하는 과학으로서, 이를 통해 불확실성을 다루고 데이터 기반 결정을 지원하는 학문임
+
+데이터로부터 유의미한 정보 도출
+
+현상 및 패턴 이해
+
+연관성 파악
+
+예측 및 추론
+
+불확실성의 해소
+
+의사결정 지원
+
+중요성
+
+데이터를 수치화하여 신뢰성을 부여함
+
+의사 결정을 위한 근거 자료를 제시함
+
+현상을 분석하여 실증 자료를 제시함
+
+통계학은 데이터를 수집, 분석, 해석 및 표현하는 과학으로서, 이를 통해 불확실성을 다루고 데이터 기반 결정을 지원하는 학문임
+
+정의 많은 현상과 사실들을 관찰하고 이를 수치화하여
+
+용어 및 개념 : 모집단과 표본
+
+전수조사 : 모집단 전체를 조사하는 방법
+
+표본조사 : 표본을 추출하여 현상을 관측, 자료 수집하는 방법
+
+확률적 표본 추출 (Probability sampling method)
+
+동일한 확률 하에서 표본을 추출하는 방법
+
+무작위 표본 추출
+
+난수표 등을 따라 모집단에서 표본을 기계적으로 추출하는 방법
+
+체계적 표본 추출
+
+모집단에서 특정한 규칙으로 표본을 추출하는 방법
+
+층화 표본 추출
+
+모집단을 특정 특성에 따라 여러 하위 집단으로 구분한 후, 집단의 규모에 비례하도록 추출하는 방법
+
+비확률적 표본 추출 (Non-probability sampling method)
+
+조사자가 자의로 표본을 추출하거나 조사 대상이 자발적으로 표본에 참여하는 방법
+
+통계의 기본 개념
+
+추정과 가설검정 상관분석
+
+중심경향 측정
+
+중심경향성(Central Tendency) :
+
+표본 내의 원소들의 중심을 나타내는 지표.
+
+평균, 중앙값, 최빈값 등 다양한 방식으로 표현됨
+
+평균(Mean) : 모든 값을 더한 후 데이터의 개수로 나눈 값
+
+장점: 데이터를 통합하여 하나의 대표값으로 표현.
+
+단점: 이상치(outliers)에 민감하여 극단적인 값에 영향을 받음.
+
+연속적이고 정규 분포를 따르는 데이터에서 대표값을 구할 때 유용
+
+{{1, 2, 3, 4, 5}}의 평균은 (1+2+3+4+5) / 5 = 3.
+
+중심경향 측정
+
+중심경항성(Central Tendency) :
+
+표본 내의 원소들의 중심을 나타내는 지표.
+
+평균, 중앙값, 최빈값 등 다양한 방식으로 표현됨
+
+중앙값 (Median) : 표본 내의 원소들을 크기 순서대로 나열했을 때 중앙에 위치한 값
+
+장점: 이상치의 영향을 덜 받음.
+
+단점: 표본의 크기가 클 경우 정렬에 많은 시간 소요.
+
+{{1, 2, 3, 4, (짝수 개의 데이터인 경우, 두 중앙값의 평균을
+
+비대칭적이거나 이상치가 있을 때 사용
+
+중심경향 측정
+
+중심경항성(Central Tendency) :
+
+표본 내의 원소들의 중심을 나타내는 지표
+------------------------
+output:
+("entity"<|>중심경향성<|>CONCEPT, STATISTICAL MEASURE<|>표본 내의 원소들의 중심을 나타내는 지표로서, 평균, 중앙값, 최빈값 등 다양한 방식으로 표현됨. 데이터의 중심 위치를 나타내며 통계 분석에서 중요한 역할을 함)
+##
+("entity"<|>평균<|>STATISTICAL MEASURE, CENTRAL TENDENCY<|>모든 값을 더한 후 데이터의 개수로 나눈 값으로, 데이터를 통합하여 하나의 대표값으로 표현함. 연속적이고 정규 분포를 따르는 데이터에서 유용하지만 이상치에 민감함)
+##
+("entity"<|>중앙값<|>STATISTICAL MEASURE, CENTRAL TENDENCY<|>표본 내의 원소들을 크기 순서대로 나열했을 때 중앙에 위치한 값. 이상치의 영향을 덜 받으며 비대칭적이거나 이상치가 있을 때 사용됨)
+##
+("entity"<|>최빈값<|>STATISTICAL MEASURE, CENTRAL TENDENCY<|>표본에서 가장 자주 나타나는 값으로, 표본 내 원소들의 빈도 분포를 잘 나타냄. 범주형 데이터에서 유용하지만, 최빈값이 없거나 복수 존재할 수 있음)
+##
+("entity"<|>가중평균<|>STATISTICAL MEASURE, CENTRAL TENDENCY<|>표본의 원소들에 가중치를 부여하여 계산한 평균. 모든 원소들의 값이 동일한 중요도를 가지지 않을 때 사용됨)
+##
+("entity"<|>조화평균<|>STATISTICAL MEASURE, CENTRAL TENDENCY<|>원소들의 값들의 역수의 평균을 다시 역수로 변환하여 계산한 값으로, 주로 비율이나 속도 데이터에서 사용됨)
+##
+("entity"<|>산포도<|>CONCEPT, STATISTICAL MEASURE<|>데이터의 변동성을 파악하는 데 중요한 역할을 하는 측정 방법들의 총칭으로, 데이터 값들이 얼마나 흩어져 있는지 나타냄)
+##
+("entity"<|>범위<|>STATISTICAL MEASURE, DISPERSION<|>표본 집합에서 가장 큰 값과 가장 작은 값의 차이를 나타내는 산포도 척도. 많이 사용되나 극단값에 민감함)
+##
+("entity"<|>분산<|>STATISTICAL MEASURE, DISPERSION<|>데이터 값들이 평균에서 얼마나 떨어져 있는지를 나타내는 지표로, 각 데이터 값에서 평균을 뺀 값의 제곱의 평균을 계산함)
+##
+("entity"<|>표준편차<|>STATISTICAL MEASURE, DISPERSION<|>분산의 제곱근으로, 데이터가 평균에서 얼마나 떨어져 있는지에 대한 표준적인 거리를 나타냄)
+##
+("entity"<|>사분위수 범위 (IQR)<|>STATISTICAL MEASURE, DISPERSION<|>데이터의 중앙 50%가 포함된 범위로, 제3사분위수(Q3)와 제1사분위수(Q1)의 차이로 계산됨)
+##
+("relationship"<|>중심경향성<|>평균<|>평균은 중심경향성의 한 종류로, 데이터 중심을 대표하는 통계적 척도임<|>10)
+##
+("relationship"<|>중심경향성<|>중앙값<|>중앙값은 중심경향성의 한 종류로, 데이터 중심 위치를 나타내는 지표임<|>10)
+##
+("relationship"<|>중심경향성<|>최빈값<|>최빈값은 중심경향성의 한 종류이며, 데이터에서 가장 빈번한 값을 나타냄<|>10)
+##
+("relationship"<|>중심경향성<|>가중평균<|>가중평균은 중심경향성의 변형된 형태로, 각 값에 가중치를 부여해 계산함<|>8)
+##
+("relationship"<|>중심경향성<|>조화평균<|>조화평균은 중심경향성의 한 변형이며, 비율이나 속도 데이터를 대표하는 지표임<|>8)
+##
+("relationship"<|>산포도<|>범위<|>범위는 산포도를 측정하는 방법 중 하나로 데이터 변동성을 나타냄<|>10)
+##
+("relationship"<|>산포도<|>분산<|>분산은 산포도를 측정하는 지표로, 데이터가 평균에서 떨어진 정도를 나타냄<|>10)
+##
+("relationship"<|>산포도<|>표준편차<|>표준편차는 분산의 제곱근으로 산포도를 나타내는 주요한 통계척도임<|>10)
+##
+("relationship"<|>산포도<|>사분위수 범위 (IQR)<|>사분위수 범위는 산포도를 측정하는 지표로 데이터의 중앙 50% 범위를 나타냄<|>10)
+<|COMPLETE|>
+#############################
+
+
+Example 2:
+
+text:
+, 2, 3, 4, (짝수 개의 데이터인 경우, 두 중앙값의 평균을
+
+비대칭적이거나 이상치가 있을 때 사용
+
+중심경향 측정
+
+중심경항성(Central Tendency) :
+
+표본 내의 원소들의 중심을 나타내는 지표.
+
+평균, 중앙값, 최빈값 등 다양한 방식으로 표현됨
+
+최빈값 (Mode) : 표본에서 가장 자주 나타나는 값.
+
+장점: 표본의 원소들의 빈도 분포를 잘 나타냄.
+
+단점: 표본 내에 최빈값이 존재하지 않을 수 있으며, 복수 개의 최빈값이 있을 수도 있음.
+
+{{1, 2, 2, 3, 4}}의 최빈값은 2.
+
+범주형 데이터에서 빈도가 가장 높은 값을 찾을 때 유용
+
+중심경향 측정
+
+중심경항성(Central Tendency) :
+
+표본 내의 원소들의 중심을 나타내는 지표.
+
+평균, 중앙값, 최빈값 등 다양한 방식으로 표현됨
+
+가중평균 (Weighted Mean) : 표본의 원소들의 값에 가중치를 부여하여 계산한 평균.
+
+모든 원소들의 값이 동일한 중요도를 가지지 않을 때 .
+
+: {{1, 2, 3}}와 각각의 가중치 {{0.1, 0.3, 0.6}}이 있을 때 가중평균은 (1\*0.1 + 2\*0.3 + 3*0.6)
+
+: 5천원짜리 상품 8개와 9천원짜리 상품 2개를 구입했을 때 평균 구매값은
+
+중심경향 측정
+
+중심경항성(Central Tendency) :
+
+표본 내의 원소들의 중심을 나타내는 지표.
+
+평균, 중앙값, 최빈값 등 다양한 방식으로 표현됨
+
+조화평균 (Harmonic Mean) : 원소들의 값들의 역수의 평균을 다시 역수로 변환하여 계산.
+
+주로 비율이나 속도 데이터에서 사용.
+
+산포도 측정
+
+산포도 (Measure of Dispersion) :
+
+통계에서 산포도를 측정하는 방법들은 데이터의 변동성을 파악하는 데 중요한 역할을 함
+
+범위(Range)
+
+표본 집합에서 가장 큰 값과 가장 작은 값의 차이.
+
+많이 사용되지만, 극단값(outlier)에 민감함.
+
+산포도 측정
+
+산포도 (Measure of Dispersion) :
+
+통계에서 산포도를 측정하는 방법들은 데이터의 변동성을 파악하는 데 중요한 역할을 함
+
+분산 (Variance)
+
+데이터 값들이 평균에서 얼마나 떨어져 있는지를 나타냄
+
+계산 방법: 각 데이터 값에서 평균을 뺀 값을 제곱한 후, 이 값들의 평균을 구함.
+
+산포도 (Measure of Dispersion) :
+
+통계에서 산포도를 측정하는 방법들은 데이터의 변동성을 파악하는 데 중요한
+
+표준편차(Standard Deviation)
+
+분산의 제곱근으로, 데이터가 평균에서 얼마나 떨어져 있는지에 대한 표준적인 거리를 나타냄.
+
+산포도 측정
+
+산포도 (Measure of Dispersion) :
+
+통계에서 산포도를 측정하는 방법들은 데이터의 변동성을 파악하는 데 중요한 역할을 함
+
+사분위수 범위(Interquartile Range, IQR)
+
+데이터의 중앙 50%가 포함된 범위로, Q3(3사분위수)와 Q1(1사분위수)의 차이
+
+
+------------------------
+output:
+("entity"<|>중심경향성(CENTRAL TENDENCY)<|>개념, 통계지표<|>표본 내의 원소들의 중심을 나타내는 지표로서 평균, 중앙값, 최빈값 등 다양한 방식으로 표현됨)
+##
+("entity"<|>평균(MEAN)<|>통계지표, 중심경향 측정<|>모든 값을 더한 후 데이터 개수로 나눈 값. 데이터를 통합하여 하나의 대표값으로 표현하며 이상치에 민감함. 연속적이고 정규 분포를 따르는 데이터에 유용함)
+##
+("entity"<|>중앙값(MEDIAN)<|>통계지표, 중심경향 측정<|>표본 내 원소들을 크기순으로 나열했을 때 중앙에 위치한 값. 이상치의 영향을 덜 받으며, 비대칭 데이터나 이상치가 있을 때 사용됨)
+##
+("entity"<|>최빈값(MODE)<|>통계지표, 중심경향 측정<|>표본에서 가장 자주 나타나는 값. 표본 내 원소들의 빈도 분포를 잘 나타내며, 범주형 데이터에서 빈도가 가장 높은 값을 찾을 때 유용함)
+##
+("entity"<|>가중평균(WEIGHTED MEAN)<|>통계지표, 중심경향 측정<|>표본 원소들의 값에 각기 다른 가중치를 부여하여 계산한 평균. 모든 원소들이 동일한 중요도를 가지지 않을 때 사용됨)
+##
+("entity"<|>조화평균(HARMONIC MEAN)<|>통계지표, 중심경향 측정<|>원소들의 값들의 역수 평균을 다시 역수로 변환하여 계산. 주로 비율이나 속도 데이터에서 사용됨)
+##
+("entity"<|>산포도(MEASURE OF DISPERSION)<|>개념, 통계지표<|>데이터 변동성을 파악하는 데 중요한 역할을 하는 통계적 측정 방법들의 총칭)
+##
+("entity"<|>범위(RANGE)<|>통계지표, 산포도 측정<|>표본 집합에서 가장 큰 값과 가장 작은 값의 차이. 많이 사용되지만 극단값에 민감함)
+##
+("entity"<|>분산(VARIANCE)<|>통계지표, 산포도 측정<|>데이터가 평균에서 얼마나 떨어져 있는지를 나타내는 지표. 각 데이터 값에서 평균을 뺀 값을 제곱한 후 그 평균을 구해서 계산함)
+##
+("entity"<|>표준편차(STANDARD DEVIATION)<|>통계지표, 산포도 측정<|>분산의 제곱근으로, 데이터가 평균에서 얼마나 떨어져 있는지의 표준적인 거리를 나타냄)
+##
+("entity"<|>사분위수 범위(INTERQUARTILE RANGE, IQR)<|>통계지표, 산포도 측정<|>데이터의 중앙 50%가 포함된 범위. 3사분위수(Q3)와 1사분위수(Q1)의 차이로 계산됨)
+##
+("relationship"<|>평균(MEAN)<|>중심경향성(CENTRAL TENDENCY)<|>평균은 중심경향성을 나타내는 주요 지표 중 하나임<|>9)
+##
+("relationship"<|>중앙값(MEDIAN)<|>중심경향성(CENTRAL TENDENCY)<|>중앙값은 중심경향성의 또 다른 중요한 지표임<|>9)
+##
+("relationship"<|>최빈값(MODE)<|>중심경향성(CENTRAL TENDENCY)<|>최빈값도 중심경향성을 측정하는 중요한 지표임<|>9)
+##
+("relationship"<|>가중평균(WEIGHTED MEAN)<|>중심경향성(CENTRAL TENDENCY)<|>가중평균은 값에 가중치를 부여하여 중심경향성을 측정하는 방식임<|>8)
+##
+("relationship"<|>조화평균(HARMONIC MEAN)<|>중심경향성(CENTRAL TENDENCY)<|>조화평균은 중심경향성을 나타내는 특수한 형태의 평균임<|>7)
+##
+("relationship"<|>범위(RANGE)<|>산포도(MEASURE OF DISPERSION)<|>범위는 산포도를 측정하는 기본 지표임<|>9)
+##
+("relationship"<|>분산(VARIANCE)<|>산포도(MEASURE OF DISPERSION)<|>분산은 데이터 산포도를 정량적으로 평가하는 지표임<|>9)
+##
+("relationship"<|>표준편차(STANDARD DEVIATION)<|>산포도(MEASURE OF DISPERSION)<|>표준편차는 분산으로부터 파생되어 산포도를 표현함<|>9)
+##
+("relationship"<|>사분위수 범위(INTERQUARTILE RANGE, IQR)<|>산포도(MEASURE OF DISPERSION)<|>사분위수 범위는 중앙 50% 데이터의 산포를 나타내는 산포도 지표임<|>8)
+##
+("relationship"<|>표준편차(STANDARD DEVIATION)<|>분산(VARIANCE)<|>표준편차는 분산의 제곱근으로 분산과 직접적인 수학적 관계가 있음<|>10)
+<|COMPLETE|>
+#############################
+
+
+
+-Real Data-
+######################
+text: {input_text}
+######################
+output:

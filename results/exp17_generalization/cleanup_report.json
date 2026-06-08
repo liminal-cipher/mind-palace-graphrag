@@ -1,0 +1,29 @@
+{
+  "source": "input/ai_slides/AI_교안.txt",
+  "output": "input/ai_gyoan/AI_교안_정제.txt",
+  "before": {
+    "chars": 9603,
+    "lines": 648,
+    "blank_lines": 323
+  },
+  "after": {
+    "chars": 9604,
+    "lines": 648,
+    "blank_lines": 324
+  },
+  "delta_chars": 1,
+  "operations": [
+    "strip BOM",
+    "normalize CRLF/CR to LF",
+    "rstrip whitespace per line",
+    "collapse >=2 blank lines to 1",
+    "drop trailing blank lines",
+    "ensure single terminal newline"
+  ],
+  "skipped": {
+    "hyphen_line_break_repair": "no candidates detected",
+    "page_number_strip": "no digit-only lines detected",
+    "consecutive_dup_collapse": "no consecutive duplicate lines detected",
+    "repeated_header_dedup": "preserved (encode slide boundaries)"
+  }
+}
