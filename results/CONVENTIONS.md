@@ -1,10 +1,11 @@
 # 레포 컨벤션
 
-향후 작업에 적용할 규칙. 과거(exp1~9, snapshots 명명 등)는 grandfather: 그대로 두고 새로 만드는 것부터 따른다.
+향후 작업에 적용할 규칙. 과거(코드 없는 exp1~4 보고서, snapshots 내부 명명, `results/reports/` 번호)는 grandfather: 그대로 두고 새로 만드는 것부터 따른다.
 
 ## 실험 디렉토리
 
-- 위치: `results/exp{N}_{slug}/` (예: `results/exp10_<slug>/`). slug는 짧고 영문 소문자, 단어 사이는 `_`.
+- 위치: `results/exp{NN}_{slug}/` (예: `results/exp10_<slug>/`, `results/exp11_k_sweep/`). slug는 짧고 영문 소문자, 단어 사이는 `_`.
+- 번호는 두 자리 0패딩(`exp05`, `exp09`, `exp10`). 신규 디렉토리는 항상 패딩, 사전 정렬과 한 자리/두 자리 혼재 방지.
 - 안에 코드·산출·리포트가 같이 산다.
   - 코드: `*.py`. 진입점이 하나면 `probe.py`, 여러 단계면 의미 있는 이름(`build_inputs.py`, `run_full.py`, `eval_run.py` 등).
   - 리포트: `report.md` (단독 결과) 또는 `comparison.md` (둘 이상 비교).
@@ -21,6 +22,7 @@
 - 위치: `results/snapshots/<name>/`. 작아서(개당 수 MB) repo에 같이 커밋한다. 재현은 재인덱싱이 아니라 이 스냅샷을 로드해서.
 - 새 이름은 `<descriptor>_run<N>` 권장 (예: `pagesplit_run1`, `semantic_run2`). 과거 명명(`repro_runN`, `snap_maxN`, `exp{N}_{var}`)은 grandfather라 그대로 둔다.
 - 한 스냅샷 = entities/relationships/communities/community_reports parquet + lancedb/ 한 묶음. 부분만 떠 있으면 안 됨.
+- 코드(`Path(...)`)에서 참조하거나 report.md에서 인용된 스냅샷만 커밋. 일회성 산출은 로컬에서만 보관.
 
 ## 입력 자료
 
@@ -36,8 +38,8 @@
 
 ## 커밋
 
-- 영어 conventional (`feat(scope): ...`, `fix(scope): ...`, `chore: ...`, `docs(scope): ...`).
-- 스코프는 실험 ID 또는 모듈(`exp9`, `exp5`, `index`, `eval`).
+- 영어 conventional (`feat(scope): ...`, `fix(scope): ...`, `chore: ...`, `docs(scope): ...`, `test: ...`, `refactor: ...`).
+- 스코프는 실험 ID 또는 모듈(`exp09`, `exp05`, `index`, `eval`). 두 자리 패딩 사용.
 - 메시지에 AI 도구·세션·`Claude`/`Co-Authored-By: Claude` 같은 흔적 금지.
 - push는 사용자 명시 지시 받기 전까지 안 함.
 - 한 단계 = 한 커밋. 실패한 단계는 커밋하지 않고 멈춰서 보고.
