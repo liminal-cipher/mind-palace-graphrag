@@ -7,7 +7,7 @@
 ## 사전 준비 (한 번)
 
 - `.venv` 활성화 (`.venv\Scripts\activate`). `requirements.txt` 설치.
-- `.env`에 `GRAPHRAG_API_KEY`, `GRAPHRAG_API_BASE` 둘 다 채움.
+- `.env`에 `GRAPHRAG_API_KEY`, `GRAPHRAG_API_BASE` 둘 다 채움. Azure 리소스에 deployment 이름이 정확히 `gpt-4.1-mini`로 있어야 함(`model=`이 Azure deployment 이름에 매핑됨, exp10/exp12/exp14 모두 이 deployment 이름이 코드에 하드코딩). api_version은 `2024-12-01-preview` 고정(`results/exp10_room_gen/room_gen.py`의 `make_azure_client`에 박힘). 다른 deployment 이름을 쓰는 별도 Azure 리소스라면 LLM 단계가 404로 막힐 수 있음(현재 env화 안 됨, 필요시 추후 과제).
 - CWD는 항상 repo 루트(`C:/Users/AJourney/Desktop/graphrag/`). 모든 .py가 그 기준으로 경로 하드코딩.
 - exp5~10 모두 입력은 `results/snapshots/repro_run3/` (357 entities, level 0 = 40방, `max=15`). 절대 건드리지 말 것.
 - baseline(`output/`, max=10, 385 ent)과 repro_run3(snapshot, max=15)는 서로 다른 런이다.
@@ -154,13 +154,19 @@ python results/exp13_generic_filter/analyze_filter.py              # LLM 없음.
 
 overlap200 아이디어의 step-3(LLM이 GraphRAG 커뮤니티+엔티티를 받아 학습용 방을 설계)에 대한 충실 재구현 + 같은 frozen 입력에 3런 일치도 측정. 팀원 최종 코드와 동일 동작은 보장 안 함, 접근 방식 재현성만. 모델 `gpt-4.1-mini`, temp=0. 입력은 `results/snapshots/repro_run3/`의 level-0 커뮤니티(40) + community report + 엔티티 357.
 
+**결과만 보려면(실행 불필요)**: repo pull 후 `results/exp14_overlap200_stability/report.md`를 열면 된다. 리포트는 사람이 쓴 요약이고 git에 이미 트래킹돼 있어 돌리지 않아도 보임. 함께 트래킹돼 있어 같이 보면 좋은 산출: `run{1,2,3}.json`(3런 원본), `agreement.json`(자카드·앵커·이성계 stability 집계), `frozen_input.json`(3런 공통 입력).
+
+**직접 돌리려면**: Azure(`gpt-4.1-mini` deployment) 호출 필요. 없으면 위 "결과만 보려면" 경로로. "사전 준비" 완료 후 아래 3 명령을 **순서대로** 실행해 새 산출을 만든다(이전 산출은 덮어쓴다).
+
 ```
 .venv/Scripts/python.exe results/exp14_overlap200_stability/build_input.py     # LLM 없음. snapshot → frozen_input.json (3런 공통 입력 고정).
-.venv/Scripts/python.exe results/exp14_overlap200_stability/run_design.py --n 3 # LLM $ 한 런 = 1 호출, 3런 = 3 호출. 합 prompt~91K + completion~43K 토큰, 런당 ~2분.
-.venv/Scripts/python.exe results/exp14_overlap200_stability/analyze.py         # LLM 없음. 자카드 greedy 매칭 + 앵커·이성계 stability.
+.venv/Scripts/python.exe results/exp14_overlap200_stability/run_design.py --n 3 # LLM $ 한 런 = 1 호출, 3런 = 3 호출. 합 prompt~91K + completion~43K 토큰, 런당 ~2분 (총 ~6분).
+.venv/Scripts/python.exe results/exp14_overlap200_stability/analyze.py         # LLM 없음. 자카드 greedy 매칭 + 앵커·이성계 stability → agreement.json + 콘솔 일치도 표.
 ```
 
-`run_design.py`는 부분 재실행 옵션 있음: `--n 1 --start 3`이면 run3만 다시 돈다. 산출: `results/exp14_overlap200_stability/frozen_input.json`, `run{1,2,3}.json`, `agreement.json`, 리포트 `report.md`. 재실행 없이 산출만 확인하려면 커밋된 JSON을 그대로 읽으면 됨.
+새로 만들어지는 산출: `results/exp14_overlap200_stability/`의 `frozen_input.json`, `run{1,2,3}.json`, `agreement.json` + `analyze.py` 콘솔 표(일치도 aggregate/pairwise + 앵커 요약 + 이성계 per-run). `report.md`는 사람이 쓴 요약이라 자동으로 갱신되지 않음(필요시 손으로 갱신).
+
+부분 재실행: `run_design.py --n 1 --start 3`이면 run3만 다시 돈다(전후 `analyze.py`로 일치도 재계산).
 
 ## 분석 보조(루트)
 
