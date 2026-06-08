@@ -1,0 +1,1477 @@
+{
+  "rooms": [
+    {
+      "id": 0,
+      "title": "조선 건국과 초기 중앙집권 체계",
+      "flow_note": "조선 건국과 초기 왕권 강화, 관료제 및 법전 정비를 중심으로"
+    },
+    {
+      "id": 1,
+      "title": "조선 초기 군사와 국방 체계",
+      "flow_note": "세종 시대 국방 강화와 북방 개척, 군사 조직과 제도"
+    },
+    {
+      "id": 2,
+      "title": "임진왜란과 조선의 군사 대응",
+      "flow_note": "임진왜란과 정유재란, 주요 전투와 인물, 군사 전략"
+    },
+    {
+      "id": 3,
+      "title": "조선 중기 정치 권력과 붕당 형성",
+      "flow_note": "세조부터 성종까지 왕권 강화와 사림·훈구 세력 대립"
+    },
+    {
+      "id": 4,
+      "title": "조선 후기 붕당 정치와 왕권 강화",
+      "flow_note": "영조와 정조 시대 붕당 정치, 탕평책과 사회·경제 개혁"
+    },
+    {
+      "id": 5,
+      "title": "조선 후기 실학과 사회·경제 변화",
+      "flow_note": "실학자와 학파, 경제 발전, 국학 연구, 지리학과 한글 연구"
+    },
+    {
+      "id": 6,
+      "title": "조선 사회와 경제 기반: 농업과 지방 행정",
+      "flow_note": "농업 기술, 농민 계층, 지방 행정과 교육, 교통과 시장"
+    }
+  ],
+  "assignments": {
+    "조선": {
+      "room_id": 0,
+      "visibility": "core"
+    },
+    "이성계": {
+      "room_id": 0,
+      "visibility": "core"
+    },
+    "정도전": {
+      "room_id": 0,
+      "visibility": "core"
+    },
+    "조준": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "우왕": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "최영": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "과전법": {
+      "room_id": 0,
+      "visibility": "supporting"
+    },
+    "정몽주": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "한양": {
+      "room_id": 0,
+      "visibility": "background"
+    },
+    "태조": {
+      "room_id": 0,
+      "visibility": "core"
+    },
+    "방원 (태종)": {
+      "room_id": 0,
+      "visibility": "core"
+    },
+    "정종": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "호패법": {
+      "room_id": 0,
+      "visibility": "supporting"
+    },
+    "세종": {
+      "room_id": 1,
+      "visibility": "core"
+    },
+    "집현전": {
+      "room_id": 1,
+      "visibility": "supporting"
+    },
+    "단종": {
+      "room_id": 3,
+      "visibility": "core"
+    },
+    "세조": {
+      "room_id": 3,
+      "visibility": "core"
+    },
+    "성삼문": {
+      "room_id": 3,
+      "visibility": "search_only"
+    },
+    "공신": {
+      "room_id": 3,
+      "visibility": "search_only"
+    },
+    "직전법": {
+      "room_id": 3,
+      "visibility": "search_only"
+    },
+    "함경도": {
+      "room_id": 3,
+      "visibility": "background"
+    },
+    "성종": {
+      "room_id": 3,
+      "visibility": "core"
+    },
+    "경국대전": {
+      "room_id": 3,
+      "visibility": "supporting"
+    },
+    "성리학": {
+      "room_id": 3,
+      "visibility": "core"
+    },
+    "덕치주의": {
+      "room_id": 3,
+      "visibility": "search_only"
+    },
+    "백성": {
+      "room_id": 6,
+      "visibility": "background"
+    },
+    "농업": {
+      "room_id": 6,
+      "visibility": "core"
+    },
+    "군사권": {
+      "room_id": 1,
+      "visibility": "search_only"
+    },
+    "군사력": {
+      "room_id": 1,
+      "visibility": "supporting"
+    },
+    "국가 기틀": {
+      "room_id": 0,
+      "visibility": "background"
+    },
+    "전국": {
+      "room_id": 0,
+      "visibility": "background"
+    },
+    "문화": {
+      "room_id": 0,
+      "visibility": "background"
+    },
+    "반란": {
+      "room_id": 3,
+      "visibility": "search_only"
+    },
+    "사병": {
+      "room_id": 1,
+      "visibility": "search_only"
+    },
+    "이방원": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "명": {
+      "room_id": 0,
+      "visibility": "background"
+    },
+    "충청도": {
+      "room_id": 3,
+      "visibility": "background"
+    },
+    "전라도": {
+      "room_id": 3,
+      "visibility": "background"
+    },
+    "경상도": {
+      "room_id": 3,
+      "visibility": "background"
+    },
+    "평안도": {
+      "room_id": 3,
+      "visibility": "background"
+    },
+    "압록강": {
+      "room_id": 3,
+      "visibility": "background"
+    },
+    "두만강": {
+      "room_id": 3,
+      "visibility": "background"
+    },
+    "여진족": {
+      "room_id": 1,
+      "visibility": "core"
+    },
+    "최윤덕": {
+      "room_id": 1,
+      "visibility": "core"
+    },
+    "김종서": {
+      "room_id": 1,
+      "visibility": "core"
+    },
+    "4군": {
+      "room_id": 1,
+      "visibility": "supporting"
+    },
+    "6진": {
+      "room_id": 1,
+      "visibility": "supporting"
+    },
+    "조선 수군": {
+      "room_id": 1,
+      "visibility": "core"
+    },
+    "왜구": {
+      "room_id": 1,
+      "visibility": "search_only"
+    },
+    "쓰시마 섬": {
+      "room_id": 1,
+      "visibility": "search_only"
+    },
+    "일본": {
+      "room_id": 2,
+      "visibility": "background"
+    },
+    "제포(진해)": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "부산포": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "염포(울산)": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "류큐": {
+      "room_id": 0,
+      "visibility": "background"
+    },
+    "시암(타이)": {
+      "room_id": 0,
+      "visibility": "background"
+    },
+    "자와(자바)": {
+      "room_id": 0,
+      "visibility": "background"
+    },
+    "의정부": {
+      "room_id": 0,
+      "visibility": "supporting"
+    },
+    "6조": {
+      "room_id": 0,
+      "visibility": "supporting"
+    },
+    "판서": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "사간원": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "사헌부": {
+      "room_id": 4,
+      "visibility": "supporting"
+    },
+    "홍문관": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "승정원": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "의금부": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "춘추관": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "성균관": {
+      "room_id": 6,
+      "visibility": "supporting"
+    },
+    "한성부": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "삼사": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "전국 8도": {
+      "room_id": 6,
+      "visibility": "background"
+    },
+    "군·현": {
+      "room_id": 6,
+      "visibility": "background"
+    },
+    "수령": {
+      "room_id": 6,
+      "visibility": "core"
+    },
+    "향리": {
+      "room_id": 6,
+      "visibility": "supporting"
+    },
+    "6방": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "유향소(향청)": {
+      "room_id": 6,
+      "visibility": "core"
+    },
+    "백성들": {
+      "room_id": 3,
+      "visibility": "background"
+    },
+    "군량미 비축": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "대외 관계": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "군사 훈련": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "교역": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "유향소": {
+      "room_id": 6,
+      "visibility": "core"
+    },
+    "향회": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "지방 양반": {
+      "room_id": 6,
+      "visibility": "supporting"
+    },
+    "신문고": {
+      "room_id": 6,
+      "visibility": "supporting"
+    },
+    "왕": {
+      "room_id": 0,
+      "visibility": "core"
+    },
+    "교육 기관": {
+      "room_id": 6,
+      "visibility": "supporting"
+    },
+    "서당": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "향교": {
+      "room_id": 6,
+      "visibility": "supporting"
+    },
+    "사서": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "생원과 진사": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "과거 시험": {
+      "room_id": 6,
+      "visibility": "core"
+    },
+    "문과": {
+      "room_id": 6,
+      "visibility": "supporting"
+    },
+    "무과": {
+      "room_id": 6,
+      "visibility": "supporting"
+    },
+    "잡과": {
+      "room_id": 6,
+      "visibility": "supporting"
+    },
+    "문음": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "천거": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "군역 제도": {
+      "room_id": 1,
+      "visibility": "core"
+    },
+    "서울 5위": {
+      "room_id": 1,
+      "visibility": "supporting"
+    },
+    "병마절도사": {
+      "room_id": 1,
+      "visibility": "supporting"
+    },
+    "수군절도사": {
+      "room_id": 1,
+      "visibility": "supporting"
+    },
+    "양인 남자": {
+      "room_id": 1,
+      "visibility": "background"
+    },
+    "읍성": {
+      "room_id": 1,
+      "visibility": "supporting"
+    },
+    "중앙군": {
+      "room_id": 1,
+      "visibility": "supporting"
+    },
+    "지방군": {
+      "room_id": 1,
+      "visibility": "supporting"
+    },
+    "잡색군": {
+      "room_id": 1,
+      "visibility": "supporting"
+    },
+    "조운": {
+      "room_id": 6,
+      "visibility": "supporting"
+    },
+    "강창": {
+      "room_id": 6,
+      "visibility": "supporting"
+    },
+    "해창": {
+      "room_id": 6,
+      "visibility": "supporting"
+    },
+    "경창": {
+      "room_id": 6,
+      "visibility": "supporting"
+    },
+    "역원 제도": {
+      "room_id": 6,
+      "visibility": "core"
+    },
+    "역": {
+      "room_id": 6,
+      "visibility": "supporting"
+    },
+    "역졸": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "마패": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "원": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "장호원": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "사리원": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "봉수 제도": {
+      "room_id": 1,
+      "visibility": "search_only"
+    },
+    "세종 대왕": {
+      "room_id": 1,
+      "visibility": "core"
+    },
+    "훈민정음": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "상민": {
+      "room_id": 6,
+      "visibility": "background"
+    },
+    "중인": {
+      "room_id": 6,
+      "visibility": "background"
+    },
+    "기술 교육 기관": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "군사 제도": {
+      "room_id": 1,
+      "visibility": "search_only"
+    },
+    "지방 행정": {
+      "room_id": 6,
+      "visibility": "supporting"
+    },
+    "지역": {
+      "room_id": 6,
+      "visibility": "background"
+    },
+    "관청": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "국방비": {
+      "room_id": 1,
+      "visibility": "search_only"
+    },
+    "사신 접대비": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "용비어천가": {
+      "room_id": 5,
+      "visibility": "supporting"
+    },
+    "월인천강지곡": {
+      "room_id": 5,
+      "visibility": "supporting"
+    },
+    "조선왕조실록": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "동국통감": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "고려사": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "고려사절요": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "팔도지리지": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "동국여지승람": {
+      "room_id": 3,
+      "visibility": "core"
+    },
+    "노사신": {
+      "room_id": 3,
+      "visibility": "search_only"
+    },
+    "강희맹": {
+      "room_id": 3,
+      "visibility": "search_only"
+    },
+    "서거정": {
+      "room_id": 3,
+      "visibility": "search_only"
+    },
+    "국조오례의": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "삼강행실도": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "측우기": {
+      "room_id": 1,
+      "visibility": "search_only"
+    },
+    "농사직설": {
+      "room_id": 6,
+      "visibility": "core"
+    },
+    "금속활자": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "혼천의": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "앙부일구": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "자격루": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "인지의": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "한문학": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "동문선": {
+      "room_id": 0,
+      "visibility": "search_only"
+    },
+    "사림": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "훈구 세력": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "길재": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "김종직": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "조광조": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "무오사화": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "국문학": {
+      "room_id": 5,
+      "visibility": "supporting"
+    },
+    "한문": {
+      "room_id": 0,
+      "visibility": "background"
+    },
+    "양반": {
+      "room_id": 6,
+      "visibility": "core"
+    },
+    "조선 초기": {
+      "room_id": 0,
+      "visibility": "background"
+    },
+    "중앙 정치 무대": {
+      "room_id": 4,
+      "visibility": "background"
+    },
+    "공론 정치": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "유교 정치": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "조선 전기": {
+      "room_id": 0,
+      "visibility": "background"
+    },
+    "중종반정": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "연산군": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "사화": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "왕의 외척": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "붕당": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "동인": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "서인": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "이조 전랑": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "목화 재배": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "과수 및 약초 재배": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "중소 지주": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "신진 사대부": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "향약": {
+      "room_id": 6,
+      "visibility": "core"
+    },
+    "향약 4대 덕목": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "이황": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "이이": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "불교": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "계": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "인사권": {
+      "room_id": 4,
+      "visibility": "supporting"
+    },
+    "서원": {
+      "room_id": 4,
+      "visibility": "supporting"
+    },
+    "조선 왕조": {
+      "room_id": 0,
+      "visibility": "background"
+    },
+    "소학": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "주세붕": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "안향": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "백운동 서원": {
+      "room_id": 4,
+      "visibility": "supporting"
+    },
+    "소수 서원": {
+      "room_id": 4,
+      "visibility": "supporting"
+    },
+    "중국 대륙": {
+      "room_id": 2,
+      "visibility": "background"
+    },
+    "도요토미 히데요시": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "포르투갈 상인": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "조총": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "임진왜란": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "부산진": {
+      "room_id": 2,
+      "visibility": "supporting"
+    },
+    "동래성": {
+      "room_id": 2,
+      "visibility": "supporting"
+    },
+    "정발": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "송상현": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "조선 정부": {
+      "room_id": 2,
+      "visibility": "supporting"
+    },
+    "충주 방어선": {
+      "room_id": 2,
+      "visibility": "supporting"
+    },
+    "선조": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "의주": {
+      "room_id": 2,
+      "visibility": "supporting"
+    },
+    "평양": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "함경도 지방": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "한반도": {
+      "room_id": 0,
+      "visibility": "background"
+    },
+    "이순신": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "옥포 해전": {
+      "room_id": 2,
+      "visibility": "supporting"
+    },
+    "거북선": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "사천 해전": {
+      "room_id": 2,
+      "visibility": "supporting"
+    },
+    "당포 해전": {
+      "room_id": 2,
+      "visibility": "supporting"
+    },
+    "한산도 해전": {
+      "room_id": 2,
+      "visibility": "supporting"
+    },
+    "전라도 곡창 지대": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "황해안": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "의병": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "곽재우": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "조헌": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "고경명": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "정문부": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "유정 (사명대사)": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "농민": {
+      "room_id": 6,
+      "visibility": "background"
+    },
+    "전직 관료": {
+      "room_id": 6,
+      "visibility": "background"
+    },
+    "유학자": {
+      "room_id": 6,
+      "visibility": "background"
+    },
+    "승려": {
+      "room_id": 6,
+      "visibility": "background"
+    },
+    "명의 원군": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "김시민": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "진주": {
+      "room_id": 2,
+      "visibility": "supporting"
+    },
+    "권율": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "행주 산성": {
+      "room_id": 2,
+      "visibility": "supporting"
+    },
+    "왜군": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "정유재란": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "충과 효": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "성리학 윤리 교과서": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "국가": {
+      "room_id": 0,
+      "visibility": "background"
+    },
+    "국방력": {
+      "room_id": 1,
+      "visibility": "supporting"
+    },
+    "동아시아 국제 정세": {
+      "room_id": 2,
+      "visibility": "background"
+    },
+    "중국": {
+      "room_id": 0,
+      "visibility": "background"
+    },
+    "명나라": {
+      "room_id": 0,
+      "visibility": "background"
+    },
+    "명나라 원군": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "군사": {
+      "room_id": 1,
+      "visibility": "search_only"
+    },
+    "향토 방위": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "병력": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "포르투갈": {
+      "room_id": 6,
+      "visibility": "search_only"
+    },
+    "철포": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "누르하치": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "사명대사 유정": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "도쿠가와 막부": {
+      "room_id": 2,
+      "visibility": "supporting"
+    },
+    "통신사": {
+      "room_id": 2,
+      "visibility": "core"
+    },
+    "경상도 해안 지방": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "조선인 포로": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "불국사": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "사고": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "광해군": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "에도(도쿄)": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "허준": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "동의보감": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "후금": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "청": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "강홍립": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "인조": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "이괄": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "병자호란": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "정묘호란": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "효종": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "북벌 운동": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "송시열": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "이완": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "남한산성": {
+      "room_id": 4,
+      "visibility": "supporting"
+    },
+    "북한산성": {
+      "room_id": 4,
+      "visibility": "supporting"
+    },
+    "러시아": {
+      "room_id": 4,
+      "visibility": "background"
+    },
+    "영창 대군": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "조총 부대": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "나선 정벌": {
+      "room_id": 2,
+      "visibility": "search_only"
+    },
+    "붕당 정치": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "삼사 관리": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "북인": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "남인": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "비변사": {
+      "room_id": 4,
+      "visibility": "supporting"
+    },
+    "현종": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "예송": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "숙종": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "환국": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "노론": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "소론": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "영조": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "탕평책": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "조식": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "중종": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "탕평비": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "정조": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "규장각": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "장용영": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "수원 화성": {
+      "room_id": 4,
+      "visibility": "core"
+    },
+    "사도 세자": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "실학": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "속대전": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "속오례의": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "동국문헌비고": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "대전통편": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "동문휘고": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "탁지지": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "규장전운": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "산업 진흥": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "농업 발전": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "상업 자유화": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "광산 개발": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "서울 인구 증가": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "한강 포구 증가": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "서얼 차별 완화": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "노비 차별 완화": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "계유정난": {
+      "room_id": 3,
+      "visibility": "search_only"
+    },
+    "수원읍성": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "화성부": {
+      "room_id": 4,
+      "visibility": "search_only"
+    },
+    "조선 후기": {
+      "room_id": 5,
+      "visibility": "background"
+    },
+    "농촌": {
+      "room_id": 6,
+      "visibility": "background"
+    },
+    "도시": {
+      "room_id": 5,
+      "visibility": "background"
+    },
+    "대상인": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "영세 상인": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "실학자": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "이수광": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "김육": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "대동법": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "중농 학파": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "중상 학파": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "유형원": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "이익": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "정약용": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "유수원": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "홍대용": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "박지원": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "박제가": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "북학파": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "국학 연구": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "안정복": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "유득공": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "가난한 농민": {
+      "room_id": 6,
+      "visibility": "core"
+    },
+    "토지 제도": {
+      "room_id": 5,
+      "visibility": "supporting"
+    },
+    "상공업 진흥론": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "교통 수단": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "이중환": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "정상기": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "김정호": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "신경준": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "유희": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "이제마": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "실사구시": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "개화 사상가": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "발해고": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "택리지": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "동국지도": {
+      "room_id": 5,
+      "visibility": "search_only"
+    },
+    "대동여지도": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "훈민정음운해": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "언문지": {
+      "room_id": 5,
+      "visibility": "core"
+    },
+    "사상의학": {
+      "room_id": 5,
+      "visibility": "core"
+    }
+  },
+  "_diag": {
+    "invalid_visibility": 0,
+    "invalid_room": 0,
+    "hallucinated_titles": 0,
+    "missing_titles_count": 3,
+    "missing_titles_sample": [
+      "모내기법",
+      "장시",
+      "중국 논농사 기술"
+    ]
+  },
+  "_meta": {
+    "run_idx": 3,
+    "model": "gpt-4.1-mini",
+    "temperature": 0,
+    "wall_seconds": 117.58,
+    "prompt_tokens": 30472,
+    "completion_tokens": 8074,
+    "frozen_input_path": "results\\exp14_overlap200_stability\\frozen_input.json"
+  }
+}

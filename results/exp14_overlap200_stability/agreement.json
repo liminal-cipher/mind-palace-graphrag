@@ -1,0 +1,638 @@
+{
+  "aggregate": {
+    "n_runs": 3,
+    "room_counts": [
+      7,
+      7,
+      7
+    ],
+    "assignments_per_run": [
+      320,
+      337,
+      354
+    ],
+    "mean_pair_matched_jaccard": 0.6114,
+    "min_pair_matched_jaccard": 0.1558,
+    "avg_unmatched_rooms_per_pair": 0.0,
+    "avg_moved_room_entities_per_pair": 71.6667,
+    "avg_moved_visibility_entities_per_pair": 49.3333
+  },
+  "pairwise": [
+    {
+      "room_count_a": 7,
+      "room_count_b": 7,
+      "matches": [
+        {
+          "a": 3,
+          "b": 3,
+          "jaccard": 1.0,
+          "a_size": 16,
+          "b_size": 16
+        },
+        {
+          "a": 6,
+          "b": 6,
+          "jaccard": 0.9655,
+          "a_size": 29,
+          "b_size": 28
+        },
+        {
+          "a": 2,
+          "b": 2,
+          "jaccard": 0.8571,
+          "a_size": 62,
+          "b_size": 68
+        },
+        {
+          "a": 4,
+          "b": 4,
+          "jaccard": 0.8316,
+          "a_size": 83,
+          "b_size": 91
+        },
+        {
+          "a": 0,
+          "b": 0,
+          "jaccard": 0.7816,
+          "a_size": 71,
+          "b_size": 84
+        },
+        {
+          "a": 5,
+          "b": 5,
+          "jaccard": 0.5952,
+          "a_size": 33,
+          "b_size": 34
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "jaccard": 0.5,
+          "a_size": 26,
+          "b_size": 16
+        }
+      ],
+      "mean_matched_jaccard": 0.7902,
+      "min_matched_jaccard": 0.5,
+      "unmatched_a": [],
+      "unmatched_b": [],
+      "unmatched_count": 0,
+      "common_entities": 315,
+      "moved_room_entities": 25,
+      "moved_visibility_entities": 40,
+      "moved_room_fraction": 0.0794,
+      "moved_visibility_fraction": 0.127,
+      "pair": "run1-run2"
+    },
+    {
+      "room_count_a": 7,
+      "room_count_b": 7,
+      "matches": [
+        {
+          "a": 4,
+          "b": 4,
+          "jaccard": 0.7374,
+          "a_size": 83,
+          "b_size": 89
+        },
+        {
+          "a": 2,
+          "b": 2,
+          "jaccard": 0.7206,
+          "a_size": 62,
+          "b_size": 55
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "jaccard": 0.6667,
+          "a_size": 26,
+          "b_size": 29
+        },
+        {
+          "a": 3,
+          "b": 3,
+          "jaccard": 0.625,
+          "a_size": 16,
+          "b_size": 23
+        },
+        {
+          "a": 0,
+          "b": 0,
+          "jaccard": 0.4706,
+          "a_size": 71,
+          "b_size": 54
+        },
+        {
+          "a": 5,
+          "b": 5,
+          "jaccard": 0.3276,
+          "a_size": 33,
+          "b_size": 44
+        },
+        {
+          "a": 6,
+          "b": 6,
+          "jaccard": 0.1558,
+          "a_size": 29,
+          "b_size": 60
+        }
+      ],
+      "mean_matched_jaccard": 0.5291,
+      "min_matched_jaccard": 0.1558,
+      "unmatched_a": [],
+      "unmatched_b": [],
+      "unmatched_count": 0,
+      "common_entities": 320,
+      "moved_room_entities": 90,
+      "moved_visibility_entities": 66,
+      "moved_room_fraction": 0.2812,
+      "moved_visibility_fraction": 0.2062,
+      "pair": "run1-run3"
+    },
+    {
+      "room_count_a": 7,
+      "room_count_b": 7,
+      "matches": [
+        {
+          "a": 4,
+          "b": 4,
+          "jaccard": 0.8,
+          "a_size": 91,
+          "b_size": 89
+        },
+        {
+          "a": 2,
+          "b": 2,
+          "jaccard": 0.7571,
+          "a_size": 68,
+          "b_size": 55
+        },
+        {
+          "a": 3,
+          "b": 3,
+          "jaccard": 0.625,
+          "a_size": 16,
+          "b_size": 23
+        },
+        {
+          "a": 5,
+          "b": 5,
+          "jaccard": 0.56,
+          "a_size": 34,
+          "b_size": 44
+        },
+        {
+          "a": 0,
+          "b": 0,
+          "jaccard": 0.38,
+          "a_size": 84,
+          "b_size": 54
+        },
+        {
+          "a": 1,
+          "b": 1,
+          "jaccard": 0.3235,
+          "a_size": 16,
+          "b_size": 29
+        },
+        {
+          "a": 6,
+          "b": 6,
+          "jaccard": 0.1579,
+          "a_size": 28,
+          "b_size": 60
+        }
+      ],
+      "mean_matched_jaccard": 0.5148,
+      "min_matched_jaccard": 0.1579,
+      "unmatched_a": [],
+      "unmatched_b": [],
+      "unmatched_count": 0,
+      "common_entities": 337,
+      "moved_room_entities": 100,
+      "moved_visibility_entities": 42,
+      "moved_room_fraction": 0.2967,
+      "moved_visibility_fraction": 0.1246,
+      "pair": "run2-run3"
+    }
+  ],
+  "anchors": {
+    "n_anchors": 14,
+    "visible_in_all_runs": 14,
+    "visible_in_any_run": 14,
+    "per_anchor": [
+      {
+        "title": "측우기",
+        "visible_in_n_runs": 3,
+        "per_run": [
+          {
+            "present": true,
+            "room_id": 1,
+            "room_title": "세종 시대 국방과 학문 발전",
+            "visibility": "search_only",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 1,
+            "room_title": "세종 시대 국방과 학문 발전",
+            "visibility": "search_only",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 1,
+            "room_title": "조선 초기 군사와 국방 체계",
+            "visibility": "search_only",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "title": "자격루",
+        "visible_in_n_runs": 3,
+        "per_run": [
+          {
+            "present": true,
+            "room_id": 1,
+            "room_title": "세종 시대 국방과 학문 발전",
+            "visibility": "search_only",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 1,
+            "room_title": "세종 시대 국방과 학문 발전",
+            "visibility": "search_only",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 0,
+            "room_title": "조선 건국과 초기 중앙집권 체계",
+            "visibility": "search_only",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "title": "앙부일구",
+        "visible_in_n_runs": 3,
+        "per_run": [
+          {
+            "present": true,
+            "room_id": 1,
+            "room_title": "세종 시대 국방과 학문 발전",
+            "visibility": "search_only",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 1,
+            "room_title": "세종 시대 국방과 학문 발전",
+            "visibility": "search_only",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 0,
+            "room_title": "조선 건국과 초기 중앙집권 체계",
+            "visibility": "search_only",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "title": "혼천의",
+        "visible_in_n_runs": 3,
+        "per_run": [
+          {
+            "present": true,
+            "room_id": 1,
+            "room_title": "세종 시대 국방과 학문 발전",
+            "visibility": "search_only",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 1,
+            "room_title": "세종 시대 국방과 학문 발전",
+            "visibility": "search_only",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 0,
+            "room_title": "조선 건국과 초기 중앙집권 체계",
+            "visibility": "search_only",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "title": "인지의",
+        "visible_in_n_runs": 3,
+        "per_run": [
+          {
+            "present": true,
+            "room_id": 1,
+            "room_title": "세종 시대 국방과 학문 발전",
+            "visibility": "search_only",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 1,
+            "room_title": "세종 시대 국방과 학문 발전",
+            "visibility": "search_only",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 0,
+            "room_title": "조선 건국과 초기 중앙집권 체계",
+            "visibility": "search_only",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "title": "이순신",
+        "visible_in_n_runs": 3,
+        "per_run": [
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 조선의 군사 대응",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 정유재란의 군사 및 외교",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 조선의 군사 대응",
+            "visibility": "core",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "title": "권율",
+        "visible_in_n_runs": 3,
+        "per_run": [
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 조선의 군사 대응",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 정유재란의 군사 및 외교",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 조선의 군사 대응",
+            "visibility": "core",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "title": "곽재우",
+        "visible_in_n_runs": 3,
+        "per_run": [
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 조선의 군사 대응",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 정유재란의 군사 및 외교",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 조선의 군사 대응",
+            "visibility": "core",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "title": "김시민",
+        "visible_in_n_runs": 3,
+        "per_run": [
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 조선의 군사 대응",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 정유재란의 군사 및 외교",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 조선의 군사 대응",
+            "visibility": "core",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "title": "정도전",
+        "visible_in_n_runs": 3,
+        "per_run": [
+          {
+            "present": true,
+            "room_id": 0,
+            "room_title": "조선 건국과 초기 왕권 강화",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 0,
+            "room_title": "조선 건국과 초기 정치 체계",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 0,
+            "room_title": "조선 건국과 초기 중앙집권 체계",
+            "visibility": "core",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "title": "이성계",
+        "visible_in_n_runs": 3,
+        "per_run": [
+          {
+            "present": true,
+            "room_id": 0,
+            "room_title": "조선 건국과 초기 왕권 강화",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 0,
+            "room_title": "조선 건국과 초기 정치 체계",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 0,
+            "room_title": "조선 건국과 초기 중앙집권 체계",
+            "visibility": "core",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "title": "임진왜란",
+        "visible_in_n_runs": 3,
+        "per_run": [
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 조선의 군사 대응",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 정유재란의 군사 및 외교",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 조선의 군사 대응",
+            "visibility": "core",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "title": "훈민정음",
+        "visible_in_n_runs": 3,
+        "per_run": [
+          {
+            "present": true,
+            "room_id": 6,
+            "room_title": "조선 후기 지리학과 한글 연구",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 6,
+            "room_title": "조선 후기 지리학과 한글 연구",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 5,
+            "room_title": "조선 후기 실학과 사회·경제 변화",
+            "visibility": "core",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "title": "거북선",
+        "visible_in_n_runs": 3,
+        "per_run": [
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 조선의 군사 대응",
+            "visibility": "core",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 정유재란의 군사 및 외교",
+            "visibility": "supporting",
+            "visible": true
+          },
+          {
+            "present": true,
+            "room_id": 2,
+            "room_title": "임진왜란과 조선의 군사 대응",
+            "visibility": "core",
+            "visible": true
+          }
+        ]
+      }
+    ]
+  },
+  "yi_seonggye": {
+    "title": "이성계",
+    "per_run": [
+      {
+        "present": true,
+        "room_id": 0,
+        "room_title": "조선 건국과 초기 왕권 강화",
+        "flow_note": "조선 건국과 초기 왕권 강화 및 국가 기틀 마련 과정",
+        "visibility": "core"
+      },
+      {
+        "present": true,
+        "room_id": 0,
+        "room_title": "조선 건국과 초기 정치 체계",
+        "flow_note": "조선 건국과 초기 왕권 강화, 관료제 및 법전 정비를 중심으로",
+        "visibility": "core"
+      },
+      {
+        "present": true,
+        "room_id": 0,
+        "room_title": "조선 건국과 초기 중앙집권 체계",
+        "flow_note": "조선 건국과 초기 왕권 강화, 관료제 및 법전 정비를 중심으로",
+        "visibility": "core"
+      }
+    ],
+    "all_visible": true,
+    "all_present": true,
+    "room_titles_across_runs": [
+      "조선 건국과 초기 왕권 강화",
+      "조선 건국과 초기 정치 체계",
+      "조선 건국과 초기 중앙집권 체계"
+    ]
+  }
+}
