@@ -162,5 +162,110 @@
     "snapshot": "results/exp17_generalization/snapshot",
     "cache": "results/exp17_generalization/cache",
     "node_metrics": "results/node_order_probe/node_metrics.py"
-  }
+  },
+  "rooms_metrics": {
+    "n_entities": 119,
+    "K": 6,
+    "size_distribution": {
+      "toc": {
+        "sizes": [
+          0,
+          50,
+          18,
+          28,
+          0,
+          23
+        ],
+        "min": 0,
+        "max": 50,
+        "mean": 19.83,
+        "empty_rooms": 2
+      },
+      "graph": {
+        "sizes": [
+          49,
+          22,
+          8,
+          18,
+          12,
+          10
+        ],
+        "min": 8,
+        "max": 49,
+        "mean": 19.83,
+        "empty_rooms": 0
+      }
+    },
+    "coverage": {
+      "toc": {
+        "covered": 119,
+        "unique_covered": 119,
+        "all_entities_assigned": true
+      },
+      "graph": {
+        "covered": 119,
+        "unique_covered": 119,
+        "all_entities_assigned": true
+      }
+    },
+    "keep_demote_distribution": {
+      "toc": {
+        "kept_per_room": [
+          0,
+          5,
+          10,
+          10,
+          0,
+          8
+        ],
+        "demoted_per_room": [
+          0,
+          45,
+          8,
+          18,
+          0,
+          15
+        ],
+        "kept_total": 33,
+        "demoted_total": 86
+      },
+      "graph": {
+        "kept_per_room": [
+          6,
+          10,
+          0,
+          7,
+          10,
+          5
+        ],
+        "demoted_per_room": [
+          43,
+          12,
+          8,
+          11,
+          2,
+          5
+        ],
+        "kept_total": 38,
+        "demoted_total": 81
+      }
+    },
+    "reproducibility": {
+      "toc": {
+        "deterministic": true,
+        "note": "char-overlap weighted occurrence + section-idx tiebreak."
+      },
+      "graph": {
+        "deterministic": true,
+        "two_runs_identical": true,
+        "note": "ward linkage on L2-normalized embeddings, fcluster maxclust."
+      },
+      "keep_demote": {
+        "temp": 0,
+        "n_runs": 1,
+        "note": "Azure gpt-4.1-mini temp=0; single-run keep order taken as-is. Determinism caveat: API may show micro-variation across calls."
+      }
+    }
+  },
+  "rooms_metrics_ts": "2026-06-09T03:21:16.254666+00:00"
 }

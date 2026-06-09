@@ -1,0 +1,353 @@
+{
+  "toc": [
+    {
+      "room_id": "toc_1",
+      "section_name": "통계학 개요와 표본추출",
+      "llm_room_name": "통계학 핵심용어",
+      "coherence": "coherent",
+      "kept": [],
+      "demoted": []
+    },
+    {
+      "room_id": "toc_2",
+      "section_name": "중심경향과 산포도 측정",
+      "llm_room_name": "기초통계 핵심용어",
+      "coherence": "coherent",
+      "kept": [
+        "가설검정",
+        "상관분석",
+        "표본",
+        "분산(VARIANCE)",
+        "표준편차(STANDARD DEVIATION)"
+      ],
+      "demoted": [
+        "가중평균 (WEIGHTED MEAN)",
+        "비확률적 표본 추출 (NON-PROBABILITY SAMPLING METHOD)",
+        "산포도 (MEASURE OF DISPERSION)",
+        "조화평균 (HARMONIC MEAN)",
+        "중심경향성 (CENTRAL TENDENCY)",
+        "중앙값 (MEDIAN)",
+        "최빈값 (MODE)",
+        "평균 (MEAN)",
+        "확률적 표본 추출 (PROBABILITY SAMPLING METHOD)",
+        "통계학",
+        "데이터",
+        "불확실성",
+        "의사결정",
+        "모집단",
+        "전수조사",
+        "표본조사",
+        "무작위 표본 추출",
+        "체계적 표본 추출",
+        "층화 표본 추출",
+        "곱셈 법칙(MULTIPLICATION RULE)",
+        "덧셈 법칙(ADDITION RULE)",
+        "데이터 이해(DATA UNDERSTANDING)",
+        "범위(RANGE)",
+        "사건(EVENT)",
+        "사분위수 범위(INTERQUARTILE RANGE, IQR)",
+        "산포도(MEASURE OF DISPERSION)",
+        "시각화(VISUALIZATION)",
+        "양의 왜도(POSITIVE SKEWNESS)",
+        "양의 첨도(LEPTOKURTIC)",
+        "왜도(SKEWNESS)",
+        "왜도와 첨도(SKEWNESS AND KURTOSIS)",
+        "음의 왜도(NEGATIVE SKEWNESS)",
+        "음의 첨도(PLATYKURTIC)",
+        "의사 소통(COMMUNICATION)",
+        "의사결정 지원(DECISION SUPPORT)",
+        "조화평균(HARMONIC MEAN)",
+        "중심경향성(CENTRAL TENDENCY)",
+        "중앙값(MEDIAN)",
+        "첨도(KURTOSIS)",
+        "최빈값(MODE)",
+        "패턴 파악(PATTERN RECOGNITION)",
+        "표본 공간(SAMPLE SPACE)",
+        "확률 변수(RANDOM VARIABLE)",
+        "확률 함수(PROBABILITY FUNCTION)",
+        "확률(PROBABILITY)"
+      ]
+    },
+    {
+      "room_id": "toc_3",
+      "section_name": "확률과 확률분포",
+      "llm_room_name": "확률변수와 분포",
+      "coherence": "coherent",
+      "kept": [
+        "베르누이 분포 (BERNOULLI DISTRIBUTION)",
+        "연속형 확률변수 (CONTINUOUS RANDOM VARIABLE)",
+        "이산형 확률변수 (DISCRETE RANDOM VARIABLE)",
+        "이항분포 (BINOMIAL DISTRIBUTION)",
+        "정규분포 (NORMAL DISTRIBUTION)",
+        "카이제곱분포 (CHI-SQUARE DISTRIBUTION)",
+        "푸아송 분포 (POISSON DISTRIBUTION)",
+        "확률 밀도 함수 (PROBABILITY DENSITY FUNCTION, PDF)",
+        "확률 변수 (RANDOM VARIABLE)",
+        "확률 질량 함수 (PROBABILITY MASS FUNCTION, PMF)"
+      ],
+      "demoted": [
+        "적합도 검정 (GOODNESS OF FIT TEST)",
+        "지수분포 (EXPONENTIAL DISTRIBUTION)",
+        "표본점 (SAMPLE POINT)",
+        "확률 표본 (RANDOM SAMPLE)",
+        "곱셈 법칙",
+        "동전",
+        "콜센터",
+        "교통량"
+      ]
+    },
+    {
+      "room_id": "toc_4",
+      "section_name": "추정과 가설검정",
+      "llm_room_name": "핵심 통계 검정 개념",
+      "coherence": "coherent",
+      "kept": [
+        "1종 오류(TYPE I ERROR)",
+        "P-값(P-VALUE)",
+        "T-검정(T-TEST)",
+        "가설 검정(HYPOTHESIS TESTING)",
+        "검정 통계량(TEST STATISTIC)",
+        "귀무가설(NULL HYPOTHESIS, H0)",
+        "유의수준<SIGNIFICANCE LEVEL>",
+        "점추정(POINT ESTIMATION)",
+        "추정(ESTIMATION)",
+        "분산 분석"
+      ],
+      "demoted": [
+        "통계",
+        "2종 오류(TYPE II ERROR)",
+        "가설(HYPOTHESIS)",
+        "구간추정(INTERVAL ESTIMATION)",
+        "대립가설(ALTERNATIVE HYPOTHESIS, H1)",
+        "상여금(BONUS)",
+        "신뢰구간(CONFIDENCE INTERVAL)",
+        "신뢰수준(CONFIDENCE LEVEL)",
+        "유의수준(SIGNIFICANCE LEVEL)",
+        "추론(INFERENCE)",
+        "카이제곱 분포(CHI-SQUARE DISTRIBUTION)",
+        "통계량(STATISTIC)",
+        "표본(SAMPLE)",
+        "표본분산(SAMPLE VARIANCE)",
+        "표본조사(SAMPLING)",
+        "표본평균(SAMPLE MEAN)",
+        "확률밀도함수(PDF)",
+        "적합도 검정"
+      ]
+    },
+    {
+      "room_id": "toc_5",
+      "section_name": "가설검정 방법과 오류",
+      "llm_room_name": "통계학 핵심 개념",
+      "coherence": "coherent",
+      "kept": [],
+      "demoted": []
+    },
+    {
+      "room_id": "toc_6",
+      "section_name": "상관분석 기법",
+      "llm_room_name": "가설검정과 상관계수",
+      "coherence": "coherent",
+      "kept": [
+        "T-검정 (T-TEST)",
+        "분산 분석 (ANOVA, ANALYSIS OF VARIANCE)",
+        "상관계수 (CORRELATION COEFFICIENT)",
+        "스피어만 상관계수 (SPEARMAN'S RANK CORRELATION COEFFICIENT)",
+        "카이제곱 검정 (CHI-SQUARE TEST)",
+        "켄달의 타우 (KENDALL'S TAU, KENDALL'S RANK CORRELATION COEFFICIENT)",
+        "피어슨 상관계수 (PEARSON CORRELATION COEFFICIENT)",
+        "가설 검정 방법"
+      ],
+      "demoted": [
+        "변수",
+        "귀무가설",
+        "진통제",
+        "가설 검정 결과",
+        "오류 (FALSE NEGATIVE)",
+        "잘못된 부정 결과 (FALSE NEGATIVE)",
+        "진통제 효과",
+        "실제값",
+        "양의 상관관계",
+        "음의 상관관계",
+        "강한 상관관계",
+        "중간 상관관계",
+        "약한 상관관계",
+        "직무 수행 순위",
+        "승진 순위"
+      ]
+    }
+  ],
+  "graph": [
+    {
+      "room_id": "graph_1",
+      "llm_room_name": "기초통계 핵심용어",
+      "coherence": "coherent",
+      "kept": [
+        "가설검정",
+        "적합도 검정 (GOODNESS OF FIT TEST)",
+        "검정 통계량(TEST STATISTIC)",
+        "카이제곱 분포(CHI-SQUARE DISTRIBUTION)",
+        "T-검정 (T-TEST)",
+        "분산 분석 (ANOVA, ANALYSIS OF VARIANCE)"
+      ],
+      "demoted": [
+        "가중평균 (WEIGHTED MEAN)",
+        "산포도 (MEASURE OF DISPERSION)",
+        "조화평균 (HARMONIC MEAN)",
+        "중심경향성 (CENTRAL TENDENCY)",
+        "중앙값 (MEDIAN)",
+        "최빈값 (MODE)",
+        "평균 (MEAN)",
+        "데이터",
+        "불확실성",
+        "범위(RANGE)",
+        "분산(VARIANCE)",
+        "사분위수 범위(INTERQUARTILE RANGE, IQR)",
+        "산포도(MEASURE OF DISPERSION)",
+        "조화평균(HARMONIC MEAN)",
+        "중심경향성(CENTRAL TENDENCY)",
+        "중앙값(MEDIAN)",
+        "최빈값(MODE)",
+        "표준편차(STANDARD DEVIATION)",
+        "베르누이 분포 (BERNOULLI DISTRIBUTION)",
+        "이항분포 (BINOMIAL DISTRIBUTION)",
+        "정규분포 (NORMAL DISTRIBUTION)",
+        "지수분포 (EXPONENTIAL DISTRIBUTION)",
+        "카이제곱분포 (CHI-SQUARE DISTRIBUTION)",
+        "푸아송 분포 (POISSON DISTRIBUTION)",
+        "동전",
+        "콜센터",
+        "교통량",
+        "P-값(P-VALUE)",
+        "T-검정(T-TEST)",
+        "신뢰구간(CONFIDENCE INTERVAL)",
+        "신뢰수준(CONFIDENCE LEVEL)",
+        "유의수준(SIGNIFICANCE LEVEL)",
+        "유의수준<SIGNIFICANCE LEVEL>",
+        "통계량(STATISTIC)",
+        "적합도 검정",
+        "분산 분석",
+        "진통제",
+        "진통제 효과",
+        "카이제곱 검정 (CHI-SQUARE TEST)",
+        "실제값",
+        "가설 검정 방법",
+        "직무 수행 순위",
+        "승진 순위"
+      ]
+    },
+    {
+      "room_id": "graph_2",
+      "llm_room_name": "표본추출과 추정",
+      "coherence": "coherent",
+      "kept": [
+        "비확률적 표본 추출 (NON-PROBABILITY SAMPLING METHOD)",
+        "확률적 표본 추출 (PROBABILITY SAMPLING METHOD)",
+        "표본 공간(SAMPLE SPACE)",
+        "구간추정(INTERVAL ESTIMATION)",
+        "점추정(POINT ESTIMATION)",
+        "추론(INFERENCE)",
+        "추정(ESTIMATION)",
+        "표본분산(SAMPLE VARIANCE)",
+        "표본조사(SAMPLING)",
+        "표본평균(SAMPLE MEAN)"
+      ],
+      "demoted": [
+        "모집단",
+        "표본",
+        "전수조사",
+        "표본조사",
+        "무작위 표본 추출",
+        "체계적 표본 추출",
+        "층화 표본 추출",
+        "사건(EVENT)",
+        "표본점 (SAMPLE POINT)",
+        "확률 표본 (RANDOM SAMPLE)",
+        "상여금(BONUS)",
+        "표본(SAMPLE)"
+      ]
+    },
+    {
+      "room_id": "graph_3",
+      "llm_room_name": "통계학 기초 개념",
+      "coherence": "type-pile",
+      "kept": [],
+      "demoted": [
+        "통계",
+        "통계학",
+        "의사결정",
+        "데이터 이해(DATA UNDERSTANDING)",
+        "시각화(VISUALIZATION)",
+        "의사 소통(COMMUNICATION)",
+        "의사결정 지원(DECISION SUPPORT)",
+        "패턴 파악(PATTERN RECOGNITION)"
+      ]
+    },
+    {
+      "room_id": "graph_4",
+      "llm_room_name": "상관분석 핵심지표",
+      "coherence": "coherent",
+      "kept": [
+        "상관분석",
+        "왜도(SKEWNESS)",
+        "첨도(KURTOSIS)",
+        "상관계수 (CORRELATION COEFFICIENT)",
+        "스피어만 상관계수 (SPEARMAN'S RANK CORRELATION COEFFICIENT)",
+        "켄달의 타우 (KENDALL'S TAU, KENDALL'S RANK CORRELATION COEFFICIENT)",
+        "피어슨 상관계수 (PEARSON CORRELATION COEFFICIENT)"
+      ],
+      "demoted": [
+        "양의 왜도(POSITIVE SKEWNESS)",
+        "양의 첨도(LEPTOKURTIC)",
+        "왜도와 첨도(SKEWNESS AND KURTOSIS)",
+        "음의 왜도(NEGATIVE SKEWNESS)",
+        "음의 첨도(PLATYKURTIC)",
+        "변수",
+        "양의 상관관계",
+        "음의 상관관계",
+        "강한 상관관계",
+        "중간 상관관계",
+        "약한 상관관계"
+      ]
+    },
+    {
+      "room_id": "graph_5",
+      "llm_room_name": "확률과 확률변수",
+      "coherence": "coherent",
+      "kept": [
+        "곱셈 법칙(MULTIPLICATION RULE)",
+        "덧셈 법칙(ADDITION RULE)",
+        "확률 변수(RANDOM VARIABLE)",
+        "확률 함수(PROBABILITY FUNCTION)",
+        "확률(PROBABILITY)",
+        "연속형 확률변수 (CONTINUOUS RANDOM VARIABLE)",
+        "이산형 확률변수 (DISCRETE RANDOM VARIABLE)",
+        "확률 밀도 함수 (PROBABILITY DENSITY FUNCTION, PDF)",
+        "확률 질량 함수 (PROBABILITY MASS FUNCTION, PMF)",
+        "확률밀도함수(PDF)"
+      ],
+      "demoted": [
+        "확률 변수 (RANDOM VARIABLE)",
+        "곱셈 법칙"
+      ]
+    },
+    {
+      "room_id": "graph_6",
+      "llm_room_name": "가설검정 핵심용어",
+      "coherence": "coherent",
+      "kept": [
+        "1종 오류(TYPE I ERROR)",
+        "2종 오류(TYPE II ERROR)",
+        "가설 검정(HYPOTHESIS TESTING)",
+        "귀무가설(NULL HYPOTHESIS, H0)",
+        "대립가설(ALTERNATIVE HYPOTHESIS, H1)"
+      ],
+      "demoted": [
+        "가설(HYPOTHESIS)",
+        "귀무가설",
+        "가설 검정 결과",
+        "오류 (FALSE NEGATIVE)",
+        "잘못된 부정 결과 (FALSE NEGATIVE)"
+      ]
+    }
+  ]
+}

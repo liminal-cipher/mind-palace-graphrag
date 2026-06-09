@@ -1,0 +1,984 @@
+{
+  "meta": {
+    "method": "graph_ward",
+    "source": "exp10 room_gen.base_cluster (L2-norm ward / euclidean)",
+    "snapshot": "results/exp17_generalization/snapshot",
+    "embedding_source": "exp17 snapshot lancedb entity_description",
+    "n_entities": 119,
+    "n_rooms": 6,
+    "K": 6,
+    "deterministic": true,
+    "two_runs_identical": true,
+    "llm_calls_for_assignment": 0,
+    "node_budget": 10,
+    "rubric_source": "results/exp17_generalization/rubric.json"
+  },
+  "rooms": [
+    {
+      "room_id": "graph_1",
+      "size": 49,
+      "entities": [
+        {
+          "id": "afb03b8f-af69-4527-aac3-6e1686370cb0",
+          "title": "가중평균 (WEIGHTED MEAN)",
+          "pos": 0,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "0f460696-a6e6-4a55-baf0-fcf4b33ba42a",
+          "title": "산포도 (MEASURE OF DISPERSION)",
+          "pos": 0,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "57ab6431-55b8-45b6-b96b-d61e8463b2a7",
+          "title": "조화평균 (HARMONIC MEAN)",
+          "pos": 0,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "f95a486b-68db-48a5-8610-cbd8c58e2fb7",
+          "title": "중심경향성 (CENTRAL TENDENCY)",
+          "pos": 0,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "9fb4d21a-7528-4475-a8d0-d6af625f6ded",
+          "title": "중앙값 (MEDIAN)",
+          "pos": 0,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "f4f07b7f-2ace-4ec9-83cc-82823129a2b3",
+          "title": "최빈값 (MODE)",
+          "pos": 0,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "fe700fd5-7f6e-417c-beb4-c53990c2134c",
+          "title": "평균 (MEAN)",
+          "pos": 0,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "8056afdc-a50b-4682-a223-56eb5cf8e834",
+          "title": "가설검정",
+          "pos": 27,
+          "pos_source": 0,
+          "status": "kept"
+        },
+        {
+          "id": "e892d30c-a2ec-464a-919b-2dc462fb25a2",
+          "title": "데이터",
+          "pos": 43,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "0a55c0f8-0802-4112-aae7-10af094ab5af",
+          "title": "불확실성",
+          "pos": 79,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "678e7976-313f-49c2-a239-580545014c29",
+          "title": "범위(RANGE)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "39f23816-ebdb-4ea6-9c97-bedd189a1b16",
+          "title": "분산(VARIANCE)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "13eae2ee-94f1-4875-a072-6c0efe0a1ee7",
+          "title": "사분위수 범위(INTERQUARTILE RANGE, IQR)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "269590fa-9839-4bf1-9f3c-cf6311589e0b",
+          "title": "산포도(MEASURE OF DISPERSION)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "e562e4c0-03f2-42cb-a601-318b383edd94",
+          "title": "조화평균(HARMONIC MEAN)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "4aef4b36-d860-45c0-8148-b42c813ecde1",
+          "title": "중심경향성(CENTRAL TENDENCY)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "7d7499a2-4c1a-4792-a528-391a889c4cb2",
+          "title": "중앙값(MEDIAN)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "f7f65562-907f-44b3-9c55-6d8086f6fa57",
+          "title": "최빈값(MODE)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "b6e02eb6-0ddb-4cab-b1d4-9ee8155ab284",
+          "title": "표준편차(STANDARD DEVIATION)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "d69c9a2c-56ce-49b9-9ee1-14b023b58c6f",
+          "title": "베르누이 분포 (BERNOULLI DISTRIBUTION)",
+          "pos": 3915,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "60f594a5-02f0-4f0d-8e21-40ab9904573e",
+          "title": "이항분포 (BINOMIAL DISTRIBUTION)",
+          "pos": 3915,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "bd5bd104-eeb0-4dc7-9301-1e4ccf35dfd5",
+          "title": "적합도 검정 (GOODNESS OF FIT TEST)",
+          "pos": 3915,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "83165779-1a81-4cce-b1bd-ee3a5714cec1",
+          "title": "정규분포 (NORMAL DISTRIBUTION)",
+          "pos": 3915,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "693646b0-6571-45ed-99d7-f45ececa61e4",
+          "title": "지수분포 (EXPONENTIAL DISTRIBUTION)",
+          "pos": 3915,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "8eeb80d4-db46-4b16-9c9e-56cc70e326e9",
+          "title": "카이제곱분포 (CHI-SQUARE DISTRIBUTION)",
+          "pos": 3915,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "e3a0068a-3147-4e33-b8a6-f11be5a50104",
+          "title": "푸아송 분포 (POISSON DISTRIBUTION)",
+          "pos": 3915,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "ec48c4a7-040d-4a3e-b0d4-dbf8972f3cd6",
+          "title": "동전",
+          "pos": 4359,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "e04b80db-5831-4111-bbce-f979c0e12307",
+          "title": "콜센터",
+          "pos": 5511,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "3bf16444-b9fa-4732-8205-d692024771f8",
+          "title": "교통량",
+          "pos": 5536,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "70b5d532-0e3d-4402-8c1a-2c9c4f7d4d1d",
+          "title": "P-값(P-VALUE)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "7e0d4c6e-7acb-400b-a3c9-d74ff0cb4549",
+          "title": "T-검정(T-TEST)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "be6b214a-8d3e-4c75-80cc-f97e9ab4817c",
+          "title": "검정 통계량(TEST STATISTIC)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "2fdb48c9-b397-4db5-83c2-6b6667533818",
+          "title": "신뢰구간(CONFIDENCE INTERVAL)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "9a426704-4afc-46c9-936c-f83d8c23b87e",
+          "title": "신뢰수준(CONFIDENCE LEVEL)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "9d2d2d98-8452-4224-8580-5e5a263c93f3",
+          "title": "유의수준(SIGNIFICANCE LEVEL)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "5e04e1d0-79e6-4600-adf0-ac90d004f1e0",
+          "title": "유의수준<SIGNIFICANCE LEVEL>",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "3b94a3d5-2f21-4173-988f-a31e8baab764",
+          "title": "카이제곱 분포(CHI-SQUARE DISTRIBUTION)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "1d6adaa7-2489-4978-bf6e-66196a4d0ea9",
+          "title": "통계량(STATISTIC)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "1b8220cf-9601-484e-aa67-2f0c2d41f3ff",
+          "title": "적합도 검정",
+          "pos": 6105,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "ac71ca88-1479-447b-9cc0-c55688fe0f22",
+          "title": "분산 분석",
+          "pos": 6140,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "bb544178-b346-4af1-a9a8-c1f780c4ed1a",
+          "title": "진통제",
+          "pos": 7296,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "15e15670-650a-4859-8d91-5ded14113b9c",
+          "title": "T-검정 (T-TEST)",
+          "pos": 7914,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "94b55475-ef20-44e2-8ac7-433b1b351edf",
+          "title": "분산 분석 (ANOVA, ANALYSIS OF VARIANCE)",
+          "pos": 7914,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "2169060e-f5e0-4df6-bb24-fc8feea585ab",
+          "title": "진통제 효과",
+          "pos": 7914,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "3794352f-f564-4cb7-9d3a-235fd37c6c6b",
+          "title": "카이제곱 검정 (CHI-SQUARE TEST)",
+          "pos": 7914,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "f5f39938-34d6-47a5-b7b3-1536826d6c0a",
+          "title": "실제값",
+          "pos": 8032,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "6494dc30-8507-4cf7-94e6-9407b6c9fae1",
+          "title": "가설 검정 방법",
+          "pos": 8041,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "71aaa032-9dd4-48e3-86ad-3fb6e2ba758a",
+          "title": "직무 수행 순위",
+          "pos": 9582,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "caccaf77-98d7-40b9-905c-90668d5f9bd9",
+          "title": "승진 순위",
+          "pos": 9592,
+          "pos_source": 0,
+          "status": "demoted"
+        }
+      ],
+      "kept_titles": [
+        "가설검정",
+        "검정 통계량(TEST STATISTIC)",
+        "T-검정 (T-TEST)",
+        "분산 분석 (ANOVA, ANALYSIS OF VARIANCE)",
+        "카이제곱 분포(CHI-SQUARE DISTRIBUTION)",
+        "적합도 검정 (GOODNESS OF FIT TEST)"
+      ],
+      "demoted_count": 43,
+      "kept_count": 6,
+      "_llm": {
+        "room_name": "기초통계 핵심용어",
+        "coherence_flag": "coherent",
+        "coherence_reason": "통계학 기초의 핵심 개념과 검정, 지표 위주로 구성됨",
+        "n_hallucinated": 4
+      }
+    },
+    {
+      "room_id": "graph_2",
+      "size": 22,
+      "entities": [
+        {
+          "id": "b6a2051c-77a5-45ee-831c-560e97978438",
+          "title": "비확률적 표본 추출 (NON-PROBABILITY SAMPLING METHOD)",
+          "pos": 0,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "f1ff4c66-5f10-4b47-a81c-16ea1c8b27ea",
+          "title": "확률적 표본 추출 (PROBABILITY SAMPLING METHOD)",
+          "pos": 0,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "aa4e4fe8-f8f6-4745-9bd1-c2dc1ca0e720",
+          "title": "모집단",
+          "pos": 358,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "32bd2c75-0696-4d0b-944e-e5ac4ab82911",
+          "title": "표본",
+          "pos": 363,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "88c76537-8444-4321-b35a-e4f20db4d870",
+          "title": "전수조사",
+          "pos": 367,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "3a3d16ba-a836-4dbb-8a4e-66eaa245a684",
+          "title": "표본조사",
+          "pos": 391,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "b1eb8bea-69b7-4410-a29e-3085581460e5",
+          "title": "무작위 표본 추출",
+          "pos": 492,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "110253ca-4241-4d5d-accc-249d277ed90e",
+          "title": "체계적 표본 추출",
+          "pos": 538,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "86cc3ae5-cda9-4a30-af37-a59fa4f18ed4",
+          "title": "층화 표본 추출",
+          "pos": 577,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "249b0b7e-d5a8-42a5-a432-0cbcd6c60d8c",
+          "title": "사건(EVENT)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "1a3c8f14-9f17-4a3b-9958-a5c9e56e62fc",
+          "title": "표본 공간(SAMPLE SPACE)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "e695548c-c87e-42ba-9d39-6a5e5476587a",
+          "title": "표본점 (SAMPLE POINT)",
+          "pos": 3915,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "8b85fc49-909b-43ad-94b4-1584704f877b",
+          "title": "확률 표본 (RANDOM SAMPLE)",
+          "pos": 3915,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "eef9c979-7c7b-40a5-8958-826b814a86c9",
+          "title": "구간추정(INTERVAL ESTIMATION)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "03604ef2-cb9b-4748-91de-22df38156600",
+          "title": "상여금(BONUS)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "343d9b32-3f28-4a93-8e0f-411fed312233",
+          "title": "점추정(POINT ESTIMATION)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "0b702110-c353-4e51-b3ec-c3dece5b59a2",
+          "title": "추론(INFERENCE)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "7251221d-4d75-4215-9f30-d2f7fbc24f50",
+          "title": "추정(ESTIMATION)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "e98de573-dd02-4fab-a6f2-fbf7a11d1281",
+          "title": "표본(SAMPLE)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "bfec0399-4f91-4130-b07d-9983b7a359a7",
+          "title": "표본분산(SAMPLE VARIANCE)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "b08d198d-82f1-4365-ad98-21dd86679b02",
+          "title": "표본조사(SAMPLING)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "7f91e702-cda7-4996-9afe-5d1ed17a9897",
+          "title": "표본평균(SAMPLE MEAN)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "kept"
+        }
+      ],
+      "kept_titles": [
+        "추정(ESTIMATION)",
+        "점추정(POINT ESTIMATION)",
+        "구간추정(INTERVAL ESTIMATION)",
+        "추론(INFERENCE)",
+        "확률적 표본 추출 (PROBABILITY SAMPLING METHOD)",
+        "비확률적 표본 추출 (NON-PROBABILITY SAMPLING METHOD)",
+        "표본조사(SAMPLING)",
+        "표본평균(SAMPLE MEAN)",
+        "표본분산(SAMPLE VARIANCE)",
+        "표본 공간(SAMPLE SPACE)"
+      ],
+      "demoted_count": 12,
+      "kept_count": 10,
+      "_llm": {
+        "room_name": "표본추출과 추정",
+        "coherence_flag": "coherent",
+        "coherence_reason": "표본추출 방법과 추정 기법 중심으로 통계적 추론 절차를 다룸",
+        "n_hallucinated": 0
+      }
+    },
+    {
+      "room_id": "graph_3",
+      "size": 8,
+      "entities": [
+        {
+          "id": "3c76b1dd-efab-4ad5-9a42-27fa583873a4",
+          "title": "통계",
+          "pos": 0,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "6a41cb65-fcd9-47c3-85f1-34d56273e738",
+          "title": "통계학",
+          "pos": 38,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "c0658efe-815d-447f-b292-23918b58c315",
+          "title": "의사결정",
+          "pos": 168,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "9c2d4b6b-4133-4dfb-8488-e99ee7d042ac",
+          "title": "데이터 이해(DATA UNDERSTANDING)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "9722ac2d-b499-4b19-bd4e-c9d5e5f376c0",
+          "title": "시각화(VISUALIZATION)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "668aac15-0435-4c3d-80c6-82017669187d",
+          "title": "의사 소통(COMMUNICATION)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "a3449cc6-d124-4969-aee4-dfa01cbc31ec",
+          "title": "의사결정 지원(DECISION SUPPORT)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "298a330d-24a3-4f75-80a8-419abd907189",
+          "title": "패턴 파악(PATTERN RECOGNITION)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        }
+      ],
+      "kept_titles": [],
+      "demoted_count": 8,
+      "kept_count": 0,
+      "_llm": {
+        "room_name": "통계학 기초 개념",
+        "coherence_flag": "type-pile",
+        "coherence_reason": "모두 통계학 관련 일반 개념이나 배경 설명으로 실전 계산·검정 용어는 없음",
+        "n_hallucinated": 0
+      }
+    },
+    {
+      "room_id": "graph_4",
+      "size": 18,
+      "entities": [
+        {
+          "id": "e4adc1c7-f580-4813-9a46-949f88626771",
+          "title": "상관분석",
+          "pos": 32,
+          "pos_source": 0,
+          "status": "kept"
+        },
+        {
+          "id": "9669d8a8-099b-46d0-b076-1488d8f6efe2",
+          "title": "양의 왜도(POSITIVE SKEWNESS)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "93e4d1a1-cab4-410d-95fc-8a7ca365a08b",
+          "title": "양의 첨도(LEPTOKURTIC)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "0853d463-bb59-4793-8a54-5cf3f3d7a5b9",
+          "title": "왜도(SKEWNESS)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "21c61d2c-da8e-493d-8c06-95ee4d9ce230",
+          "title": "왜도와 첨도(SKEWNESS AND KURTOSIS)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "3c37827a-d9fc-40c7-8714-215693aaf20b",
+          "title": "음의 왜도(NEGATIVE SKEWNESS)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "a895803e-afe5-4791-85b9-be34c0acded9",
+          "title": "음의 첨도(PLATYKURTIC)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "eed0b520-e99b-46be-b9bd-15eb71518d43",
+          "title": "첨도(KURTOSIS)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "8cab46bb-39f2-4934-9513-0b880c8b43db",
+          "title": "변수",
+          "pos": 3996,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "4173f79c-d805-45ea-a818-f4a7749a768c",
+          "title": "상관계수 (CORRELATION COEFFICIENT)",
+          "pos": 7914,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "bf15774a-0eb1-4a28-99da-cb549e753fa3",
+          "title": "스피어만 상관계수 (SPEARMAN'S RANK CORRELATION COEFFICIENT)",
+          "pos": 7914,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "e16c3fd3-79c6-443f-88f7-58633b3d0b77",
+          "title": "켄달의 타우 (KENDALL'S TAU, KENDALL'S RANK CORRELATION COEFFICIENT)",
+          "pos": 7914,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "5fbf2665-c698-465e-9a64-3956692afc93",
+          "title": "피어슨 상관계수 (PEARSON CORRELATION COEFFICIENT)",
+          "pos": 7914,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "72c4b927-7e49-4db9-adaf-4c42fcf99496",
+          "title": "양의 상관관계",
+          "pos": 8521,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "7de8dc32-942f-4ade-8a96-c202840a0963",
+          "title": "음의 상관관계",
+          "pos": 8566,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "f14bab4e-1f13-44d7-ba83-064c3486f168",
+          "title": "강한 상관관계",
+          "pos": 8621,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "9c0bdb16-2999-458f-b5de-71360c930185",
+          "title": "중간 상관관계",
+          "pos": 8650,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "399a969c-049d-4572-8212-c14b18988724",
+          "title": "약한 상관관계",
+          "pos": 8683,
+          "pos_source": 0,
+          "status": "demoted"
+        }
+      ],
+      "kept_titles": [
+        "상관분석",
+        "상관계수 (CORRELATION COEFFICIENT)",
+        "피어슨 상관계수 (PEARSON CORRELATION COEFFICIENT)",
+        "스피어만 상관계수 (SPEARMAN'S RANK CORRELATION COEFFICIENT)",
+        "켄달의 타우 (KENDALL'S TAU, KENDALL'S RANK CORRELATION COEFFICIENT)",
+        "왜도(SKEWNESS)",
+        "첨도(KURTOSIS)"
+      ],
+      "demoted_count": 11,
+      "kept_count": 7,
+      "_llm": {
+        "room_name": "상관분석 핵심지표",
+        "coherence_flag": "coherent",
+        "coherence_reason": "상관분석과 관련된 핵심 지표 및 통계량 중심으로 구성됨",
+        "n_hallucinated": 0
+      }
+    },
+    {
+      "room_id": "graph_5",
+      "size": 12,
+      "entities": [
+        {
+          "id": "701f9dcf-f6fc-40c3-ab83-9a3922ef5286",
+          "title": "곱셈 법칙(MULTIPLICATION RULE)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "14629c60-bb53-461d-ae65-7d2718e5a441",
+          "title": "덧셈 법칙(ADDITION RULE)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "72303a52-743a-494d-82bb-ff967d44bea0",
+          "title": "확률 변수(RANDOM VARIABLE)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "b04f67c8-20f0-4b55-ac41-9c003c823724",
+          "title": "확률 함수(PROBABILITY FUNCTION)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "3d86b43a-7f60-42c6-95b7-a0252e5cd2ee",
+          "title": "확률(PROBABILITY)",
+          "pos": 1865,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "f4b8811a-82ba-4603-86bc-3bc3ecb2ba2d",
+          "title": "연속형 확률변수 (CONTINUOUS RANDOM VARIABLE)",
+          "pos": 3915,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "bd9e440f-6fd6-4c38-b4ba-12d63cab2161",
+          "title": "이산형 확률변수 (DISCRETE RANDOM VARIABLE)",
+          "pos": 3915,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "5c5c0b34-fdfb-4acd-ae4e-65668f8689cc",
+          "title": "확률 밀도 함수 (PROBABILITY DENSITY FUNCTION, PDF)",
+          "pos": 3915,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "6687b458-7b23-4e15-9077-7ea7d5e7de13",
+          "title": "확률 변수 (RANDOM VARIABLE)",
+          "pos": 3915,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "830c71a3-8c72-459d-9a03-3c1516505afe",
+          "title": "확률 질량 함수 (PROBABILITY MASS FUNCTION, PMF)",
+          "pos": 3915,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "7384450e-7aa5-4f1e-969e-46644804c97b",
+          "title": "곱셈 법칙",
+          "pos": 3962,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "e3c6ce2b-d420-4f0b-891a-446713ed29db",
+          "title": "확률밀도함수(PDF)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "kept"
+        }
+      ],
+      "kept_titles": [
+        "확률(PROBABILITY)",
+        "확률 변수(RANDOM VARIABLE)",
+        "이산형 확률변수 (DISCRETE RANDOM VARIABLE)",
+        "연속형 확률변수 (CONTINUOUS RANDOM VARIABLE)",
+        "확률 함수(PROBABILITY FUNCTION)",
+        "확률 질량 함수 (PROBABILITY MASS FUNCTION, PMF)",
+        "확률 밀도 함수 (PROBABILITY DENSITY FUNCTION, PDF)",
+        "덧셈 법칙(ADDITION RULE)",
+        "곱셈 법칙(MULTIPLICATION RULE)",
+        "확률밀도함수(PDF)"
+      ],
+      "demoted_count": 2,
+      "kept_count": 10,
+      "_llm": {
+        "room_name": "확률과 확률변수",
+        "coherence_flag": "coherent",
+        "coherence_reason": "확률 계산법칙과 확률변수 및 확률분포 함수로 구성된 핵심 확률 개념 집합임",
+        "n_hallucinated": 0
+      }
+    },
+    {
+      "room_id": "graph_6",
+      "size": 10,
+      "entities": [
+        {
+          "id": "05c29de3-4a72-494a-b23f-604a048fa83a",
+          "title": "1종 오류(TYPE I ERROR)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "d7465a2c-4a7a-4ca7-8977-ef35c126c93a",
+          "title": "2종 오류(TYPE II ERROR)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "6ac579c5-ff11-4df5-bcb9-4cda6525d6c1",
+          "title": "가설 검정(HYPOTHESIS TESTING)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "e9fa82e8-47d0-4bd2-8b89-1015a354844e",
+          "title": "가설(HYPOTHESIS)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "ba8ad160-78fc-4acf-995a-78dfb9abaaaa",
+          "title": "귀무가설(NULL HYPOTHESIS, H0)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "326630e2-8964-43c2-b41c-079b55abbbc2",
+          "title": "대립가설(ALTERNATIVE HYPOTHESIS, H1)",
+          "pos": 5967,
+          "pos_source": 1,
+          "status": "kept"
+        },
+        {
+          "id": "ace497eb-51de-41d0-acfc-a44fba534377",
+          "title": "귀무가설",
+          "pos": 7164,
+          "pos_source": 0,
+          "status": "demoted"
+        },
+        {
+          "id": "37a80c3c-7593-4dde-a6c4-580525a7648f",
+          "title": "가설 검정 결과",
+          "pos": 7914,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "40a8edc5-d3ad-4771-99cb-b203dddd51c8",
+          "title": "오류 (FALSE NEGATIVE)",
+          "pos": 7914,
+          "pos_source": 1,
+          "status": "demoted"
+        },
+        {
+          "id": "85b65f09-a2ee-4b46-b43f-255952266235",
+          "title": "잘못된 부정 결과 (FALSE NEGATIVE)",
+          "pos": 7914,
+          "pos_source": 1,
+          "status": "demoted"
+        }
+      ],
+      "kept_titles": [
+        "가설 검정(HYPOTHESIS TESTING)",
+        "귀무가설(NULL HYPOTHESIS, H0)",
+        "대립가설(ALTERNATIVE HYPOTHESIS, H1)",
+        "1종 오류(TYPE I ERROR)",
+        "2종 오류(TYPE II ERROR)"
+      ],
+      "demoted_count": 5,
+      "kept_count": 5,
+      "_llm": {
+        "room_name": "가설검정 핵심용어",
+        "coherence_flag": "coherent",
+        "coherence_reason": "가설검정 절차와 오류 개념 등 핵심 통계 용어로 구성됨",
+        "n_hallucinated": 0
+      }
+    }
+  ]
+}

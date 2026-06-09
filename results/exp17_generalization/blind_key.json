@@ -1,0 +1,84 @@
+{
+  "set1": {
+    "method": "toc",
+    "rooms": {
+      "set1_room1": {
+        "method": "toc",
+        "real_room_id": "toc_1",
+        "llm_room_name": "통계학 핵심용어",
+        "section_idx": 0,
+        "section_name": "통계학 개요와 표본추출"
+      },
+      "set1_room2": {
+        "method": "toc",
+        "real_room_id": "toc_2",
+        "llm_room_name": "기초통계 핵심용어",
+        "section_idx": 1,
+        "section_name": "중심경향과 산포도 측정"
+      },
+      "set1_room3": {
+        "method": "toc",
+        "real_room_id": "toc_3",
+        "llm_room_name": "확률변수와 분포",
+        "section_idx": 2,
+        "section_name": "확률과 확률분포"
+      },
+      "set1_room4": {
+        "method": "toc",
+        "real_room_id": "toc_4",
+        "llm_room_name": "핵심 통계 검정 개념",
+        "section_idx": 3,
+        "section_name": "추정과 가설검정"
+      },
+      "set1_room5": {
+        "method": "toc",
+        "real_room_id": "toc_5",
+        "llm_room_name": "통계학 핵심 개념",
+        "section_idx": 4,
+        "section_name": "가설검정 방법과 오류"
+      },
+      "set1_room6": {
+        "method": "toc",
+        "real_room_id": "toc_6",
+        "llm_room_name": "가설검정과 상관계수",
+        "section_idx": 5,
+        "section_name": "상관분석 기법"
+      }
+    }
+  },
+  "set2": {
+    "method": "graph_ward",
+    "rooms": {
+      "set2_room1": {
+        "method": "graph_ward",
+        "real_room_id": "graph_1",
+        "llm_room_name": "기초통계 핵심용어"
+      },
+      "set2_room2": {
+        "method": "graph_ward",
+        "real_room_id": "graph_2",
+        "llm_room_name": "표본추출과 추정"
+      },
+      "set2_room3": {
+        "method": "graph_ward",
+        "real_room_id": "graph_3",
+        "llm_room_name": "통계학 기초 개념"
+      },
+      "set2_room4": {
+        "method": "graph_ward",
+        "real_room_id": "graph_4",
+        "llm_room_name": "상관분석 핵심지표"
+      },
+      "set2_room5": {
+        "method": "graph_ward",
+        "real_room_id": "graph_5",
+        "llm_room_name": "확률과 확률변수"
+      },
+      "set2_room6": {
+        "method": "graph_ward",
+        "real_room_id": "graph_6",
+        "llm_room_name": "가설검정 핵심용어"
+      }
+    }
+  }
+}
