@@ -53,6 +53,7 @@ ROOMS_DIR = REPO / 'results' / 'rooms'
 TOC_OUT = ROOMS_DIR / f'{RUN_ID}.toc_llm.json'
 ROOMS_OUT = ROOMS_DIR / f'{RUN_ID}.json'
 RUBRIC_CACHE = REPO / 'cache' / 'exp10_room_gen' / 'rubric_repro_run3_toc.json'
+STAGE_B_CACHE = REPO / 'cache' / 'exp10_room_gen' / 'stage_b_repro_run3_toc'
 
 K = 6
 NODE_BUDGET = 20
@@ -117,6 +118,7 @@ def phase_rooms() -> None:
         toc_spec, entities, rubric, client,
         domain=DOMAIN, model=MODEL, node_budget=NODE_BUDGET, n_runs=1,
         rubric_source_rel=str(RUBRIC_CACHE.relative_to(REPO)).replace('\\', '/'),
+        stage_b_cache_dir=STAGE_B_CACHE,
     )
 
     print('converting to room_gen common schema...')
@@ -165,6 +167,11 @@ def phase_rooms() -> None:
         f'empty_rooms={empty_rooms} kept={n_kept} demoted={n_demoted} '
         f'preserved={total}/{n_entities_in} ({"yes" if total == n_entities_in else "NO"}) '
         f'fine={fine} ({fine_ratio:.2%}) fallback={fb} ({fb_ratio:.2%})'
+    )
+    kept_dist = [(r['id'], r['name'], r['kept_count']) for r in rooms]
+    print(
+        'keep dist: '
+        + ' | '.join(f'{rid}({nm}) {kc}' for rid, nm, kc in kept_dist)
     )
 
 

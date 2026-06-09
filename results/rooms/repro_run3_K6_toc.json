@@ -10,7 +10,7 @@
     "node_budget": 20,
     "domain": "조선 전기 한국사 (건국·통치제도·문화·사림·왜란·붕당·실학)",
     "model": "gpt-4.1-mini",
-    "ts": "2026-06-09T06:46:06.323038+00:00",
+    "ts": "2026-06-09T06:54:38.129685+00:00",
     "snapshot_meta": {
       "snapshot_path": "results/snapshots/repro_run3",
       "n_entities": 357
@@ -21,7 +21,7 @@
   "rooms": [
     {
       "room_id": 0,
-      "name": "조선 전기 핵심 인물·제도",
+      "name": "조선 전기 핵심 인물·제도·사건",
       "kept": [
         {
           "title": "정도전"
@@ -36,10 +36,19 @@
           "title": "태조"
         },
         {
+          "title": "방원 (태종)"
+        },
+        {
           "title": "호패법"
         },
         {
           "title": "세종"
+        },
+        {
+          "title": "집현전"
+        },
+        {
+          "title": "단종"
         },
         {
           "title": "세조"
@@ -54,12 +63,6 @@
           "title": "경국대전"
         },
         {
-          "title": "최윤덕"
-        },
-        {
-          "title": "김종서"
-        },
-        {
           "title": "의정부"
         },
         {
@@ -69,19 +72,16 @@
           "title": "사간원"
         },
         {
+          "title": "사헌부"
+        },
+        {
           "title": "홍문관"
         },
         {
-          "title": "과거 시험"
+          "title": "삼사"
         },
         {
-          "title": "중종반정"
-        },
-        {
-          "title": "조광조"
-        },
-        {
-          "title": "군역 제도"
+          "title": "공신"
         }
       ],
       "demoted": [
@@ -143,9 +143,6 @@
           "title": "농업"
         },
         {
-          "title": "방원 (태종)"
-        },
-        {
           "title": "정종"
         },
         {
@@ -155,13 +152,7 @@
           "title": "군사권"
         },
         {
-          "title": "집현전"
-        },
-        {
           "title": "유교 정치"
-        },
-        {
-          "title": "단종"
         },
         {
           "title": "성삼문"
@@ -224,6 +215,12 @@
           "title": "여진족"
         },
         {
+          "title": "최윤덕"
+        },
+        {
+          "title": "김종서"
+        },
+        {
           "title": "4군"
         },
         {
@@ -266,9 +263,6 @@
           "title": "판서"
         },
         {
-          "title": "사헌부"
-        },
-        {
           "title": "문과"
         },
         {
@@ -285,9 +279,6 @@
         },
         {
           "title": "한성부"
-        },
-        {
-          "title": "삼사"
         },
         {
           "title": "지방 행정"
@@ -321,6 +312,9 @@
         },
         {
           "title": "신문고"
+        },
+        {
+          "title": "과거 시험"
         },
         {
           "title": "교육 기관"
@@ -509,13 +503,19 @@
           "title": "무오사화"
         },
         {
-          "title": "공신"
+          "title": "중종반정"
+        },
+        {
+          "title": "조광조"
+        },
+        {
+          "title": "군역 제도"
         }
       ],
       "coherence_flag": "coherent",
       "source_clusters": [],
       "_meta": {
-        "coherence_reason": "조선 전기 건국부터 통치제도, 정치 세력, 문화, 실학, 왜란 관련 핵심 인물과 제도 중심으로 구성됨",
+        "coherence_reason": "조선 전기 건국부터 통치제도, 정치사건, 문화, 사림까지 핵심 요소로 구성됨",
         "n_forced_demote": 0,
         "n_hallucinated": 0,
         "section_idx": 0,
@@ -558,9 +558,6 @@
           "title": "붕당"
         },
         {
-          "title": "인사권"
-        },
-        {
           "title": "이조 전랑"
         },
         {
@@ -596,6 +593,9 @@
           "title": "향약 4대 덕목"
         },
         {
+          "title": "인사권"
+        },
+        {
           "title": "모내기법"
         },
         {
@@ -611,7 +611,7 @@
       "coherence_flag": "coherent",
       "source_clusters": [],
       "_meta": {
-        "coherence_reason": "조선 전기 정치 세력, 인물, 제도, 사건, 학문 중심 핵심 요소로 구성됨",
+        "coherence_reason": "조선 전기 정치 세력, 인물, 제도, 사건, 학문 기관 중심으로 핵심 요소들이 유기적으로 연결됨",
         "n_forced_demote": 0,
         "n_hallucinated": 0,
         "section_idx": 1,
@@ -666,9 +666,6 @@
           "title": "김시민"
         },
         {
-          "title": "진주"
-        },
-        {
           "title": "권율"
         },
         {
@@ -682,6 +679,9 @@
         },
         {
           "title": "광해군"
+        },
+        {
+          "title": "허준"
         },
         {
           "title": "동의보감"
@@ -824,6 +824,9 @@
           "title": "명의 원군"
         },
         {
+          "title": "진주"
+        },
+        {
           "title": "도쿠가와 막부"
         },
         {
@@ -846,9 +849,6 @@
         },
         {
           "title": "후금"
-        },
-        {
-          "title": "허준"
         },
         {
           "title": "강홍립"
@@ -893,7 +893,7 @@
       "coherence_flag": "coherent",
       "source_clusters": [],
       "_meta": {
-        "coherence_reason": "임진왜란 중심 인물, 사건, 제도, 군사 조직과 조선 전기 교육·문화 핵심 요소로 구성됨",
+        "coherence_reason": "임진왜란 중심 인물, 사건, 제도, 군사 세력과 조선 전기 교육·문화 핵심 요소로 구성됨",
         "n_forced_demote": 0,
         "n_hallucinated": 0,
         "section_idx": 2,
@@ -978,19 +978,10 @@
     },
     {
       "room_id": 4,
-      "name": "정조 시대 주요 제도와 인물",
+      "name": "정조 시대 주요 인물·제도·문서",
       "kept": [
         {
           "title": "계유정난"
-        },
-        {
-          "title": "노비 차별 완화"
-        },
-        {
-          "title": "서얼 차별 완화"
-        },
-        {
-          "title": "수원읍성"
         },
         {
           "title": "탕평비"
@@ -1027,15 +1018,12 @@
         },
         {
           "title": "사도 세자"
-        },
-        {
-          "title": "화성부"
-        },
-        {
-          "title": "실학"
         }
       ],
       "demoted": [
+        {
+          "title": "노비 차별 완화"
+        },
         {
           "title": "농업 발전"
         },
@@ -1043,10 +1031,16 @@
           "title": "상업 자유화"
         },
         {
+          "title": "서얼 차별 완화"
+        },
+        {
           "title": "서울 인구 증가"
         },
         {
           "title": "수원 화성"
+        },
+        {
+          "title": "수원읍성"
         },
         {
           "title": "한강 포구 증가"
@@ -1056,12 +1050,18 @@
         },
         {
           "title": "광산 개발"
+        },
+        {
+          "title": "화성부"
+        },
+        {
+          "title": "실학"
         }
       ],
       "coherence_flag": "coherent",
       "source_clusters": [],
       "_meta": {
-        "coherence_reason": "정조와 관련된 인물, 제도, 문서, 군사 조직, 정치 개혁 중심으로 구성됨",
+        "coherence_reason": "정조와 관련된 인물, 제도, 문서, 정치·군사 조직 및 주요 사건 중심으로 구성됨",
         "n_forced_demote": 0,
         "n_hallucinated": 0,
         "section_idx": 4,
@@ -1122,19 +1122,19 @@
           "title": "유득공"
         },
         {
-          "title": "발해고"
-        },
-        {
           "title": "이중환"
         },
         {
           "title": "정상기"
         },
         {
-          "title": "택리지"
+          "title": "김정호"
         },
         {
-          "title": "동국지도"
+          "title": "신경준"
+        },
+        {
+          "title": "이제마"
         }
       ],
       "demoted": [
@@ -1175,13 +1175,16 @@
           "title": "사상의학"
         },
         {
-          "title": "김정호"
+          "title": "발해고"
+        },
+        {
+          "title": "택리지"
+        },
+        {
+          "title": "동국지도"
         },
         {
           "title": "대동여지도"
-        },
-        {
-          "title": "신경준"
         },
         {
           "title": "훈민정음운해"
@@ -1191,9 +1194,6 @@
         },
         {
           "title": "언문지"
-        },
-        {
-          "title": "이제마"
         },
         {
           "title": "실사구시"

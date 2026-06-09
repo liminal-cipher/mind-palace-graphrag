@@ -491,6 +491,17 @@ def _stage_b_prompt(
     return sys_p, user_p
 
 
+def _stage_b_cache_key(model: str, sys_p: str, user_p: str) -> str:
+    import hashlib
+    h = hashlib.sha256()
+    h.update(model.encode('utf-8'))
+    h.update(b'\x1f')
+    h.update(sys_p.encode('utf-8'))
+    h.update(b'\x1f')
+    h.update(user_p.encode('utf-8'))
+    return h.hexdigest()
+
+
 def _run_stage_b_once(
     cid: int,
     members_payload: list[dict],
@@ -500,21 +511,44 @@ def _run_stage_b_once(
     llm_client,
     model: str,
     max_retries_on_empty: int = 2,
+    stage_b_cache_dir: str | Path | None = None,
 ) -> dict:
     """One Stage-B call. Completeness is automatic: any input title not in
     keep_titles becomes demote. We only need to: (a) drop hallucinated
     titles not in the input set, (b) retry if LLM returned 0 keeps for a
     non-empty cluster (likely a parse/format failure).
+
+    If `stage_b_cache_dir` is given, the raw LLM response is keyed by
+    sha256(model + system + user) and persisted there. A cache hit
+    skips the LLM call entirely, which is what gives byte-identical
+    reruns despite Azure's temp=0 micro-variation.
     """
     input_set = {m['title'] for m in members_payload}
     sys_p, user_p = _stage_b_prompt(domain, rubric, cid, members_payload, node_budget)
+
+    cache_dir = Path(stage_b_cache_dir) if stage_b_cache_dir else None
+    cache_key = _stage_b_cache_key(model, sys_p, user_p) if cache_dir else None
+    cache_path = (cache_dir / f'{cache_key}.json') if cache_dir else None
 
     obj: dict = {}
     keep_order: list[str] = []
     hallucinated: list[str] = []
 
     for attempt in range(max_retries_on_empty + 1):
-        raw, _ = call_json(llm_client, model, sys_p, user_p)
+        cache_hit = (
+            cache_path is not None and cache_path.exists() and attempt == 0
+        )
+        if cache_hit:
+            cached = json.loads(cache_path.read_text(encoding='utf-8'))
+            raw = cached['raw']
+        else:
+            raw, _ = call_json(llm_client, model, sys_p, user_p)
+            if cache_path is not None:
+                cache_dir.mkdir(parents=True, exist_ok=True)
+                cache_path.write_text(
+                    json.dumps({'raw': raw, 'model': model}, ensure_ascii=False, indent=2),
+                    encoding='utf-8',
+                )
         try:
             obj = json.loads(raw)
         except json.JSONDecodeError:
@@ -534,6 +568,11 @@ def _run_stage_b_once(
             else:
                 hallucinated.append(t)
 
+        if cache_hit:
+            # cache wins; the persisted call already represents the chosen
+            # answer for this prompt and must be reused as-is to keep
+            # reruns byte-identical.
+            break
         if keep_order or not input_set:
             break
         # else: empty keep on a non-empty cluster → retry once or twice
@@ -604,6 +643,7 @@ def assign_rooms(
     llm_client,
     model: str,
     source_ids: list[list[int]] | None = None,
+    stage_b_cache_dir: str | Path | None = None,
 ) -> list[dict]:
     """Stage B for every final cluster. Enforces:
     - kept ∪ demoted == cluster input entities (completeness, no drops)
@@ -637,6 +677,7 @@ def assign_rooms(
             _run_stage_b_once(
                 room_id, members_payload, domain, rubric, node_budget,
                 llm_client, model,
+                stage_b_cache_dir=stage_b_cache_dir,
             )
             for _ in range(n_runs)
         ]

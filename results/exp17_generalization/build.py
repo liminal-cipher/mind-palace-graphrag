@@ -266,6 +266,7 @@ def apply_keep_demote(
     node_budget: int = NODE_BUDGET,
     n_runs: int = N_RUNS,
     rubric_source_rel: str | None = None,
+    stage_b_cache_dir: str | Path | None = None,
 ) -> dict:
     """Run Stage B per room. Inject demote and keep_titles into spec."""
     title_to_e = {e['title']: e for e in entities}
@@ -280,6 +281,7 @@ def apply_keep_demote(
     rooms_out = assign_rooms(
         final_clusters, entities, domain, rubric, n_runs, node_budget,
         client, model,
+        stage_b_cache_dir=stage_b_cache_dir,
     )
 
     enriched = []
