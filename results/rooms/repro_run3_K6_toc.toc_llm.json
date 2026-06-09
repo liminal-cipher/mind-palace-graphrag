@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "corpus": "input/국사교과서_조선_본문_정제.txt",
+    "corpus_chars": 20921,
+    "model": "gpt-4.1-mini",
+    "temperature": 0,
+    "ts": "2026-06-09T06:36:46.131770+00:00",
+    "usage": {
+      "prompt_tokens": 13273,
+      "completion_tokens": 215
+    },
+    "n_sections": 6,
+    "monotonic_offsets": true,
+    "distinct_offsets": true,
+    "warnings": []
+  },
+  "sections": [
+    {
+      "idx": 0,
+      "name": "조선의 성립과 기틀 마련",
+      "start_marker": "V. 조선의 성립과 발전",
+      "start_offset": 0,
+      "match_strategy": "forced_zero (first section)",
+      "marker_occurrences_in_corpus": 1,
+      "end_offset": 6729,
+      "length_chars": 6729
+    },
+    {
+      "idx": 1,
+      "name": "사림 세력과 붕당 형성",
+      "start_marker": "2. 사림 세력의 성장",
+      "start_offset": 6729,
+      "match_strategy": "exact",
+      "marker_occurrences_in_corpus": 1,
+      "end_offset": 9483,
+      "length_chars": 2754
+    },
+    {
+      "idx": 2,
+      "name": "임진왜란과 호란 극복",
+      "start_marker": "3. 왜란과 호란의 극복",
+      "start_offset": 9483,
+      "match_strategy": "exact",
+      "marker_occurrences_in_corpus": 1,
+      "end_offset": 14357,
+      "length_chars": 4874
+    },
+    {
+      "idx": 3,
+      "name": "붕당 정치와 탕평책",
+      "start_marker": "1. 붕당 정치와 탕평책",
+      "start_offset": 14357,
+      "match_strategy": "exact",
+      "marker_occurrences_in_corpus": 1,
+      "end_offset": 16596,
+      "length_chars": 2239
+    },
+    {
+      "idx": 4,
+      "name": "정조의 개혁과 규장각",
+      "start_marker": "정조와 규장각",
+      "start_offset": 16596,
+      "match_strategy": "exact",
+      "marker_occurrences_in_corpus": 1,
+      "end_offset": 17426,
+      "length_chars": 830
+    },
+    {
+      "idx": 5,
+      "name": "실학과 국학 연구의 발전",
+      "start_marker": "실학의 대두",
+      "start_offset": 17426,
+      "match_strategy": "exact",
+      "marker_occurrences_in_corpus": 1,
+      "end_offset": 20921,
+      "length_chars": 3495
+    }
+  ]
+}
