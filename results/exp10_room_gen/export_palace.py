@@ -17,6 +17,13 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 import pandas as pd
 
+sys.path.insert(0, str(Path('results/node_order_probe')))
+from node_metrics import (  # noqa: E402
+    _first_in_text,
+    _surface_variants,
+    build_text_unit_positions,
+)
+
 ROOMS = Path('results/rooms')
 
 _norm_re = re.compile(r'[\s\W]+', re.UNICODE)
@@ -56,13 +63,40 @@ def build_ent_lookup(ents: pd.DataFrame) -> dict[str, dict]:
         if t in out:
             dups.append(t)
             continue
+        tuids = row['text_unit_ids']
         out[t] = {
             'type': row['type'] if isinstance(row['type'], str) else '',
             'description': row['description'] if isinstance(row['description'], str) else '',
+            'text_unit_ids': list(tuids) if tuids is not None else [],
         }
     if dups:
         raise SystemExit(f'duplicate titles in entities.parquet: {dups[:10]}')
     return out
+
+
+def compute_position(
+    title: str,
+    text_unit_ids: list,
+    corpus_text: str,
+    text_unit_positions: dict,
+) -> tuple[int, str]:
+    """Return (order, order_confidence) for a kept entity.
+
+    "fine": first-occurrence char offset of any surface variant of the
+        title found in the corpus.
+    "fallback": char_start of the first text_unit listed in the
+        entity's text_unit_ids that has a resolved char position in
+        the corpus.
+    """
+    variants = _surface_variants(title)
+    pos = _first_in_text(corpus_text, variants)
+    if pos >= 0:
+        return pos, 'fine'
+    for uid in text_unit_ids:
+        cs, _ce, _hr, _ln = text_unit_positions.get(uid, (-1, -1, -1, 0))
+        if cs >= 0:
+            return cs, 'fallback'
+    return -1, 'fallback'
 
 
 def assign_palace_ids(rooms_json: dict, ent_lookup: dict[str, dict]) -> dict[str, str]:
@@ -89,7 +123,9 @@ def assign_palace_ids(rooms_json: dict, ent_lookup: dict[str, dict]) -> dict[str
 
 
 def build_entity_record(item: dict, ent_lookup: dict[str, dict], pid: str,
-                        with_rank: int | None) -> dict:
+                        with_rank: int | None,
+                        order: int | None = None,
+                        order_confidence: str | None = None) -> dict:
     title = item['title']
     info = ent_lookup.get(title)
     if info is None:
@@ -101,6 +137,9 @@ def build_entity_record(item: dict, ent_lookup: dict[str, dict], pid: str,
     }
     if with_rank is not None:
         rec['rank'] = with_rank
+    if order is not None:
+        rec['order'] = order
+        rec['order_confidence'] = order_confidence
     rec['caption'] = caption_of(info['description'])
     rec['description'] = info['description']
     return rec
@@ -121,7 +160,7 @@ def collect_relationships(rels: pd.DataFrame, kept_titles: set[str],
     return out
 
 
-def export(run_id: str, snapshot: Path, with_relationships: bool) -> Path:
+def export(run_id: str, snapshot: Path, with_relationships: bool) -> tuple[Path, dict]:
     rooms_path = ROOMS / f'{run_id}.json'
     rooms_json = load_rooms(rooms_path)
     meta = rooms_json['meta']
@@ -130,14 +169,53 @@ def export(run_id: str, snapshot: Path, with_relationships: bool) -> Path:
     ent_lookup = build_ent_lookup(ents)
     title_to_pid = assign_palace_ids(rooms_json, ent_lookup)
 
+    # Corpus text + text_unit char spans for first-occurrence ordering.
+    # Both come from the same snapshot used to build the rooms: documents
+    # carries the full corpus text, text_units carries the chunk
+    # boundaries we use as the fallback position.
+    docs_path = snapshot / 'documents.parquet'
+    tu_path = snapshot / 'text_units.parquet'
+    if not docs_path.exists() or not tu_path.exists():
+        missing = [p.name for p in (docs_path, tu_path) if not p.exists()]
+        raise SystemExit(f'STOP: snapshot missing required files for ordering: {missing}')
+    docs = pd.read_parquet(docs_path)
+    if len(docs) != 1:
+        raise SystemExit(
+            f'STOP: documents.parquet has {len(docs)} rows; multi-doc corpora '
+            f'not handled by this ordering path'
+        )
+    corpus_text = docs.iloc[0]['text']
+    if not isinstance(corpus_text, str) or not corpus_text:
+        raise SystemExit('STOP: documents.parquet text column missing or empty')
+    tu_df = pd.read_parquet(tu_path)
+    text_unit_positions = build_text_unit_positions(tu_df, corpus_text)
+
+    stats = {'fine': 0, 'fallback': 0, 'unresolved': 0}
+
     rooms_out: list[dict] = []
     kept_titles_global: set[str] = set()
     for idx, room in enumerate(rooms_json['rooms']):
         kept_list: list[dict] = []
         for rank, item in enumerate(room['kept'], start=1):
             pid = title_to_pid[item['title']]
-            kept_list.append(build_entity_record(item, ent_lookup, pid, with_rank=rank))
+            info = ent_lookup.get(item['title'])
+            tuids = info['text_unit_ids'] if info else []
+            order, confidence = compute_position(
+                item['title'], tuids, corpus_text, text_unit_positions,
+            )
+            if order < 0:
+                stats['unresolved'] += 1
+            stats[confidence] += 1
+            kept_list.append(build_entity_record(
+                item, ent_lookup, pid, with_rank=rank,
+                order=order, order_confidence=confidence,
+            ))
             kept_titles_global.add(item['title'])
+        # Stable sort by order ASC; Python's sort is stable so same-order
+        # entries keep the source rank order. Unresolved (order == -1)
+        # would land at the front, but the snapshots we ship currently
+        # have no zero-chunk entities, so this is only a safety net.
+        kept_list.sort(key=lambda r: r['order'])
         demoted_list: list[dict] = []
         for item in room.get('demoted', []):
             pid = title_to_pid[item['title']]
@@ -191,7 +269,7 @@ def export(run_id: str, snapshot: Path, with_relationships: bool) -> Path:
         json.dumps(palace, ensure_ascii=False, indent=2),
         encoding='utf-8',
     )
-    return out_path
+    return out_path, stats
 
 
 def validate(out_path: Path, rooms_json: dict, ent_lookup: dict[str, dict]) -> list[str]:
@@ -235,7 +313,7 @@ def main() -> int:
     args = ap.parse_args()
 
     snapshot = Path(args.snapshot)
-    out_path = export(args.run_id, snapshot, args.with_relationships)
+    out_path, stats = export(args.run_id, snapshot, args.with_relationships)
     print(f'wrote: {out_path}')
 
     rooms_json = load_rooms(ROOMS / f'{args.run_id}.json')
@@ -250,9 +328,30 @@ def main() -> int:
     data = json.loads(out_path.read_text(encoding='utf-8'))
     n_kept = sum(r['kept_count'] for r in data['rooms'])
     n_demoted = sum(len(r['demoted']) for r in data['rooms'])
-    print(f'OK: room_count={data["palace"]["room_count"]} kept={n_kept} demoted={n_demoted}'
-          + (f' relationships={len(data.get("relationships", []))}' if args.with_relationships else ''))
-    return 0
+
+    # Sort check: every room's kept must be ASC by order.
+    bad_sort = []
+    for r in data['rooms']:
+        ords = [k['order'] for k in r['kept']]
+        if ords != sorted(ords):
+            bad_sort.append(r['id'])
+    sort_ok = not bad_sort
+
+    n_resolved = stats['fine'] + stats['fallback'] - stats['unresolved']
+    total_kept = stats['fine'] + stats['fallback']
+    fine_ratio = stats['fine'] / total_kept if total_kept else 0.0
+    fallback_ratio = stats['fallback'] / total_kept if total_kept else 0.0
+    print(
+        f'OK: room_count={data["palace"]["room_count"]} kept={n_kept} demoted={n_demoted}'
+        + (f' relationships={len(data.get("relationships", []))}' if args.with_relationships else '')
+    )
+    print(
+        f'order: fine={stats["fine"]} ({fine_ratio:.2%}) '
+        f'fallback={stats["fallback"]} ({fallback_ratio:.2%}) '
+        f'unresolved={stats["unresolved"]} | kept ASC by order: '
+        f'{"yes" if sort_ok else "NO " + ",".join(bad_sort)}'
+    )
+    return 0 if sort_ok else 1
 
 
 if __name__ == '__main__':
