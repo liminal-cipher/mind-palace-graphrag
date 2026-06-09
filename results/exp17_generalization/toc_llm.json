@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "corpus": "input/ai_gyoan/AI_교안_정제.txt",
+    "corpus_chars": 9604,
+    "model": "gpt-4.1-mini",
+    "temperature": 0,
+    "ts": "2026-06-09T02:57:52.635102+00:00",
+    "usage": {
+      "prompt_tokens": 5686,
+      "completion_tokens": 194
+    },
+    "n_sections": 6,
+    "monotonic_offsets": true,
+    "distinct_offsets": true,
+    "warnings": []
+  },
+  "sections": [
+    {
+      "idx": 0,
+      "name": "통계학 개요와 표본추출",
+      "start_marker": "통계의 기본 개념",
+      "start_offset": 0,
+      "match_strategy": "forced_zero (first section)",
+      "marker_occurrences_in_corpus": 4,
+      "end_offset": 760,
+      "length_chars": 760
+    },
+    {
+      "idx": 1,
+      "name": "중심경향과 산포도 측정",
+      "start_marker": "중심경향 측정",
+      "start_offset": 760,
+      "match_strategy": "exact",
+      "marker_occurrences_in_corpus": 5,
+      "end_offset": 3993,
+      "length_chars": 3233
+    },
+    {
+      "idx": 2,
+      "name": "확률과 확률분포",
+      "start_marker": "확률 변수와 확률 분포",
+      "start_offset": 3993,
+      "match_strategy": "exact",
+      "marker_occurrences_in_corpus": 2,
+      "end_offset": 6189,
+      "length_chars": 2196
+    },
+    {
+      "idx": 3,
+      "name": "추정과 가설검정",
+      "start_marker": "추론",
+      "start_offset": 6189,
+      "match_strategy": "exact",
+      "marker_occurrences_in_corpus": 4,
+      "end_offset": 7709,
+      "length_chars": 1520
+    },
+    {
+      "idx": 4,
+      "name": "가설검정 방법과 오류",
+      "start_marker": "가설 검정 - 오류",
+      "start_offset": 7709,
+      "match_strategy": "exact",
+      "marker_occurrences_in_corpus": 1,
+      "end_offset": 8363,
+      "length_chars": 654
+    },
+    {
+      "idx": 5,
+      "name": "상관분석 기법",
+      "start_marker": "상관분석 - 개요",
+      "start_offset": 8363,
+      "match_strategy": "exact",
+      "marker_occurrences_in_corpus": 1,
+      "end_offset": 9604,
+      "length_chars": 1241
+    }
+  ]
+}
