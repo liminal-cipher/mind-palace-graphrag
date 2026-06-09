@@ -27,8 +27,6 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parents[1]
 CORPUS = REPO / 'input' / 'ai_gyoan' / 'AI_교안_정제.txt'
@@ -217,6 +215,7 @@ def generate_toc(
 
 
 def main() -> None:
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
     generate_toc(CORPUS, out_path=OUT)
 
 

@@ -50,8 +50,6 @@ from pathlib import Path
 
 import pandas as pd
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parents[1]
 SNAP = ROOT / 'snapshot'
@@ -592,6 +590,7 @@ def render_markdown(toc_spec: dict, graph_spec: dict) -> str:
 
 
 def main() -> None:
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
     text = CORPUS.read_text(encoding='utf-8')
     ent_df = pd.read_parquet(SNAP / 'entities.parquet')
     tu_df = pd.read_parquet(SNAP / 'text_units.parquet')
