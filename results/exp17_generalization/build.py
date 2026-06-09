@@ -262,6 +262,12 @@ def apply_keep_demote(
     entities: list[dict],
     rubric: dict,
     client,
+    *,
+    domain: str = DOMAIN,
+    model: str = MODEL,
+    node_budget: int = NODE_BUDGET,
+    n_runs: int = N_RUNS,
+    rubric_source_rel: str | None = None,
 ) -> dict:
     """Run Stage B per room. Inject demote and keep_titles into spec."""
     title_to_e = {e['title']: e for e in entities}
@@ -274,8 +280,8 @@ def apply_keep_demote(
         final_clusters.append(idxs)
 
     rooms_out = assign_rooms(
-        final_clusters, entities, DOMAIN, rubric, N_RUNS, NODE_BUDGET,
-        client, MODEL,
+        final_clusters, entities, domain, rubric, n_runs, node_budget,
+        client, model,
     )
 
     enriched = []
@@ -304,9 +310,138 @@ def apply_keep_demote(
             },
         })
     spec['rooms'] = enriched
-    spec['meta']['node_budget'] = NODE_BUDGET
-    spec['meta']['rubric_source'] = str(RUBRIC_CACHE.relative_to(REPO)).replace('\\', '/')
+    spec['meta']['node_budget'] = node_budget
+    if rubric_source_rel is None:
+        try:
+            rubric_source_rel = str(RUBRIC_CACHE.relative_to(REPO)).replace('\\', '/')
+        except ValueError:
+            rubric_source_rel = str(RUBRIC_CACHE)
+    spec['meta']['rubric_source'] = rubric_source_rel
     return spec
+
+
+def convert_toc_to_common_schema(
+    toc_spec: dict,
+    *,
+    run_id: str,
+    domain: str,
+    snapshot_rel: str,
+    model: str,
+    node_budget: int,
+    n_entities: int,
+    k: int,
+) -> dict:
+    """Translate the TOC arm spec (build.py shape) into the room_gen schema
+    that export_palace.py consumes. Keys not part of room_gen are tucked
+    into rooms[]._meta so nothing is dropped.
+
+    room_id: int 0..K-1 (in input order, i.e. section order)
+    name: LLM room_name lifted from _llm
+    kept: list of {title}, in room_gen-friendly order
+    demoted: list of {title}
+    coherence_flag: lifted from _llm
+    source_clusters: []  (TOC arm has no merge lineage)
+    _meta: coherence_reason + n_forced_demote + TOC fields
+           (section_idx, section_name, section_span) preserved
+    """
+    rooms_out: list[dict] = []
+    for i, r in enumerate(toc_spec['rooms']):
+        llm = r.get('_llm', {}) or {}
+        kept_titles = [
+            e['title'] for e in r.get('entities', [])
+            if e.get('status') == 'kept'
+        ]
+        demoted_titles = [
+            e['title'] for e in r.get('entities', [])
+            if e.get('status') == 'demoted'
+        ]
+        room_meta = {
+            'coherence_reason': llm.get('coherence_reason', ''),
+            'n_forced_demote': 0,
+            'n_hallucinated': llm.get('n_hallucinated', 0),
+            'section_idx': r.get('section_idx'),
+            'section_name': r.get('section_name'),
+            'section_span': r.get('section_span'),
+        }
+        rooms_out.append({
+            'room_id': i,
+            'name': llm.get('room_name', '') or '(unnamed)',
+            'kept': [{'title': t} for t in kept_titles],
+            'demoted': [{'title': t} for t in demoted_titles],
+            'coherence_flag': llm.get('coherence_flag', 'unknown'),
+            'source_clusters': [],
+            '_meta': room_meta,
+        })
+
+    return {
+        'meta': {
+            'run_id': run_id,
+            'snapshot': snapshot_rel,
+            'K': k,
+            'k_base': k,
+            'max_cluster_size': None,
+            'merge_strategy': 'toc',
+            'n_runs': N_RUNS,
+            'node_budget': node_budget,
+            'domain': domain,
+            'model': model,
+            'ts': datetime.now(timezone.utc).isoformat(),
+            'snapshot_meta': {
+                'snapshot_path': snapshot_rel,
+                'n_entities': n_entities,
+            },
+            'pipeline': None,
+            'toc_source': toc_spec.get('meta', {}).get('source'),
+        },
+        'rooms': rooms_out,
+        'unassigned': [],
+    }
+
+
+def absorb_empty_rooms(rooms_json: dict) -> dict:
+    """Merge kept-empty rooms into a non-empty neighbor (next section first,
+    fall back to previous). Deterministic and order-preserving.
+
+    - Empty room = `len(room['kept']) == 0`.
+    - All empty rooms snapshot their indices up front so cascading absorbs
+      target the original neighbor, not a freshly-emptied one.
+    - The empty room's demoted list is appended (preserving its order) to
+      the target's demoted list.
+    - Each absorbed room contributes a record under the target's
+      `_meta.absorbed_from`, capturing section_idx + section_name.
+    - Remaining (kept-non-empty) rooms get room_id renumbered 0..N-1 in
+      original order.
+    """
+    rooms = list(rooms_json.get('rooms', []))
+    if not rooms:
+        return rooms_json
+    empty_indices = [i for i, r in enumerate(rooms) if not r.get('kept')]
+    non_empty = [i for i, r in enumerate(rooms) if r.get('kept')]
+    if not empty_indices or not non_empty:
+        return rooms_json
+
+    for i in empty_indices:
+        successors = [j for j in non_empty if j > i]
+        if successors:
+            target = min(successors)
+        else:
+            target = max(j for j in non_empty if j < i)
+        src = rooms[i]
+        dst = rooms[target]
+        dst.setdefault('demoted', []).extend(src.get('demoted', []))
+        meta = dst.setdefault('_meta', {})
+        absorbed = meta.setdefault('absorbed_from', [])
+        absorbed.append({
+            'section_idx': src.get('_meta', {}).get('section_idx'),
+            'section_name': src.get('_meta', {}).get('section_name'),
+            'demoted_count': len(src.get('demoted', [])),
+        })
+
+    rooms_kept = [rooms[i] for i in non_empty]
+    for new_id, r in enumerate(rooms_kept):
+        r['room_id'] = new_id
+    rooms_json['rooms'] = rooms_kept
+    return rooms_json
 
 
 def build_blind(toc_spec: dict, graph_spec: dict) -> tuple[dict, dict]:

@@ -128,12 +128,25 @@ def resolve_offsets(text: str, sections: list[dict]) -> tuple[list[dict], list[s
     return out, warnings
 
 
-def main() -> None:
-    text = CORPUS.read_text(encoding='utf-8')
-    client = make_azure_client()
+def generate_toc(
+    corpus_path: Path,
+    out_path: Path | None = None,
+    model: str = MODEL,
+    client=None,
+    sys_prompt: str = SYS_PROMPT,
+    print_summary: bool = True,
+) -> dict:
+    """Run the LLM TOC pass on `corpus_path`, validate marker grounding,
+    and return the payload dict. If `out_path` is given, also writes the
+    payload to disk.
+    """
+    corpus_path = Path(corpus_path)
+    text = corpus_path.read_text(encoding='utf-8')
+    if client is None:
+        client = make_azure_client()
     user_p = build_user_prompt(text)
 
-    raw, usage = call_json(client, MODEL, SYS_PROMPT, user_p)
+    raw, usage = call_json(client, model, sys_prompt, user_p)
     obj = json.loads(raw)
     sections_raw = obj.get('sections', [])
     if not isinstance(sections_raw, list) or not (5 <= len(sections_raw) <= 6):
@@ -143,24 +156,26 @@ def main() -> None:
 
     sections, warnings = resolve_offsets(text, sections_raw)
 
-    # Order/monotonicity checks.
     offsets = [s['start_offset'] for s in sections]
     monotonic = all(offsets[i] < offsets[i + 1]
                     for i in range(len(offsets) - 1)
                     if offsets[i] >= 0 and offsets[i + 1] >= 0)
     distinct = len(set(o for o in offsets if o >= 0)) == sum(1 for o in offsets if o >= 0)
 
-    # Section spans: section i covers [start_offset_i, start_offset_{i+1});
-    # the last covers [start_offset_last, len(text)).
     for i, s in enumerate(sections):
         s['end_offset'] = sections[i + 1]['start_offset'] if i + 1 < len(sections) else len(text)
         s['length_chars'] = max(0, s['end_offset'] - s['start_offset']) if s['start_offset'] >= 0 else 0
 
+    try:
+        corpus_rel = str(corpus_path.relative_to(REPO)).replace('\\', '/')
+    except ValueError:
+        corpus_rel = str(corpus_path).replace('\\', '/')
+
     payload = {
         'meta': {
-            'corpus': str(CORPUS.relative_to(REPO)).replace('\\', '/'),
+            'corpus': corpus_rel,
             'corpus_chars': len(text),
-            'model': MODEL,
+            'model': model,
             'temperature': 0,
             'ts': datetime.now(timezone.utc).isoformat(),
             'usage': usage,
@@ -171,25 +186,38 @@ def main() -> None:
         },
         'sections': sections,
     }
-    OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8')
-
-    # Pretty STOP-and-report
-    print('=== exp17 LLM TOC (review before downstream use) ===')
-    print(f'corpus: {payload["meta"]["corpus"]} ({len(text)} chars)')
-    print(f'sections: {len(sections)} | monotonic: {monotonic} | distinct: {distinct}')
-    if warnings:
-        for w in warnings:
-            print(f'  WARN: {w}')
-    print()
-    print(f'{"#":>2}  {"start":>5}  {"end":>5}  {"chars":>5}  name  |  start_marker')
-    for s in sections:
-        print(
-            f'{s["idx"] + 1:>2}  {s["start_offset"]:>5}  {s["end_offset"]:>5}  '
-            f'{s["length_chars"]:>5}  {s["name"]}  |  {s["start_marker"]}'
+    if out_path is not None:
+        Path(out_path).write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8',
         )
-    print()
-    print(f'usage: prompt={usage["prompt_tokens"]} completion={usage["completion_tokens"]}')
-    print(f'written: {OUT.relative_to(REPO)}')
+
+    if print_summary:
+        print('=== LLM TOC (review before downstream use) ===')
+        print(f'corpus: {payload["meta"]["corpus"]} ({len(text)} chars)')
+        print(f'sections: {len(sections)} | monotonic: {monotonic} | distinct: {distinct}')
+        if warnings:
+            for w in warnings:
+                print(f'  WARN: {w}')
+        print()
+        print(f'{"#":>2}  {"start":>5}  {"end":>5}  {"chars":>5}  name  |  start_marker')
+        for s in sections:
+            print(
+                f'{s["idx"] + 1:>2}  {s["start_offset"]:>5}  {s["end_offset"]:>5}  '
+                f'{s["length_chars"]:>5}  {s["name"]}  |  {s["start_marker"]}'
+            )
+        print()
+        print(f'usage: prompt={usage["prompt_tokens"]} completion={usage["completion_tokens"]}')
+        if out_path is not None:
+            try:
+                rel = str(Path(out_path).relative_to(REPO)).replace('\\', '/')
+            except ValueError:
+                rel = str(out_path)
+            print(f'written: {rel}')
+    return payload
+
+
+def main() -> None:
+    generate_toc(CORPUS, out_path=OUT)
 
 
 if __name__ == '__main__':
