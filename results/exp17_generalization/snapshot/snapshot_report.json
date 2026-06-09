@@ -1,0 +1,15 @@
+{
+  "copied": [
+    "entities.parquet",
+    "relationships.parquet",
+    "text_units.parquet",
+    "documents.parquet",
+    "communities.parquet",
+    "context.json",
+    "stats.json"
+  ],
+  "skipped_missing": [],
+  "lancedb": [
+    "entity_description.lance"
+  ]
+}

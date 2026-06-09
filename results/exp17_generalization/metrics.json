@@ -1,0 +1,166 @@
+{
+  "corpus": {
+    "path": "input/ai_gyoan/AI_교안_정제.txt",
+    "chars": 9604
+  },
+  "counts": {
+    "entities": 119,
+    "relationships": 86,
+    "text_units": 5
+  },
+  "entity_text_unit_distribution": {
+    "single_chunk": 119,
+    "multi_chunk": 0,
+    "zero_chunk": 0,
+    "single_chunk_ratio": 1.0
+  },
+  "pos_first_fine": {
+    "fine_matched": 32,
+    "fine_match_rate": 0.2689,
+    "pos_first_unresolved": 0
+  },
+  "entity_type_distribution": {
+    "지표": 9,
+    "개념": 9,
+    "확률 분포": 6,
+    "통계 지표": 5,
+    "조사 방법": 5,
+    "목적": 4,
+    "특성": 4,
+    "지표, 통계 수치": 4,
+    "통계 기법, 가설 검정": 3,
+    "강도범주, 관계 유형": 3,
+    "개념, 통계학": 3,
+    "조사 방법, 기법": 2,
+    "통계 개념, 지표": 2,
+    "규칙": 2,
+    "함수, 확률 분포": 2,
+    "관계 유형, 개념": 2,
+    "개념, 데이터": 2,
+    "가설 개념, 통계 용어": 2,
+    "통계적 오류, 가설 검정": 2,
+    "통계 개념, 표본": 2,
+    "확률 변수": 2,
+    "통계학 개념": 2,
+    "개념, 순위 데이터": 2,
+    "통계 개념, 방법": 1,
+    "통계 분석 방법": 1,
+    "학문, 과학": 1,
+    "행위, 과정": 1,
+    "개념, 상태": 1,
+    "확률 법칙": 1,
+    "통계 개념, 변수": 1,
+    "정보, 자료": 1,
+    "과학적 방법, 데이터 분석 분야": 1,
+    "통계 분석 방법, 검정 기법": 1,
+    "통계적 검정 방법, 가설 검증": 1,
+    "수학적 함수, 확률 이론": 1,
+    "확률분포, 통계적 개념": 1,
+    "현장, 측정 대상": 1,
+    "서비스 공간, 현장": 1,
+    "확률 실험 대상, 게임 도구": 1,
+    "통계 검정": 1,
+    "통계적 추론, 검증 방법": 1,
+    "통계적 방법, 의사결정 기법": 1,
+    "통계 기법, 모수 추측": 1,
+    "통계 개념, 추정 범위": 1,
+    "확률 개념, 통계 지표": 1,
+    "통계 추정 기법, 단일 값 추정": 1,
+    "통계 추정 기법, 구간 추정": 1,
+    "경제적 개념, 보수 구조": 1,
+    "통계 개념, 추정 대상": 1,
+    "통계 개념, 집합": 1,
+    "통계적 검정, 평균 비교 방법": 1,
+    "통계적 확률, 검정 결과": 1,
+    "통계 수치, 검정 도구": 1,
+    "통계 개념, 오류 확률": 1,
+    "통계 개념, 의사결정 기준": 1,
+    "개념, 결과": 1,
+    "물질, 의약품": 1,
+    "통계 기법, 데이터 수집 방법": 1,
+    "통계 지표, 요약값": 1,
+    "통계 지표, 대표값": 1,
+    "통계 지표, 변동성 측정": 1,
+    "방법론, 통계 기법": 1,
+    "개념, 통계학 오류": 1
+  },
+  "timings": {
+    "total_runtime": 72.30396842956543,
+    "num_documents": 1,
+    "update_documents": 0,
+    "input_load_time": 0,
+    "workflows": {
+      "load_input_documents": {
+        "overall": 0.8801469802856445,
+        "peak_memory_bytes": 761286,
+        "memory_delta_bytes": 717446,
+        "tracemalloc_overhead_bytes": 371472
+      },
+      "create_base_text_units": {
+        "overall": 4.999186277389526,
+        "peak_memory_bytes": 42830465,
+        "memory_delta_bytes": 24657660,
+        "tracemalloc_overhead_bytes": 29794512
+      },
+      "create_final_documents": {
+        "overall": 0.09531736373901367,
+        "peak_memory_bytes": 126085,
+        "memory_delta_bytes": 54898,
+        "tracemalloc_overhead_bytes": 65872
+      },
+      "extract_graph": {
+        "overall": 54.1996009349823,
+        "peak_memory_bytes": 2846682,
+        "memory_delta_bytes": 2005879,
+        "tracemalloc_overhead_bytes": 1049360
+      },
+      "finalize_graph": {
+        "overall": 0.36361169815063477,
+        "peak_memory_bytes": 263657,
+        "memory_delta_bytes": 32078,
+        "tracemalloc_overhead_bytes": 118832
+      },
+      "create_communities": {
+        "overall": 0.503502607345581,
+        "peak_memory_bytes": 343796,
+        "memory_delta_bytes": 67618,
+        "tracemalloc_overhead_bytes": 365712
+      },
+      "create_final_text_units": {
+        "overall": 0.2707810401916504,
+        "peak_memory_bytes": 234476,
+        "memory_delta_bytes": 76292,
+        "tracemalloc_overhead_bytes": 109968
+      },
+      "generate_text_embeddings": {
+        "overall": 10.65387487411499,
+        "peak_memory_bytes": 26342341,
+        "memory_delta_bytes": 8034852,
+        "tracemalloc_overhead_bytes": 6587136
+      }
+    }
+  },
+  "tokens": {
+    "cache_present": true,
+    "chat": {
+      "n_calls": 10,
+      "prompt_tokens": 64554,
+      "completion_tokens": 13938
+    },
+    "embedding": {
+      "n_calls": 8,
+      "prompt_tokens": 7819
+    }
+  },
+  "cost_usd": {
+    "chat_in_usd": 0.025822,
+    "chat_out_usd": 0.022301,
+    "embedding_usd": 0.000156,
+    "total_usd": 0.048279
+  },
+  "sources": {
+    "snapshot": "results/exp17_generalization/snapshot",
+    "cache": "results/exp17_generalization/cache",
+    "node_metrics": "results/node_order_probe/node_metrics.py"
+  }
+}
