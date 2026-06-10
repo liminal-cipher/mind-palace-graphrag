@@ -1,0 +1,1221 @@
+{
+  "meta": {
+    "run_id": "repro_run3_K6_toc.gpt41.run2",
+    "snapshot": "results/snapshots/repro_run3",
+    "K": 6,
+    "k_base": 6,
+    "max_cluster_size": null,
+    "merge_strategy": "toc",
+    "n_runs": 1,
+    "node_budget": 20,
+    "domain": "조선 전기 한국사 (건국·통치제도·문화·사림·왜란·붕당·실학)",
+    "model": "gpt-4.1",
+    "ts": "2026-06-09T16:59:17.948933+00:00",
+    "snapshot_meta": {
+      "snapshot_path": "results/snapshots/repro_run3",
+      "n_entities": 357
+    },
+    "pipeline": null,
+    "toc_source": "char-overlap weighted occurrence (text_unit span ↔ section span)"
+  },
+  "rooms": [
+    {
+      "room_id": 0,
+      "name": "조선 건국과 통치제도",
+      "kept": [
+        {
+          "title": "정도전"
+        },
+        {
+          "title": "이성계"
+        },
+        {
+          "title": "과전법"
+        },
+        {
+          "title": "호패법"
+        },
+        {
+          "title": "세종"
+        },
+        {
+          "title": "집현전"
+        },
+        {
+          "title": "세조"
+        },
+        {
+          "title": "직전법"
+        },
+        {
+          "title": "성종"
+        },
+        {
+          "title": "경국대전"
+        },
+        {
+          "title": "조선 수군"
+        },
+        {
+          "title": "최윤덕"
+        },
+        {
+          "title": "김종서"
+        },
+        {
+          "title": "4군"
+        },
+        {
+          "title": "6진"
+        },
+        {
+          "title": "의정부"
+        },
+        {
+          "title": "6조"
+        },
+        {
+          "title": "사간원"
+        },
+        {
+          "title": "사헌부"
+        },
+        {
+          "title": "홍문관"
+        }
+      ],
+      "demoted": [
+        {
+          "title": "조선"
+        },
+        {
+          "title": "조준"
+        },
+        {
+          "title": "우왕"
+        },
+        {
+          "title": "왕"
+        },
+        {
+          "title": "최영"
+        },
+        {
+          "title": "정몽주"
+        },
+        {
+          "title": "한양"
+        },
+        {
+          "title": "전국"
+        },
+        {
+          "title": "명"
+        },
+        {
+          "title": "태조"
+        },
+        {
+          "title": "역"
+        },
+        {
+          "title": "양반"
+        },
+        {
+          "title": "백성"
+        },
+        {
+          "title": "백성들"
+        },
+        {
+          "title": "성리학"
+        },
+        {
+          "title": "덕치주의"
+        },
+        {
+          "title": "문화"
+        },
+        {
+          "title": "국가 기틀"
+        },
+        {
+          "title": "원"
+        },
+        {
+          "title": "농업"
+        },
+        {
+          "title": "방원 (태종)"
+        },
+        {
+          "title": "정종"
+        },
+        {
+          "title": "사병"
+        },
+        {
+          "title": "군사권"
+        },
+        {
+          "title": "유교 정치"
+        },
+        {
+          "title": "단종"
+        },
+        {
+          "title": "성삼문"
+        },
+        {
+          "title": "군사력"
+        },
+        {
+          "title": "함경도"
+        },
+        {
+          "title": "반란"
+        },
+        {
+          "title": "유향소(향청)"
+        },
+        {
+          "title": "전국 8도"
+        },
+        {
+          "title": "조선 초기"
+        },
+        {
+          "title": "대외 관계"
+        },
+        {
+          "title": "군사 훈련"
+        },
+        {
+          "title": "군량미 비축"
+        },
+        {
+          "title": "이방원"
+        },
+        {
+          "title": "충청도"
+        },
+        {
+          "title": "전라도"
+        },
+        {
+          "title": "경상도"
+        },
+        {
+          "title": "평안도"
+        },
+        {
+          "title": "압록강"
+        },
+        {
+          "title": "두만강"
+        },
+        {
+          "title": "지역"
+        },
+        {
+          "title": "여진족"
+        },
+        {
+          "title": "왜구"
+        },
+        {
+          "title": "쓰시마 섬"
+        },
+        {
+          "title": "일본"
+        },
+        {
+          "title": "제포(진해)"
+        },
+        {
+          "title": "부산포"
+        },
+        {
+          "title": "염포(울산)"
+        },
+        {
+          "title": "교역"
+        },
+        {
+          "title": "류큐"
+        },
+        {
+          "title": "시암(타이)"
+        },
+        {
+          "title": "자와(자바)"
+        },
+        {
+          "title": "관청"
+        },
+        {
+          "title": "판서"
+        },
+        {
+          "title": "문과"
+        },
+        {
+          "title": "승정원"
+        },
+        {
+          "title": "의금부"
+        },
+        {
+          "title": "춘추관"
+        },
+        {
+          "title": "성균관"
+        },
+        {
+          "title": "한성부"
+        },
+        {
+          "title": "삼사"
+        },
+        {
+          "title": "지방 행정"
+        },
+        {
+          "title": "군·현"
+        },
+        {
+          "title": "수령"
+        },
+        {
+          "title": "향리"
+        },
+        {
+          "title": "6방"
+        },
+        {
+          "title": "기술 교육 기관"
+        },
+        {
+          "title": "서울 5위"
+        },
+        {
+          "title": "유향소"
+        },
+        {
+          "title": "향회"
+        },
+        {
+          "title": "지방 양반"
+        },
+        {
+          "title": "신문고"
+        },
+        {
+          "title": "과거 시험"
+        },
+        {
+          "title": "교육 기관"
+        },
+        {
+          "title": "서당"
+        },
+        {
+          "title": "한문"
+        },
+        {
+          "title": "향교"
+        },
+        {
+          "title": "사서"
+        },
+        {
+          "title": "생원과 진사"
+        },
+        {
+          "title": "무과"
+        },
+        {
+          "title": "잡과"
+        },
+        {
+          "title": "상민"
+        },
+        {
+          "title": "중인"
+        },
+        {
+          "title": "문음"
+        },
+        {
+          "title": "천거"
+        },
+        {
+          "title": "군사 제도"
+        },
+        {
+          "title": "양인 남자"
+        },
+        {
+          "title": "병마절도사"
+        },
+        {
+          "title": "수군절도사"
+        },
+        {
+          "title": "읍성"
+        },
+        {
+          "title": "지방군"
+        },
+        {
+          "title": "중앙군"
+        },
+        {
+          "title": "잡색군"
+        },
+        {
+          "title": "조운"
+        },
+        {
+          "title": "강창"
+        },
+        {
+          "title": "해창"
+        },
+        {
+          "title": "경창"
+        },
+        {
+          "title": "국방비"
+        },
+        {
+          "title": "사신 접대비"
+        },
+        {
+          "title": "역원 제도"
+        },
+        {
+          "title": "역졸"
+        },
+        {
+          "title": "마패"
+        },
+        {
+          "title": "장호원"
+        },
+        {
+          "title": "사리원"
+        },
+        {
+          "title": "봉수 제도"
+        },
+        {
+          "title": "훈민정음"
+        },
+        {
+          "title": "세종 대왕"
+        },
+        {
+          "title": "금속활자"
+        },
+        {
+          "title": "중앙 정치 무대"
+        },
+        {
+          "title": "국문학"
+        },
+        {
+          "title": "용비어천가"
+        },
+        {
+          "title": "월인천강지곡"
+        },
+        {
+          "title": "조선왕조실록"
+        },
+        {
+          "title": "동국통감"
+        },
+        {
+          "title": "고려사"
+        },
+        {
+          "title": "고려사절요"
+        },
+        {
+          "title": "팔도지리지"
+        },
+        {
+          "title": "동국여지승람"
+        },
+        {
+          "title": "노사신"
+        },
+        {
+          "title": "강희맹"
+        },
+        {
+          "title": "서거정"
+        },
+        {
+          "title": "국조오례의"
+        },
+        {
+          "title": "삼강행실도"
+        },
+        {
+          "title": "조선 전기"
+        },
+        {
+          "title": "측우기"
+        },
+        {
+          "title": "혼천의"
+        },
+        {
+          "title": "인지의"
+        },
+        {
+          "title": "앙부일구"
+        },
+        {
+          "title": "자격루"
+        },
+        {
+          "title": "한문학"
+        },
+        {
+          "title": "동문선"
+        },
+        {
+          "title": "길재"
+        },
+        {
+          "title": "김종직"
+        },
+        {
+          "title": "공론 정치"
+        },
+        {
+          "title": "무오사화"
+        },
+        {
+          "title": "중종반정"
+        },
+        {
+          "title": "조광조"
+        },
+        {
+          "title": "군역 제도"
+        },
+        {
+          "title": "공신"
+        }
+      ],
+      "coherence_flag": "coherent",
+      "source_clusters": [],
+      "_meta": {
+        "coherence_reason": "조선 건국, 통치제도, 핵심 인물·제도·문서 등 조선 전기 국가 운영의 대표적 고유명사 중심으로 응집력 높음.",
+        "n_forced_demote": 0,
+        "n_hallucinated": 0,
+        "section_idx": 0,
+        "section_name": "조선의 성립과 기틀 마련",
+        "section_span": [
+          0,
+          6729
+        ]
+      }
+    },
+    {
+      "room_id": 1,
+      "name": "조선 전기 정치·사상",
+      "kept": [
+        {
+          "title": "농사직설"
+        },
+        {
+          "title": "사림"
+        },
+        {
+          "title": "훈구 세력"
+        },
+        {
+          "title": "연산군"
+        },
+        {
+          "title": "사화"
+        },
+        {
+          "title": "서원"
+        },
+        {
+          "title": "붕당"
+        },
+        {
+          "title": "이조 전랑"
+        },
+        {
+          "title": "동인"
+        },
+        {
+          "title": "서인"
+        },
+        {
+          "title": "이황"
+        },
+        {
+          "title": "이이"
+        }
+      ],
+      "demoted": [
+        {
+          "title": "신진 사대부"
+        },
+        {
+          "title": "계"
+        },
+        {
+          "title": "과수 및 약초 재배"
+        },
+        {
+          "title": "목화 재배"
+        },
+        {
+          "title": "중국 논농사 기술"
+        },
+        {
+          "title": "향약 4대 덕목"
+        },
+        {
+          "title": "왕의 외척"
+        },
+        {
+          "title": "향약"
+        },
+        {
+          "title": "인사권"
+        },
+        {
+          "title": "모내기법"
+        },
+        {
+          "title": "중소 지주"
+        },
+        {
+          "title": "장시"
+        },
+        {
+          "title": "불교"
+        }
+      ],
+      "coherence_flag": "coherent",
+      "source_clusters": [],
+      "_meta": {
+        "coherence_reason": "조선 전기 정치 세력, 붕당, 대표적 인물, 핵심 제도와 기관 등 정치·사상 흐름 중심으로 응집됨.",
+        "n_forced_demote": 0,
+        "n_hallucinated": 0,
+        "section_idx": 1,
+        "section_name": "사림 세력과 붕당 형성",
+        "section_span": [
+          6729,
+          9483
+        ]
+      }
+    },
+    {
+      "room_id": 2,
+      "name": "임진왜란과 조선 전기",
+      "kept": [
+        {
+          "title": "청"
+        },
+        {
+          "title": "명나라"
+        },
+        {
+          "title": "소수 서원"
+        },
+        {
+          "title": "왜군"
+        },
+        {
+          "title": "도요토미 히데요시"
+        },
+        {
+          "title": "조총"
+        },
+        {
+          "title": "임진왜란"
+        },
+        {
+          "title": "의병"
+        },
+        {
+          "title": "이순신"
+        },
+        {
+          "title": "명의 원군"
+        },
+        {
+          "title": "도쿠가와 막부"
+        },
+        {
+          "title": "사명대사 유정"
+        },
+        {
+          "title": "정유재란"
+        },
+        {
+          "title": "통신사"
+        },
+        {
+          "title": "광해군"
+        },
+        {
+          "title": "후금"
+        },
+        {
+          "title": "허준"
+        },
+        {
+          "title": "동의보감"
+        },
+        {
+          "title": "병자호란"
+        },
+        {
+          "title": "북벌 운동"
+        }
+      ],
+      "demoted": [
+        {
+          "title": "한반도"
+        },
+        {
+          "title": "조선 왕조"
+        },
+        {
+          "title": "국가"
+        },
+        {
+          "title": "군사"
+        },
+        {
+          "title": "함경도 지방"
+        },
+        {
+          "title": "소학"
+        },
+        {
+          "title": "국방력"
+        },
+        {
+          "title": "병력"
+        },
+        {
+          "title": "유학자"
+        },
+        {
+          "title": "선조"
+        },
+        {
+          "title": "중국"
+        },
+        {
+          "title": "사고"
+        },
+        {
+          "title": "농민"
+        },
+        {
+          "title": "당포 해전"
+        },
+        {
+          "title": "동아시아 국제 정세"
+        },
+        {
+          "title": "명나라 원군"
+        },
+        {
+          "title": "사천 해전"
+        },
+        {
+          "title": "성리학 윤리 교과서"
+        },
+        {
+          "title": "옥포 해전"
+        },
+        {
+          "title": "충주 방어선"
+        },
+        {
+          "title": "한산도 해전"
+        },
+        {
+          "title": "향토 방위"
+        },
+        {
+          "title": "충과 효"
+        },
+        {
+          "title": "주세붕"
+        },
+        {
+          "title": "안향"
+        },
+        {
+          "title": "백운동 서원"
+        },
+        {
+          "title": "중국 대륙"
+        },
+        {
+          "title": "포르투갈"
+        },
+        {
+          "title": "포르투갈 상인"
+        },
+        {
+          "title": "철포"
+        },
+        {
+          "title": "부산진"
+        },
+        {
+          "title": "동래성"
+        },
+        {
+          "title": "정발"
+        },
+        {
+          "title": "송상현"
+        },
+        {
+          "title": "조선 정부"
+        },
+        {
+          "title": "의주"
+        },
+        {
+          "title": "평양"
+        },
+        {
+          "title": "거북선"
+        },
+        {
+          "title": "전라도 곡창 지대"
+        },
+        {
+          "title": "황해안"
+        },
+        {
+          "title": "곽재우"
+        },
+        {
+          "title": "조헌"
+        },
+        {
+          "title": "고경명"
+        },
+        {
+          "title": "정문부"
+        },
+        {
+          "title": "유정 (사명대사)"
+        },
+        {
+          "title": "전직 관료"
+        },
+        {
+          "title": "승려"
+        },
+        {
+          "title": "김시민"
+        },
+        {
+          "title": "진주"
+        },
+        {
+          "title": "권율"
+        },
+        {
+          "title": "행주 산성"
+        },
+        {
+          "title": "경상도 해안 지방"
+        },
+        {
+          "title": "불국사"
+        },
+        {
+          "title": "조선인 포로"
+        },
+        {
+          "title": "에도(도쿄)"
+        },
+        {
+          "title": "누르하치"
+        },
+        {
+          "title": "강홍립"
+        },
+        {
+          "title": "영창 대군"
+        },
+        {
+          "title": "인조"
+        },
+        {
+          "title": "이괄"
+        },
+        {
+          "title": "정묘호란"
+        },
+        {
+          "title": "남한산성"
+        },
+        {
+          "title": "효종"
+        },
+        {
+          "title": "송시열"
+        },
+        {
+          "title": "이완"
+        },
+        {
+          "title": "북한산성"
+        },
+        {
+          "title": "러시아"
+        }
+      ],
+      "coherence_flag": "coherent",
+      "source_clusters": [],
+      "_meta": {
+        "coherence_reason": "임진왜란 및 조선 전기 전후의 핵심 인물, 사건, 제도, 문헌 등 구체적 고유명사 중심으로 응집력 있게 구성됨.",
+        "n_forced_demote": 0,
+        "n_hallucinated": 0,
+        "section_idx": 2,
+        "section_name": "임진왜란과 호란 극복",
+        "section_span": [
+          9483,
+          14357
+        ]
+      }
+    },
+    {
+      "room_id": 3,
+      "name": "조선 붕당 정치와 군주",
+      "kept": [
+        {
+          "title": "중종"
+        },
+        {
+          "title": "북인"
+        },
+        {
+          "title": "탕평책"
+        },
+        {
+          "title": "조식"
+        },
+        {
+          "title": "남인"
+        },
+        {
+          "title": "비변사"
+        },
+        {
+          "title": "현종"
+        },
+        {
+          "title": "예송"
+        },
+        {
+          "title": "숙종"
+        },
+        {
+          "title": "환국"
+        },
+        {
+          "title": "노론"
+        },
+        {
+          "title": "소론"
+        },
+        {
+          "title": "영조"
+        }
+      ],
+      "demoted": [
+        {
+          "title": "붕당 정치"
+        },
+        {
+          "title": "삼사 관리"
+        },
+        {
+          "title": "조총 부대"
+        },
+        {
+          "title": "나선 정벌"
+        }
+      ],
+      "coherence_flag": "coherent",
+      "source_clusters": [],
+      "_meta": {
+        "coherence_reason": "조선 전기~후기 붕당 정치와 관련 군주·정치 사건·정책·주요 붕당 등 핵심 고유명사 중심으로 응집됨.",
+        "n_forced_demote": 0,
+        "n_hallucinated": 0,
+        "section_idx": 3,
+        "section_name": "붕당 정치와 탕평책",
+        "section_span": [
+          14357,
+          16596
+        ]
+      }
+    },
+    {
+      "room_id": 4,
+      "name": "정조와 개혁정치",
+      "kept": [
+        {
+          "title": "계유정난"
+        },
+        {
+          "title": "수원 화성"
+        },
+        {
+          "title": "탕평비"
+        },
+        {
+          "title": "속대전"
+        },
+        {
+          "title": "속오례의"
+        },
+        {
+          "title": "동국문헌비고"
+        },
+        {
+          "title": "정조"
+        },
+        {
+          "title": "규장각"
+        },
+        {
+          "title": "장용영"
+        },
+        {
+          "title": "대전통편"
+        },
+        {
+          "title": "동문휘고"
+        },
+        {
+          "title": "탁지지"
+        },
+        {
+          "title": "규장전운"
+        },
+        {
+          "title": "사도 세자"
+        }
+      ],
+      "demoted": [
+        {
+          "title": "노비 차별 완화"
+        },
+        {
+          "title": "농업 발전"
+        },
+        {
+          "title": "상업 자유화"
+        },
+        {
+          "title": "서얼 차별 완화"
+        },
+        {
+          "title": "서울 인구 증가"
+        },
+        {
+          "title": "수원읍성"
+        },
+        {
+          "title": "한강 포구 증가"
+        },
+        {
+          "title": "산업 진흥"
+        },
+        {
+          "title": "광산 개발"
+        },
+        {
+          "title": "화성부"
+        },
+        {
+          "title": "실학"
+        }
+      ],
+      "coherence_flag": "coherent",
+      "source_clusters": [],
+      "_meta": {
+        "coherence_reason": "정조 시기 정치·문화·제도·개혁 관련 핵심 인물, 기관, 문서, 정책 등으로 구성되어 주제적 응집력이 높음.",
+        "n_forced_demote": 0,
+        "n_hallucinated": 0,
+        "section_idx": 4,
+        "section_name": "정조의 개혁과 규장각",
+        "section_span": [
+          16596,
+          17426
+        ]
+      }
+    },
+    {
+      "room_id": 5,
+      "name": "조선 후기 실학과 저서",
+      "kept": [
+        {
+          "title": "이익"
+        },
+        {
+          "title": "이수광"
+        },
+        {
+          "title": "김육"
+        },
+        {
+          "title": "대동법"
+        },
+        {
+          "title": "중농 학파"
+        },
+        {
+          "title": "중상 학파"
+        },
+        {
+          "title": "유형원"
+        },
+        {
+          "title": "정약용"
+        },
+        {
+          "title": "북학파"
+        },
+        {
+          "title": "유수원"
+        },
+        {
+          "title": "홍대용"
+        },
+        {
+          "title": "박지원"
+        },
+        {
+          "title": "박제가"
+        },
+        {
+          "title": "안정복"
+        },
+        {
+          "title": "유득공"
+        },
+        {
+          "title": "이중환"
+        },
+        {
+          "title": "정상기"
+        },
+        {
+          "title": "김정호"
+        },
+        {
+          "title": "신경준"
+        },
+        {
+          "title": "유희"
+        }
+      ],
+      "demoted": [
+        {
+          "title": "토지 제도"
+        },
+        {
+          "title": "농촌"
+        },
+        {
+          "title": "가난한 농민"
+        },
+        {
+          "title": "조선 후기"
+        },
+        {
+          "title": "도시"
+        },
+        {
+          "title": "대상인"
+        },
+        {
+          "title": "영세 상인"
+        },
+        {
+          "title": "실학자"
+        },
+        {
+          "title": "상공업 진흥론"
+        },
+        {
+          "title": "교통 수단"
+        },
+        {
+          "title": "국학 연구"
+        },
+        {
+          "title": "사상의학"
+        },
+        {
+          "title": "발해고"
+        },
+        {
+          "title": "택리지"
+        },
+        {
+          "title": "동국지도"
+        },
+        {
+          "title": "대동여지도"
+        },
+        {
+          "title": "훈민정음운해"
+        },
+        {
+          "title": "언문지"
+        },
+        {
+          "title": "이제마"
+        },
+        {
+          "title": "실사구시"
+        },
+        {
+          "title": "개화 사상가"
+        }
+      ],
+      "coherence_flag": "coherent",
+      "source_clusters": [],
+      "_meta": {
+        "coherence_reason": "조선 후기 실학자, 실학 학파, 대표 저서와 지도 등 구체적 인물·문헌·사상 중심으로 응집력 있게 구성됨",
+        "n_forced_demote": 0,
+        "n_hallucinated": 0,
+        "section_idx": 5,
+        "section_name": "실학과 국학 연구의 발전",
+        "section_span": [
+          17426,
+          20921
+        ]
+      }
+    }
+  ],
+  "unassigned": []
+}
