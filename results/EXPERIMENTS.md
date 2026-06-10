@@ -223,3 +223,44 @@
 방은 GraphRAG 커뮤니티 병합이 아니라 엔티티 임베딩 직접 클러스터로 만든다(exp6). 방 이름과 핵심 개념 keep/demote는 그 위에 LLM 한 겹 얹어서 처리(exp7). 외울 핵심을 1차로 가르는 가벼운 안전망은 type 기준(exp5), 최종 판단은 LLM 선별기에 위임. 인덱싱은 community report 워크플로를 빼서 비용·시간을 5배 이상 줄이고(exp1~4 분석), 작업 베이스는 매번 새로 추출하지 않고 repro_run3 스냅샷에 고정(±10 자연 편차 회피). 자료 청킹은 의미 단위와 페이지 단위 중 pagesplit이 묶음 균형과 임진왜란 응집에서 약간 유리(exp9). 단, 입력 자료 품질이 청킹 방식보다 더 큰 레버일 가능성은 잊지 않는다. (exp9 데이터만으로는 청킹 변수만 격리되어 있고 baseline은 다른 자료라 자료 품질 변수가 분리되지 않으므로, 이건 confound 있는 추정이지 확정 아님.)
 
 **방향 갱신 (exp14 이후)**: 방-만들기 = **재현되는 구조 + 결정적 엔티티 배정 + 결정적/잠금 노출**의 3층 분리로 본다. 구조 소스 후보는 (a) overlap200 척추(exp14에서 3런 모두 같은 학습 흐름 재현됨)와 (b) 자료 TOC(exp8 feasibility 확인했으나 청크 단위가 섹션보다 커서 추가 작업 필요) 둘. 결정적 엔티티 배정 후보는 (a) TOC-occurrence 매핑(exp15 예정)과 (b) exp10 임베딩 clustering(357/357 전수보존 가드 있음). LLM은 구조 라벨링 + 노출(visibility) 1차 판단에만 쓰고, "어느 방에 들어가나"는 결정적 단계로 끊는다(exp14에서 LLM-only 배정이 temp=0에도 ~21% 출렁이고 357 전수보존이 보장 안 됨을 확인). 다음 갈래: **exp15(TOC feasibility)** 진행 후 같은 코퍼스에서 구조 소스 × 결정적 배정을 head-to-head(학습 흐름 응집 · should_show 앵커 eval · 재현성 · 커버리지)로 비교해 방-만들기 파이프라인을 확정.
+
+## palace: 정본 TOC arm 파이프라인 (2026-06-10)
+
+exp16에서 TOC vs GRAPH 헤드투헤드, exp17에서 end-to-end TOC arm + repro_run3 K=6 데모까지 통과해 방-만들기 파이프라인을 TOC arm 단일로 확정. exp 디렉토리에 흩어진 코드를 한 패키지로 모은 게 `palace/` (루트). GRAPH arm(`results/pipeline/`의 K=10 embedding canonical, exp10의 base_cluster→split_oversized→merge_to_k)은 정본 자리에서 빠지고 exp 디렉토리에 grandfather로 동결.
+
+레이아웃: `palace/{run.py, toc_gen.py, build_rooms.py, room_gen.py, node_metrics.py, export_palace.py, configs/, tests/}`. 두 phase 진입(`--phase toc`로 LLM TOC 검토용 멈춤, `--phase rooms`로 끝까지). 도메인 설정은 `palace/configs/<run_id>.json` 한 장(run_id, corpus, snapshot, K, node_budget, model, domain, cache 경로). Stage A 캐시 + Stage B 해시 캐시(`cache/palace/<run_id>/`)는 입력 내용 해시 키라 경로 무관 byte-identical 재현.
+
+검증: repro_run3 한국사 K=6 골든(`palace/tests/golden/` = 기존 `results/rooms/repro_run3_K6_toc.{json, palace.json, toc_llm.json}` 복사본). 캐시 hit 재현은 골든과 byte-identical 일치(toc_llm + rooms + palace 전 필드, ts/generated_at 제외). 캐시 miss 라이브 재현은 4대 천문기상기(측우기·자격루·앙부일구·혼천의) 골든과 같은 방(0, demoted) 보존, room_id·sections·대부분의 방 크기 안정, kept_total 101→103(+2, room 4 +2), 6방 모두 경계 churn 평균 jaccard 0.72(noise floor 범위 내).
+
+### exp → palace 1:1 매핑
+
+| 출처 | 출처 심볼 | palace 파일 | 비고 |
+| --- | --- | --- | --- |
+| `results/exp17_generalization/toc_gen.py` | `SYS_PROMPT`, `build_user_prompt`, `resolve_offsets`, `generate_toc` | `palace/toc_gen.py` | 모듈 상수 `CORPUS/MODEL/OUT` 제거, `corpus_rel` 인자 추가, `main()` 제거 |
+| `results/exp17_generalization/build.py` | `char_overlap`, `build_toc_rooms`, `attach_positions`, `apply_keep_demote`, `convert_toc_to_common_schema`, `absorb_empty_rooms` | `palace/build_rooms.py` | 모듈 상수 `K/DOMAIN/MODEL/NODE_BUDGET/N_RUNS/RUBRIC_CACHE/SET1_METHOD` 전부 인자로 외화. `build_graph_rooms`, `build_blind`, `compute_metrics`, `render_markdown`, `main()`은 복사 안 함 |
+| `results/exp10_room_gen/room_gen.py` | `load_snapshot`, `make_azure_client`, `call_json`, `derive_rubric`, `_stage_b_prompt`, `_stage_b_cache_key`, `_run_stage_b_once`, `_resolve_keep_membership`, `assign_rooms`, `check_invariants`, `HARD_CAP_K` | `palace/room_gen.py` | GRAPH arm(`base_cluster`, `_stack_normalized`, `split_oversized`, `_split_one`, `merge_to_k`, `_cluster_centroid`, `_merge_embedding`, `representatives`, `_merge_llm`, `generate_rooms`, `_summarize`)은 복사 안 함 |
+| `results/exp10_room_gen/export_palace.py` | 전체 (`normalize_title`, `caption_of`, `load_rooms`, `build_ent_lookup`, `compute_position`, `assign_palace_ids`, `build_entity_record`, `collect_relationships`, `export`, `validate`, `main`) | `palace/export_palace.py` | CWD 상대 `ROOMS=Path('results/rooms')` 제거, `sys.path.insert` 제거, `export()`에 `rooms_dir` 인자 추가 |
+| `results/node_order_probe/node_metrics.py` | `build_text_unit_positions`, `_surface_variants`, `_count_in_chunk`, `_first_in_text`, `compute_entity_metrics` | `palace/node_metrics.py` | 모듈 상수 `SNAPSHOT/TXT_PATH` 제거, probe 전용 `load_text`, `load_snapshot_frames`, `tie_cluster_sizes`는 복사 안 함 |
+| `results/exp10_room_gen/run_repro_run3_toc.py` | `stop_if_missing`, `phase_toc`, `phase_rooms`의 와이어링 구조 | `palace/run.py` | 한국사 하드코딩(`RUN_ID/CORPUS/SNAPSHOT/DOMAIN/K/NODE_BUDGET/MODEL/RUBRIC_CACHE/STAGE_B_CACHE`)은 모두 config JSON으로 외화 |
+
+### 폴더 grandfather 동결 목록
+
+다음 폴더에 `ARCHIVED.md`로 동결 표시. 물리 이동·삭제 없음, git 이력·기존 보고서 상대 경로 보존.
+
+| 폴더 | 동결 사유 |
+| --- | --- |
+| `results/exp05_stage2_merge` | type 기준 keep/demote 1차 안전망, LLM rubric으로 대체됨 |
+| `results/exp06_room_probe` | 임베딩 ward 클러스터 원형, GRAPH arm 참고용 |
+| `results/exp07_keep_demote` | Stage A/B 방법론 원형, exp10에서 모듈화됨 |
+| `results/exp08_toc_feasibility` | TOC 섹션 매핑 진단, exp15→exp17→palace로 이어짐 |
+| `results/exp09_rechunk` | semantic/pagesplit 비교, palace 미사용 |
+| `results/exp10_room_gen` | end-to-end 모듈화, palace로 Stage A/B + export_palace 이식 |
+| `results/exp11_k_sweep` | GRAPH arm K 결정 진단, palace 미사용 |
+| `results/exp12_n3_stability` | Stage B n=3 안정성, `n_runs` 인자로 palace에 흡수 |
+| `results/exp13_generic_filter` | degree 사전 컷 미채택 |
+| `results/exp14_overlap200_stability` | LLM-only 배정 미채택 |
+| `results/exp15_toc_chapters` | char-overlap occurrence 진단, exp17로 이어짐 |
+| `results/exp16_room_compare` | TOC vs GRAPH 비교, palace는 TOC 단일 |
+| `results/exp17_generalization` | TOC arm 구현부, palace로 `toc_gen.py` + build TOC 함수 이식 |
+| `results/pipeline` | GRAPH arm canonical, 구 정본, GRAPH 참고용 |
+| `results/node_order_probe` | 위치 metric, palace.node_metrics로 이식 |

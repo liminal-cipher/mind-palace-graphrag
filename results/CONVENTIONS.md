@@ -11,6 +11,7 @@
   - 리포트: `report.md` (단독 결과) 또는 `comparison.md` (둘 이상 비교).
   - 산출 JSON·표는 같은 디렉토리에. 대용량 원시 응답은 `raw/` 하위.
 - 루트(`/`)엔 새 실험 코드를 두지 않는다. 범용 유틸(`analyze_baseline.py`, `extract_results.py`)만 루트에.
+- 예외: 정본 파이프라인 패키지는 `palace/` (루트). TOC arm 단일, 실험이 아니라 정식 코드라 `results/exp*`에 두지 않는다.
 
 ## 인덱스
 
