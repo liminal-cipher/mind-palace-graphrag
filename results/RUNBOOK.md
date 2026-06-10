@@ -1,20 +1,42 @@
 # RUNBOOK: 실험 재현 명령 한 장
 
-> Caveat: exp11~13 및 reorg(expNN_slug 패딩 네이밍) 후 변경된 경로·명령은 이 패스에서 스모크 재검증을 돌리지 않았다. 비용·시간이 드는 인덱싱/LLM 명령은 실제 실행 전 한 번 더 확인할 것.
+> 정본은 `palace/`다. 아래 "정본: palace TOC arm" 섹션이 팀원이 처음 돌릴 명령. 그 뒤 "실험별 명령(grandfather)"은 정본이 확정되기까지의 exp1~14 재현용 아카이브이고, 새 작업은 palace 기반으로 한다.
+>
+> Caveat: 옛 exp 묶음(exp11~13 및 reorg(expNN_slug 패딩 네이밍) 후 변경된 경로·명령)은 이 패스에서 스모크 재검증을 돌리지 않았다. 비용·시간이 드는 인덱싱/LLM 명령은 실제 실행 전 한 번 더 확인할 것.
 
 팀원이 실험별로 무슨 명령을 돌리는지 찾는 한 페이지. 한 줄 = 한 명령 + 한 줄 설명. `LLM $` = Azure OpenAI 호출(비용 발생).
 
 ## 사전 준비 (한 번)
 
 - `.venv` 활성화 (`.venv\Scripts\activate`). `requirements.txt` 설치.
-- `.env`에 `GRAPHRAG_API_KEY`, `GRAPHRAG_API_BASE` 둘 다 채움. Azure 리소스에 deployment 이름이 정확히 `gpt-4.1-mini`로 있어야 함(`model=`이 Azure deployment 이름에 매핑됨, exp10/exp12/exp14 모두 이 deployment 이름이 코드에 하드코딩). api_version은 `2024-12-01-preview` 고정(`results/exp10_room_gen/room_gen.py`의 `make_azure_client`에 박힘). 다른 deployment 이름을 쓰는 별도 Azure 리소스라면 LLM 단계가 404로 막힐 수 있음(현재 env화 안 됨, 필요시 추후 과제).
+- `.env`에 `GRAPHRAG_API_KEY`, `GRAPHRAG_API_BASE` 둘 다 채움. Azure 리소스에 deployment 이름이 정확히 `gpt-4.1-mini`로 있어야 함(`model=`이 Azure deployment 이름에 매핑됨, palace/exp10/exp12/exp14 모두 이 deployment 이름이 config 또는 코드에 하드코딩). api_version은 `2024-12-01-preview` 고정(`palace/room_gen.py`와 `results/exp10_room_gen/room_gen.py`의 `make_azure_client`에 박힘). 다른 deployment 이름을 쓰는 별도 Azure 리소스라면 LLM 단계가 404로 막힐 수 있음(현재 env화 안 됨, 필요시 추후 과제).
 - CWD는 항상 repo 루트(`C:/Users/AJourney/Desktop/graphrag/`). 모든 .py가 그 기준으로 경로 하드코딩.
-- exp5~10 모두 입력은 `results/snapshots/repro_run3/` (357 entities, level 0 = 40방, `max=15`). 절대 건드리지 말 것.
+- exp5~17 및 palace 모두 입력은 `results/snapshots/repro_run3/` (357 entities, level 0 = 40방, `max=15`). 절대 건드리지 말 것. (exp9만 추가로 `semantic_run1`, `pagesplit_run1` 스냅샷을 같이 씀.)
 - baseline(`output/`, max=10, 385 ent)과 repro_run3(snapshot, max=15)는 서로 다른 런이다.
 
 재인덱싱(exp1~4, exp9 run_full)은 ±10 자연 편차가 있어 매번 동일 결과 보장 안 됨. 또한 graphrag 추출 워크플로가 CU(claims/units) 기반으로 바뀌면 `graphrag index --root .` 명령 자체가 달라질 수 있음.
 
-## 실험별 명령
+## 정본: palace TOC arm
+
+새 작업은 여기서 시작. palace는 LLM이 만든 목차(TOC)를 받아 char-overlap으로 엔티티를 방에 배정하고, 방마다 LLM Stage A 루브릭 + Stage B keep/demote로 선별, 3D 핸드오프용 `.palace.json`을 만든다. 두 phase로 끊겨 있어 phase=toc로 LLM TOC를 한 번 만들고 사람이 검토한 뒤 phase=rooms로 끝까지 간다.
+
+```
+python -m palace.run --config palace/configs/repro_run3_K6_toc.json --phase toc     # LLM $ TOC 1회. 캐시 없음, 매번 호출. 산출: palace/tests/runs/<run_id>/<run_id>.toc_llm.json
+python -m palace.run --config palace/configs/repro_run3_K6_toc.json --phase rooms   # LLM $ Stage A 1 + Stage B 6 = 7회 (rubric 캐시 hit 시 6회, 모든 Stage B 캐시 hit 시 0회). 산출: 같은 폴더에 <run_id>.json + <run_id>.palace.json
+python palace/tests/compare_golden.py --run-id repro_run3_K6_toc                    # LLM 없음. 골든과 byte-identical 비교 (ts·generated_at 제외).
+```
+
+기대 출력 (phase=rooms 끝):
+- 방 6개, 각 방에 kept(<=`node_budget`) + demoted 멤버, 모든 입력 엔티티 정확히 한 방에 배정(전수보존).
+- `palace check: room_count=6 (<=10: yes) empty_rooms=0 kept=<n> demoted=<m> preserved=357/357 (yes) fine=... fallback=...` 한 줄.
+
+캐시 위치는 config가 정함(`palace/configs/repro_run3_K6_toc.json`의 `rubric_cache_path` = `cache/palace/repro_run3_K6_toc/rubric_repro_run3_toc.json`, `stage_b_cache_dir` = `cache/palace/repro_run3_K6_toc/stage_b_repro_run3_toc/`). 캐시 키는 모델·프롬프트 해시라 경로 무관 byte-identical.
+
+다른 도메인은 새 config 한 장(`palace/configs/<new_run_id>.json`)을 만들고 같은 두 명령을 그 config로 돌리면 된다.
+
+## 실험별 명령 (grandfather)
+
+아래는 정본이 확정되기까지의 옛 실험 재현 명령. 새 작업은 위 palace 섹션을 쓰고, 이 묶음은 결과 비교·재현이 필요할 때만 참조.
 
 ### exp1: baseline 인덱싱
 
