@@ -141,29 +141,64 @@ def build_entity_record(
     return rec
 
 
-def collect_relationships(
+def collect_intra_room_relationships(
     rels: pd.DataFrame,
-    kept_titles: set[str],
+    rooms_out: list[dict],
     title_to_pid: dict[str, str],
-) -> list[dict]:
-    out: list[dict] = []
+) -> tuple[list[dict], dict[str, list[str]]]:
+    """Return (edges, related_by_pid) for edges whose both endpoints are kept
+    in the SAME room.
+
+    edges: list of {source, target, weight, description}, one per qualifying
+        parquet row, in parquet order. source/target are palace ids (pid).
+    related_by_pid: pid -> list of other pids in the same room sharing an
+        edge with it (undirected). Ordered by each entity's position in
+        its room's kept list for stable 3D layout.
+    """
+    pid_to_room: dict[str, int] = {}
+    for ridx, room in enumerate(rooms_out):
+        for ent in room['kept']:
+            pid_to_room[ent['id']] = ridx
+
+    edges: list[dict] = []
+    related_sets: dict[str, set[str]] = {pid: set() for pid in pid_to_room}
+
     for _, r in rels.iterrows():
-        s, t = r['source'], r['target']
-        if s in kept_titles and t in kept_titles:
-            out.append({
-                'source': title_to_pid[s],
-                'target': title_to_pid[t],
-                'weight': float(r['weight']) if pd.notna(r['weight']) else None,
-                'description': r['description'] if isinstance(r['description'], str) else '',
-            })
-    return out
+        s_pid = title_to_pid.get(r['source'])
+        t_pid = title_to_pid.get(r['target'])
+        if s_pid is None or t_pid is None:
+            continue
+        s_room = pid_to_room.get(s_pid)
+        t_room = pid_to_room.get(t_pid)
+        if s_room is None or t_room is None:
+            continue
+        if s_room != t_room:
+            continue
+        edges.append({
+            'source': s_pid,
+            'target': t_pid,
+            'weight': float(r['weight']) if pd.notna(r['weight']) else None,
+            'description': r['description'] if isinstance(r['description'], str) else '',
+        })
+        related_sets[s_pid].add(t_pid)
+        related_sets[t_pid].add(s_pid)
+
+    related_by_pid: dict[str, list[str]] = {}
+    for room in rooms_out:
+        kept_order = {ent['id']: i for i, ent in enumerate(room['kept'])}
+        for ent in room['kept']:
+            related_by_pid[ent['id']] = sorted(
+                related_sets.get(ent['id'], ()),
+                key=lambda p: kept_order.get(p, len(kept_order)),
+            )
+
+    return edges, related_by_pid
 
 
 def export(
     run_id: str,
     snapshot: Path,
     rooms_dir: Path,
-    with_relationships: bool,
 ) -> tuple[Path, dict]:
     rooms_dir = Path(rooms_dir)
     rooms_path = rooms_dir / f'{run_id}.json'
@@ -194,7 +229,6 @@ def export(
     stats = {'fine': 0, 'fallback': 0, 'unresolved': 0}
 
     rooms_out: list[dict] = []
-    kept_titles_global: set[str] = set()
     for idx, room in enumerate(rooms_json['rooms']):
         kept_list: list[dict] = []
         for rank, item in enumerate(room['kept'], start=1):
@@ -211,7 +245,6 @@ def export(
                 item, ent_lookup, pid, with_rank=rank,
                 order=order, order_confidence=confidence,
             ))
-            kept_titles_global.add(item['title'])
         kept_list.sort(key=lambda r: r['order'])
         demoted_list: list[dict] = []
         for item in room.get('demoted', []):
@@ -256,14 +289,16 @@ def export(
         'rooms': rooms_out,
     }
 
-    if with_relationships:
-        rels = pd.read_parquet(Path(snapshot) / 'relationships.parquet')
-        palace['relationships'] = collect_relationships(
-            rels, kept_titles_global, title_to_pid,
-        )
+    rels = pd.read_parquet(Path(snapshot) / 'relationships.parquet')
+    edges, related_by_pid = collect_intra_room_relationships(
+        rels, rooms_out, title_to_pid,
+    )
+    for room in rooms_out:
+        for ent in room['kept']:
+            ent['related'] = related_by_pid.get(ent['id'], [])
+    palace['relationships'] = edges
 
-    suffix = '.palace.with_rels.json' if with_relationships else '.palace.json'
-    out_path = rooms_dir / f'{run_id}{suffix}'
+    out_path = rooms_dir / f'{run_id}.palace.json'
     out_path.write_text(
         json.dumps(palace, ensure_ascii=False, indent=2),
         encoding='utf-8',
@@ -309,14 +344,11 @@ def main() -> int:
     ap.add_argument('--run-id', required=True)
     ap.add_argument('--snapshot', required=True)
     ap.add_argument('--rooms-dir', required=True)
-    ap.add_argument('--with-relationships', action='store_true')
     args = ap.parse_args()
 
     snapshot = Path(args.snapshot)
     rooms_dir = Path(args.rooms_dir)
-    out_path, stats = export(
-        args.run_id, snapshot, rooms_dir, args.with_relationships,
-    )
+    out_path, stats = export(args.run_id, snapshot, rooms_dir)
     print(f'wrote: {out_path}')
 
     rooms_json = load_rooms(rooms_dir / f'{args.run_id}.json')
@@ -344,7 +376,7 @@ def main() -> int:
     fallback_ratio = stats['fallback'] / total_kept if total_kept else 0.0
     print(
         f'OK: room_count={data["palace"]["room_count"]} kept={n_kept} demoted={n_demoted}'
-        + (f' relationships={len(data.get("relationships", []))}' if args.with_relationships else '')
+        f' relationships={len(data.get("relationships", []))}'
     )
     print(
         f'order: fine={stats["fine"]} ({fine_ratio:.2%}) '

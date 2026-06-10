@@ -184,7 +184,7 @@ def phase_rooms(cfg: dict, repo: Path) -> None:
 
     print('exporting palace.json...')
     palace_path, stats = export_palace.export(
-        cfg['run_id'], snapshot, rooms_dir, with_relationships=False,
+        cfg['run_id'], snapshot, rooms_dir,
     )
     print(f'wrote: {palace_path}')
 
