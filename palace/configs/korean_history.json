@@ -1,6 +1,6 @@
 {
   "run_id": "korean_history",
-  "corpus": "input/국사교과서_조선_본문_정제.txt",
+  "corpus": "input/korean_history/corpus.txt",
   "corpus_rel": "input/국사교과서_조선_본문_정제.txt",
   "snapshot": "results/snapshots/repro_run3",
   "snapshot_rel": "results/snapshots/repro_run3",

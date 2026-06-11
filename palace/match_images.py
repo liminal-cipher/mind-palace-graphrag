@@ -36,9 +36,9 @@ API_VERSION = '2024-12-01-preview'
 REPO = Path(__file__).resolve().parents[1]
 DEFAULT_PALACE = REPO / 'palace' / 'handoff' / 'korean_history.palace.json'
 DEFAULT_SNAPSHOT = REPO / 'results' / 'snapshots' / 'repro_run3'
-DEFAULT_FIG_DIR = REPO / 'input' / 'img_국사'
-DEFAULT_CAPTIONS = REPO / 'input' / 'extracted_figures.md'
-DEFAULT_PAGESPLIT = REPO / 'input' / 'history_joseon_pagesplit.txt'
+DEFAULT_FIG_DIR = REPO / 'input' / 'korean_history' / 'img'
+DEFAULT_CAPTIONS = REPO / 'input' / 'korean_history' / 'captions.md'
+DEFAULT_PAGESPLIT = REPO / 'input' / 'korean_history' / 'pagesplit.txt'
 DEFAULT_OUT_DIR = REPO / 'results' / 'audit'
 
 CAPTION_TAG_RE = re.compile(r'<figcaption>(.*?)</figcaption>', re.DOTALL)
