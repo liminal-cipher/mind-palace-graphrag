@@ -6,8 +6,8 @@
 
 Usage:
     python palace/tests/compare_live.py \
-        [--golden palace/tests/golden/repro_run3_K6_toc.json] \
-        [--live   palace/tests/runs/repro_run3_K6_toc_live/repro_run3_K6_toc.json]
+        [--golden palace/tests/golden/korean_history.json] \
+        [--live   palace/tests/runs/korean_history_live/korean_history.json]
 """
 from __future__ import annotations
 
@@ -38,9 +38,9 @@ def find_in(spec: dict, title: str) -> tuple[int | None, str, str]:
 def main() -> int:
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
     ap = argparse.ArgumentParser()
-    ap.add_argument('--golden', default='palace/tests/golden/repro_run3_K6_toc.json')
+    ap.add_argument('--golden', default='palace/tests/golden/korean_history.json')
     ap.add_argument('--live',
-                    default='palace/tests/runs/repro_run3_K6_toc_live/repro_run3_K6_toc.json')
+                    default='palace/tests/runs/korean_history_live/korean_history.json')
     args = ap.parse_args()
     g_path = Path(args.golden) if Path(args.golden).is_absolute() else REPO / args.golden
     l_path = Path(args.live) if Path(args.live).is_absolute() else REPO / args.live

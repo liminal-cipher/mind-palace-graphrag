@@ -1,16 +1,16 @@
 {
-  "run_id": "repro_run3_K6_toc",
+  "run_id": "korean_history",
   "corpus": "input/국사교과서_조선_본문_정제.txt",
   "corpus_rel": "input/국사교과서_조선_본문_정제.txt",
   "snapshot": "results/snapshots/repro_run3",
   "snapshot_rel": "results/snapshots/repro_run3",
-  "rooms_dir": "palace/tests/runs/repro_run3_K6_toc",
-  "toc_out": "palace/tests/runs/repro_run3_K6_toc/repro_run3_K6_toc.toc_llm.json",
+  "rooms_dir": "palace/tests/runs/korean_history",
+  "toc_out": "palace/tests/runs/korean_history/korean_history.toc_llm.json",
   "K": 6,
   "node_budget": 20,
   "n_runs": 1,
   "model": "gpt-4.1-mini",
   "domain": "조선 전기 한국사 (건국·통치제도·문화·사림·왜란·붕당·실학)",
-  "rubric_cache_path": "cache/palace/repro_run3_K6_toc/rubric_repro_run3_toc.json",
-  "stage_b_cache_dir": "cache/palace/repro_run3_K6_toc/stage_b_repro_run3_toc"
+  "rubric_cache_path": "cache/palace/korean_history/rubric_repro_run3_toc.json",
+  "stage_b_cache_dir": "cache/palace/korean_history/stage_b_repro_run3_toc"
 }

@@ -21,16 +21,16 @@
 새 작업은 여기서 시작. palace는 LLM이 만든 목차(TOC)를 받아 char-overlap으로 엔티티를 방에 배정하고, 방마다 LLM Stage A 루브릭 + Stage B keep/demote로 선별, 3D 핸드오프용 `.palace.json`을 만든다. 두 phase로 끊겨 있어 phase=toc로 LLM TOC를 한 번 만들고 사람이 검토한 뒤 phase=rooms로 끝까지 간다.
 
 ```
-python -m palace.run --config palace/configs/repro_run3_K6_toc.json --phase toc     # LLM $ TOC 1회. 캐시 없음, 매번 호출. 산출: palace/tests/runs/<run_id>/<run_id>.toc_llm.json
-python -m palace.run --config palace/configs/repro_run3_K6_toc.json --phase rooms   # LLM $ Stage A 1 + Stage B 6 = 7회 (rubric 캐시 hit 시 6회, 모든 Stage B 캐시 hit 시 0회). 산출: 같은 폴더에 <run_id>.json + <run_id>.palace.json
-python palace/tests/compare_golden.py --run-id repro_run3_K6_toc                    # LLM 없음. 골든과 byte-identical 비교 (ts·generated_at 제외).
+python -m palace.run --config palace/configs/korean_history.json --phase toc     # LLM $ TOC 1회. 캐시 없음, 매번 호출. 산출: palace/tests/runs/<run_id>/<run_id>.toc_llm.json
+python -m palace.run --config palace/configs/korean_history.json --phase rooms   # LLM $ Stage A 1 + Stage B 6 = 7회 (rubric 캐시 hit 시 6회, 모든 Stage B 캐시 hit 시 0회). 산출: 같은 폴더에 <run_id>.json + <run_id>.palace.json
+python palace/tests/compare_golden.py --run-id korean_history                    # LLM 없음. 골든과 byte-identical 비교 (ts·generated_at 제외).
 ```
 
 기대 출력 (phase=rooms 끝):
 - 방 6개, 각 방에 kept(<=`node_budget`) + demoted 멤버, 모든 입력 엔티티 정확히 한 방에 배정(전수보존).
 - `palace check: room_count=6 (<=10: yes) empty_rooms=0 kept=<n> demoted=<m> preserved=357/357 (yes) fine=... fallback=...` 한 줄.
 
-캐시 위치는 config가 정함(`palace/configs/repro_run3_K6_toc.json`의 `rubric_cache_path` = `cache/palace/repro_run3_K6_toc/rubric_repro_run3_toc.json`, `stage_b_cache_dir` = `cache/palace/repro_run3_K6_toc/stage_b_repro_run3_toc/`). 캐시 키는 모델·프롬프트 해시라 경로 무관 byte-identical.
+캐시 위치는 config가 정함(`palace/configs/korean_history.json`의 `rubric_cache_path` = `cache/palace/korean_history/rubric_repro_run3_toc.json`, `stage_b_cache_dir` = `cache/palace/korean_history/stage_b_repro_run3_toc/`). 캐시 키는 모델·프롬프트 해시라 경로 무관 byte-identical.
 
 다른 도메인은 새 config 한 장(`palace/configs/<new_run_id>.json`)을 만들고 같은 두 명령을 그 config로 돌리면 된다.
 

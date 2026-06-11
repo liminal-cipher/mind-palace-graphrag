@@ -28,12 +28,12 @@ Stage A(rubric) 및 Stage B(per-room keep)는 캐시 파일에 해시-키 저장
 ## 실행
 
 ```
-python -m palace.run --config palace/configs/repro_run3_K6_toc.json --phase toc
-python -m palace.run --config palace/configs/repro_run3_K6_toc.json --phase rooms
+python -m palace.run --config palace/configs/korean_history.json --phase toc
+python -m palace.run --config palace/configs/korean_history.json --phase rooms
 ```
 
 골든 검증:
 
 ```
-python palace/tests/compare_golden.py --run-id repro_run3_K6_toc
+python palace/tests/compare_golden.py --run-id korean_history
 ```

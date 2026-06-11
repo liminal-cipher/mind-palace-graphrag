@@ -3,8 +3,8 @@ palace.json (phase=rooms). Two-phase by design so the LLM TOC stays
 inspectable before paying for Stage A/B + palace export.
 
 Usage:
-    python -m palace.run --config palace/configs/repro_run3_K6_toc.json --phase toc
-    python -m palace.run --config palace/configs/repro_run3_K6_toc.json --phase rooms
+    python -m palace.run --config palace/configs/korean_history.json --phase toc
+    python -m palace.run --config palace/configs/korean_history.json --phase rooms
 
 Config schema (paths are repo-relative):
     run_id              str    base name for outputs

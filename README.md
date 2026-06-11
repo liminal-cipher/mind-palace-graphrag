@@ -20,7 +20,7 @@
 정본 실행 예 (한국사 K=6 골든):
 
 ```
-python -m palace.run --config palace/configs/repro_run3_K6_toc.json --phase toc
-python -m palace.run --config palace/configs/repro_run3_K6_toc.json --phase rooms
-python palace/tests/compare_golden.py --run-id repro_run3_K6_toc
+python -m palace.run --config palace/configs/korean_history.json --phase toc
+python -m palace.run --config palace/configs/korean_history.json --phase rooms
+python palace/tests/compare_golden.py --run-id korean_history
 ```
