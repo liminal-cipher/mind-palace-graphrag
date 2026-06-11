@@ -132,11 +132,11 @@ def build_entity_record(
         'type': info['type'],
     }
     if with_rank is not None:
-        rec['rank'] = with_rank
+        rec['sequence'] = with_rank
     if order is not None:
-        rec['order'] = order
-        rec['order_confidence'] = order_confidence
-    rec['caption'] = caption_of(info['description'])
+        rec['source_offset'] = order
+        rec['offset_confidence'] = order_confidence
+    rec['summary'] = caption_of(info['description'])
     rec['description'] = info['description']
     return rec
 
@@ -245,7 +245,7 @@ def export(
                 item, ent_lookup, pid, with_rank=rank,
                 order=order, order_confidence=confidence,
             ))
-        kept_list.sort(key=lambda r: r['order'])
+        kept_list.sort(key=lambda r: r['source_offset'])
         demoted_list: list[dict] = []
         for item in room.get('demoted', []):
             pid = title_to_pid[item['title']]
@@ -259,13 +259,18 @@ def export(
             'kept_count': len(kept_list),
             'meta': {
                 'coherence_flag': room.get('coherence_flag'),
-                'source_cluster_count': len(room.get('source_clusters') or []),
             },
             'kept': kept_list,
             'demoted': demoted_list,
         })
 
     palace = {
+        'schema_version': '1.1',
+        'schema_changelog': (
+            '1.0->1.1: images[] 추가 + rank->sequence, order->source_offset, '
+            'order_confidence->offset_confidence, caption->summary, '
+            'source_cluster_count 삭제'
+        ),
         'palace': {
             'id': run_id,
             'title': f'기억의 궁전: {run_id}',
@@ -366,7 +371,7 @@ def main() -> int:
 
     bad_sort = []
     for r in data['rooms']:
-        ords = [k['order'] for k in r['kept']]
+        ords = [k['source_offset'] for k in r['kept']]
         if ords != sorted(ords):
             bad_sort.append(r['id'])
     sort_ok = not bad_sort

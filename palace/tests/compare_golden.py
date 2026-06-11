@@ -1,8 +1,8 @@
 """Compare a palace run against the golden snapshot.
 
 Usage:
-    python palace/tests/compare_golden.py --run-id repro_run3_K6_toc \
-        [--runs-dir palace/tests/runs/repro_run3_K6_toc] \
+    python palace/tests/compare_golden.py --run-id korean_history \
+        [--runs-dir palace/tests/runs/korean_history] \
         [--golden-dir palace/tests/golden]
 
 Returns exit code 0 on full match, 1 on mismatch. Mismatches printed as
@@ -116,7 +116,7 @@ def compare_palace(golden: dict, palace: dict, rows: list[dict]) -> None:
             _row(rows, file, rid, 'kept_len', len(gk), len(pk))
         else:
             for j, (gke, pke) in enumerate(zip(gk, pk)):
-                for f in ('id', 'title', 'order', 'order_confidence', 'rank'):
+                for f in ('id', 'title', 'source_offset', 'offset_confidence', 'sequence'):
                     if gke.get(f) != pke.get(f):
                         _row(rows, file, rid, f'kept[{j}].{f}',
                              gke.get(f), pke.get(f))
