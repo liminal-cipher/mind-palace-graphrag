@@ -11,6 +11,10 @@ logs/
 # palace 재실행 산출물 (palace/tests/golden 과 byte-identical, 재생성 가능)
 palace/tests/runs/
 
+# ai_school canary 인덱싱 산출물 (throwaway, 곧 재인덱싱)
+results/snapshots/ai_school/
+proj_ai_school/
+
 # 입력 자료 (저작물)
 input/
 proj_pagesplit/input/
