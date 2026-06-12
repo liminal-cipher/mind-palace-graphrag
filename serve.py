@@ -45,6 +45,33 @@ _executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="graphrag")
 # 기본(그리고 현재 유일) 스냅샷 키. 멀티데이터셋은 나중 레이어.
 DEFAULT_SNAPSHOT = "repro_run3"
 
+# global search(서빙) 합성 모델만 gpt-5.4-mini로 배선한다.
+# 파이프라인 공용 default_completion_model(추출/TOC/Stage B = gpt-4.1-mini)은 안 건드린다.
+# 인덱스 산출물(parquet/LanceDB)은 안 바뀌므로 repro_run3 재인덱싱 없음.
+RAG_SYNTHESIS_MODEL = "gpt-5.4-mini"
+RAG_MODEL_ID = "rag_synthesis_model"  # config.completion_models에 추가할 in-memory 키
+
+
+class _ModelCallLogger:
+    """litellm이 실제로 어떤 모델로 호출하는지 매 요청 전에 찍는다.
+    검증용: 서빙 합성 호출이 정말 gpt-5.4-mini로 나가는지 확인."""
+
+    def log_pre_api_call(self, model, messages, kwargs):  # noqa: ANN001
+        logger.info("llm call -> model=%s", model)
+
+    async def async_log_success_event(self, kwargs, response_obj, start_time, end_time):  # noqa: ANN001
+        logger.info("llm done <- model=%s", kwargs.get("model"))
+
+
+def _install_model_logger() -> None:
+    try:
+        import litellm
+
+        litellm.callbacks = [*(litellm.callbacks or []), _ModelCallLogger()]
+        logger.info("litellm 모델 호출 로거 설치됨")
+    except Exception as e:  # noqa: BLE001  로깅 실패가 서빙을 막진 않게.
+        logger.warning("litellm 모델 로거 설치 실패: %s", e)
+
 
 class _State:
     """warmup 결과를 들고 있는 모듈 전역 상태."""
@@ -54,6 +81,7 @@ class _State:
     warmup_seconds: Optional[float] = None
     snapshot: Optional[str] = None
     engine: Any = None  # global search engine (warm_query._engine("global"))
+    synthesis_model: Optional[str] = None  # global search가 실제로 바인딩한 모델
 
 
 STATE = _State()
@@ -67,13 +95,47 @@ def _warmup_blocking() -> None:
     import warm_query as wq
 
     STATE.snapshot = wq.SNAPSHOT.name
+
+    # --- global search 합성 모델을 gpt-5.4-mini로 in-memory 배선 ---
+    # 디스크 settings.yaml/스냅샷은 안 건드린다. default_completion_model을 복제해
+    # deployment만 gpt-5.4-mini로 바꾼 새 항목을 추가하고, global_search만 그걸 쓰게 한다.
+    base = wq.config.get_completion_model_config(
+        wq.config.global_search.completion_model_id
+    )
+    rag_model = base.model_copy(
+        update={
+            "model": RAG_SYNTHESIS_MODEL,
+            "azure_deployment_name": RAG_SYNTHESIS_MODEL,
+        }
+    )
+    wq.config.completion_models[RAG_MODEL_ID] = rag_model
+    wq.config.global_search.completion_model_id = RAG_MODEL_ID
+    logger.info(
+        "global search 합성 모델 배선: %s -> deployment=%s (default_completion_model 불변)",
+        RAG_MODEL_ID,
+        RAG_SYNTHESIS_MODEL,
+    )
+
     # 우리가 서빙할 건 global. 첫 호출이 콜드하지 않게 지금 빌드해 둔다.
     STATE.engine = wq._engine("global")
+
+    # 빌드된 엔진이 실제로 바인딩한 모델을 확인해 찍는다(검증용).
+    bound = getattr(STATE.engine, "model", None)
+    bound_cfg = getattr(bound, "_model_config", None)
+    if bound_cfg is not None:
+        STATE.synthesis_model = bound_cfg.azure_deployment_name or bound_cfg.model
+        logger.info(
+            "global 엔진 바인딩 모델: model_id=%s, deployment=%s",
+            getattr(bound, "_model_id", "?"),
+            STATE.synthesis_model,
+        )
+
     STATE.warmup_seconds = time.perf_counter() - t0
     STATE.ready = True
     logger.info(
-        "warmup done: snapshot=%s, %.1fs",
+        "warmup done: snapshot=%s, synthesis_model=%s, %.1fs",
         STATE.snapshot,
+        STATE.synthesis_model,
         STATE.warmup_seconds,
     )
 
@@ -90,6 +152,7 @@ async def lifespan(app: FastAPI):
     """앱 시작 시 부팅 warmup. uvicorn은 startup이 끝날 때까지 요청을 받지 않으므로
     첫 /query는 이미 로드된 엔진을 재사용한다."""
     loop = asyncio.get_running_loop()
+    _install_model_logger()
     logger.info("warmup 시작 (스냅샷 로드 + global 엔진 빌드)...")
     try:
         await loop.run_in_executor(_executor, _warmup_blocking)
@@ -136,6 +199,7 @@ async def health():
             round(STATE.warmup_seconds, 1) if STATE.warmup_seconds else None
         ),
         "method": "global",
+        "synthesis_model": STATE.synthesis_model,
     }
 
 
