@@ -9,11 +9,11 @@
       "language": "ko",
       "entity_count": 357
     },
-    "room_count": 6,
-    "generated_at": "2026-06-11T17:40:12.672191+00:00",
+    "room_count": 7,
+    "generated_at": "2026-06-12T19:17:58.775818+00:00",
     "pipeline": {
       "snapshot": "results/snapshots/repro_run3",
-      "k": 6,
+      "k": 10,
       "merge": "toc",
       "embedding_model": "text-embedding-3-small",
       "llm_model": "gpt-4.1-mini",
@@ -2826,8 +2826,8 @@
       "id": "room_05",
       "index": 5,
       "name": "조선 후기 실학과 개혁",
-      "summary": "조선 후기 실학자, 학파, 개혁 제도 및 대표 저서 중심으로 구성됨",
-      "kept_count": 20,
+      "summary": "조선 후기 실학자와 학파, 주요 인물, 제도, 정치·경제 개혁 중심으로 구성됨",
+      "kept_count": 16,
       "meta": {
         "coherence_flag": "coherent"
       },
@@ -2856,14 +2856,28 @@
           "summary": "조선 후기 현실 개혁을 위해 실용적 학문을 연구하였던 학자들로, 남인 출신이 많으며 정치, 경제, 사회뿐 아니라 역사, 지리, 자연과학, 농학 등 다양한 분야에서 활동함",
           "description": "조선 후기 현실 개혁을 위해 실용적 학문을 연구하였던 학자들로, 남인 출신이 많으며 정치, 경제, 사회뿐 아니라 역사, 지리, 자연과학, 농학 등 다양한 분야에서 활동함",
           "related": [
+            "ent_이수광",
             "ent_김육"
+          ]
+        },
+        {
+          "id": "ent_이수광",
+          "title": "이수광",
+          "type": "인물_학자",
+          "sequence": 3,
+          "source_offset": 18301,
+          "offset_confidence": "fine",
+          "summary": "실학 선구자로, 《지봉유설》을 저술하여 조선과 중국의 문화 전통을 폭넓게 정리함",
+          "description": "실학 선구자로, 《지봉유설》을 저술하여 조선과 중국의 문화 전통을 폭넓게 정리함",
+          "related": [
+            "ent_실학자"
           ]
         },
         {
           "id": "ent_김육",
           "title": "김육",
           "type": "인물_정치가_실학자",
-          "sequence": 3,
+          "sequence": 4,
           "source_offset": 18306,
           "offset_confidence": "fine",
           "summary": "실학 선구자로, 대동법 확대 실시와 동전 사용 확산에 힘썼으며, 공납제도의 폐단을 바로잡는 세제 개혁을 추진함",
@@ -2877,7 +2891,7 @@
           "id": "ent_대동법",
           "title": "대동법",
           "type": "정책_법제",
-          "sequence": 4,
+          "sequence": 5,
           "source_offset": 18362,
           "offset_confidence": "fine",
           "summary": "조선 후기 재정 세제 개혁 법으로, 특산물 공납 대신 토지 1결당 대동미(쌀)를 부담하게 하여 공납의 폐단을 시정함",
@@ -2890,7 +2904,7 @@
           "id": "ent_중농_학파",
           "title": "중농 학파",
           "type": "학문 집단_사상파",
-          "sequence": 5,
+          "sequence": 6,
           "source_offset": 18485,
           "offset_confidence": "fine",
           "summary": "실학 내에서 농업과 토지 제도 개혁을 중시하는 그룹으로, 유형원, 이익, 정약용 등이 속하며 농민 중심의 농촌 문제 해결에 관심을 가짐",
@@ -2905,7 +2919,7 @@
           "id": "ent_중상_학파",
           "title": "중상 학파",
           "type": "학문 집단_사상파",
-          "sequence": 6,
+          "sequence": 7,
           "source_offset": 18492,
           "offset_confidence": "fine",
           "summary": "실학 내에서 상공업 진흥과 기술 개발을 중시하는 그룹으로, 한양 출신이며 청 문화 수용과 상공업 발전을 주장함",
@@ -2922,7 +2936,7 @@
           "id": "ent_유형원",
           "title": "유형원",
           "type": "인물_학자",
-          "sequence": 7,
+          "sequence": 8,
           "source_offset": 18661,
           "offset_confidence": "fine",
           "summary": "중농 학파 실학자로, 농민들에게 일정 면적의 농지를 나누어주자는 토지 제도 개혁안을 제시함",
@@ -2935,7 +2949,7 @@
           "id": "ent_정약용",
           "title": "정약용",
           "type": "인물_학자_실학자",
-          "sequence": 8,
+          "sequence": 9,
           "source_offset": 18670,
           "offset_confidence": "fine",
           "summary": "중농 학파의 대표적 실학자로, 농지 공동 소유와 공동 경작, 수확물 공동 분배를 주장하며 농촌 사회 모순 해결에 기여함",
@@ -2948,7 +2962,7 @@
           "id": "ent_북학파",
           "title": "북학파",
           "type": "학문 집단_사상파",
-          "sequence": 9,
+          "sequence": 10,
           "source_offset": 19200,
           "offset_confidence": "fine",
           "summary": "중상 학파의 일종으로, 청 문화와 문물을 받아들여 조선의 현실을 개혁하려 한 집단이며 청의 수도 베이징을 왕래하며 선진 문화를 수용함",
@@ -2961,7 +2975,7 @@
           "id": "ent_유수원",
           "title": "유수원",
           "type": "인물_학자_실학자",
-          "sequence": 10,
+          "sequence": 11,
           "source_offset": 19219,
           "offset_confidence": "fine",
           "summary": "중상 학파 실학자이자 북학파 일원으로, 상공업 진흥과 청의 문물 수용을 주장함",
@@ -2974,7 +2988,7 @@
           "id": "ent_홍대용",
           "title": "홍대용",
           "type": "인물_학자_실학자",
-          "sequence": 11,
+          "sequence": 12,
           "source_offset": 19224,
           "offset_confidence": "fine",
           "summary": "중상 학파 실학자이자 북학파 일원으로, 상공업 발전과 청 문물 수용론을 펼침",
@@ -2987,7 +3001,7 @@
           "id": "ent_박지원",
           "title": "박지원",
           "type": "인물_학자_실학자",
-          "sequence": 12,
+          "sequence": 13,
           "source_offset": 19229,
           "offset_confidence": "fine",
           "summary": "중상 학파 실학자이자 북학파 일원으로 상공업과 청 문물 수용을 중시함",
@@ -3000,7 +3014,7 @@
           "id": "ent_박제가",
           "title": "박제가",
           "type": "인물_학자_실학자",
-          "sequence": 13,
+          "sequence": 14,
           "source_offset": 19234,
           "offset_confidence": "fine",
           "summary": "중상 학파 실학자이자 북학파 일원으로, 상공업 및 청 문물 수용을 강조함",
@@ -3013,7 +3027,7 @@
           "id": "ent_안정복",
           "title": "안정복",
           "type": "인물_학자_역사학자",
-          "sequence": 14,
+          "sequence": 15,
           "source_offset": 19609,
           "offset_confidence": "fine",
           "summary": "국학 연구의 대표적 인물로, 《동사강목》을 지어 고조선부터 고려 말까지 조선 역사를 체계적으로 정리함",
@@ -3026,66 +3040,11 @@
           "id": "ent_유득공",
           "title": "유득공",
           "type": "인물_학자_역사학자",
-          "sequence": 15,
+          "sequence": 16,
           "source_offset": 19614,
           "offset_confidence": "fine",
           "summary": "국학 연구자로, 《발해고》에서 발해 역사를 우리 역사로 포함시키는 데 기여함",
           "description": "국학 연구자로, 《발해고》에서 발해 역사를 우리 역사로 포함시키는 데 기여함",
-          "related": []
-        },
-        {
-          "id": "ent_이중환",
-          "title": "이중환",
-          "type": "인물, 학자",
-          "sequence": 16,
-          "source_offset": 19903,
-          "offset_confidence": "fine",
-          "summary": "조선 후기의 지리학자로, 각 지역의 경제 생활과 풍속을 상세히 조사한 택리지 저술자임",
-          "description": "조선 후기의 지리학자로, 각 지역의 경제 생활과 풍속을 상세히 조사한 택리지 저술자임",
-          "related": []
-        },
-        {
-          "id": "ent_정상기",
-          "title": "정상기",
-          "type": "인물, 학자",
-          "sequence": 17,
-          "source_offset": 19908,
-          "offset_confidence": "fine",
-          "summary": "조선 후기의 지리학자로, 최초로 백 리를 한 자로 축소한 동국지도를 제작하여 지도 제작 수준을 향상시킴",
-          "description": "조선 후기의 지리학자로, 최초로 백 리를 한 자로 축소한 동국지도를 제작하여 지도 제작 수준을 향상시킴",
-          "related": []
-        },
-        {
-          "id": "ent_김정호",
-          "title": "김정호",
-          "type": "인물, 학자",
-          "sequence": 18,
-          "source_offset": 19913,
-          "offset_confidence": "fine",
-          "summary": "조선 후기의 지리학자로, 대동여지도를 제작하여 산맥, 하천, 도로망 등을 정밀하게 표시, 상업 발달과 교통로 확장에 기여함",
-          "description": "조선 후기의 지리학자로, 대동여지도를 제작하여 산맥, 하천, 도로망 등을 정밀하게 표시, 상업 발달과 교통로 확장에 기여함",
-          "related": []
-        },
-        {
-          "id": "ent_신경준",
-          "title": "신경준",
-          "type": "인물, 학자",
-          "sequence": 19,
-          "source_offset": 20223,
-          "offset_confidence": "fine",
-          "summary": "조선 후기 음운 연구자로서 훈민정음운해를 저술하여 한글 연구에 기여함",
-          "description": "조선 후기 음운 연구자로서 훈민정음운해를 저술하여 한글 연구에 기여함",
-          "related": []
-        },
-        {
-          "id": "ent_이제마",
-          "title": "이제마",
-          "type": "인물, 학자",
-          "sequence": 20,
-          "source_offset": 20422,
-          "offset_confidence": "fine",
-          "summary": "조선 후기 의학자로, 사람 체질에 따른 처방 차별화를 주장하는 사상의학 이론을 제창함",
-          "description": "조선 후기 의학자로, 사람 체질에 따른 처방 차별화를 주장하는 사상의학 이론을 제창함",
           "related": []
         }
       ],
@@ -3140,13 +3099,6 @@
           "description": "조선 후기 도시의 작은 상인들로, 사회 경제적 변화와 물가 상승 등으로 몰락함"
         },
         {
-          "id": "ent_이수광",
-          "title": "이수광",
-          "type": "인물_학자",
-          "summary": "실학 선구자로, 《지봉유설》을 저술하여 조선과 중국의 문화 전통을 폭넓게 정리함",
-          "description": "실학 선구자로, 《지봉유설》을 저술하여 조선과 중국의 문화 전통을 폭넓게 정리함"
-        },
-        {
           "id": "ent_상공업_진흥론",
           "title": "상공업 진흥론",
           "type": "사상_경제 정책",
@@ -3166,63 +3118,188 @@
           "type": "학문 영역_연구 분야",
           "summary": "조선 후기 실학자들의 사회 비판과 관심이 반영된 역사, 지리, 언어, 풍속 등 국학 전반에 대한 연구 활동",
           "description": "조선 후기 실학자들의 사회 비판과 관심이 반영된 역사, 지리, 언어, 풍속 등 국학 전반에 대한 연구 활동"
-        },
+        }
+      ]
+    },
+    {
+      "id": "room_06",
+      "index": 6,
+      "name": "조선 후기 학자·저서·사상",
+      "summary": "조선 후기 대표 학자와 그들의 저서 및 사상으로 구성된 구체적 집합",
+      "kept_count": 13,
+      "meta": {
+        "coherence_flag": "coherent"
+      },
+      "kept": [
         {
           "id": "ent_사상의학",
           "title": "사상의학",
           "type": "의학 이론, 사상",
+          "sequence": 1,
+          "source_offset": 19532,
+          "offset_confidence": "fallback",
           "summary": "이제마가 주장한 사람 체질에 따라 처방을 달리해야 한다는 체질론적 의학 사상",
-          "description": "이제마가 주장한 사람 체질에 따라 처방을 달리해야 한다는 체질론적 의학 사상"
+          "description": "이제마가 주장한 사람 체질에 따라 처방을 달리해야 한다는 체질론적 의학 사상",
+          "related": [
+            "ent_이제마"
+          ]
         },
         {
           "id": "ent_발해고",
           "title": "발해고",
           "type": "저서, 문헌",
+          "sequence": 2,
+          "source_offset": 19682,
+          "offset_confidence": "fine",
           "summary": "유득공이 작성한 역사서로, 발해의 역사를 한국사의 일부로 다루며 남북국 시대 개념을 제시한 책",
-          "description": "유득공이 작성한 역사서로, 발해의 역사를 한국사의 일부로 다루며 남북국 시대 개념을 제시한 책"
+          "description": "유득공이 작성한 역사서로, 발해의 역사를 한국사의 일부로 다루며 남북국 시대 개념을 제시한 책",
+          "related": []
+        },
+        {
+          "id": "ent_이중환",
+          "title": "이중환",
+          "type": "인물, 학자",
+          "sequence": 3,
+          "source_offset": 19903,
+          "offset_confidence": "fine",
+          "summary": "조선 후기의 지리학자로, 각 지역의 경제 생활과 풍속을 상세히 조사한 택리지 저술자임",
+          "description": "조선 후기의 지리학자로, 각 지역의 경제 생활과 풍속을 상세히 조사한 택리지 저술자임",
+          "related": [
+            "ent_택리지"
+          ]
+        },
+        {
+          "id": "ent_정상기",
+          "title": "정상기",
+          "type": "인물, 학자",
+          "sequence": 4,
+          "source_offset": 19908,
+          "offset_confidence": "fine",
+          "summary": "조선 후기의 지리학자로, 최초로 백 리를 한 자로 축소한 동국지도를 제작하여 지도 제작 수준을 향상시킴",
+          "description": "조선 후기의 지리학자로, 최초로 백 리를 한 자로 축소한 동국지도를 제작하여 지도 제작 수준을 향상시킴",
+          "related": [
+            "ent_동국지도"
+          ]
+        },
+        {
+          "id": "ent_김정호",
+          "title": "김정호",
+          "type": "인물, 학자",
+          "sequence": 5,
+          "source_offset": 19913,
+          "offset_confidence": "fine",
+          "summary": "조선 후기의 지리학자로, 대동여지도를 제작하여 산맥, 하천, 도로망 등을 정밀하게 표시, 상업 발달과 교통로 확장에 기여함",
+          "description": "조선 후기의 지리학자로, 대동여지도를 제작하여 산맥, 하천, 도로망 등을 정밀하게 표시, 상업 발달과 교통로 확장에 기여함",
+          "related": [
+            "ent_대동여지도"
+          ]
         },
         {
           "id": "ent_택리지",
           "title": "택리지",
           "type": "저서, 문헌",
+          "sequence": 6,
+          "source_offset": 19975,
+          "offset_confidence": "fine",
           "summary": "이중환이 저술한 책으로, 조선 각 지역의 지리, 경제 생활, 풍속을 상세히 조사하고 자연과 인간 생활의 관계를 인과적으로 설명함",
-          "description": "이중환이 저술한 책으로, 조선 각 지역의 지리, 경제 생활, 풍속을 상세히 조사하고 자연과 인간 생활의 관계를 인과적으로 설명함"
+          "description": "이중환이 저술한 책으로, 조선 각 지역의 지리, 경제 생활, 풍속을 상세히 조사하고 자연과 인간 생활의 관계를 인과적으로 설명함",
+          "related": [
+            "ent_이중환"
+          ]
         },
         {
           "id": "ent_동국지도",
           "title": "동국지도",
           "type": "지도, 기록물",
+          "sequence": 7,
+          "source_offset": 20054,
+          "offset_confidence": "fine",
           "summary": "정상기가 제작한 최초로 백 리를 한 자로 축소한 조선 시대 지도",
-          "description": "정상기가 제작한 최초로 백 리를 한 자로 축소한 조선 시대 지도"
+          "description": "정상기가 제작한 최초로 백 리를 한 자로 축소한 조선 시대 지도",
+          "related": [
+            "ent_정상기"
+          ]
         },
         {
           "id": "ent_대동여지도",
           "title": "대동여지도",
           "type": "지도, 기록물",
+          "sequence": 8,
+          "source_offset": 20096,
+          "offset_confidence": "fine",
           "summary": "김정호가 제작한 조선 후기의 정밀 지도로, 산맥, 하천, 도로망 등이 상세히 표시되어 있음",
-          "description": "김정호가 제작한 조선 후기의 정밀 지도로, 산맥, 하천, 도로망 등이 상세히 표시되어 있음"
+          "description": "김정호가 제작한 조선 후기의 정밀 지도로, 산맥, 하천, 도로망 등이 상세히 표시되어 있음",
+          "related": [
+            "ent_김정호"
+          ]
+        },
+        {
+          "id": "ent_신경준",
+          "title": "신경준",
+          "type": "인물, 학자",
+          "sequence": 9,
+          "source_offset": 20223,
+          "offset_confidence": "fine",
+          "summary": "조선 후기 음운 연구자로서 훈민정음운해를 저술하여 한글 연구에 기여함",
+          "description": "조선 후기 음운 연구자로서 훈민정음운해를 저술하여 한글 연구에 기여함",
+          "related": [
+            "ent_훈민정음운해"
+          ]
         },
         {
           "id": "ent_훈민정음운해",
           "title": "훈민정음운해",
           "type": "저서, 문헌",
+          "sequence": 10,
+          "source_offset": 20228,
+          "offset_confidence": "fine",
           "summary": "신경준이 음운 연구를 위해 저술한 책으로, 한글 음운 체계를 연구함",
-          "description": "신경준이 음운 연구를 위해 저술한 책으로, 한글 음운 체계를 연구함"
+          "description": "신경준이 음운 연구를 위해 저술한 책으로, 한글 음운 체계를 연구함",
+          "related": [
+            "ent_신경준"
+          ]
         },
         {
           "id": "ent_유희",
           "title": "유희",
           "type": "인물, 학자",
+          "sequence": 11,
+          "source_offset": 20236,
+          "offset_confidence": "fine",
           "summary": "조선 후기 국어학자이며 언문지를 저술하여 한글의 우수성과 문화적 자아 의식을 드러냄",
-          "description": "조선 후기 국어학자이며 언문지를 저술하여 한글의 우수성과 문화적 자아 의식을 드러냄"
+          "description": "조선 후기 국어학자이며 언문지를 저술하여 한글의 우수성과 문화적 자아 의식을 드러냄",
+          "related": [
+            "ent_언문지"
+          ]
         },
         {
           "id": "ent_언문지",
           "title": "언문지",
           "type": "저서, 문헌",
+          "sequence": 12,
+          "source_offset": 20240,
+          "offset_confidence": "fine",
           "summary": "유희가 쓴 언어 연구서로, 한글의 우수성과 문화적 자아 의식을 강조함",
-          "description": "유희가 쓴 언어 연구서로, 한글의 우수성과 문화적 자아 의식을 강조함"
+          "description": "유희가 쓴 언어 연구서로, 한글의 우수성과 문화적 자아 의식을 강조함",
+          "related": [
+            "ent_유희"
+          ]
         },
+        {
+          "id": "ent_이제마",
+          "title": "이제마",
+          "type": "인물, 학자",
+          "sequence": 13,
+          "source_offset": 20422,
+          "offset_confidence": "fine",
+          "summary": "조선 후기 의학자로, 사람 체질에 따른 처방 차별화를 주장하는 사상의학 이론을 제창함",
+          "description": "조선 후기 의학자로, 사람 체질에 따른 처방 차별화를 주장하는 사상의학 이론을 제창함",
+          "related": [
+            "ent_사상의학"
+          ]
+        }
+      ],
+      "demoted": [
         {
           "id": "ent_실사구시",
           "title": "실사구시",
@@ -3687,6 +3764,12 @@
     },
     {
       "source": "ent_실학자",
+      "target": "ent_이수광",
+      "weight": 10.0,
+      "description": "이수광은 실학의 선구자로서 실학자 집단에 속한다"
+    },
+    {
+      "source": "ent_실학자",
       "target": "ent_김육",
       "weight": 10.0,
       "description": "김육도 실학의 선구자 중 한 명이며 실학자 집단에 속한다"
@@ -3752,10 +3835,46 @@
       "description": "안정복은 이익의 제자로서 그의 실증주의적 역사관을 발전시켰다"
     },
     {
+      "source": "ent_이중환",
+      "target": "ent_택리지",
+      "weight": 10.0,
+      "description": "이중환은 택리지를 저술하여 지리와 경제, 풍속을 자세히 조사하였다"
+    },
+    {
+      "source": "ent_정상기",
+      "target": "ent_동국지도",
+      "weight": 9.0,
+      "description": "정상기는 동국지도를 제작하여 지도 제작 수준을 향상시켰다"
+    },
+    {
+      "source": "ent_김정호",
+      "target": "ent_대동여지도",
+      "weight": 10.0,
+      "description": "김정호는 대동여지도를 제작하여 산맥, 하천, 도로망 등을 상세히 표시하였다"
+    },
+    {
+      "source": "ent_신경준",
+      "target": "ent_훈민정음운해",
+      "weight": 10.0,
+      "description": "신경준은 훈민정음운해를 저술하여 한글 음운 연구에 기여하였다"
+    },
+    {
+      "source": "ent_유희",
+      "target": "ent_언문지",
+      "weight": 9.0,
+      "description": "유희는 언문지를 저술하여 한글의 우수성과 문화적 자아 의식을 표현하였다"
+    },
+    {
       "source": "ent_허준",
       "target": "ent_동의보감",
       "weight": 10.0,
       "description": "허준은 동의보감을 편찬하여 한국 의학 발전과 예방 의학, 전통 약재 활용 치료법을 확립하였다"
+    },
+    {
+      "source": "ent_이제마",
+      "target": "ent_사상의학",
+      "weight": 9.0,
+      "description": "이제마는 체질별 처방 차별화 사상의학 이론을 주장하였다"
     }
   ]
 }

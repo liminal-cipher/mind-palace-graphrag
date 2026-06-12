@@ -21,10 +21,10 @@ from palace.room_gen import call_json, make_azure_client
 
 SYS_PROMPT = (
     '당신은 학습 자료 분석가다. 한국어 강의 자료(슬라이드 텍스트)를 읽고, '
-    '자료 전체를 학습 흐름이 보존되는 5~6개의 순서 있는 섹션으로 묶어라.\n'
+    '자료 전체를 학습 흐름이 보존되는 순서 있는 섹션으로 묶어라.\n'
     '\n'
     '규칙:\n'
-    '- 섹션 수는 5 또는 6. 그 외는 출력하지 마라.\n'
+    '- 섹션 수는 자료에 맞게 1~10개 사이로 자연스럽게 정하라.\n'
     '- 각 섹션의 이름(name)은 학습 주제를 짧게(15자 이내) 한국어로.\n'
     '- 각 섹션 시작점은 자료에 그대로 존재하는 한 줄(start_marker)로 지정. '
     '문장이 아니라 슬라이드 헤더처럼 짧은 줄이 좋다. 한 글자도 바꾸지 마라. '
@@ -33,7 +33,7 @@ SYS_PROMPT = (
     '피하고 가능한 그 섹션에서만 등장하는 줄을 골라라.\n'
     '- 섹션은 자료의 등장 순서대로. 학습 흐름과 자료 순서가 일치해야 한다.\n'
     '- 첫 섹션은 자료 도입(통계학 정의 등)을 포함한다. 마지막 섹션은 자료 끝까지 덮는다.\n'
-    '- 섹션 1개에 슬라이드 1장만 들어가는 잘게 자른 목차는 피하라. 자료 전체를 5~6개로 묶는 게 목적이다.'
+    '- 섹션 1개에 슬라이드 1장만 들어가는 잘게 자른 목차는 피하라. 자료 전체를 의미 단위로 묶는 게 목적이다.'
 )
 
 
@@ -108,6 +108,8 @@ def generate_toc(
     sys_prompt: str = SYS_PROMPT,
     corpus_rel: str | None = None,
     print_summary: bool = True,
+    min_rooms: int = 1,
+    max_rooms: int = 10,
 ) -> dict:
     """Run the LLM TOC pass on `corpus_path`, validate marker grounding,
     and return the payload dict. If `out_path` is given, also writes the
@@ -124,8 +126,8 @@ def generate_toc(
     raw, usage = call_json(client, model, sys_prompt, user_p)
     obj = json.loads(raw)
     sections_raw = obj.get('sections', [])
-    if not isinstance(sections_raw, list) or not (5 <= len(sections_raw) <= 6):
-        print(f'STOP: LLM returned {len(sections_raw)} sections, expected 5 or 6')
+    if not isinstance(sections_raw, list) or not (min_rooms <= len(sections_raw) <= max_rooms):
+        print(f'STOP: LLM returned {len(sections_raw)} sections, expected {min_rooms}..{max_rooms}')
         print(json.dumps(obj, ensure_ascii=False, indent=2))
         sys.exit(2)
 

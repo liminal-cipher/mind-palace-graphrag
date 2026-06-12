@@ -4,12 +4,12 @@
     "corpus_chars": 20921,
     "model": "gpt-4.1-mini",
     "temperature": 0,
-    "ts": "2026-06-09T06:36:46.131770+00:00",
+    "ts": "2026-06-12T19:15:27.616744+00:00",
     "usage": {
-      "prompt_tokens": 13273,
-      "completion_tokens": 215
+      "prompt_tokens": 13270,
+      "completion_tokens": 247
     },
-    "n_sections": 6,
+    "n_sections": 7,
     "monotonic_offsets": true,
     "distinct_offsets": true,
     "warnings": []
@@ -27,7 +27,7 @@
     },
     {
       "idx": 1,
-      "name": "사림 세력과 붕당 형성",
+      "name": "사림 세력의 성장과 붕당 형성",
       "start_marker": "2. 사림 세력의 성장",
       "start_offset": 6729,
       "match_strategy": "exact",
@@ -37,7 +37,7 @@
     },
     {
       "idx": 2,
-      "name": "임진왜란과 호란 극복",
+      "name": "임진왜란과 호란 극복 과정",
       "start_marker": "3. 왜란과 호란의 극복",
       "start_offset": 9483,
       "match_strategy": "exact",
@@ -67,13 +67,23 @@
     },
     {
       "idx": 5,
-      "name": "실학과 국학 연구의 발전",
+      "name": "실학의 대두와 학파",
       "start_marker": "실학의 대두",
       "start_offset": 17426,
       "match_strategy": "exact",
       "marker_occurrences_in_corpus": 1,
+      "end_offset": 19501,
+      "length_chars": 2075
+    },
+    {
+      "idx": 6,
+      "name": "국학 연구와 실학의 의의",
+      "start_marker": "국학 연구",
+      "start_offset": 19501,
+      "match_strategy": "exact",
+      "marker_occurrences_in_corpus": 2,
       "end_offset": 20921,
-      "length_chars": 3495
+      "length_chars": 1420
     }
   ]
 }

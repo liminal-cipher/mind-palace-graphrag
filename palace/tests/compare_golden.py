@@ -28,26 +28,6 @@ def _row(rows: list[dict], file: str, room: str, field: str, golden, palace) -> 
                  'golden': golden, 'palace': palace})
 
 
-def compare_toc_llm(golden: dict, palace: dict, rows: list[dict]) -> None:
-    """Compare sections deep-equal except meta.ts, meta.usage."""
-    file = 'toc_llm.json'
-    gm, pm = golden['meta'], palace['meta']
-    for k in ('corpus', 'corpus_chars', 'model', 'temperature', 'n_sections',
-              'monotonic_offsets', 'distinct_offsets'):
-        if gm.get(k) != pm.get(k):
-            _row(rows, file, '-', f'meta.{k}', gm.get(k), pm.get(k))
-    if len(golden['sections']) != len(palace['sections']):
-        _row(rows, file, '-', 'n_sections', len(golden['sections']), len(palace['sections']))
-        return
-    section_fields = ('idx', 'name', 'start_marker', 'start_offset',
-                      'end_offset', 'length_chars', 'match_strategy',
-                      'marker_occurrences_in_corpus')
-    for i, (gs, ps) in enumerate(zip(golden['sections'], palace['sections'])):
-        for k in section_fields:
-            if gs.get(k) != ps.get(k):
-                _row(rows, file, f'section[{i}]', k, gs.get(k), ps.get(k))
-
-
 def compare_rooms(golden: dict, palace: dict, rows: list[dict]) -> None:
     """Compare rooms.json. meta.ts excluded. kept order matters; demoted as set."""
     file = 'rooms.json'
@@ -167,33 +147,28 @@ def main() -> int:
 
     rows: list[dict] = []
 
-    g_toc = golden_dir / f'{args.run_id}.toc_llm.json'
-    p_toc = runs_dir / f'{args.run_id}.toc_llm.json'
-    if not g_toc.exists():
-        print(f'STOP: golden missing: {g_toc}')
-        return 2
-    if not p_toc.exists():
-        print(f'STOP: palace toc output missing: {p_toc}')
-        return 2
-    compare_toc_llm(_load(g_toc), _load(p_toc), rows)
-
+    # The TOC is a frozen input artifact (config.frozen_toc), not a
+    # regenerated output, so it is neither re-derived nor re-compared here.
+    # Both golden and the run under test are produced from the same frozen
+    # TOC, so only the deterministic downstream (rooms.json, palace.json)
+    # needs a byte check.
     g_rooms = golden_dir / f'{args.run_id}.json'
     p_rooms = runs_dir / f'{args.run_id}.json'
     g_palace = golden_dir / f'{args.run_id}.palace.json'
     p_palace = runs_dir / f'{args.run_id}.palace.json'
-    rooms_phase_present = p_rooms.exists() and p_palace.exists()
-    if not rooms_phase_present:
-        print('NOTE: palace rooms-phase outputs not found; comparing toc_llm only.')
-    else:
-        if not g_rooms.exists() or not g_palace.exists():
-            print(f'STOP: golden rooms/palace missing in {golden_dir}')
-            return 2
-        compare_rooms(_load(g_rooms), _load(p_rooms), rows)
-        compare_palace(_load(g_palace), _load(p_palace), rows)
+    if not p_rooms.exists() or not p_palace.exists():
+        print(f'STOP: palace rooms-phase outputs missing in {runs_dir}; '
+              f'run --phase rooms first')
+        return 2
+    if not g_rooms.exists() or not g_palace.exists():
+        print(f'STOP: golden rooms/palace missing in {golden_dir}')
+        return 2
+    compare_rooms(_load(g_rooms), _load(p_rooms), rows)
+    compare_palace(_load(g_palace), _load(p_palace), rows)
 
     if not rows:
         print(f'MATCH: run-id={args.run_id} palace == golden '
-              f'(toc_llm{" + rooms + palace" if rooms_phase_present else ""})')
+              f'(rooms + palace; TOC frozen)')
         return 0
     print(f'MISMATCH: {len(rows)} differences')
     print(format_diff(rows))

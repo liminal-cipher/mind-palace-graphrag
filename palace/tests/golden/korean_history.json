@@ -2,15 +2,15 @@
   "meta": {
     "run_id": "korean_history",
     "snapshot": "results/snapshots/repro_run3",
-    "K": 6,
-    "k_base": 6,
+    "K": 10,
+    "k_base": 10,
     "max_cluster_size": null,
     "merge_strategy": "toc",
     "n_runs": 1,
     "node_budget": 20,
     "domain": "조선 전기 한국사 (건국·통치제도·문화·사림·왜란·붕당·실학)",
     "model": "gpt-4.1-mini",
-    "ts": "2026-06-09T06:54:38.129685+00:00",
+    "ts": "2026-06-12T19:17:58.712877+00:00",
     "snapshot_meta": {
       "snapshot_path": "results/snapshots/repro_run3",
       "n_entities": 357
@@ -615,7 +615,7 @@
         "n_forced_demote": 0,
         "n_hallucinated": 0,
         "section_idx": 1,
-        "section_name": "사림 세력과 붕당 형성",
+        "section_name": "사림 세력의 성장과 붕당 형성",
         "section_span": [
           6729,
           9483
@@ -897,7 +897,7 @@
         "n_forced_demote": 0,
         "n_hallucinated": 0,
         "section_idx": 2,
-        "section_name": "임진왜란과 호란 극복",
+        "section_name": "임진왜란과 호란 극복 과정",
         "section_span": [
           9483,
           14357
@@ -1083,6 +1083,9 @@
           "title": "실학자"
         },
         {
+          "title": "이수광"
+        },
+        {
           "title": "김육"
         },
         {
@@ -1120,21 +1123,6 @@
         },
         {
           "title": "유득공"
-        },
-        {
-          "title": "이중환"
-        },
-        {
-          "title": "정상기"
-        },
-        {
-          "title": "김정호"
-        },
-        {
-          "title": "신경준"
-        },
-        {
-          "title": "이제마"
         }
       ],
       "demoted": [
@@ -1160,9 +1148,6 @@
           "title": "영세 상인"
         },
         {
-          "title": "이수광"
-        },
-        {
           "title": "상공업 진흥론"
         },
         {
@@ -1170,12 +1155,40 @@
         },
         {
           "title": "국학 연구"
-        },
+        }
+      ],
+      "coherence_flag": "coherent",
+      "source_clusters": [],
+      "_meta": {
+        "coherence_reason": "조선 후기 실학자와 학파, 주요 인물, 제도, 정치·경제 개혁 중심으로 구성됨",
+        "n_forced_demote": 0,
+        "n_hallucinated": 0,
+        "section_idx": 5,
+        "section_name": "실학의 대두와 학파",
+        "section_span": [
+          17426,
+          19501
+        ]
+      }
+    },
+    {
+      "room_id": 6,
+      "name": "조선 후기 학자·저서·사상",
+      "kept": [
         {
           "title": "사상의학"
         },
         {
           "title": "발해고"
+        },
+        {
+          "title": "이중환"
+        },
+        {
+          "title": "정상기"
+        },
+        {
+          "title": "김정호"
         },
         {
           "title": "택리지"
@@ -1187,6 +1200,9 @@
           "title": "대동여지도"
         },
         {
+          "title": "신경준"
+        },
+        {
           "title": "훈민정음운해"
         },
         {
@@ -1195,6 +1211,11 @@
         {
           "title": "언문지"
         },
+        {
+          "title": "이제마"
+        }
+      ],
+      "demoted": [
         {
           "title": "실사구시"
         },
@@ -1205,13 +1226,13 @@
       "coherence_flag": "coherent",
       "source_clusters": [],
       "_meta": {
-        "coherence_reason": "조선 후기 실학자, 학파, 개혁 제도 및 대표 저서 중심으로 구성됨",
+        "coherence_reason": "조선 후기 대표 학자와 그들의 저서 및 사상으로 구성된 구체적 집합",
         "n_forced_demote": 0,
         "n_hallucinated": 0,
-        "section_idx": 5,
-        "section_name": "실학과 국학 연구의 발전",
+        "section_idx": 6,
+        "section_name": "국학 연구와 실학의 의의",
         "section_span": [
-          17426,
+          19501,
           20921
         ]
       }
