@@ -103,12 +103,17 @@ def assign_palace_ids(rooms_json: dict, ent_lookup: dict[str, dict]) -> dict[str
                 if title in seen_titles:
                     continue
                 seen_titles.add(title)
-                pid = f'ent_{normalize_title(title)}'
-                if pid in pid_to_title and pid_to_title[pid] != title:
-                    raise SystemExit(
-                        f'normalized id collision: pid={pid} from titles '
-                        f'{pid_to_title[pid]!r} and {title!r}'
-                    )
+                base_pid = f'ent_{normalize_title(title)}'
+                # Distinct titles can normalize to the same id (예: 괄호 앞
+                # 공백 하나가 '_'로 접히는 '지수 분포 (...)' vs '지수 분포(...)').
+                # 죽이는 대신 숫자 접미로 분리해 각 title을 별 노드로 유지한다.
+                # 첫 title이 base_pid를 차지하고 이후 충돌자만 _2, _3을 받으므로
+                # 충돌이 없는 코퍼스의 id는 그대로다.
+                pid = base_pid
+                suffix = 2
+                while pid in pid_to_title and pid_to_title[pid] != title:
+                    pid = f'{base_pid}_{suffix}'
+                    suffix += 1
                 title_to_pid[title] = pid
                 pid_to_title[pid] = title
     return title_to_pid
