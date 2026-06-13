@@ -19,3 +19,6 @@ proj_ai_school/
 input/
 proj_pagesplit/input/
 proj_semantic/input/
+
+# 오케스트레이션 런타임 산출물 (잡 폴더 + SQLite, 재생성 가능)
+var/
