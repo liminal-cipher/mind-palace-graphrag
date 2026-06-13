@@ -28,6 +28,7 @@ import logging
 import time
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Any, Optional
 
 from dotenv import load_dotenv
@@ -50,6 +51,17 @@ _executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="graphrag")
 # global search(서빙) 합성 모델. RAG config 기준으로만 배선되고, 파이프라인 공용
 # default_completion_model은 불변. 인덱스 산출물(parquet/LanceDB)도 안 바뀐다.
 RAG_SYNTHESIS_MODEL = "gpt-5.4-mini"
+
+ROOT = Path(__file__).resolve().parent
+
+# POST /snapshots/register는 내부 전용(127.0.0.1 바인드 전제, 외부 노출 금지). 임의
+# 파일시스템 경로 로드를 막기 위해, 등록 path는 이 루트들 아래만 허용한다:
+#   results/snapshots - showcase/검증 스냅샷
+#   var/jobs          - 오케스트레이터 잡 산출물
+_ALLOWED_REGISTER_ROOTS = (
+    ROOT / "results" / "snapshots",
+    ROOT / "var" / "jobs",
+)
 
 # --- 스냅샷 레지스트리 ---------------------------------------------------------
 # 키 = run_id(제품/콘텐츠 정체성), 값 = 스냅샷 디렉터리(빌드/provenance, repo 상대).
@@ -120,40 +132,49 @@ class _State:
 STATE = _State()
 
 
-def _warmup_blocking() -> None:
-    """전용 스레드에서 실행. 레지스트리의 모든 스냅샷을 global 엔진으로 warm load한다.
-    한 스냅샷 실패가 다른 스냅샷을 막지 않도록 키별로 error를 격리한다."""
+def _warm_one(st: _SnapshotState) -> None:
+    """전용 _executor 스레드에서 한 스냅샷을 global 엔진으로 warm load한다. startup
+    warmup과 런타임 register가 공유한다. 결과는 st에 in-place로 기록(예외도 격리)."""
     import warm_query as wq
 
+    t0 = time.perf_counter()
+    try:
+        # global만 서빙 -> 임베딩 스토어/LanceDB 미접근. 합성 모델만 RAG config로 배선.
+        bundle = wq.load_engine(
+            st.snapshot_dir,
+            method="global",
+            synthesis_model=RAG_SYNTHESIS_MODEL,
+        )
+        st.engine = bundle
+        # 빌드된 엔진이 실제로 바인딩한 모델을 확인해 찍는다(검증용).
+        eng = bundle.engine("global")
+        bound = getattr(eng, "model", None)
+        bound_cfg = getattr(bound, "_model_config", None)
+        if bound_cfg is not None:
+            st.synthesis_model = bound_cfg.azure_deployment_name or bound_cfg.model
+        else:
+            st.synthesis_model = bundle.synthesis_model
+        st.warmup_seconds = time.perf_counter() - t0
+        st.ready = True
+        st.error = None
+        logger.info(
+            "warmup done: key=%s dir=%s synthesis_model=%s %.1fs",
+            st.run_id, st.snapshot_dir, st.synthesis_model, st.warmup_seconds,
+        )
+    except Exception as e:  # noqa: BLE001  키별 격리: 하나 실패해도 나머지 진행.
+        st.engine = None
+        st.ready = False
+        st.error = f"{type(e).__name__}: {e}"
+        logger.exception("warmup 실패: key=%s dir=%s -> %s", st.run_id, st.snapshot_dir, st.error)
+
+
+def _warmup_blocking() -> None:
+    """전용 스레드에서 실행. 레지스트리의 모든 showcase 스냅샷을 warm load한다.
+    한 스냅샷 실패가 다른 스냅샷을 막지 않도록 키별로 error가 격리된다."""
     for run_id, snapshot_dir in SNAPSHOTS.items():
         st = _SnapshotState(run_id, snapshot_dir)
         STATE.snapshots[run_id] = st
-        t0 = time.perf_counter()
-        try:
-            # global만 서빙 -> 임베딩 스토어/LanceDB 미접근. 합성 모델만 RAG config로 배선.
-            bundle = wq.load_engine(
-                snapshot_dir,
-                method="global",
-                synthesis_model=RAG_SYNTHESIS_MODEL,
-            )
-            st.engine = bundle
-            # 빌드된 엔진이 실제로 바인딩한 모델을 확인해 찍는다(검증용).
-            eng = bundle.engine("global")
-            bound = getattr(eng, "model", None)
-            bound_cfg = getattr(bound, "_model_config", None)
-            if bound_cfg is not None:
-                st.synthesis_model = bound_cfg.azure_deployment_name or bound_cfg.model
-            else:
-                st.synthesis_model = bundle.synthesis_model
-            st.warmup_seconds = time.perf_counter() - t0
-            st.ready = True
-            logger.info(
-                "warmup done: run_id=%s dir=%s synthesis_model=%s %.1fs",
-                run_id, snapshot_dir, st.synthesis_model, st.warmup_seconds,
-            )
-        except Exception as e:  # noqa: BLE001  키별 격리: 하나 실패해도 나머지 진행.
-            st.error = f"{type(e).__name__}: {e}"
-            logger.exception("warmup 실패: run_id=%s dir=%s -> %s", run_id, snapshot_dir, st.error)
+        _warm_one(st)
 
 
 def _search_blocking(run_id: str, question: str) -> str:
@@ -193,8 +214,57 @@ class QueryRequest(BaseModel):
 
 class QueryResponse(BaseModel):
     answer: str
-    snapshot: str  # 실제로 답한 정규 run_id(라우팅 확인용).
+    snapshot: str  # 실제로 답한 키(showcase run_id 또는 live job_id).
     # related_nodes: 팰리스 노드 연결은 나중 레이어. 지금은 자리만 비워둔다.
+
+
+class RegisterRequest(BaseModel):
+    key: str = Field(..., description="레지스트리 키. 라이브 잡은 job_id.")
+    path: str = Field(..., description="스냅샷 디렉터리(허용 루트 아래여야 함).")
+
+
+class JobQueryRequest(BaseModel):
+    question: str = Field(..., description="자연어 질문")
+
+
+def _validate_snapshot_path(path: str) -> Path:
+    """register path가 허용 루트(results/snapshots 또는 var/jobs) 아래인지 검증.
+    임의 파일시스템 경로 로드를 막는다. 통과 시 resolve된 절대 경로 반환."""
+    p = Path(path)
+    if not p.is_absolute():
+        p = ROOT / p
+    p = p.resolve()
+    for root in _ALLOWED_REGISTER_ROOTS:
+        if p == root.resolve() or p.is_relative_to(root.resolve()):
+            return p
+    raise ValueError(
+        f"path '{path}' 허용 루트 밖. results/snapshots 또는 var/jobs 아래만 등록 가능."
+    )
+
+
+async def _run_query(key: str, question: str) -> str:
+    """키 -> 번들 -> global search. /query와 /jobs/{id}/query가 공유하는 코어.
+    검색은 _executor 단일 스레드에서 직렬 실행된다."""
+    st = STATE.snapshots.get(key)
+    if st is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"'{key}' 미등록 (등록됨: {', '.join(STATE.snapshots) or '-'}).",
+        )
+    if st.error:
+        raise HTTPException(status_code=503, detail=f"'{key}' warmup 실패: {st.error}")
+    if not st.ready or st.engine is None:
+        raise HTTPException(status_code=503, detail=f"'{key}' warmup 진행 중. 잠시 후 재시도.")
+
+    q = question.strip()
+    if not q:
+        raise HTTPException(status_code=422, detail="question이 비어 있다.")
+
+    loop = asyncio.get_running_loop()
+    t0 = time.perf_counter()
+    answer = await loop.run_in_executor(_executor, _search_blocking, key, q)
+    logger.info("query [%s] %.1fs: %s", key, time.perf_counter() - t0, q[:50])
+    return answer
 
 
 def _snapshot_health(st: Optional[_SnapshotState], snapshot_dir: str) -> dict:
@@ -233,11 +303,40 @@ async def health():
     }
 
 
+@app.post("/snapshots/register")
+async def register_snapshot(req: RegisterRequest):
+    """런타임 스냅샷 등록(내부 전용). 오케스트레이터 rag 스테이지가 빌드된 잡 스냅샷을
+    여기에 register하면 /jobs/{key}/query로 답할 수 있다. 외부 노출 금지(127.0.0.1).
+
+    warm은 반드시 _executor 단일 스레드에서 일어난다(LanceDB 친화성 + asyncio.run
+    제약). 같은 키 재등록은 멱등(덮어쓰기 -> 재빌드)."""
+    try:
+        snap = _validate_snapshot_path(req.path)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    st = _SnapshotState(req.key, str(snap))
+    STATE.snapshots[req.key] = st  # 멱등: 같은 키 덮어쓰기.
+    loop = asyncio.get_running_loop()
+    await loop.run_in_executor(_executor, _warm_one, st)
+    if st.error:
+        raise HTTPException(status_code=500, detail=f"register warm 실패: {st.error}")
+    logger.info("registered: key=%s dir=%s", req.key, st.snapshot_dir)
+    return {
+        "registered": req.key,
+        "snapshot_dir": st.snapshot_dir,
+        "ready": st.ready,
+        "synthesis_model": st.synthesis_model,
+        "warmup_seconds": round(st.warmup_seconds, 1) if st.warmup_seconds else None,
+    }
+
+
 @app.post("/query", response_model=QueryResponse)
 async def query(req: QueryRequest):
-    """질문 -> (snapshot 라우팅) -> global search -> 답 텍스트."""
+    """질문 -> (snapshot 라우팅) -> global search -> 답 텍스트. showcase 진입점."""
     key = _resolve_key(req.snapshot)
-    if key not in SNAPSHOTS:
+    # showcase(미지정/alias 포함) 또는 런타임 등록 키가 아니면 명시적으로 막는다.
+    if key not in SNAPSHOTS and key not in STATE.snapshots:
         raise HTTPException(
             status_code=400,
             detail=(
@@ -245,21 +344,13 @@ async def query(req: QueryRequest):
                 f"(alias: {', '.join(ALIASES) or '-'})."
             ),
         )
-
-    st = STATE.snapshots.get(key)
-    if st is None or (not st.ready and st.error is None):
-        raise HTTPException(status_code=503, detail=f"'{key}' warmup 진행 중. 잠시 후 재시도.")
-    if st.error:
-        raise HTTPException(status_code=503, detail=f"'{key}' warmup 실패: {st.error}")
-    if st.engine is None:
-        raise HTTPException(status_code=503, detail=f"'{key}' 엔진 미준비.")
-
-    question = req.question.strip()
-    if not question:
-        raise HTTPException(status_code=422, detail="question이 비어 있다.")
-
-    loop = asyncio.get_running_loop()
-    t0 = time.perf_counter()
-    answer = await loop.run_in_executor(_executor, _search_blocking, key, question)
-    logger.info("query [%s] %.1fs: %s", key, time.perf_counter() - t0, question[:50])
+    answer = await _run_query(key, req.question)
     return QueryResponse(answer=answer, snapshot=key)
+
+
+@app.post("/jobs/{job_id}/query", response_model=QueryResponse)
+async def job_query(job_id: str, req: JobQueryRequest):
+    """잡별 질의. 라이브 등록 키 = job_id이므로 키 라우팅 한 줄이다(코어 공유).
+    잡 메타는 오케스트레이터(/jobs/{id}/status) 소관이고 여기선 엔진만 라우팅한다."""
+    answer = await _run_query(job_id, req.question)
+    return QueryResponse(answer=answer, snapshot=job_id)
