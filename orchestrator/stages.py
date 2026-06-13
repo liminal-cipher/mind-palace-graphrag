@@ -16,10 +16,16 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
+import urllib.error
+import urllib.request
 from pathlib import Path
 from typing import Optional
 
+from orchestrator import config
 from orchestrator.jobs import Job, JobStore, State
+
+logger = logging.getLogger("orchestrator.stages")
 
 
 def _touch(path: Path, text: str = "") -> None:
@@ -49,11 +55,32 @@ async def index(
 ) -> None:
     store.update(job.job_id, state=State.INDEXING)
     await asyncio.sleep(sleep_seconds)
-    # 진짜 인덱싱은 snapshot/ 에 parquet + lancedb 를 쓴다. STUB 은 마커만.
+    # SCAFFOLD: 진짜 GraphRAG 인덱싱(graphrag.api.build_index) 대신, 알려진 showcase
+    # 도메인을 기존(reports 포함) 스냅샷 dir로 매핑해 snapshot_path를 거기로 가리킨다.
+    # rag가 등록할 "진짜 스냅샷"이 생긴다. 다음 슬라이스에서 진짜 인덱싱으로 교체.
+    snapshot_dir = config.SHOWCASE_SNAPSHOTS.get(job.domain)
+    if snapshot_dir is None:
+        supported = ", ".join(config.SHOWCASE_SNAPSHOTS) or "-"
+        raise ValueError(
+            f"미지원 도메인 '{job.domain}'. SCAFFOLD index 단계는 알려진 showcase "
+            f"입력만 처리한다(진짜 인덱싱은 다음 슬라이스). 지원 도메인: {supported}."
+        )
+    # 결정 기록은 잡 폴더(var, 쓰기 가능)에만. 가리키는 스냅샷 dir(results/snapshots)은
+    # 읽기 전용으로만 쓰므로 절대 건드리지 않는다.
     _touch(
-        Path(job.snapshot_path) / "_stub_snapshot.json",
-        json.dumps({"stub": True, "run_id": job.run_id}, ensure_ascii=False),
+        Path(job.snapshot_path).parent / "_index_scaffold.json",
+        json.dumps(
+            {
+                "scaffold": True,
+                "domain": job.domain,
+                "snapshot_dir": snapshot_dir,
+                "note": "points at prebuilt snapshot; real indexing is next slice",
+            },
+            ensure_ascii=False,
+        ),
     )
+    # snapshot_path를 기존 스냅샷 dir로 갱신(repo 상대; serve가 허용 루트 검증 후 로드).
+    store.update(job.job_id, snapshot_path=snapshot_dir)
 
 
 async def build_palace(
@@ -86,15 +113,43 @@ async def build_palace(
     )
 
 
+def _register_with_serve(key: str, snapshot_path: str) -> dict:
+    """serve의 내부 register 엔드포인트에 빌드된 스냅샷을 등록한다(두 프로세스 seam).
+    stdlib urllib만 쓴다(신규 의존성 0). serve가 path를 허용 루트 검증 후 자기
+    _executor 스레드에서 warm하므로 LanceDB 친화성은 serve 쪽에서 보장된다."""
+    url = config.SERVE_URL.rstrip("/") + "/snapshots/register"
+    payload = json.dumps({"key": key, "path": snapshot_path}).encode("utf-8")
+    req = urllib.request.Request(
+        url, data=payload, method="POST",
+        headers={"Content-Type": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=180) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        detail = e.read().decode("utf-8", "replace")
+        raise RuntimeError(f"serve register HTTP {e.code}: {detail}")
+    except urllib.error.URLError as e:
+        raise RuntimeError(f"serve register 연결 실패 ({url}): {e.reason}")
+
+
 async def rag(
     job: Job,
     store: JobStore,
     sleep_seconds: float,
 ) -> None:
     await asyncio.sleep(sleep_seconds)
-    # 진짜는 community reports + 서빙 엔진 warm. STUB 은 마커만.
-    _touch(Path(job.snapshot_path) / "_rag_ready.marker", "stub rag warm\n")
+    # index가 갱신한 snapshot_path를 DB에서 다시 읽는다(워커가 넘긴 job 객체는 stale).
+    fresh = store.get(job.job_id)
+    snapshot_path = fresh.snapshot_path if fresh else job.snapshot_path
+    # 라이브 등록 키 = job_id. serve가 그 스냅샷을 warm하면 /jobs/{job_id}/query로 답한다.
+    info = _register_with_serve(job.job_id, snapshot_path)
     store.update(job.job_id, state=State.RAG_READY, rag_ready=True)
+    # 등록 결과(합성 모델/warm 시간)는 로그로만. 잡 상태는 rag_ready로 표현된다.
+    logger.info(
+        "rag 등록 완료: job=%s -> serve key=%s dir=%s synth=%s",
+        job.job_id, job.job_id, snapshot_path, info.get("synthesis_model"),
+    )
 
 
 # 워커가 순서대로 도는 STUB 파이프라인. 각 항목은 (job, store, sleep) 로 호출된다.
