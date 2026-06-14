@@ -114,6 +114,7 @@ def phase_toc(cfg: dict, repo: Path) -> None:
         corpus_rel=corpus_rel,
         min_rooms=min_rooms,
         max_rooms=max_rooms,
+        domain=cfg.get('domain'),
     )
 
 

@@ -19,22 +19,37 @@ from pathlib import Path
 from palace.room_gen import call_json, make_azure_client
 
 
-SYS_PROMPT = (
-    '당신은 학습 자료 분석가다. 한국어 강의 자료(슬라이드 텍스트)를 읽고, '
+SYS_PROMPT_TEMPLATE = (
+    '당신은 학습 자료 분석가다. 주어진 한국어 학습 자료를 읽고, '
     '자료 전체를 학습 흐름이 보존되는 순서 있는 섹션으로 묶어라.\n'
+    '{domain_line}'
     '\n'
     '규칙:\n'
-    '- 섹션 수는 자료에 맞게 1~10개 사이로 자연스럽게 정하라.\n'
+    '- 섹션 수는 자료에 맞게 1~10개 사이로 자연스럽게 정하라. 자료 내용이 섹션 수를 정한다.\n'
     '- 각 섹션의 이름(name)은 학습 주제를 짧게(15자 이내) 한국어로.\n'
     '- 각 섹션 시작점은 자료에 그대로 존재하는 한 줄(start_marker)로 지정. '
-    '문장이 아니라 슬라이드 헤더처럼 짧은 줄이 좋다. 한 글자도 바꾸지 마라. '
-    '공백·구두점·괄호도 자료 원문과 정확히 같아야 한다.\n'
+    '제목이나 헤더처럼 짧은 줄이 좋다. start_marker는 자료 원문에서 한 줄을 '
+    '그대로 복사한 문자열이어야 한다. 한 글자도 바꾸거나 다듬거나 요약하지 마라. '
+    '공백·구두점·괄호·대소문자까지 자료 원문과 정확히 같아야 한다.\n'
     '- start_marker는 자료에 한 번만 나오는 줄이면 가장 좋다. 반복되는 헤더는 '
     '피하고 가능한 그 섹션에서만 등장하는 줄을 골라라.\n'
     '- 섹션은 자료의 등장 순서대로. 학습 흐름과 자료 순서가 일치해야 한다.\n'
-    '- 첫 섹션은 자료 도입(통계학 정의 등)을 포함한다. 마지막 섹션은 자료 끝까지 덮는다.\n'
-    '- 섹션 1개에 슬라이드 1장만 들어가는 잘게 자른 목차는 피하라. 자료 전체를 의미 단위로 묶는 게 목적이다.'
+    '- 첫 섹션은 자료의 도입부를 포함한다. 마지막 섹션은 자료 끝까지 덮는다.\n'
+    '- 섹션 1개에 한 토막만 들어가는 잘게 자른 목차는 피하라. 자료 전체를 의미 단위로 묶는 게 목적이다.'
 )
+
+
+def build_sys_prompt(domain: str | None = None) -> str:
+    """Domain-neutral TOC system prompt. `domain` (optional) is woven in as a
+    one-line hint so the same prompt drives any corpus; no domain framing is
+    hardcoded in the template itself.
+    """
+    domain_line = f'\n자료의 도메인 힌트: {domain}\n' if domain else ''
+    return SYS_PROMPT_TEMPLATE.format(domain_line=domain_line)
+
+
+# Back-compat: a domain-neutral default for callers that import SYS_PROMPT.
+SYS_PROMPT = build_sys_prompt()
 
 
 def build_user_prompt(text: str) -> str:
@@ -105,20 +120,25 @@ def generate_toc(
     out_path: str | Path | None,
     model: str,
     client=None,
-    sys_prompt: str = SYS_PROMPT,
+    sys_prompt: str | None = None,
     corpus_rel: str | None = None,
     print_summary: bool = True,
     min_rooms: int = 1,
     max_rooms: int = 10,
+    domain: str | None = None,
 ) -> dict:
     """Run the LLM TOC pass on `corpus_path`, validate marker grounding,
     and return the payload dict. If `out_path` is given, also writes the
     payload to disk. `corpus_rel` (optional) is the path string written
     into meta.corpus; useful so the JSON records a repo-relative path
-    instead of an absolute filesystem path.
+    instead of an absolute filesystem path. `domain` (optional) is a
+    free-text hint woven into the system prompt; ignored when an explicit
+    `sys_prompt` is supplied.
     """
     corpus_path = Path(corpus_path)
     text = corpus_path.read_text(encoding='utf-8')
+    if sys_prompt is None:
+        sys_prompt = build_sys_prompt(domain)
     if client is None:
         client = make_azure_client()
     user_p = build_user_prompt(text)
