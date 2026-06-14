@@ -93,13 +93,16 @@ def _require_servers() -> None:
         sys.exit(2)
 
 
-def _upload(domain: str) -> str:
-    """index(scaffold) 는 업로드 내용이 아니라 domain 으로 스냅샷을 고른다.
+def _upload(domain: str, showcase: str | None = None) -> str:
+    """명시 showcase 트리거로 scaffold 스냅샷을 고른다(index 는 업로드 내용을 안 본다).
     그래서 본문은 작은 자리표시자면 충분하다. job_id 를 반환한다."""
     body = f"smoke upload for domain={domain}\n".encode("utf-8")
+    params = {"filename": f"{domain}_smoke.txt", "domain": domain}
+    if showcase is not None:
+        params["showcase"] = showcase
     r = httpx.post(
         f"{ORCH_URL}/upload",
-        params={"filename": f"{domain}_smoke.txt", "domain": domain},
+        params=params,
         content=body,
         timeout=30.0,
     )
@@ -217,7 +220,9 @@ def _check_ai_school(api_palace: dict, fails: list[str], notes: list[str]) -> No
 
 DOMAINS = [
     {
+        # 명시 showcase 트리거로 scaffold 경로(프리베이크 repro_run3)를 탄다.
         "domain": "korean_history",
+        "showcase": "korean_history",
         "question": "조선 전기의 통치 제도를 설명해줘.",
         "checker": "korean_history",
     },
@@ -226,6 +231,7 @@ DOMAINS = [
         # 커뮤니티 리포트에 대조항이 없으면 거절 폴백이 나오므로(체인과 무관한
         # 질문-스냅샷 적합도 문제) 요약형으로 둔다.
         "domain": "ai_school",
+        "showcase": "ai_school",
         "question": "이 자료의 핵심 통계 개념들을 요약해줘.",
         "checker": "ai_school",
     },
@@ -238,7 +244,7 @@ def run_one(spec: dict) -> bool:
     notes: list[str] = []
     print(f"\n=== [{domain}] 체인 시작 ===")
 
-    job_id = _upload(domain)
+    job_id = _upload(domain, spec.get("showcase"))
     print(f"  upload -> job_id={job_id}")
 
     status = _poll_until_terminal(job_id)

@@ -54,15 +54,34 @@ async def health():
 
 
 @app.post("/upload", status_code=201)
-async def upload(request: Request, filename: str = "upload.txt", domain: str = "unknown"):
+async def upload(
+    request: Request,
+    filename: str = "upload.txt",
+    domain: str = "unknown",
+    showcase: str | None = None,
+):
     """파일(raw 본문)을 받아 잡을 만들고 즉시 job_id 를 반환한다. 무거운 일은
-    워커가 백그라운드로 돈다."""
+    워커가 백그라운드로 돈다.
+
+    트리거 분리:
+      - showcase=<key> (명시): 그 키로 프리베이크 스냅샷을 고른다(scaffold 데모).
+        키가 알려진 쇼케이스가 아니면 422. domain 라벨과 무관하게 동작한다.
+      - showcase 없음 (일반 업로드): 무조건 라이브 인덱싱. domain 은 라벨일 뿐
+        스냅샷 선택에 관여하지 않는다(감지/선언된 domain 으로 프리베이크가 새지 않음).
+    """
+    if showcase is not None and showcase not in config.SHOWCASE_SNAPSHOTS:
+        supported = ", ".join(config.SHOWCASE_SNAPSHOTS) or "-"
+        raise HTTPException(
+            status_code=422,
+            detail=f"미지원 showcase '{showcase}'. 지원: {supported}.",
+        )
+
     data = await request.body()
     if not data:
         raise HTTPException(status_code=422, detail="빈 본문. 파일 바이트가 필요하다.")
 
     job_id = uuid.uuid4().hex
-    run_id = job_id  # STUB 단계에선 run_id == job_id.
+    run_id = job_id  # run_id == job_id.
 
     jd = config.job_dir(job_id)
     input_dir = jd / "input"
@@ -82,9 +101,13 @@ async def upload(request: Request, filename: str = "upload.txt", domain: str = "
         run_id=run_id,
         input_path=str(input_path),
         snapshot_path=str(snapshot_dir),
+        showcase_key=showcase,
     )
     app.state.worker.enqueue(job_id)
-    logger.info("업로드 수신: job_id=%s file=%s domain=%s", job_id, safe_name, domain)
+    logger.info(
+        "업로드 수신: job_id=%s file=%s domain=%s showcase=%s",
+        job_id, safe_name, domain, showcase or "-",
+    )
     return {"job_id": job_id, "state": State.QUEUED}
 
 

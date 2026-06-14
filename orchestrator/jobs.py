@@ -50,6 +50,10 @@ class Job:
     error: Optional[str]
     created_at: str
     updated_at: str
+    # 명시 쇼케이스 트리거. None 이면 라이브 업로드(진짜 인덱싱), 값이 있으면 그 키로
+    # 프리베이크 스냅샷을 고른다(scaffold). domain 라벨과 분리돼 있어, 감지/선언된
+    # domain 이 무엇이든 스냅샷 선택엔 절대 관여하지 않는다.
+    showcase_key: Optional[str] = None
 
     def to_status(self) -> dict:
         """GET /jobs/{id}/status 응답 모양. readiness 는 독립 플래그로 노출."""
@@ -59,6 +63,7 @@ class Job:
             "palace_ready": self.palace_ready,
             "rag_ready": self.rag_ready,
             "domain": self.domain,
+            "showcase_key": self.showcase_key,
             "run_id": self.run_id,
             "error": self.error,
             "created_at": self.created_at,
@@ -79,12 +84,14 @@ CREATE TABLE IF NOT EXISTS jobs (
     rag_ready     INTEGER NOT NULL DEFAULT 0,
     error         TEXT,
     created_at    TEXT NOT NULL,
-    updated_at    TEXT NOT NULL
+    updated_at    TEXT NOT NULL,
+    showcase_key  TEXT
 );
 """
 
 
 def _row_to_job(row: sqlite3.Row) -> Job:
+    keys = row.keys()
     return Job(
         job_id=row["job_id"],
         state=row["state"],
@@ -98,6 +105,8 @@ def _row_to_job(row: sqlite3.Row) -> Job:
         error=row["error"],
         created_at=row["created_at"],
         updated_at=row["updated_at"],
+        # 구 DB(마이그레이션 전)에는 컬럼이 없을 수 있으므로 방어적으로 읽는다.
+        showcase_key=row["showcase_key"] if "showcase_key" in keys else None,
     )
 
 
@@ -117,6 +126,11 @@ class JobStore:
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
         with closing(self._connect()) as conn:
             conn.executescript(_SCHEMA)
+            # 마이그레이션: 신규 컬럼을 구 테이블에 더한다(CREATE IF NOT EXISTS 는 기존
+            # 테이블 컬럼을 갱신하지 않으므로). ADD COLUMN ... TEXT 는 기본 NULL 로 안전.
+            cols = {r["name"] for r in conn.execute("PRAGMA table_info(jobs)")}
+            if "showcase_key" not in cols:
+                conn.execute("ALTER TABLE jobs ADD COLUMN showcase_key TEXT")
             conn.commit()
 
     def create(
@@ -127,6 +141,7 @@ class JobStore:
         run_id: str,
         input_path: str,
         snapshot_path: str,
+        showcase_key: Optional[str] = None,
     ) -> Job:
         ts = _now()
         with closing(self._connect()) as conn:
@@ -134,10 +149,10 @@ class JobStore:
                 """INSERT INTO jobs (
                     job_id, state, domain, run_id, input_path, snapshot_path,
                     palace_path, palace_ready, rag_ready, error,
-                    created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, NULL, 0, 0, NULL, ?, ?)""",
+                    created_at, updated_at, showcase_key
+                ) VALUES (?, ?, ?, ?, ?, ?, NULL, 0, 0, NULL, ?, ?, ?)""",
                 (job_id, State.QUEUED, domain, run_id, input_path,
-                 snapshot_path, ts, ts),
+                 snapshot_path, ts, ts, showcase_key),
             )
             conn.commit()
         return self.get(job_id)  # type: ignore[return-value]
@@ -155,7 +170,7 @@ class JobStore:
             return
         allowed = {
             "state", "domain", "run_id", "input_path", "snapshot_path",
-            "palace_path", "palace_ready", "rag_ready", "error",
+            "palace_path", "palace_ready", "rag_ready", "error", "showcase_key",
         }
         bad = set(fields) - allowed
         if bad:

@@ -2,9 +2,9 @@
 
 상태:
   - preprocess: STUB (sleep + done 마커).
-  - index: SCAFFOLD. 업로드를 인덱싱하는 대신 도메인을 기존 스냅샷으로 매핑하고
-    snapshot_path 를 거기로 갱신. 라이브 인덱싱은 다음 슬라이스(여기만 localized swap;
-    PALACE_CONFIGS 는 SHOWCASE_SNAPSHOTS 와 분리돼 있어 scaffold 가정이 안 샌다).
+  - index: 분기. job.showcase_key 가 있으면 SCAFFOLD(기존 스냅샷 매핑), 없으면
+    라이브 인덱싱(_index_live, 후속 커밋). domain 라벨은 스냅샷 선택에 안 쓴다.
+    PALACE_CONFIGS 는 SHOWCASE_SNAPSHOTS 와 분리돼 있어 scaffold 가정이 안 샌다.
   - build_palace: 진짜. palace/run.py 를 subprocess 로 구동해 per-job config 로 방을
     빌드한다. korean_history 는 frozen_toc -> rooms 만, 그 외는 full(toc+클램프+rooms).
     모든 출력/캐시는 var/jobs/<id>/ 로 격리(잡마다 새 캐시 = cold). results/snapshots 는
@@ -55,21 +55,26 @@ async def index(
     job: Job,
     store: JobStore,
     sleep_seconds: float,
-    *,
-    domain: Optional[str] = None,        # 미래: 도메인별 추출
-    entity_types: Optional[list[str]] = None,
 ) -> None:
+    """showcase 트리거가 명시된 잡은 프리베이크 스냅샷으로 매핑(scaffold), 그 외
+    일반 업로드는 진짜 라이브 인덱싱한다. 분기 기준은 job.showcase_key 하나뿐이고
+    job.domain(라벨)은 스냅샷 선택에 절대 쓰지 않는다(프리베이크 누수 차단)."""
     store.update(job.job_id, state=State.INDEXING)
+    if job.showcase_key:
+        await _index_scaffold(job, store, sleep_seconds)
+    else:
+        await _index_live(job, store)
+
+
+async def _index_scaffold(job: Job, store: JobStore, sleep_seconds: float) -> None:
+    """SCAFFOLD: 진짜 인덱싱 대신 명시된 showcase 키를 기존(reports 포함) 스냅샷 dir로
+    매핑해 snapshot_path 를 거기로 가리킨다. 쇼케이스 데모 폴백 경로."""
     await asyncio.sleep(sleep_seconds)
-    # SCAFFOLD: 진짜 GraphRAG 인덱싱(graphrag.api.build_index) 대신, 알려진 showcase
-    # 도메인을 기존(reports 포함) 스냅샷 dir로 매핑해 snapshot_path를 거기로 가리킨다.
-    # rag가 등록할 "진짜 스냅샷"이 생긴다. 다음 슬라이스에서 진짜 인덱싱으로 교체.
-    snapshot_dir = config.SHOWCASE_SNAPSHOTS.get(job.domain)
+    snapshot_dir = config.SHOWCASE_SNAPSHOTS.get(job.showcase_key)
     if snapshot_dir is None:
         supported = ", ".join(config.SHOWCASE_SNAPSHOTS) or "-"
         raise ValueError(
-            f"미지원 도메인 '{job.domain}'. SCAFFOLD index 단계는 알려진 showcase "
-            f"입력만 처리한다(진짜 인덱싱은 다음 슬라이스). 지원 도메인: {supported}."
+            f"미지원 showcase '{job.showcase_key}'. 지원: {supported}."
         )
     # 결정 기록은 잡 폴더(var, 쓰기 가능)에만. 가리키는 스냅샷 dir(results/snapshots)은
     # 읽기 전용으로만 쓰므로 절대 건드리지 않는다.
@@ -78,15 +83,25 @@ async def index(
         json.dumps(
             {
                 "scaffold": True,
+                "showcase_key": job.showcase_key,
                 "domain": job.domain,
                 "snapshot_dir": snapshot_dir,
-                "note": "points at prebuilt snapshot; real indexing is next slice",
+                "note": "explicit showcase trigger -> prebuilt snapshot",
             },
             ensure_ascii=False,
         ),
     )
     # snapshot_path를 기존 스냅샷 dir로 갱신(repo 상대; serve가 허용 루트 검증 후 로드).
     store.update(job.job_id, snapshot_path=snapshot_dir)
+
+
+async def _index_live(job: Job, store: JobStore) -> None:
+    """진짜 GraphRAG 인덱싱(다음 커밋들에서 채운다). 격리 root materialize + 도메인
+    감지 + entity_types 해소 + graphrag index subprocess + 스냅샷 등록."""
+    raise NotImplementedError(
+        "라이브 인덱싱은 후속 커밋에서 채운다(per-job root + graphrag index subprocess). "
+        "현재는 명시 showcase 트리거만 지원: /upload?showcase=<key>."
+    )
 
 
 def _rel(p: Path) -> str:
