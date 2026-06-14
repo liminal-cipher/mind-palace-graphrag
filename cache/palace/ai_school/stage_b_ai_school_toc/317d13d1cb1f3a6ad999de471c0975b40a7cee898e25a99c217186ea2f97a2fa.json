@@ -1,0 +1,4 @@
+{
+  "raw": "{\n  \"room_name\": \"확률분포와 검정\",\n  \"coherence\": \"coherent\",\n  \"coherence_reason\": \"확률변수, 분포, 함수, 검정 등 확률분포와 검정 관련 핵심 개념 및 공식으로 구성됨\",\n  \"keep_titles\": [\n    \"곱셈 법칙\",\n    \"귀무가설\",\n    \"대립가설\",\n    \"1종 오류\",\n    \"2종 오류\",\n    \"확률질량함수(PROBABILITY MASS FUNCTION)\",\n    \"확률밀도함수(PROBABILITY DENSITY FUNCTION)\",\n    \"이항분포(BINOMIAL DISTRIBUTION)\",\n    \"푸아송 분포(POISSON DISTRIBUTION)\",\n    \"정규 분포(NORMAL DISTRIBUTION)\",\n    \"지수 분포(EXPONENTIAL DISTRIBUTION)\",\n    \"카이제곱 분포(CHI-SQUARE DISTRIBUTION)\",\n    \"적합도 검정(GOODNESS-OF-FIT TEST)\",\n    \"T-분포(T DISTRIBUTION)\",\n    \"베르누이 분포(BERNOULLI DISTRIBUTION)\",\n    \"기대값(EXPECTED VALUE)\",\n    \"무작위 표본 추출\",\n    \"검정 통계량\",\n    \"상관계수(CORRELATION COEFFICIENT)\",\n    \"스피어만 상관계수(SPEARMAN'S RANK CORRELATION COEFFICIENT)\"\n  ]\n}",
+  "model": "gpt-4.1-mini"
+}

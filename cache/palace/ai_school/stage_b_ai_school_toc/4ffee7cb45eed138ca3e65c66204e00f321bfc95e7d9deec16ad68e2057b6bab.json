@@ -1,0 +1,4 @@
+{
+  "raw": "{\n  \"room_name\": \"클러스터5 없음\",\n  \"coherence\": \"grab-bag\",\n  \"coherence_reason\": \"멤버가 없어 중요 개념 분류 불가\",\n  \"keep_titles\": []\n}",
+  "model": "gpt-4.1-mini"
+}

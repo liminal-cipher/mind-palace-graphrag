@@ -1,22 +1,28 @@
-"""STUB 파이프라인 스테이지: preprocess -> index -> build_palace -> rag.
+"""파이프라인 스테이지: preprocess -> index -> build_palace -> rag.
 
-지금은 전부 더미다: 상태 갱신 -> asyncio.sleep -> 잡 폴더에 placeholder 산출물
-touch -> (해당하면) readiness 플래그 set. 실패는 예외로 던지고 워커가 FAILED 로 잡는다.
-
-시그니처는 미래 확장 자리를 미리 열어 둔다(지금은 무시):
-  - preprocess: substeps 로 전처리 2단계 분리.
-  - index: domain/entity_types 를 받아 도메인별 추출.
-  - build_palace: frozen_toc 로 frozen/라이브 분기(palace/run.py 와 동형).
-실제 graphrag.api.build_index / palace 빌드 구동은 다음 task.
+상태:
+  - preprocess: STUB (sleep + done 마커).
+  - index: SCAFFOLD. 업로드를 인덱싱하는 대신 도메인을 기존 스냅샷으로 매핑하고
+    snapshot_path 를 거기로 갱신. 라이브 인덱싱은 다음 슬라이스(여기만 localized swap;
+    PALACE_CONFIGS 는 SHOWCASE_SNAPSHOTS 와 분리돼 있어 scaffold 가정이 안 샌다).
+  - build_palace: 진짜. palace/run.py 를 subprocess 로 구동해 per-job config 로 방을
+    빌드한다. korean_history 는 frozen_toc -> rooms 만, 그 외는 full(toc+클램프+rooms).
+    모든 출력/캐시는 var/jobs/<id>/ 로 격리(잡마다 새 캐시 = cold). results/snapshots 는
+    읽기 전용.
+  - rag: 진짜. 빌드/매핑된 스냅샷을 serve 에 register.
 
 각 스테이지는 (job, store, sleep_seconds, **future) 시그니처를 공유하므로 워커가
-동일하게 호출한다. readiness 플래그는 순서 독립이라 스테이지 완료 시점에만 켠다.
+동일하게 호출한다(워커는 kwargs 없이 위치 인자로만 호출). readiness 플래그는 순서
+독립이라 스테이지 완료 시점에만 켠다.
 """
 from __future__ import annotations
 
 import asyncio
 import json
 import logging
+import shutil
+import subprocess
+import sys
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -83,28 +89,107 @@ async def index(
     store.update(job.job_id, snapshot_path=snapshot_dir)
 
 
+def _rel(p: Path) -> str:
+    """repo-relative posix path string (palace/run.py resolves these vs REPO)."""
+    return p.resolve().relative_to(config.REPO).as_posix()
+
+
+def _seed_palace_cache_if_available(base: dict, cache_dir: Path) -> Optional[str]:
+    """Option A: seed the per-job (cold) cache from the domain's committed cache
+    so showcase domains reproduce their reference rooms deterministically. The
+    committed cache dir is the parent of the base config's cache paths. Stage A
+    rubric is path-keyed and Stage B is content-hash-keyed, so a wrong-domain
+    seed can only miss (recompute), never cross-hit. New/unknown domains have no
+    committed cache -> no seed -> cold build (real LLM). Toggle the whole
+    behavior with config.SEED_PALACE_CACHE (A<->C in one place). Returns the
+    seeded source path (for logging) or None."""
+    if not config.SEED_PALACE_CACHE:
+        return None
+    src = (config.REPO / base["rubric_cache_path"]).parent
+    if not src.is_dir():
+        return None
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(src, cache_dir, dirs_exist_ok=True)
+    return str(src)
+
+
+def _build_job_palace_config(job: Job, snapshot_path: str) -> tuple[Path, dict, Optional[str]]:
+    """Materialize a per-job palace config from the domain base, overriding all
+    outputs/caches into var/jobs/<id>/ and pointing at the job's fresh snapshot.
+    corpus/domain/node_budget/n_runs/model/room bounds and frozen_toc
+    (korean_history only) are kept from the base, so the domain branch (frozen
+    rooms-only vs full toc+rooms) falls out of base.frozen_toc and never relies
+    on a stage kwarg. Per-job cache paths keep the base's basenames so the seed
+    (option A) lands where palace looks. Returns (config_path, cfg, seeded_src)."""
+    base_rel = config.PALACE_CONFIGS.get(job.domain)
+    if base_rel is None:
+        supported = ", ".join(config.PALACE_CONFIGS) or "-"
+        raise ValueError(
+            f"미지원 도메인 '{job.domain}'. build_palace 베이스 config 없음. "
+            f"지원: {supported}."
+        )
+    base = json.loads((config.REPO / base_rel).read_text(encoding="utf-8"))
+    jd = config.job_dir(job.job_id)
+    palace_out = jd / "palace_out"
+    cache_dir = jd / "cache"
+    cfg = dict(base)
+    cfg["run_id"] = job.run_id
+    cfg["snapshot"] = snapshot_path           # fresh from store (seam to live index)
+    cfg["snapshot_rel"] = snapshot_path
+    cfg["rooms_dir"] = _rel(palace_out)
+    cfg["toc_out"] = _rel(palace_out / f"{job.run_id}.toc_llm.json")
+    # keep base basenames so a seeded committed cache lands at these exact paths.
+    cfg["rubric_cache_path"] = _rel(cache_dir / Path(base["rubric_cache_path"]).name)
+    cfg["stage_b_cache_dir"] = _rel(cache_dir / Path(base["stage_b_cache_dir"]).name)
+    # seed BEFORE the build so Stage A/B hit the committed cache (option A).
+    seeded = _seed_palace_cache_if_available(base, cache_dir)
+    cfg_path = jd / "palace_config.json"
+    cfg_path.parent.mkdir(parents=True, exist_ok=True)
+    cfg_path.write_text(
+        json.dumps(cfg, ensure_ascii=False, indent=2), encoding="utf-8",
+    )
+    return cfg_path, cfg, seeded
+
+
+def _run_palace(config_path: Path, phase: str) -> tuple[int, str]:
+    """Run palace/run.py as a subprocess. palace loads LanceDB + calls Azure +
+    uses asyncio internally; a subprocess isolates all that from the worker's
+    event loop (same seam serve.py uses). Returns (returncode, combined output)."""
+    proc = subprocess.run(
+        [sys.executable, "-m", "palace.run",
+         "--config", str(config_path), "--phase", phase],
+        cwd=str(config.REPO),
+        capture_output=True, text=True, encoding="utf-8",
+    )
+    return proc.returncode, (proc.stdout or "") + (proc.stderr or "")
+
+
 async def build_palace(
     job: Job,
     store: JobStore,
     sleep_seconds: float,
-    *,
-    frozen_toc: Optional[str] = None,    # 미래: frozen/라이브 TOC 분기
 ) -> None:
-    await asyncio.sleep(sleep_seconds)
-    palace_path = Path(job.snapshot_path).parent / "palace" / f"{job.run_id}.palace.json"
-    placeholder = {
-        "palace": {
-            "stub": True,
-            "job_id": job.job_id,
-            "run_id": job.run_id,
-            "domain": job.domain,
-            "note": "placeholder produced by STUB build_palace stage",
-            "room_count": 0,
-        },
-        "rooms": [],
-    }
-    _touch(palace_path, json.dumps(placeholder, ensure_ascii=False, indent=2))
-    # palace.json 이 났으므로 3D 핸드오프 가능 -> palace_ready.
+    # gotcha 2: index updated snapshot_path in the store; the worker's job is stale.
+    fresh = store.get(job.job_id) or job
+    cfg_path, cfg, seeded = _build_job_palace_config(fresh, fresh.snapshot_path)
+    logger.info(
+        "build_palace job=%s domain=%s cache_seed=%s",
+        job.job_id, job.domain, seeded or "none (cold)",
+    )
+    # gotcha 1: stage kwargs are not passed by the worker; derive the build mode
+    # from the base config. korean_history has frozen_toc -> rooms only; others
+    # run the full live path (toc + clamp -> rooms).
+    phases = ["rooms"] if cfg.get("frozen_toc") else ["toc", "rooms"]
+    loop = asyncio.get_running_loop()
+    for phase in phases:
+        rc, out = await loop.run_in_executor(None, _run_palace, cfg_path, phase)
+        if rc != 0:
+            raise RuntimeError(
+                f"palace {phase} 실패 (rc={rc}) job={job.job_id}:\n{out[-1500:]}"
+            )
+    palace_path = config.job_dir(job.job_id) / "palace_out" / f"{job.run_id}.palace.json"
+    if not palace_path.exists():
+        raise RuntimeError(f"build_palace 완료했으나 산출물 없음: {palace_path}")
     store.update(
         job.job_id,
         state=State.PALACE_READY,
