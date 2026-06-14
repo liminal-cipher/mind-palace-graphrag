@@ -1,0 +1,135 @@
+### 회랑 라이브 인덱싱: per-job 격리 GraphRAG root 의 stock settings 템플릿.
+### base_dir 는 모두 이 root(--root 로 넘기는 var/jobs/<id>/index_root) 기준 상대라,
+### 레포 루트의 국사 input/output 풋건을 절대 건드리지 않는다. entity_types 와
+### extract_graph 프롬프트는 도메인 감지/discover 결과로 잡 생성 시 채워진다.
+### 모델/청킹/클러스터 설정은 repro_run3(국사 canonical) 및 ai_school 과 동일.
+
+completion_models:
+  default_completion_model:
+    model_provider: azure
+    model: gpt-4.1-mini
+    azure_deployment_name: gpt-4.1-mini
+    api_base: ${GRAPHRAG_API_BASE}
+    api_version: 2024-12-01-preview
+    auth_method: api_key
+    api_key: ${GRAPHRAG_API_KEY}
+    retry:
+      type: exponential_backoff
+
+embedding_models:
+  default_embedding_model:
+    model_provider: azure
+    model: text-embedding-3-small
+    azure_deployment_name: text-embedding-3-small
+    api_base: ${GRAPHRAG_API_BASE}
+    api_version: 2024-12-01-preview
+    auth_method: api_key
+    api_key: ${GRAPHRAG_API_KEY}
+    retry:
+      type: exponential_backoff
+
+### Document processing settings ###
+
+input:
+  type: text
+
+chunking:
+  type: tokens
+  size: 1200
+  overlap: 100
+  encoding_model: o200k_base
+
+### Storage settings (모두 root 상대) ###
+
+input_storage:
+  type: file
+  base_dir: "input"
+
+output_storage:
+  type: file
+  base_dir: "output"
+
+reporting:
+  type: file
+  base_dir: "logs"
+
+cache:
+  type: json
+  storage:
+    type: file
+    base_dir: "cache"
+
+vector_store:
+  type: lancedb
+  db_uri: "output/lancedb"
+  ### text-embedding-3-small(1536) vs graphrag_vectors 기본 3072 mismatch -> lancedb
+  ### list_size 에러 방지(ai_school canary 에서 실증). 우리 임베딩 차원을 명시.
+  vector_size: 1536
+
+### Workflow settings ###
+
+embed_text:
+  embedding_model_id: default_embedding_model
+
+extract_graph:
+  completion_model_id: default_completion_model
+  ### 도메인 프롬프트(discover 산출 or generic fallback)가 잡 생성 시 여기로 복사된다.
+  prompt: "prompts/extract_graph.txt"
+  ### entity_types 는 잡 생성 시 해소된 목록으로 치환된다(아래 토큰).
+  entity_types: __ENTITY_TYPES__
+  max_gleanings: 2
+
+summarize_descriptions:
+  completion_model_id: default_completion_model
+  prompt: "prompts/summarize_descriptions.txt"
+  max_length: 500
+
+extract_graph_nlp:
+  text_analyzer:
+    extractor_type: regex_english
+
+cluster_graph:
+  max_cluster_size: 15
+  use_lcc: true
+
+extract_claims:
+  enabled: false
+  completion_model_id: default_completion_model
+  prompt: "prompts/extract_claims.txt"
+  description: "Any claims or facts that could be relevant to information discovery."
+  max_gleanings: 1
+
+community_reports:
+  completion_model_id: default_completion_model
+  graph_prompt: "prompts/community_report_graph.txt"
+  text_prompt: "prompts/community_report_text.txt"
+  max_length: 2000
+  max_input_length: 8000
+
+snapshots:
+  graphml: false
+  embeddings: false
+
+### Query settings (인덱싱엔 불필요하나 설정 검증 통과용으로 잡 로컬 프롬프트를 가리킨다) ###
+
+local_search:
+  completion_model_id: default_completion_model
+  embedding_model_id: default_embedding_model
+  prompt: "prompts/local_search_system_prompt.txt"
+
+global_search:
+  completion_model_id: default_completion_model
+  map_prompt: "prompts/global_search_map_system_prompt.txt"
+  reduce_prompt: "prompts/global_search_reduce_system_prompt.txt"
+  knowledge_prompt: "prompts/global_search_knowledge_system_prompt.txt"
+
+drift_search:
+  completion_model_id: default_completion_model
+  embedding_model_id: default_embedding_model
+  prompt: "prompts/drift_search_system_prompt.txt"
+  reduce_prompt: "prompts/drift_reduce_prompt.txt"
+
+basic_search:
+  completion_model_id: default_completion_model
+  embedding_model_id: default_embedding_model
+  prompt: "prompts/basic_search_system_prompt.txt"
