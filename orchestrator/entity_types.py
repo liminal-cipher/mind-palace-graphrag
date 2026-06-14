@@ -54,15 +54,19 @@ class Resolution:
 
 def _run_prompt_tune_discover(root: Path, domain: str) -> tuple[int, str]:
     """prompt-tune discover ON 을 subprocess 로 돌린다(_run_palace 와 동형 seam).
-    --output prompts 는 root 상대라 root/prompts 의 type-bearing 프롬프트를 덮어쓴다.
+    --output 은 graphrag 가 CWD 기준으로 resolve 하므로(--root 기준 아님) 반드시
+    절대 경로(root/prompts)를 준다. 상대값이면 공유 레포 prompts/ 를 덮어써 stock
+    프롬프트를 오염시킨다(serve/국사/템플릿 소스가 공유). 이 호출이 root/prompts 의
+    type-bearing 프롬프트(extract_graph/summarize/community_report_graph)를 덮어쓴다.
     --selection-method all: 짧은 코퍼스에서 기본 random 표본추출이 깨지는 것 회피."""
+    out_dir = (root / "prompts").resolve()
     cmd = [
         sys.executable, "-m", "graphrag", "prompt-tune",
         "--root", str(root),
         "--domain", domain,
         "--language", "Korean",
         "--selection-method", "all",
-        "--output", "prompts",
+        "--output", str(out_dir),
         "--chunk-size", "1200",
         "--overlap", "100",
     ]
