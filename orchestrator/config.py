@@ -45,6 +45,21 @@ PALACE_CONFIGS: dict[str, str] = {
 }
 
 
+def load_env() -> None:
+    """REPO/.env 의 키를 프로세스 환경으로 로드(이미 설정된 값은 보존). 라이브
+    인덱싱은 GRAPHRAG_API_KEY/BASE 가 필요하고, in-process 감지 호출과 subprocess
+    (env 상속) 양쪽이 이 값을 본다. palace/run.py 의 _load_dotenv 와 동형."""
+    env_path = REPO / ".env"
+    if not env_path.exists():
+        return
+    for line in env_path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        k, v = line.split("=", 1)
+        os.environ.setdefault(k.strip(), v.strip())
+
+
 def job_dir(job_id: str) -> Path:
     return JOBS_DIR / job_id
 
