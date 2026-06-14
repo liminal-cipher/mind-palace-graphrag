@@ -348,8 +348,10 @@ def run_failure_injection() -> bool:
     else:
         fails.append(f"빈 본문이 422 가 아님: {r.status_code}")
 
-    # (2) 추출 불가 입력(구두점/숫자만) -> 엔티티 0 게이트로 라이브 잡 FAILED.
-    job_id = _upload("fail_inject", None, b"... 12345 ... --- ... 67890 ...\n" * 6)
+    # (2) 추출 불가 입력(공백/개행만, 엔티티가 나올 토큰 없음) -> graphrag "No entities
+    #     detected" 또는 엔티티 0 게이트로 라이브 잡 FAILED. 숫자/단어가 있으면 그것들이
+    #     엔티티로 추출돼 정상 인덱싱되므로(=깨진 입력이 아님) 순수 공백을 쓴다.
+    job_id = _upload("fail_inject", None, ("   \n \t \n  \n" * 8).encode("utf-8"))
     print(f"    - broken 라이브 업로드 -> job_id={job_id}")
     status = _poll_until_terminal(job_id)
     state = status.get("state")
