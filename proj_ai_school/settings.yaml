@@ -1,0 +1,136 @@
+### ai_school canary 인덱싱: repro_run3(root settings.yaml)와 동일한 모델·청킹·클러스터 설정.
+### 차이점은 입력(ai_school 교안)과 출력 경로뿐. 국사 canonical 산출물은 건드리지 않음.
+
+completion_models:
+  default_completion_model:
+    model_provider: azure
+    model: gpt-4.1-mini
+    azure_deployment_name: gpt-4.1-mini
+    api_base: ${GRAPHRAG_API_BASE}
+    api_version: 2024-12-01-preview
+    auth_method: api_key
+    api_key: ${GRAPHRAG_API_KEY}
+    retry:
+      type: exponential_backoff
+
+embedding_models:
+  default_embedding_model:
+    model_provider: azure
+    model: text-embedding-3-small
+    azure_deployment_name: text-embedding-3-small
+    api_base: ${GRAPHRAG_API_BASE}
+    api_version: 2024-12-01-preview
+    auth_method: api_key
+    api_key: ${GRAPHRAG_API_KEY}
+    retry:
+      type: exponential_backoff
+
+### Document processing settings ###
+
+input:
+  type: text # [csv, text, json, jsonl]
+
+chunking:
+  type: tokens
+  size: 1200
+  overlap: 100
+  encoding_model: o200k_base
+
+### Storage settings ###
+
+input_storage:
+  type: file
+  base_dir: "../input/ai_school"
+
+output_storage:
+  type: file
+  base_dir: "../output/ai_school"
+
+reporting:
+  type: file
+  base_dir: "../logs/ai_school"
+
+cache:
+  type: json
+  storage:
+    type: file
+    base_dir: "../cache/ai_school"
+
+vector_store:
+  type: lancedb
+  db_uri: "../output/ai_school/lancedb"
+  ### graphrag_vectors IndexSchema 기본 vector_size가 3072(text-embedding-3-large 기준)이라
+  ### text-embedding-3-small(1536)과 mismatch → lancedb write 시 list_size 에러.
+  ### 우리가 쓰는 임베딩 차원을 명시해 모든 index schema에 적용.
+  vector_size: 1536
+
+### Workflow settings ###
+
+embed_text:
+  embedding_model_id: default_embedding_model
+
+extract_graph:
+  completion_model_id: default_completion_model
+  ### prompt-tune --domain "통계 기초 교안 ..." 로 생성한 도메인 전용 추출 프롬프트.
+  ### 공유 prompts/ (국사) 는 건드리지 않는다. entity_types 는 prompt 안에 리터럴로
+  ### baked 되어 있어 추출을 실제로 구동하지만, 일관성을 위해 같은 목록을 여기에도 둔다.
+  prompt: "prompts_tuned/extract_graph.txt"
+  entity_types: [person, statistical concept, statistical method, statistical parameter, statistical distribution, sampling method, hypothesis, error type, data type, statistical measure, statistical test, correlation coefficient, statistical visualization, community member role, decision criteria]
+  max_gleanings: 2
+
+summarize_descriptions:
+  completion_model_id: default_completion_model
+  prompt: "prompts_tuned/summarize_descriptions.txt"
+  max_length: 500
+
+extract_graph_nlp:
+  text_analyzer:
+    extractor_type: regex_english # [regex_english, syntactic_parser, cfg]
+
+cluster_graph:
+  max_cluster_size: 15
+  use_lcc: true
+
+extract_claims:
+  enabled: false
+  completion_model_id: default_completion_model
+  prompt: "../prompts/extract_claims.txt"
+  description: "Any claims or facts that could be relevant to information discovery."
+  max_gleanings: 1
+
+community_reports:
+  completion_model_id: default_completion_model
+  graph_prompt: "prompts_tuned/community_report_graph.txt"
+  ### text_prompt 는 prompt-tune 이 생성하지 않음. 그래프 경로(graph_prompt)가
+  ### 실제로 쓰이므로 공유 stock 으로 둔다.
+  text_prompt: "../prompts/community_report_text.txt"
+  max_length: 2000
+  max_input_length: 8000
+
+snapshots:
+  graphml: false
+  embeddings: false
+
+### Query settings ###
+
+local_search:
+  completion_model_id: default_completion_model
+  embedding_model_id: default_embedding_model
+  prompt: "../prompts/local_search_system_prompt.txt"
+
+global_search:
+  completion_model_id: default_completion_model
+  map_prompt: "../prompts/global_search_map_system_prompt.txt"
+  reduce_prompt: "../prompts/global_search_reduce_system_prompt.txt"
+  knowledge_prompt: "../prompts/global_search_knowledge_system_prompt.txt"
+
+drift_search:
+  completion_model_id: default_completion_model
+  embedding_model_id: default_embedding_model
+  prompt: "../prompts/drift_search_system_prompt.txt"
+  reduce_prompt: "../prompts/drift_search_reduce_prompt.txt"
+
+basic_search:
+  completion_model_id: default_completion_model
+  embedding_model_id: default_embedding_model
+  prompt: "../prompts/basic_search_system_prompt.txt"
