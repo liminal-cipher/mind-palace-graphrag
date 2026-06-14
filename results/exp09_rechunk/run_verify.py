@@ -49,8 +49,8 @@ async def verify(root_dir: str, expected: int, label: str):
 
 
 async def main():
-    sem = await verify('proj_semantic', expected=105, label='semantic verify')
-    page = await verify('proj_pagesplit', expected=50, label='pagesplit verify')
+    sem = await verify('results/exp09_rechunk/proj_semantic', expected=105, label='semantic verify')
+    page = await verify('results/exp09_rechunk/proj_pagesplit', expected=50, label='pagesplit verify')
     print('\n=== SUMMARY ===')
     print(f'  semantic  text_units = {sem} (기대 105)')
     print(f'  pagesplit text_units = {page} (기대 50)')

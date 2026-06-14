@@ -78,12 +78,12 @@ async def run_one(root_dir: str, snap_rel: str, label: str) -> bool:
 async def main():
     target = sys.argv[1] if len(sys.argv) > 1 else 'both'
     if target in ('semantic', 'both'):
-        ok = await run_one('proj_semantic', 'results/snapshots/semantic_run1', 'SEMANTIC')
+        ok = await run_one('results/exp09_rechunk/proj_semantic', 'results/snapshots/semantic_run1', 'SEMANTIC')
         if not ok:
             print('\nSEMANTIC failed. halting before pagesplit.')
             sys.exit(2)
     if target in ('pagesplit', 'both'):
-        ok = await run_one('proj_pagesplit', 'results/snapshots/pagesplit_run1', 'PAGESPLIT')
+        ok = await run_one('results/exp09_rechunk/proj_pagesplit', 'results/snapshots/pagesplit_run1', 'PAGESPLIT')
         if not ok:
             print('\nPAGESPLIT failed.')
             sys.exit(3)

@@ -1,8 +1,8 @@
 """exp9 입력 준비. input/ 의 원천을 GraphRAG가 그대로 먹는 JSON 객체 배열로 변환.
 semantic은 의미 단위(semantic) export d['documents'] 그대로 꺼냄, pagesplit은 '--- page N ---'로 잘라
 {text, page} 객체 배열로. 빈/짧은(<10) text 객체 제외.
-입출력: input/* (원천, 읽기) → proj_semantic/input/semantic_docs.json,
-       proj_pagesplit/input/pagesplit_docs.json (생성, gitignore에 걸려 결과만 따로 보관).
+입출력: results/exp09_rechunk/input/* (원천, 읽기) → results/exp09_rechunk/proj_semantic/input/semantic_docs.json,
+       results/exp09_rechunk/proj_pagesplit/input/pagesplit_docs.json (생성, gitignore에 걸려 결과만 따로 보관).
 """
 from __future__ import annotations
 import sys, io, json, re
@@ -10,14 +10,14 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 from pathlib import Path
 
 MIN_LEN = 10
-OUT_SEM = Path('proj_semantic/input')
-OUT_PAGE = Path('proj_pagesplit/input')
+OUT_SEM = Path('results/exp09_rechunk/proj_semantic/input')
+OUT_PAGE = Path('results/exp09_rechunk/proj_pagesplit/input')
 OUT_SEM.mkdir(parents=True, exist_ok=True)
 OUT_PAGE.mkdir(parents=True, exist_ok=True)
 
 
 # === semantic ===
-src = json.loads(Path('input/history_joseon_semantic.json').read_text(encoding='utf-8'))
+src = json.loads(Path('results/exp09_rechunk/input/history_joseon_semantic.json').read_text(encoding='utf-8'))
 docs = src.get('documents', [])
 kept = []
 dropped = []
@@ -40,7 +40,7 @@ print(f'  written: {OUT_SEM/"semantic_docs.json"}')
 
 
 # === pagesplit ===
-txt = Path('input/history_joseon_pagesplit.txt').read_text(encoding='utf-8')
+txt = Path('results/exp09_rechunk/input/history_joseon_pagesplit.txt').read_text(encoding='utf-8')
 parts = re.split(r'---\s*page\s+(\d+)\s*---', txt)
 pages_raw = []
 for i in range(1, len(parts), 2):
