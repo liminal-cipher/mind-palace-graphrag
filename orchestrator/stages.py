@@ -28,7 +28,7 @@ import urllib.request
 from pathlib import Path
 from typing import Optional
 
-from orchestrator import config
+from orchestrator import config, domain_detect, entity_types, index_root
 from orchestrator.jobs import Job, JobStore, State
 
 logger = logging.getLogger("orchestrator.stages")
@@ -95,13 +95,84 @@ async def _index_scaffold(job: Job, store: JobStore, sleep_seconds: float) -> No
     store.update(job.job_id, snapshot_path=snapshot_dir)
 
 
-async def _index_live(job: Job, store: JobStore) -> None:
-    """진짜 GraphRAG 인덱싱(다음 커밋들에서 채운다). 격리 root materialize + 도메인
-    감지 + entity_types 해소 + graphrag index subprocess + 스냅샷 등록."""
-    raise NotImplementedError(
-        "라이브 인덱싱은 후속 커밋에서 채운다(per-job root + graphrag index subprocess). "
-        "현재는 명시 showcase 트리거만 지원: /upload?showcase=<key>."
+def _run_index(root: Path) -> tuple[int, str]:
+    """graphrag index 를 subprocess 로 돈다(_run_palace 와 동형 seam). LanceDB +
+    Azure + 내부 asyncio 를 워커 이벤트 루프에서 격리한다. env(.env 로드분)를 상속해
+    GRAPHRAG_API_KEY/BASE 가 settings 의 ${...} 로 풀린다."""
+    config.load_env()
+    proc = subprocess.run(
+        [sys.executable, "-m", "graphrag", "index", "--root", str(root)],
+        cwd=str(config.REPO),
+        capture_output=True, text=True, encoding="utf-8",
     )
+    return proc.returncode, (proc.stdout or "") + (proc.stderr or "")
+
+
+def _entity_count(snapshot_dir: Path) -> int:
+    """인덱싱 산출 엔티티 수(다운스트림 K 붕괴 조기 감지용). 못 읽으면 -1."""
+    try:
+        import pandas as pd
+
+        return len(pd.read_parquet(snapshot_dir / "entities.parquet"))
+    except Exception:  # noqa: BLE001
+        return -1
+
+
+async def _index_live(job: Job, store: JobStore) -> None:
+    """진짜 GraphRAG 인덱싱: 도메인 감지 -> entity_types 해소(discover/폴백) ->
+    격리 root 에서 graphrag index subprocess -> 산출(parquet 7종 + lancedb)을 잡
+    스냅샷으로 등록. snapshot_path seam 으로 build_palace 가 fresh 로 받아 흐른다."""
+    corpus = Path(job.input_path)
+    if not corpus.is_file():
+        raise RuntimeError(f"업로드 입력 없음: {corpus}")
+    loop = asyncio.get_running_loop()
+
+    # 1) 도메인 감지(단일 라벨). 실패하면 빈 문자열 -> 폴백 신호. 블로킹 LLM 콜이라
+    #    executor 로(_run_palace 와 같은 이유: 워커 루프 비차단).
+    text = corpus.read_text(encoding="utf-8", errors="replace")
+    label = await loop.run_in_executor(None, domain_detect.detect_domain, text)
+    effective = label or ("" if job.domain in ("", "unknown") else job.domain)
+    if effective:
+        # 감지/선언 라벨을 단일 소스로 저장 -> build_palace/toc 가 이 domain 을 본다.
+        store.update(job.job_id, domain=effective)
+
+    # 2) 격리 root materialize(초기 generic, resolve 가 확정 치환).
+    root = index_root.build_index_root(
+        job, corpus, entity_types.GENERIC_ENTITY_TYPES,
+    )
+    # 3) entity_types 해소(curated -> discover ON -> generic 폴백). prompt-tune
+    #    subprocess 를 돌리므로 executor 로. root 의 settings/프롬프트가 여기서 확정된다.
+    res = await loop.run_in_executor(
+        None, entity_types.resolve_entity_types, root, effective,
+    )
+    logger.info(
+        "index_live job=%s domain=%s entity_types=%s (%d종)",
+        job.job_id, effective or "-", res.source, len(res.entity_types),
+    )
+
+    # 4) graphrag index subprocess.
+    rc, out = await loop.run_in_executor(None, _run_index, root)
+    if rc != 0:
+        raise RuntimeError(
+            f"graphrag index 실패 (rc={rc}) job={job.job_id}:\n{out[-1500:]}"
+        )
+
+    # 5) 산출 검증 + 스냅샷 등록. 출력 dir 가 곧 스냅샷(var/jobs 아래 = serve 허용 루트).
+    snapshot = index_root.index_output_dir(job)
+    required = ("entities.parquet", "text_units.parquet", "documents.parquet")
+    missing = [n for n in required if not (snapshot / n).exists()]
+    if missing or not (snapshot / "lancedb").exists():
+        raise RuntimeError(
+            f"인덱싱 완료했으나 스냅샷 산출 누락 job={job.job_id}: "
+            f"{missing or 'lancedb'} ({snapshot})"
+        )
+    n_ent = _entity_count(snapshot)
+    if n_ent == 0:
+        raise RuntimeError(
+            f"인덱싱 산출 엔티티 0 job={job.job_id}: 빈/깨진 입력 추정({snapshot})."
+        )
+    logger.info("index_live 완료 job=%s entities=%s snapshot=%s", job.job_id, n_ent, snapshot)
+    store.update(job.job_id, snapshot_path=str(snapshot))
 
 
 def _rel(p: Path) -> str:
@@ -128,6 +199,28 @@ def _seed_palace_cache_if_available(base: dict, cache_dir: Path) -> Optional[str
     return str(src)
 
 
+def _default_palace_base(job: Job) -> dict:
+    """라이브 잡(쇼케이스 베이스 config 없음)용 중립 palace 베이스. corpus 는 업로드
+    파일, domain 은 감지 라벨. frozen_toc 없음 -> build_palace 가 full(toc+rooms) 라이브
+    경로를 탄다. 커밋된 캐시가 없어 seed 는 miss(콜드 빌드 = real LLM), 신규 도메인의
+    기대 동작과 일치한다."""
+    corpus_rel = _rel(Path(job.input_path))
+    return {
+        "run_id": job.run_id,
+        "corpus": corpus_rel,
+        "corpus_rel": corpus_rel,
+        "min_rooms": 1,
+        "max_rooms": 10,
+        "node_budget": 20,
+        "n_runs": 1,
+        "model": "gpt-4.1-mini",
+        "domain": job.domain,
+        # 커밋된 캐시가 없는 중립 경로(seed 는 디렉터리 부재로 miss = 콜드).
+        "rubric_cache_path": "cache/palace/live/rubric.json",
+        "stage_b_cache_dir": "cache/palace/live/stage_b",
+    }
+
+
 def _build_job_palace_config(job: Job, snapshot_path: str) -> tuple[Path, dict, Optional[str]]:
     """Materialize a per-job palace config from the domain base, overriding all
     outputs/caches into var/jobs/<id>/ and pointing at the job's fresh snapshot.
@@ -135,15 +228,15 @@ def _build_job_palace_config(job: Job, snapshot_path: str) -> tuple[Path, dict, 
     (korean_history only) are kept from the base, so the domain branch (frozen
     rooms-only vs full toc+rooms) falls out of base.frozen_toc and never relies
     on a stage kwarg. Per-job cache paths keep the base's basenames so the seed
-    (option A) lands where palace looks. Returns (config_path, cfg, seeded_src)."""
+    (option A) lands where palace looks. Showcase domains use their committed
+    base config; live jobs (domain not a showcase key) get a neutral base whose
+    corpus is the uploaded file. Returns (config_path, cfg, seeded_src)."""
     base_rel = config.PALACE_CONFIGS.get(job.domain)
     if base_rel is None:
-        supported = ", ".join(config.PALACE_CONFIGS) or "-"
-        raise ValueError(
-            f"미지원 도메인 '{job.domain}'. build_palace 베이스 config 없음. "
-            f"지원: {supported}."
-        )
-    base = json.loads((config.REPO / base_rel).read_text(encoding="utf-8"))
+        # 라이브 잡: 중립 베이스 합성(업로드 corpus + 감지 domain).
+        base = _default_palace_base(job)
+    else:
+        base = json.loads((config.REPO / base_rel).read_text(encoding="utf-8"))
     jd = config.job_dir(job.job_id)
     palace_out = jd / "palace_out"
     cache_dir = jd / "cache"
