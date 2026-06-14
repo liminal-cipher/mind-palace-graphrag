@@ -25,7 +25,9 @@ SYS_PROMPT_TEMPLATE = (
     '{domain_line}'
     '\n'
     '규칙:\n'
-    '- 섹션 수는 자료에 맞게 1~10개 사이로 자연스럽게 정하라. 자료 내용이 섹션 수를 정한다.\n'
+    '- 섹션 수는 자료에 맞게 1개에서 최대 {max_rooms}개 사이로 자연스럽게 정하라. '
+    '자료 내용이 섹션 수를 정하되, 절대 {max_rooms}개를 넘기지 마라. 주제가 더 많아 '
+    '보여도 관련된 것끼리 묶어 {max_rooms}개 이하로 만들어라.\n'
     '- 각 섹션의 이름(name)은 학습 주제를 짧게(15자 이내) 한국어로.\n'
     '- 각 섹션 시작점은 자료에 그대로 존재하는 한 줄(start_marker)로 지정. '
     '제목이나 헤더처럼 짧은 줄이 좋다. start_marker는 자료 원문에서 한 줄을 '
@@ -39,13 +41,15 @@ SYS_PROMPT_TEMPLATE = (
 )
 
 
-def build_sys_prompt(domain: str | None = None) -> str:
+def build_sys_prompt(domain: str | None = None, max_rooms: int = 10) -> str:
     """Domain-neutral TOC system prompt. `domain` (optional) is woven in as a
     one-line hint so the same prompt drives any corpus; no domain framing is
-    hardcoded in the template itself.
+    hardcoded in the template itself. `max_rooms` caps the requested section
+    count; the deterministic clamp in generate_toc is the hard guarantee, this
+    wording only lowers overflow frequency.
     """
     domain_line = f'\n자료의 도메인 힌트: {domain}\n' if domain else ''
-    return SYS_PROMPT_TEMPLATE.format(domain_line=domain_line)
+    return SYS_PROMPT_TEMPLATE.format(domain_line=domain_line, max_rooms=max_rooms)
 
 
 # Back-compat: a domain-neutral default for callers that import SYS_PROMPT.
@@ -115,6 +119,48 @@ def resolve_offsets(text: str, sections: list[dict]) -> tuple[list[dict], list[s
     return out, warnings
 
 
+def clamp_sections_to_max(
+    sections: list[dict], text_len: int, max_rooms: int,
+) -> tuple[list[dict], list[str]]:
+    """Deterministically merge adjacent sections down to <= max_rooms when the
+    LLM overshoots, instead of failing. Each step finds the smallest-span
+    section (char range between consecutive start_markers) and removes one
+    boundary by merging it into a neighbor: an edge section into its only
+    neighbor, a middle section into the smaller-span neighbor (tie -> the later
+    one). The merged section keeps the earlier (host) section's name,
+    start_marker and offset; the later section's boundary is absorbed. Only a
+    boundary is ever dropped, so the surviving offsets stay monotonic/distinct.
+    """
+    secs = list(sections)
+    log: list[str] = []
+    while len(secs) > max_rooms:
+        n = len(secs)
+        spans = []
+        for i, s in enumerate(secs):
+            start = s.get('start_offset', -1)
+            end = secs[i + 1]['start_offset'] if i + 1 < n else text_len
+            spans.append(end - start if (start >= 0 and end > start) else 0)
+        idx = min(range(n), key=lambda i: spans[i])  # first smallest, deterministic
+        if idx == 0:
+            drop = 1                          # first section: absorb its only neighbor
+        elif idx == n - 1:
+            drop = idx                        # last section: merge into predecessor
+        elif spans[idx - 1] < spans[idx + 1]:
+            drop = idx                        # predecessor smaller: merge into it
+        else:
+            drop = idx + 1                    # successor smaller or tie: absorb successor
+        trigger = secs[idx].get('name', '')
+        host = secs[drop - 1]
+        absorbed = secs.pop(drop)
+        log.append(
+            f'{absorbed.get("name", "")!r} -> {host.get("name", "")!r} '
+            f'(smallest span {spans[idx]} at {trigger!r})'
+        )
+    for i, s in enumerate(secs):
+        s['idx'] = i
+    return secs, log
+
+
 def generate_toc(
     corpus_path: str | Path,
     out_path: str | Path | None,
@@ -138,7 +184,7 @@ def generate_toc(
     corpus_path = Path(corpus_path)
     text = corpus_path.read_text(encoding='utf-8')
     if sys_prompt is None:
-        sys_prompt = build_sys_prompt(domain)
+        sys_prompt = build_sys_prompt(domain, max_rooms)
     if client is None:
         client = make_azure_client()
     user_p = build_user_prompt(text)
@@ -146,12 +192,25 @@ def generate_toc(
     raw, usage = call_json(client, model, sys_prompt, user_p)
     obj = json.loads(raw)
     sections_raw = obj.get('sections', [])
-    if not isinstance(sections_raw, list) or not (min_rooms <= len(sections_raw) <= max_rooms):
-        print(f'STOP: LLM returned {len(sections_raw)} sections, expected {min_rooms}..{max_rooms}')
+    n_raw = len(sections_raw) if isinstance(sections_raw, list) else 0
+    if not isinstance(sections_raw, list) or n_raw < min_rooms:
+        print(f'STOP: LLM returned {n_raw} sections, expected at least {min_rooms}')
         print(json.dumps(obj, ensure_ascii=False, indent=2))
         sys.exit(2)
 
     sections, warnings = resolve_offsets(text, sections_raw)
+
+    # Overflow is clamped, not failed: merge adjacent sections deterministically
+    # down to max_rooms so a live run always reaches room generation.
+    if len(sections) > max_rooms:
+        n_before = len(sections)
+        sections, clamp_log = clamp_sections_to_max(sections, len(text), max_rooms)
+        print(f'TOC clamp: {n_before} sections -> {len(sections)} (max_rooms={max_rooms})')
+        for ln in clamp_log:
+            print(f'  merged: {ln}')
+        warnings.append(
+            f'clamped {n_before} -> {len(sections)} sections to max_rooms={max_rooms}'
+        )
 
     offsets = [s['start_offset'] for s in sections]
     monotonic = all(offsets[i] < offsets[i + 1]
