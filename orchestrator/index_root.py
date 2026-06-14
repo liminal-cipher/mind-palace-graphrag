@@ -44,6 +44,12 @@ def _render_settings(entity_types: list[str]) -> str:
     return template.replace(_ENTITY_TYPES_TOKEN, json.dumps(entity_types, ensure_ascii=False))
 
 
+def write_settings(root: Path, entity_types: list[str]) -> None:
+    """root 의 settings.yaml 을 주어진 entity_types 로 (재)렌더한다. entity_types
+    해소(discover/폴백)가 확정된 뒤 호출해 settings 와 프롬프트를 일관되게 맞춘다."""
+    (root / "settings.yaml").write_text(_render_settings(entity_types), encoding="utf-8")
+
+
 def build_index_root(
     job: Job,
     corpus_src: Path,
@@ -94,9 +100,7 @@ def build_index_root(
     shutil.copy2(corpus_src, input_dir / corpus_src.name)
 
     # 4) settings.yaml 렌더(entity_types 치환).
-    (root / "settings.yaml").write_text(
-        _render_settings(entity_types), encoding="utf-8",
-    )
+    write_settings(root, entity_types)
     return root
 
 
