@@ -63,4 +63,4 @@ jobs:
         with:
           app-name: '3D-mindpalace-AI-backend'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EDFB734D611B422D933078C076CDD319 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_46AEEC11127348ACA9B0386D4793D8BF }}
