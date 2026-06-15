@@ -1,0 +1,26 @@
+[
+  {
+    "tag": "H1",
+    "mode": "global",
+    "model": "gpt-5.4-mini",
+    "question": "세종대왕이 맥북프로를 던진 사건에 대해 설명해줘",
+    "answer": "I am sorry but I am unable to answer this question given the provided data.",
+    "seconds": 4.0
+  },
+  {
+    "tag": "H2",
+    "mode": "global",
+    "model": "gpt-5.4-mini",
+    "question": "세종대왕이 즐겨 먹던 스파게티는 뭐야?",
+    "answer": "I am sorry but I am unable to answer this question given the provided data.",
+    "seconds": 1.5
+  },
+  {
+    "tag": "H3",
+    "mode": "global",
+    "model": "gpt-5.4-mini",
+    "question": "세종대왕이 월드컵에서 몇 골 넣었어?",
+    "answer": "I am sorry but I am unable to answer this question given the provided data.",
+    "seconds": 1.4
+  }
+]
