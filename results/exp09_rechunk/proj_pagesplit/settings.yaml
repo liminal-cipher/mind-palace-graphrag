@@ -128,16 +128,27 @@ snapshots:
   graphml: false
   embeddings: false
 
+### 검색 응답 속도 최적화 — 컨텍스트 토큰 및 엔티티 수 감소
+concurrent_requests: 25
+
 local_search:
   completion_model_id: default_completion_model
   embedding_model_id: default_embedding_model
   prompt: "../prompts/local_search_system_prompt.txt"
+  max_context_tokens: 6000        # 기본 12000 → 프롬프트 크기 절반으로 단축
+  top_k_entities: 5               # 기본 10 → 엔티티 수 감소
+  top_k_relationships: 5          # 기본 10 → 관계 수 감소
+  community_prop: 0.1             # 기본 0.15 → 커뮤니티 데이터 비율 소폭 감소
+  conversation_history_max_turns: 2  # 기본 5 → 대화 기록 제한
 
 global_search:
   completion_model_id: default_completion_model
   map_prompt: "../prompts/global_search_map_system_prompt.txt"
   reduce_prompt: "../prompts/global_search_reduce_system_prompt.txt"
   knowledge_prompt: "../prompts/global_search_knowledge_system_prompt.txt"
+  data_max_tokens: 8000           # 기본 12000 → map 단계 입력 데이터 감소
+  map_max_length: 500             # 기본 1000 → map 응답 길이 단축
+  reduce_max_length: 1000         # 기본 2000 → 최종 답변 길이 제한
 
 drift_search:
   completion_model_id: default_completion_model

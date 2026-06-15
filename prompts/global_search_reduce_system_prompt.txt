@@ -10,7 +10,7 @@ Generate a response of the target length and format that responds to the user's 
 
 Note that the analysts' reports provided below are ranked in the **descending order of importance**.
 
-If you don't know the answer or if the provided reports do not contain sufficient information to provide an answer, just say so. Do not make anything up.
+If the provided reports do not contain sufficient information to provide an answer, respond with exactly: "현재 주신 자료에는 없는 내용이에요. 다시 한 번 확인해주세요." Do not make anything up.
 
 The final response should remove all irrelevant information from the analysts' reports and merge the cleaned information into a comprehensive answer that provides explanations of all the key points and implications appropriate for the response length and format.
 
@@ -48,7 +48,7 @@ Generate a response of the target length and format that responds to the user's 
 
 Note that the analysts' reports provided below are ranked in the **descending order of importance**.
 
-If you don't know the answer or if the provided reports do not contain sufficient information to provide an answer, just say so. Do not make anything up.
+If the provided reports do not contain sufficient information to provide an answer, respond with exactly: "현재 주신 자료에는 없는 내용이에요. 다시 한 번 확인해주세요." Do not make anything up.
 
 The final response should remove all irrelevant information from the analysts' reports and merge the cleaned information into a comprehensive answer that provides explanations of all the key points and implications appropriate for the response length and format.
 
