@@ -319,6 +319,42 @@ async def health():
     }
 
 
+@app.get("/ready")
+async def ready(snapshot: Optional[str] = None):
+    """준비 게이트. /health가 항상 200(헬스 프로브가 콜드 시작에 컨테이너를 안 죽이게)인
+    것과 달리, /ready는 준비가 안 됐으면 503을 돌려준다. warm/poll 스크립트와 데모 전
+    게이팅에 쓴다.
+
+    snapshot 지정: 그 키 하나의 준비 여부만 본다(미등록이면 404). 미지정: 등록된 모든
+    showcase 스냅샷이 준비됐을 때만 200. ai_school처럼 한 스냅샷이 error여도 격리되므로,
+    특정 스냅샷만 게이팅하려면 snapshot 파라미터로 그 키를 콕 집어라."""
+    if snapshot is not None:
+        key = _resolve_key(snapshot)
+        st = STATE.snapshots.get(key)
+        if st is None and key not in SNAPSHOTS:
+            return JSONResponse(
+                status_code=404,
+                content={"ready": False, "snapshot": key, "detail": f"'{key}' 미등록."},
+            )
+        snapshot_dir = st.snapshot_dir if st is not None else SNAPSHOTS.get(key, "?")
+        detail = _snapshot_health(st, snapshot_dir)
+        is_ready = bool(detail.get("ready"))
+        return JSONResponse(
+            status_code=200 if is_ready else 503,
+            content={"ready": is_ready, "snapshot": key, "detail": detail},
+        )
+
+    snaps = {
+        run_id: _snapshot_health(STATE.snapshots.get(run_id), snapshot_dir)
+        for run_id, snapshot_dir in SNAPSHOTS.items()
+    }
+    all_ready = bool(snaps) and all(s.get("ready") for s in snaps.values())
+    return JSONResponse(
+        status_code=200 if all_ready else 503,
+        content={"ready": all_ready, "snapshots": snaps},
+    )
+
+
 @app.post("/snapshots/register")
 async def register_snapshot(req: RegisterRequest):
     """런타임 스냅샷 등록(내부 전용). 오케스트레이터 rag 스테이지가 빌드된 잡 스냅샷을
