@@ -10,6 +10,15 @@ indexing / upload dependencies so the App Service build stays light.
 |--------|--------------------------|----------------------------------------------------|
 | GET    | `/health`                | `{"status":"ok"}`                                  |
 | GET    | `/palace/korean_history` | The frozen `korean_history_with_images` palace JSON |
+| GET    | `/images/<path>`         | A referenced palace PNG (static mount)             |
+
+### Image URL rule
+
+The palace JSON keeps each node's `images[].path` unchanged (e.g.
+`input/korean_history/img/fig_5_3.png`). The static mount mirrors that path, so the
+frontend resolves an image as `<base>/images/<images[].path>`, e.g.
+`images[].path "input/korean_history/img/fig_5_3.png"` is fetched at
+`GET <base>/images/input/korean_history/img/fig_5_3.png`.
 
 CORS is open (`allow_origins=["*"]`) for the demo. After deploy, narrow it to the
 frontend App Service URL (see the TODO in `main.py`).
@@ -22,10 +31,13 @@ showcase_api/
   requirements.txt   fastapi, uvicorn[standard], gunicorn
   data/
     korean_history_with_images.palace.json   (copy of the frozen palace)
+  images/
+    input/korean_history/img/*.png           (copies of the referenced PNGs)
 ```
 
 The data file is a byte-identical copy of `palace/handoff/korean_history_with_images.palace.json`.
-The frozen original is never modified.
+The PNGs under `images/` are byte-identical copies of the frozen originals, laid out to
+mirror each node's `images[].path`. The frozen originals are never modified.
 
 ## Run locally
 

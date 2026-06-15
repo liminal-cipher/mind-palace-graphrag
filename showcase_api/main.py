@@ -9,8 +9,11 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
-DATA_DIR = Path(__file__).parent / "data"
+BASE_DIR = Path(__file__).parent
+DATA_DIR = BASE_DIR / "data"
+IMAGES_DIR = BASE_DIR / "images"
 KOREAN_HISTORY_PALACE = DATA_DIR / "korean_history_with_images.palace.json"
 
 app = FastAPI(
@@ -29,6 +32,13 @@ app.add_middleware(
     allow_methods=["GET"],
     allow_headers=["*"],
 )
+
+
+# Serve the palace's referenced PNGs as static files. The mount mirrors each
+# node's images[].path verbatim, so a path "input/korean_history/img/fig_5_3.png"
+# is fetched at GET /images/input/korean_history/img/fig_5_3.png. The frontend
+# resolves an image URL as <base>/images/<images[].path>.
+app.mount("/images", StaticFiles(directory=IMAGES_DIR), name="images")
 
 
 @app.get("/health")
