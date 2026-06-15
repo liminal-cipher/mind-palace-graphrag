@@ -20,8 +20,8 @@ input/
 results/exp09_rechunk/proj_pagesplit/input/
 results/exp09_rechunk/proj_semantic/input/
 # 쇼케이스 배포 자산: 팰리스가 참조하는 PNG 사본은 input/ 제외에서 되살림
-!showcase_api/images/input/
-!showcase_api/images/input/**
+!data/showcases/images/input/
+!data/showcases/images/input/**
 
 # 오케스트레이션 런타임 산출물 (잡 폴더 + SQLite, 재생성 가능)
 var/

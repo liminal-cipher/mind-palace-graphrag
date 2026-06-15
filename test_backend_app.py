@@ -12,7 +12,7 @@ from starlette.routing import Mount
 import backend_app
 
 ROOT = Path(__file__).resolve().parent
-PALACE_JSON = ROOT / "showcase_api" / "data" / "korean_history_with_images.palace.json"
+PALACE_JSON = ROOT / "data" / "showcases" / "korean_history_with_images.palace.json"
 
 
 def _client() -> TestClient:
