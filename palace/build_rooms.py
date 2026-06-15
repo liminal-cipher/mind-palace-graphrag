@@ -11,7 +11,8 @@ Pipeline:
     attach_positions       sort members within each room by pos_first_fine
     apply_keep_demote      LLM Stage B per room (rubric in, keep/demote out)
     convert_toc_to_common_schema   adapt to the room_gen common spec
-    absorb_empty_rooms     merge kept-empty rooms into a non-empty neighbor
+    absorb_empty_rooms     merge undersized rooms + enforce the room cap
+                           (one smallest-first pass, LLM 0회)
 """
 from __future__ import annotations
 
@@ -283,37 +284,64 @@ def convert_toc_to_common_schema(
     }
 
 
-def absorb_empty_rooms(rooms_json: dict) -> dict:
-    """Merge kept-empty rooms into a non-empty neighbor (next section first,
-    fall back to previous). Deterministic and order-preserving.
+def absorb_empty_rooms(
+    rooms_json: dict,
+    *,
+    min_room_nodes: int = 2,
+    max_rooms: int = 10,
+) -> dict:
+    """Merge undersized rooms and enforce the room-count cap in a single
+    deterministic, smallest-first pass (LLM 0회).
+
+    A room is *undersized* when its total node count (kept + demoted) is below
+    ``min_room_nodes``. While any room is undersized, or the room count exceeds
+    ``max_rooms``, the smallest-total room (ties broken by reading order, i.e.
+    the lowest index) is merged into its preceding neighbor; the first room,
+    having no predecessor, merges into its successor instead. Both kept and
+    demoted members move (keep ∪ demote conserved), the earlier room's members
+    first so pos_first_fine order is kept (export re-sorts kept by source_offset
+    regardless). The absorbing room keeps its own name and summary; the absorbed
+    room's are dropped. No new titles or summaries are generated.
+
+    Because the victim is always the global smallest, the absorbing neighbor is
+    never smaller than it. This single loop supersedes the earlier empty-only
+    absorption and the TOC-level overflow clamp. When no room is undersized and
+    the count is already within ``max_rooms`` the input is returned untouched
+    (byte-identical), so the frozen-TOC golden is unaffected.
     """
     rooms = list(rooms_json.get('rooms', []))
-    if not rooms:
-        return rooms_json
-    empty_indices = [i for i, r in enumerate(rooms) if not r.get('kept')]
-    non_empty = [i for i, r in enumerate(rooms) if r.get('kept')]
-    if not empty_indices or not non_empty:
+
+    def total(r: dict) -> int:
+        return len(r.get('kept', [])) + len(r.get('demoted', []))
+
+    def out_of_bounds() -> bool:
+        return len(rooms) > max_rooms or any(total(r) < min_room_nodes for r in rooms)
+
+    if len(rooms) <= 1 or not out_of_bounds():
         return rooms_json
 
-    for i in empty_indices:
-        successors = [j for j in non_empty if j > i]
-        if successors:
-            target = min(successors)
-        else:
-            target = max(j for j in non_empty if j < i)
-        src = rooms[i]
-        dst = rooms[target]
-        dst.setdefault('demoted', []).extend(src.get('demoted', []))
-        meta = dst.setdefault('_meta', {})
-        absorbed = meta.setdefault('absorbed_from', [])
-        absorbed.append({
-            'section_idx': src.get('_meta', {}).get('section_idx'),
-            'section_name': src.get('_meta', {}).get('section_name'),
-            'demoted_count': len(src.get('demoted', [])),
+    while len(rooms) > 1 and out_of_bounds():
+        victim_idx = min(range(len(rooms)), key=lambda i: (total(rooms[i]), i))
+        host_idx = victim_idx - 1 if victim_idx > 0 else victim_idx + 1
+        victim = rooms[victim_idx]
+        host = rooms[host_idx]
+        # The earlier room's members come first to preserve reading order.
+        if victim_idx < host_idx:           # victim is the first room
+            host['kept'] = victim.get('kept', []) + host.get('kept', [])
+            host['demoted'] = victim.get('demoted', []) + host.get('demoted', [])
+        else:                               # host precedes victim
+            host['kept'] = host.get('kept', []) + victim.get('kept', [])
+            host['demoted'] = host.get('demoted', []) + victim.get('demoted', [])
+        vmeta = victim.get('_meta') or {}
+        host.setdefault('_meta', {}).setdefault('absorbed_from', []).append({
+            'room_id': victim.get('room_id'),
+            'section_idx': vmeta.get('section_idx'),
+            'section_name': vmeta.get('section_name'),
+            'node_count': total(victim),
         })
+        rooms.pop(victim_idx)
 
-    rooms_kept = [rooms[i] for i in non_empty]
-    for new_id, r in enumerate(rooms_kept):
+    for new_id, r in enumerate(rooms):
         r['room_id'] = new_id
-    rooms_json['rooms'] = rooms_kept
+    rooms_json['rooms'] = rooms
     return rooms_json
