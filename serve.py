@@ -33,6 +33,7 @@ from typing import Any, Optional
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 # settings.yaml의 ${GRAPHRAG_API_KEY}/${GRAPHRAG_API_BASE} 치환은 env에서 온다.
@@ -168,12 +169,23 @@ def _warm_one(st: _SnapshotState) -> None:
         logger.exception("warmup 실패: key=%s dir=%s -> %s", st.run_id, st.snapshot_dir, st.error)
 
 
+def _register_pending_snapshots() -> None:
+    """showcase 스냅샷마다 pending _SnapshotState를 동기로 만들어 둔다. 백그라운드
+    warmup이 그 키에 닿기 전이라도 /health·/query·/ready가 처음부터 'warming'(503)으로
+    답하게 한다. 이게 없으면 백그라운드 로드 구간에 알려진 키가 503 대신 404로 샌다."""
+    for run_id, snapshot_dir in SNAPSHOTS.items():
+        STATE.snapshots.setdefault(run_id, _SnapshotState(run_id, snapshot_dir))
+
+
 def _warmup_blocking() -> None:
-    """전용 스레드에서 실행. 레지스트리의 모든 showcase 스냅샷을 warm load한다.
+    """전용 스레드에서 실행. 레지스트리의 모든 showcase 스냅샷을 제자리에서 warm load한다.
+    pending 상태는 이미 _register_pending_snapshots가 만들어 뒀다(없으면 방어적으로 생성).
     한 스냅샷 실패가 다른 스냅샷을 막지 않도록 키별로 error가 격리된다."""
     for run_id, snapshot_dir in SNAPSHOTS.items():
-        st = _SnapshotState(run_id, snapshot_dir)
-        STATE.snapshots[run_id] = st
+        st = STATE.snapshots.get(run_id)
+        if st is None:  # 방어: register가 생략됐어도 안전하게.
+            st = _SnapshotState(run_id, snapshot_dir)
+            STATE.snapshots[run_id] = st
         _warm_one(st)
 
 
@@ -187,13 +199,17 @@ def _search_blocking(run_id: str, question: str) -> str:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """앱 시작 시 모든 스냅샷 부팅 warmup. uvicorn은 startup이 끝날 때까지 요청을
-    받지 않으므로 첫 /query는 이미 로드된 엔진을 재사용한다."""
+    """앱 시작 시 모든 스냅샷을 백그라운드로 warmup한다. 무거운 로드를 startup 경로에서
+    빼서 앱이 즉시 바인드되고 /health가 곧장 응답하게 한다(콜드 시작이 헬스 프로브를
+    막지 않음). 준비된 스냅샷부터 ready로 바뀌고, 아직이면 /query·/ready는 503을 준다.
+
+    먼저 pending 상태를 동기 등록(첫 요청부터 503 'warming' 보장), 그 다음 비차단 warmup을
+    전용 스레드에 던진다. warmup 예외는 키별로 _warmup_blocking 안에서 격리된다."""
     loop = asyncio.get_running_loop()
     _install_model_logger()
-    logger.info("warmup 시작: %d개 스냅샷 (%s)", len(SNAPSHOTS), ", ".join(SNAPSHOTS))
-    # warmup 자체 예외는 키별로 _warmup_blocking 안에서 격리되므로 여기선 안 터진다.
-    await loop.run_in_executor(_executor, _warmup_blocking)
+    _register_pending_snapshots()
+    logger.info("warmup 시작(백그라운드): %d개 스냅샷 (%s)", len(SNAPSHOTS), ", ".join(SNAPSHOTS))
+    app.state.warmup_future = loop.run_in_executor(_executor, _warmup_blocking)
     yield
     _executor.shutdown(wait=False)
 
@@ -301,6 +317,42 @@ async def health():
         "aliases": ALIASES,
         "snapshots": snaps,
     }
+
+
+@app.get("/ready")
+async def ready(snapshot: Optional[str] = None):
+    """준비 게이트. /health가 항상 200(헬스 프로브가 콜드 시작에 컨테이너를 안 죽이게)인
+    것과 달리, /ready는 준비가 안 됐으면 503을 돌려준다. warm/poll 스크립트와 데모 전
+    게이팅에 쓴다.
+
+    snapshot 지정: 그 키 하나의 준비 여부만 본다(미등록이면 404). 미지정: 등록된 모든
+    showcase 스냅샷이 준비됐을 때만 200. ai_school처럼 한 스냅샷이 error여도 격리되므로,
+    특정 스냅샷만 게이팅하려면 snapshot 파라미터로 그 키를 콕 집어라."""
+    if snapshot is not None:
+        key = _resolve_key(snapshot)
+        st = STATE.snapshots.get(key)
+        if st is None and key not in SNAPSHOTS:
+            return JSONResponse(
+                status_code=404,
+                content={"ready": False, "snapshot": key, "detail": f"'{key}' 미등록."},
+            )
+        snapshot_dir = st.snapshot_dir if st is not None else SNAPSHOTS.get(key, "?")
+        detail = _snapshot_health(st, snapshot_dir)
+        is_ready = bool(detail.get("ready"))
+        return JSONResponse(
+            status_code=200 if is_ready else 503,
+            content={"ready": is_ready, "snapshot": key, "detail": detail},
+        )
+
+    snaps = {
+        run_id: _snapshot_health(STATE.snapshots.get(run_id), snapshot_dir)
+        for run_id, snapshot_dir in SNAPSHOTS.items()
+    }
+    all_ready = bool(snaps) and all(s.get("ready") for s in snaps.values())
+    return JSONResponse(
+        status_code=200 if all_ready else 503,
+        content={"ready": all_ready, "snapshots": snaps},
+    )
 
 
 @app.post("/snapshots/register")

@@ -19,6 +19,9 @@ Config schema (paths are repo-relative):
     min_rooms           int    (optional) lower bound on TOC sections (default 1)
     max_rooms           int    upper bound on TOC sections (default 10;
                                falls back to legacy K field if present)
+    min_room_nodes      int    (optional) rooms with fewer total nodes
+                               (kept + demoted) are merged into a neighbor
+                               (default 2)
     node_budget         int    keep cap per room
     n_runs              int    Stage B passes per room (1 = single pass)
     model               str    Azure deployment name
@@ -199,10 +202,16 @@ def phase_rooms(cfg: dict, repo: Path) -> None:
     pre = [(r['room_id'], len(r['kept']), len(r['demoted'])) for r in rooms_json['rooms']]
     print(f'  rooms (id, kept, demoted): {pre}')
 
-    print('absorbing empty rooms into successors (fallback: predecessor)...')
-    rooms_json = absorb_empty_rooms(rooms_json)
+    min_room_nodes = cfg.get('min_room_nodes', 2)
+    print(
+        f'merging undersized rooms (<{min_room_nodes} nodes) and capping at '
+        f'{max_rooms} (smallest-first, into preceding neighbor)...'
+    )
+    rooms_json = absorb_empty_rooms(
+        rooms_json, min_room_nodes=min_room_nodes, max_rooms=max_rooms,
+    )
     post = [(r['room_id'], len(r['kept']), len(r['demoted'])) for r in rooms_json['rooms']]
-    print(f'  rooms after absorb: {post}')
+    print(f'  rooms after merge: {post}')
 
     rooms_dir.mkdir(parents=True, exist_ok=True)
     rooms_out = rooms_dir / f'{cfg["run_id"]}.json'

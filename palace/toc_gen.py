@@ -119,48 +119,6 @@ def resolve_offsets(text: str, sections: list[dict]) -> tuple[list[dict], list[s
     return out, warnings
 
 
-def clamp_sections_to_max(
-    sections: list[dict], text_len: int, max_rooms: int,
-) -> tuple[list[dict], list[str]]:
-    """Deterministically merge adjacent sections down to <= max_rooms when the
-    LLM overshoots, instead of failing. Each step finds the smallest-span
-    section (char range between consecutive start_markers) and removes one
-    boundary by merging it into a neighbor: an edge section into its only
-    neighbor, a middle section into the smaller-span neighbor (tie -> the later
-    one). The merged section keeps the earlier (host) section's name,
-    start_marker and offset; the later section's boundary is absorbed. Only a
-    boundary is ever dropped, so the surviving offsets stay monotonic/distinct.
-    """
-    secs = list(sections)
-    log: list[str] = []
-    while len(secs) > max_rooms:
-        n = len(secs)
-        spans = []
-        for i, s in enumerate(secs):
-            start = s.get('start_offset', -1)
-            end = secs[i + 1]['start_offset'] if i + 1 < n else text_len
-            spans.append(end - start if (start >= 0 and end > start) else 0)
-        idx = min(range(n), key=lambda i: spans[i])  # first smallest, deterministic
-        if idx == 0:
-            drop = 1                          # first section: absorb its only neighbor
-        elif idx == n - 1:
-            drop = idx                        # last section: merge into predecessor
-        elif spans[idx - 1] < spans[idx + 1]:
-            drop = idx                        # predecessor smaller: merge into it
-        else:
-            drop = idx + 1                    # successor smaller or tie: absorb successor
-        trigger = secs[idx].get('name', '')
-        host = secs[drop - 1]
-        absorbed = secs.pop(drop)
-        log.append(
-            f'{absorbed.get("name", "")!r} -> {host.get("name", "")!r} '
-            f'(smallest span {spans[idx]} at {trigger!r})'
-        )
-    for i, s in enumerate(secs):
-        s['idx'] = i
-    return secs, log
-
-
 def generate_toc(
     corpus_path: str | Path,
     out_path: str | Path | None,
@@ -200,18 +158,11 @@ def generate_toc(
 
     sections, warnings = resolve_offsets(text, sections_raw)
 
-    # Overflow is clamped, not failed: merge adjacent sections deterministically
-    # down to max_rooms so a live run always reaches room generation.
-    if len(sections) > max_rooms:
-        n_before = len(sections)
-        sections, clamp_log = clamp_sections_to_max(sections, len(text), max_rooms)
-        print(f'TOC clamp: {n_before} sections -> {len(sections)} (max_rooms={max_rooms})')
-        for ln in clamp_log:
-            print(f'  merged: {ln}')
-        warnings.append(
-            f'clamped {n_before} -> {len(sections)} sections to max_rooms={max_rooms}'
-        )
-
+    # Overflow is not clamped here. The room-count cap is enforced downstream
+    # in a single node-count-aware pass (build_rooms.absorb_empty_rooms), which
+    # merges the smallest rooms into a neighbor after Stage B. The prompt still
+    # asks for <= max_rooms sections as a soft hint; the cap is the hard
+    # guarantee. A live run always reaches room generation regardless of count.
     offsets = [s['start_offset'] for s in sections]
     monotonic = all(offsets[i] < offsets[i + 1]
                     for i in range(len(offsets) - 1)
