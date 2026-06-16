@@ -43,6 +43,6 @@ production 권장:
 
 ## 출처
 
-- cold 측정값: `results/audit/2026-06_query_methods.md` 표본 1, 표본 2
+- cold 측정값: `archive/audit/2026-06_query_methods.md` 표본 1, 표본 2
 - warm 측정값: `results/audit/2026-06-11_method_sweep_warm_default_*.md` 4 모델
 - 워밍업 비용 측정: `warm_query.py` 셀 1+2 wall time 43.7s

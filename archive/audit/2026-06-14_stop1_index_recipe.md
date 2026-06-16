@@ -102,7 +102,7 @@ per-job 라이브 인덱싱은 위 A~D 를 잡 root 로 옮긴 형태:
 3. **66종은 discover 가 아님**: canary(6/12, 세션 4a5dce3c)는 prompt-tune 을 안 돌리고
    국사 화이트리스트 `[인물,사건,정책,문물,서적,기관,장소]` 로 통계 코퍼스를 인덱싱 →
    LLM 이 mismatch 화이트리스트를 무시하고 type 자유생성 → 66종
-   (results/audit/2026-06-12_ai_school_canary.md:74-76). 이건 "discover 의 노이즈"가 아니라
+   (archive/audit/2026-06-12_ai_school_canary.md:74-76). 이건 "discover 의 노이즈"가 아니라
    "튜닝 부재 + 잘못된 정적 목록"의 결과.
 
 직전 STOP-1 문서의 `--no-discover-entity-types` 추론은 exp17(별개 통계 실험)의 명령을
@@ -143,7 +143,7 @@ proj_ai_school/repro_run3/golden 미접촉.)
 ---
 
 ## 직전 STOP-1 계획 문서 정정 사항
-`results/audit/2026-06-14_live_index_plan.md` 의 다음을 정정(해당 파일도 함께 패치):
+`archive/audit/2026-06-14_live_index_plan.md` 의 다음을 정정(해당 파일도 함께 패치):
 - [B] "prompt-tune 은 --no-discover-entity-types 로 돌고 15종은 외부 명시 공급" → **틀림.**
   discover ON + `--selection-method all` 로 자동 생성.
 - [B] "ai_school 정확한 prompt-tune/index 호출은 레포에 없음" → **해소됨**(본 문서 (1)).

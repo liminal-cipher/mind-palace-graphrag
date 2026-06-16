@@ -119,6 +119,6 @@ I am sorry but I am unable to answer this question given the provided data.
 - 라우팅 함의: global to local 라우팅은 이 영어 canned 거부를 한국어 거부로 바꿔주는 부수 효과도 있다(local은 거짓 전제도 한국어로 시대착오를 짚어 거부). 다만 이번 사례는 거짓 전제라 어느 모드든 "정답"은 거부이며, 라우팅의 핵심 이득은 앞 문서의 (A)류 실재 개념 질문에 있다.
 
 ## 부속 원자료
-- `results/audit/2026-06-15_rag_hallucination_repro_raw.json` (9칸 매트릭스, gpt-4.1-mini)
-- `results/audit/2026-06-15_rag_hallucination_global_5p4_raw.json` (global 3개, gpt-5.4-mini 프로덕션 동치)
+- `archive/audit/2026-06-15_rag_hallucination_repro_raw.json` (9칸 매트릭스, gpt-4.1-mini)
+- `archive/audit/2026-06-15_rag_hallucination_global_5p4_raw.json` (global 3개, gpt-5.4-mini 프로덕션 동치)
 </content>

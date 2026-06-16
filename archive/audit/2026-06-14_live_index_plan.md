@@ -93,7 +93,7 @@ index 는 다음을 보장해야 한다:
 - 별도 GraphRAG root: `proj_ai_school/`(settings.yaml). repro_run3 root 를 본떠 모델
   (gpt-4.1-mini 추출 + text-embedding-3-small), 청킹 size=1200/overlap=100,
   max_cluster_size=15, use_lcc=true 동일. 입력/출력만 분리
-  (canary 문서 results/audit/2026-06-12_ai_school_canary.md:31).
+  (canary 문서 archive/audit/2026-06-12_ai_school_canary.md:31).
 - settings 경로(루트 상대): `input_storage.base_dir: ../input/ai_school`,
   `output_storage.base_dir: ../output/ai_school`, cache/reporting 동일 패턴
   (proj_ai_school/settings.yaml:41-57).

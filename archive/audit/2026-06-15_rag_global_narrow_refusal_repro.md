@@ -152,7 +152,7 @@ global search는 community report 요약을 모아 답하는 구조라, 어떤 r
 함의(RAG 담당용): 라우팅 해법(global to local)이 (A)류를 구제할 수 있다. 다만 위 local 캡처에서 보듯 현재 스냅샷에서는 측우기, 앙부일구가 엔티티로만 얇게 존재하고 report, text_unit 근거가 빈약해, local도 grounded 답이 아니라 일반지식 폴백에 면책을 붙인다. 라우팅만으로 "근거 있는" 답이 보장되진 않는다는 점은 별도로 고려 필요.
 
 ## 부속 원자료
-- `results/audit/2026-06-15_rag_global_narrow_refusal_repro_raw.json` (global 6개 응답 원본)
-- `results/audit/2026-06-15_rag_local_narrow_repro_raw.json` (local 4개 응답 원본)
+- `archive/audit/2026-06-15_rag_global_narrow_refusal_repro_raw.json` (global 6개 응답 원본)
+- `archive/audit/2026-06-15_rag_local_narrow_repro_raw.json` (local 4개 응답 원본)
 </content>
 </invoke>
