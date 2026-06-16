@@ -57,7 +57,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=False,
-    allow_methods=["GET"],
+    allow_methods=["GET", "POST"],  # GET=showcase/query, POST=orchestrator /upload
     allow_headers=["*"],
 )
 
