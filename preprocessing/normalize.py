@@ -6,7 +6,7 @@ fixed names graphrag + palace.match_images expect:
     txt/content.txt        -> corpus.txt        (graphrag index corpus)
     txt/content_paged.txt  -> pagesplit.txt      (verbatim; [pageN] is the canonical marker)
     txt/caption.txt        -> captions.md        ([pageN] text -> <figcaption>text</figcaption>)
-    img/*.png              -> img/               (figures for match_images)
+    img/*.png              -> images/            (figures for match_images)
 
 The page-marker format is "[pageN]" end-to-end (preprocessing pipeline_v2 emits it,
 palace.match_images PAGE_MARKER_RE parses it), so pagesplit is copied unchanged.
@@ -62,7 +62,7 @@ def normalize(result_dir: Path, domain: str) -> Path:
         _captions_to_md(caption.read_text(encoding="utf-8")), encoding="utf-8"
     )
 
-    img_dst = out / "img"
+    img_dst = out / "images"
     if img_dst.exists():
         shutil.rmtree(img_dst)
     img_dst.mkdir(parents=True, exist_ok=True)
@@ -74,7 +74,7 @@ def normalize(result_dir: Path, domain: str) -> Path:
 
     n_cap = (out / "captions.md").read_text(encoding="utf-8").count("<figcaption>")
     print(f"normalized -> {out.relative_to(REPO).as_posix()}/")
-    print(f"  corpus.txt, pagesplit.txt, captions.md (figs={n_cap}), img/ ({n_img} png)")
+    print(f"  corpus.txt, pagesplit.txt, captions.md (figs={n_cap}), images/ ({n_img} png)")
     if n_cap != n_img:
         print(f"  [warn] caption count {n_cap} != png count {n_img} "
               f"(match_images pairs by order and will STOP on mismatch)")
