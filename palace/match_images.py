@@ -44,7 +44,7 @@ DEFAULT_OUT_DIR = REPO / 'docs' / 'audit'
 
 CAPTION_TAG_RE = re.compile(r'<figcaption>(.*?)</figcaption>', re.DOTALL)
 SPLIT_BAR_RE = re.compile(r'\s*[|￨ㅣ]\s*')  # ASCII bar, halfwidth bar, hangul I
-PAGE_MARKER_RE = re.compile(r'--- page (\d+) ---\n?')
+PAGE_MARKER_RE = re.compile(r'\[page(\d+)\]\n?')  # preprocessing pipeline_v2 format
 FIG_NAME_RE = re.compile(r'fig_(\d+)_(\d+)\.png$')
 TRAILING_PAREN_RE = re.compile(r'\s*\([^)]*\)\s*$')
 
