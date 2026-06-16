@@ -53,7 +53,7 @@ _executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="graphrag")
 # default_completion_model은 불변. 인덱스 산출물(parquet/LanceDB)도 안 바뀐다.
 RAG_SYNTHESIS_MODEL = "gpt-5.4-mini"
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent  # backend/ -> repo root
 
 # POST /snapshots/register는 내부 전용(127.0.0.1 바인드 전제, 외부 노출 금지). 임의
 # 파일시스템 경로 로드를 막기 위해, 등록 path는 이 루트들 아래만 허용한다:
@@ -137,7 +137,7 @@ STATE = _State()
 def _warm_one(st: _SnapshotState) -> None:
     """전용 _executor 스레드에서 한 스냅샷을 global 엔진으로 warm load한다. startup
     warmup과 런타임 register가 공유한다. 결과는 st에 in-place로 기록(예외도 격리)."""
-    import warm_query as wq
+    from backend import query as wq
 
     t0 = time.perf_counter()
     try:

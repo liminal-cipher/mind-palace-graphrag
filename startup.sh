@@ -15,7 +15,7 @@ set -euo pipefail
 
 PORT="${PORT:-8000}"
 
-exec gunicorn backend_app:app \
+exec gunicorn backend.app:app \
   --workers 1 \
   --worker-class uvicorn.workers.UvicornWorker \
   --bind "0.0.0.0:${PORT}" \

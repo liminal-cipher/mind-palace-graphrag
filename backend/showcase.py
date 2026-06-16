@@ -17,7 +17,7 @@ from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
-DELIVERABLES = Path(__file__).resolve().parent / "deliverables"
+DELIVERABLES = Path(__file__).resolve().parent.parent / "deliverables"  # backend/ -> repo root
 
 # 쇼케이스 이름 -> 자기완결 deliverable 폴더(deliverables/<name>/). 팰리스 JSON 과
 # 그 PNG(images/)가 한 폴더에 있다. 새 도메인은 deliverables/<name>/ 한 줄만 추가.

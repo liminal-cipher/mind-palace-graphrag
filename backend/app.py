@@ -32,11 +32,11 @@ from contextlib import AsyncExitStack, asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-import showcase_view
+from backend import showcase
+from backend.serve import app as serve_app
+from backend.serve import lifespan as serve_lifespan
 from orchestrator.app import app as orchestrator_app
 from orchestrator.app import lifespan as orchestrator_lifespan
-from serve import app as serve_app
-from serve import lifespan as serve_lifespan
 
 
 @asynccontextmanager
@@ -64,5 +64,5 @@ app.add_middleware(
 # 라우트 등록 순서 = 매칭 우선순위. 더 구체적인 프리픽스를 serve 의 '/' 캐치올보다 먼저
 # 등록해야 한다: /orchestrator -> /palace·/images(router) -> 마지막에 '/'(serve).
 app.mount("/orchestrator", orchestrator_app)
-app.include_router(showcase_view.router)  # GET /palace/{name}, GET /images/{name}/{file}
+app.include_router(showcase.router)  # GET /palace/{name}, GET /images/{name}/{file}
 app.mount("/", serve_app)
