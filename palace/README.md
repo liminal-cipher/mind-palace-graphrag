@@ -11,7 +11,7 @@
 - `node_metrics.py`: text_unit/엔티티 위치 계산
 - `export_palace.py`: rooms.json -> .palace.json
 - `configs/`: 도메인별 설정 JSON (run_id, corpus, snapshot, K, node_budget, model, domain, cache 경로 등)
-- `tests/golden/`: 골든 산출(현행 results/rooms/ 복사본)
+- `tests/golden/`: 골든 산출(현행 archive/rooms/ 복사본)
 - `tests/compare_golden.py`: 현 run vs 골든 비교
 
 ## 두 단계
@@ -23,7 +23,7 @@ Stage A(rubric) 및 Stage B(per-room keep)는 캐시 파일에 해시-키 저장
 
 ## GRAPH arm
 
-방 생성을 임베딩 기반 클러스터링으로 하는 GRAPH arm(`results/exp10_room_gen/room_gen.base_cluster + split_oversized + merge_to_k`, `results/pipeline/run.py`)은 palace 정본에 포함하지 않는다. exp 디렉토리에 grandfather로 남아 있고, 새 실험은 palace 기반.
+방 생성을 임베딩 기반 클러스터링으로 하는 GRAPH arm(`archive/exp10_room_gen/room_gen.base_cluster + split_oversized + merge_to_k`, `archive/pipeline/run.py`)은 palace 정본에 포함하지 않는다. exp 디렉토리에 grandfather로 남아 있고, 새 실험은 palace 기반.
 
 ## 실행
 

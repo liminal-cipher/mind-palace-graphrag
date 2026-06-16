@@ -139,7 +139,7 @@
 - 회귀 1건: K=10에서 이성계가 demote로 분류됨(exp7은 3런 모두 keep). 새 프롬프트가 "콕 집어 외울 대상" 기준을 더 좁게 잡으면서 건국자 같은 큰 분류가 demote로 밀린 영향으로 추정 → 안정성은 exp12에서 추적.
 - 비용: 4 combo + 캐시 rubric 1회 = 총 33회 호출(rubric 1 + LLM-merge 2 + Stage B 4×K), 실측 시간 합 ~105초.
 
-**그래서**: 결정적 파이프라인 + LLM 선별기를 한 줄로 잇는 도메인 무관 모듈이 동작. 누락 사고는 keep-only 프롬프트 + set-difference로 구조적으로 봉쇄. 4 combo 중 K=10이 should_show에서, K=5가 should_demote에서 우세해 한쪽으로 확정 못함. 이성계 demote 회귀는 단일 패스 흔들림인지 패스 간 일관 결과인지 측정 필요 → exp12. 자세한 표·산출은 `results/exp10_room_gen/report.md`, `results/rooms/`.
+**그래서**: 결정적 파이프라인 + LLM 선별기를 한 줄로 잇는 도메인 무관 모듈이 동작. 누락 사고는 keep-only 프롬프트 + set-difference로 구조적으로 봉쇄. 4 combo 중 K=10이 should_show에서, K=5가 should_demote에서 우세해 한쪽으로 확정 못함. 이성계 demote 회귀는 단일 패스 흔들림인지 패스 간 일관 결과인지 측정 필요 → exp12. 자세한 표·산출은 `archive/exp10_room_gen/report.md`, `archive/rooms/`.
 
 ## exp11: K(방 수) 자동 결정 신호 찾기
 
@@ -154,7 +154,7 @@
   - K=2..4: 222짜리 슈퍼블롭 잔존, 비가 더 나쁨(12.33 ~ 20.18).
 - 결정성: 같은 K에서 두 번 돌려 멤버 구성 완전 동일. ward-on-centroids는 결정적이라 K만 정하면 결과 고정.
 
-**그래서**: 데모·확정값 = K=10. 제품 auto-K 신호는 실루엣·엘보가 아니라 도메인 제약 기반 (방 수 상한 10, 방 크기 상한 ~100, 두 조건 통과 K 중 max/min 비 최소). repro_run3에선 size 100 상한을 두면 K=9까지는 116짜리에 막혀 다 탈락, K=10만 통과. 자세한 표·산출은 `results/exp11_k_sweep/report.md`.
+**그래서**: 데모·확정값 = K=10. 제품 auto-K 신호는 실루엣·엘보가 아니라 도메인 제약 기반 (방 수 상한 10, 방 크기 상한 ~100, 두 조건 통과 K 중 max/min 비 최소). repro_run3에선 size 100 상한을 두면 K=9까지는 116짜리에 막혀 다 탈락, K=10만 통과. 자세한 표·산출은 `archive/exp11_k_sweep/report.md`.
 
 ## exp12: Stage B n=3 안정성 (LLM 다수결)
 
@@ -169,9 +169,9 @@
 - 이성계 회귀: K=10/K=5 모두 3패스 demote, 임진왜란 방 배치. n=3로는 안 풀림(→ exp13).
 - 방 이름 일관성: K=10 10방 중 5방 3패스 동일, 5방은 어순·단어 변형(의미 동일 수준).
 
-전체 keep-set 단위의 정밀 일치도(per-room jaccard, 다수결이 정리한 split 엔티티 수)는 confirmed-pipeline runner가 측정한다(`results/pipeline/report.md`): per-room mean pair-jaccard 0.906, min 0.6154(room 4 [8, 13, 13]이 가장 흔들림), split entities 26/357(7.3%), 만장일치 방 5/10, 방 이름 unanim 9/10.
+전체 keep-set 단위의 정밀 일치도(per-room jaccard, 다수결이 정리한 split 엔티티 수)는 confirmed-pipeline runner가 측정한다(`archive/pipeline/report.md`): per-room mean pair-jaccard 0.906, min 0.6154(room 4 [8, 13, 13]이 가장 흔들림), split entities 26/357(7.3%), 만장일치 방 5/10, 방 이름 unanim 9/10.
 
-**그래서**: 앵커 recall만 본다면 K=10·n=1로 충분. 전체 keep-set의 재현성·일관성을 원하면 n=3 (경계 ~7% 엔티티를 매번 같은 결정으로 수렴). K=5는 평가에서 제외. 확정·평가 런 = n=3, 제품은 7% churn 감수 시 n=1도 후보. 자세한 표는 `results/exp12_n3_stability/report.md`.
+**그래서**: 앵커 recall만 본다면 K=10·n=1로 충분. 전체 keep-set의 재현성·일관성을 원하면 n=3 (경계 ~7% 엔티티를 매번 같은 결정으로 수렴). K=5는 평가에서 제외. 확정·평가 런 = n=3, 제품은 7% churn 감수 시 n=1도 후보. 자세한 표는 `archive/exp12_n3_stability/report.md`.
 
 ## exp13: 도메인 무관 generic 사전 제거 (degree pre-cut)
 
@@ -184,7 +184,7 @@
 - 방 크기 균형: N=10/30은 베이스라인보다 더 불균형(max/min 12.50, 17.00), N=20만 5.91로 좋아짐. 단조 응답 아님.
 - 이성계: N=10에선 이순신·권율과 떨어져 `세조`·`세종`·`태조` 같은 조선 군주 방으로 갔으나 `정도전`은 다른 방. N=20에선 이순신이 제거된 채 다시 다른 방. 안정 회복 아님.
 
-**그래서**: 미채택. degree 사전 컷은 너무 뭉툭함. 이성계 오배치는 단순 degree 문제가 아니라 hub-mediated(`임진왜란` 허브를 통해 이순신·권율과 결속, 허브 제거 시 풀리지만 처방 정확도 낮음)이라 진단·처방이 잘못 매핑됨. 진짜 처방은 추출·청크·임베딩 품질(description·CU 품질)에 있고, 후처리로 풀려면 degree가 아니라 그래프 토폴로지나 LLM 단계의 keep/demote 판단에 위임하는 쪽이 맞아 보임. 자세한 표는 `results/exp13_generic_filter/report.md`.
+**그래서**: 미채택. degree 사전 컷은 너무 뭉툭함. 이성계 오배치는 단순 degree 문제가 아니라 hub-mediated(`임진왜란` 허브를 통해 이순신·권율과 결속, 허브 제거 시 풀리지만 처방 정확도 낮음)이라 진단·처방이 잘못 매핑됨. 진짜 처방은 추출·청크·임베딩 품질(description·CU 품질)에 있고, 후처리로 풀려면 degree가 아니라 그래프 토폴로지나 LLM 단계의 keep/demote 판단에 위임하는 쪽이 맞아 보임. 자세한 표는 `archive/exp13_generic_filter/report.md`.
 
 ## exp14: overlap200 step-3 LLM-only 방 설계 재현성 (n=3)
 
@@ -204,19 +204,19 @@
 - **흔들림**: 매칭 자카드 평균 0.61(최소 0.16), 페어당 평균 ~72개(~21%) 엔티티가 방 이동, ~49개의 visibility 변경. run1-run3·run2-run3은 마지막 "사회/사상" 방 한 곳이 자카드 0.16 부근(run3에서 size 60으로 부풀음).
 - **커버리지 가변**: 할당된 엔티티가 런마다 320/337/354 (357 중). 누락 37/20/3은 주로 주변부 엔티티에 몰리고 핵심 앵커는 안 빠짐. 환각·invalid는 3런 모두 0.
 
-**그래서**: LLM-only 설계는 **구조(방 수·이름·학습 흐름 척추)엔 믿을 만하지만 엔티티 단위 배정·노출은 temp=0에도 평균 ~21% 출렁여 못 믿음** — 온도로 못 고친다. 또 357 전수보존이 구조적으로 보장되지 않음(exp10 `check_invariants`의 keep ∪ demoted == 357과 대비). 결론: 방-만들기는 구조 재현은 LLM에 맡길 수 있어도 엔티티 배정·노출은 결정적 단계로 끊어야 한다. 자세한 표·런별 방 이름은 `results/exp14_overlap200_stability/report.md`.
+**그래서**: LLM-only 설계는 **구조(방 수·이름·학습 흐름 척추)엔 믿을 만하지만 엔티티 단위 배정·노출은 temp=0에도 평균 ~21% 출렁여 못 믿음** — 온도로 못 고친다. 또 357 전수보존이 구조적으로 보장되지 않음(exp10 `check_invariants`의 keep ∪ demoted == 357과 대비). 결론: 방-만들기는 구조 재현은 LLM에 맡길 수 있어도 엔티티 배정·노출은 결정적 단계로 끊어야 한다. 자세한 표·런별 방 이름은 `archive/exp14_overlap200_stability/report.md`.
 
 ## exp15: 목차 챕터 단위 결정적 occurrence (진단)
 
-**가설**: exp8에서 357 엔티티가 평균 5.12 섹션에 흩어진 건 1200 토큰 청크가 섹션보다 커서다. 한 단계 거친 챕터 단위로 묶으면 같은 occurrence 매핑으로도 엔티티가 한 dominant 챕터로 모인다. **방법**: exp8과 같은 텍스트 occurrence 경로(엔티티 `text_unit_ids` × text_unit 의 char span ↔ 섹션 overlap)를 그대로 쓰고, 챕터 = 섹션의 결정적 rollup. LLM·임베딩 0회. 챕터 파티션은 문서 헤딩 계층에서 결정적으로 도출한 두 granularity (A=V.1/V.2/V.3/VI.1 4개, B=V.1만 문서 묶음 헤딩 "조선의 통치 제도"·"15세기 민족 문화의 발달" 경계로 3분할한 ~6개). dominant_chapter = argmax 카운트, 동점은 학습흐름 앞선 챕터로 깸. **판정 (B 기준)**: clean_landing_rate(dominance_ratio>=0.5) 0.9944 (357/357 거의 전수, 임계 0.80), mean n_chapters_touched 1.6078 (임계 2.0, exp8 섹션 평균 5.12에서 ~3배 붕괴), 이성계 B1_V1_건국 ratio 1.0 착지, dominance_ratio_B<0.5 인 앵커 0개 → **GO**. 자세한 표·앵커별 dominant·붕괴 비교는 `results/exp15_toc_chapters/REPORT.md`.
+**가설**: exp8에서 357 엔티티가 평균 5.12 섹션에 흩어진 건 1200 토큰 청크가 섹션보다 커서다. 한 단계 거친 챕터 단위로 묶으면 같은 occurrence 매핑으로도 엔티티가 한 dominant 챕터로 모인다. **방법**: exp8과 같은 텍스트 occurrence 경로(엔티티 `text_unit_ids` × text_unit 의 char span ↔ 섹션 overlap)를 그대로 쓰고, 챕터 = 섹션의 결정적 rollup. LLM·임베딩 0회. 챕터 파티션은 문서 헤딩 계층에서 결정적으로 도출한 두 granularity (A=V.1/V.2/V.3/VI.1 4개, B=V.1만 문서 묶음 헤딩 "조선의 통치 제도"·"15세기 민족 문화의 발달" 경계로 3분할한 ~6개). dominant_chapter = argmax 카운트, 동점은 학습흐름 앞선 챕터로 깸. **판정 (B 기준)**: clean_landing_rate(dominance_ratio>=0.5) 0.9944 (357/357 거의 전수, 임계 0.80), mean n_chapters_touched 1.6078 (임계 2.0, exp8 섹션 평균 5.12에서 ~3배 붕괴), 이성계 B1_V1_건국 ratio 1.0 착지, dominance_ratio_B<0.5 인 앵커 0개 → **GO**. 자세한 표·앵커별 dominant·붕괴 비교는 `archive/exp15_toc_chapters/REPORT.md`.
 
 ## exp16: 방-만들기 head-to-head (TOC vs 그래프 ward)
 
-**질문**: 같은 코퍼스(repro_run3, 357 엔티티)에서 결정적 두 방식(TOC = exp15 B 파티션 재사용, 그래프 = exp10 ward) 으로 6개 방씩 뽑아 같은 형식으로 떨구면, "같이 있어야 할" 앵커 그룹이 어느 쪽에서 한 방에 모이고 어느 쪽에서 갈리나. 사람 블라인드 비교용 데이터까지 이번에 같이 만든다. LLM 호출 0. **한 일**: 357 전수배정으로 TOC 6방(exp15 `dominant_chapter_B`)과 그래프 ward K=6 (`room_gen.base_cluster`, 같은 임베딩 재사용) 산출. 그래프는 두 번 돌려 클러스터 멤버 완전 동일 확인. 앵커 동거 그룹 = 건국(이성계·정도전), 전쟁(이순신·권율·곽재우·김시민·임진왜란·거북선), 15세기 과학(측우기·자격루·앙부일구·혼천의·인지의). **결과**: 방 크기 TOC [94, 89, 83, 34, 34, 23] / 그래프 [95, 93, 67, 50, 34, 18]. 둘 다 357 전수, should_show 14/14·should_demote 8/8 모두 배정됨. 앵커 동거 3그룹 모두 TOC=한 방, 그래프=두 방으로 갈림 (그래프에서 정도전이 건국 그룹과 떨어지고, 곽재우가 다른 의병들과 떨어지고, 인지의가 다른 과학기기 4종과 떨어짐). 둘 다 결정적 (TOC 재사용, ward 두 번 돌려 동일). **그래서**: 방-만들기에서 "그룹이 한 방에 모이나" 라는 단순 척도로는 TOC가 그래프 raw ward를 이긴다 (이번 앵커 표본 한정). 학습 흐름·방 응집도 같은 사람 블라인드 평가용 데이터(`blind_compare.json` + `blind_key.json`)는 같이 떨궜고, 뷰어·판정은 별도 단계로 남긴다. 자세한 표·앵커별 방 배정·블라인드 운영 절차는 `results/exp16_room_compare/REPORT.md`.
+**질문**: 같은 코퍼스(repro_run3, 357 엔티티)에서 결정적 두 방식(TOC = exp15 B 파티션 재사용, 그래프 = exp10 ward) 으로 6개 방씩 뽑아 같은 형식으로 떨구면, "같이 있어야 할" 앵커 그룹이 어느 쪽에서 한 방에 모이고 어느 쪽에서 갈리나. 사람 블라인드 비교용 데이터까지 이번에 같이 만든다. LLM 호출 0. **한 일**: 357 전수배정으로 TOC 6방(exp15 `dominant_chapter_B`)과 그래프 ward K=6 (`room_gen.base_cluster`, 같은 임베딩 재사용) 산출. 그래프는 두 번 돌려 클러스터 멤버 완전 동일 확인. 앵커 동거 그룹 = 건국(이성계·정도전), 전쟁(이순신·권율·곽재우·김시민·임진왜란·거북선), 15세기 과학(측우기·자격루·앙부일구·혼천의·인지의). **결과**: 방 크기 TOC [94, 89, 83, 34, 34, 23] / 그래프 [95, 93, 67, 50, 34, 18]. 둘 다 357 전수, should_show 14/14·should_demote 8/8 모두 배정됨. 앵커 동거 3그룹 모두 TOC=한 방, 그래프=두 방으로 갈림 (그래프에서 정도전이 건국 그룹과 떨어지고, 곽재우가 다른 의병들과 떨어지고, 인지의가 다른 과학기기 4종과 떨어짐). 둘 다 결정적 (TOC 재사용, ward 두 번 돌려 동일). **그래서**: 방-만들기에서 "그룹이 한 방에 모이나" 라는 단순 척도로는 TOC가 그래프 raw ward를 이긴다 (이번 앵커 표본 한정). 학습 흐름·방 응집도 같은 사람 블라인드 평가용 데이터(`blind_compare.json` + `blind_key.json`)는 같이 떨궜고, 뷰어·판정은 별도 단계로 남긴다. 자세한 표·앵커별 방 배정·블라인드 운영 절차는 `archive/exp16_room_compare/REPORT.md`.
 
 ## 확정 파이프라인 러너 참조
 
-위 결정들(K=10, n=3, embedding merge, repro_run3)을 한 줄로 잇는 confirmed-pipeline 러너는 `results/pipeline/`에 있다. 단계별 wall·LLM 호출·토큰·다수결 효과·per-room jaccard 등 실측치는 `results/pipeline/report.md`(자동 생성)에 있어 여기서 중복 기재하지 않는다.
+위 결정들(K=10, n=3, embedding merge, repro_run3)을 한 줄로 잇는 confirmed-pipeline 러너는 `archive/pipeline/`에 있다. 단계별 wall·LLM 호출·토큰·다수결 효과·per-room jaccard 등 실측치는 `archive/pipeline/report.md`(자동 생성)에 있어 여기서 중복 기재하지 않는다.
 
 ## 지금까지의 결정
 
@@ -226,22 +226,22 @@
 
 ## palace: 정본 TOC arm 파이프라인 (2026-06-10)
 
-exp16에서 TOC vs GRAPH 헤드투헤드, exp17에서 end-to-end TOC arm + repro_run3 K=6 데모까지 통과해 방-만들기 파이프라인을 TOC arm 단일로 확정. exp 디렉토리에 흩어진 코드를 한 패키지로 모은 게 `palace/` (루트). GRAPH arm(`results/pipeline/`의 K=10 embedding canonical, exp10의 base_cluster→split_oversized→merge_to_k)은 정본 자리에서 빠지고 exp 디렉토리에 grandfather로 동결.
+exp16에서 TOC vs GRAPH 헤드투헤드, exp17에서 end-to-end TOC arm + repro_run3 K=6 데모까지 통과해 방-만들기 파이프라인을 TOC arm 단일로 확정. exp 디렉토리에 흩어진 코드를 한 패키지로 모은 게 `palace/` (루트). GRAPH arm(`archive/pipeline/`의 K=10 embedding canonical, exp10의 base_cluster→split_oversized→merge_to_k)은 정본 자리에서 빠지고 exp 디렉토리에 grandfather로 동결.
 
 레이아웃: `palace/{run.py, toc_gen.py, build_rooms.py, room_gen.py, node_metrics.py, export_palace.py, configs/, tests/}`. 두 phase 진입(`--phase toc`로 LLM TOC 검토용 멈춤, `--phase rooms`로 끝까지). 도메인 설정은 `palace/configs/<run_id>.json` 한 장(run_id, corpus, snapshot, K, node_budget, model, domain, cache 경로). Stage A 캐시 + Stage B 해시 캐시(`cache/palace/<run_id>/`)는 입력 내용 해시 키라 경로 무관 byte-identical 재현.
 
-검증: repro_run3 한국사 K=6 골든(`palace/tests/golden/` = 기존 `results/rooms/repro_run3_K6_toc.{json, palace.json, toc_llm.json}` 복사본). 캐시 hit 재현은 골든과 byte-identical 일치(toc_llm + rooms + palace 전 필드, ts/generated_at 제외). 캐시 miss 라이브 재현은 4대 천문기상기(측우기·자격루·앙부일구·혼천의) 골든과 같은 방(0, demoted) 보존, room_id·sections·대부분의 방 크기 안정, kept_total 101→103(+2, room 4 +2), 6방 모두 경계 churn 평균 jaccard 0.72(noise floor 범위 내).
+검증: repro_run3 한국사 K=6 골든(`palace/tests/golden/` = 기존 `archive/rooms/repro_run3_K6_toc.{json, palace.json, toc_llm.json}` 복사본). 캐시 hit 재현은 골든과 byte-identical 일치(toc_llm + rooms + palace 전 필드, ts/generated_at 제외). 캐시 miss 라이브 재현은 4대 천문기상기(측우기·자격루·앙부일구·혼천의) 골든과 같은 방(0, demoted) 보존, room_id·sections·대부분의 방 크기 안정, kept_total 101→103(+2, room 4 +2), 6방 모두 경계 churn 평균 jaccard 0.72(noise floor 범위 내).
 
 ### exp → palace 1:1 매핑
 
 | 출처 | 출처 심볼 | palace 파일 | 비고 |
 | --- | --- | --- | --- |
-| `results/exp17_generalization/toc_gen.py` | `SYS_PROMPT`, `build_user_prompt`, `resolve_offsets`, `generate_toc` | `palace/toc_gen.py` | 모듈 상수 `CORPUS/MODEL/OUT` 제거, `corpus_rel` 인자 추가, `main()` 제거 |
-| `results/exp17_generalization/build.py` | `char_overlap`, `build_toc_rooms`, `attach_positions`, `apply_keep_demote`, `convert_toc_to_common_schema`, `absorb_empty_rooms` | `palace/build_rooms.py` | 모듈 상수 `K/DOMAIN/MODEL/NODE_BUDGET/N_RUNS/RUBRIC_CACHE/SET1_METHOD` 전부 인자로 외화. `build_graph_rooms`, `build_blind`, `compute_metrics`, `render_markdown`, `main()`은 복사 안 함 |
-| `results/exp10_room_gen/room_gen.py` | `load_snapshot`, `make_azure_client`, `call_json`, `derive_rubric`, `_stage_b_prompt`, `_stage_b_cache_key`, `_run_stage_b_once`, `_resolve_keep_membership`, `assign_rooms`, `check_invariants`, `HARD_CAP_K` | `palace/room_gen.py` | GRAPH arm(`base_cluster`, `_stack_normalized`, `split_oversized`, `_split_one`, `merge_to_k`, `_cluster_centroid`, `_merge_embedding`, `representatives`, `_merge_llm`, `generate_rooms`, `_summarize`)은 복사 안 함 |
-| `results/exp10_room_gen/export_palace.py` | 전체 (`normalize_title`, `caption_of`, `load_rooms`, `build_ent_lookup`, `compute_position`, `assign_palace_ids`, `build_entity_record`, `collect_relationships`, `export`, `validate`, `main`) | `palace/export_palace.py` | CWD 상대 `ROOMS=Path('results/rooms')` 제거, `sys.path.insert` 제거, `export()`에 `rooms_dir` 인자 추가 |
-| `results/node_order_probe/node_metrics.py` | `build_text_unit_positions`, `_surface_variants`, `_count_in_chunk`, `_first_in_text`, `compute_entity_metrics` | `palace/node_metrics.py` | 모듈 상수 `SNAPSHOT/TXT_PATH` 제거, probe 전용 `load_text`, `load_snapshot_frames`, `tie_cluster_sizes`는 복사 안 함 |
-| `results/exp10_room_gen/run_repro_run3_toc.py` | `stop_if_missing`, `phase_toc`, `phase_rooms`의 와이어링 구조 | `palace/run.py` | 한국사 하드코딩(`RUN_ID/CORPUS/SNAPSHOT/DOMAIN/K/NODE_BUDGET/MODEL/RUBRIC_CACHE/STAGE_B_CACHE`)은 모두 config JSON으로 외화 |
+| `archive/exp17_generalization/toc_gen.py` | `SYS_PROMPT`, `build_user_prompt`, `resolve_offsets`, `generate_toc` | `palace/toc_gen.py` | 모듈 상수 `CORPUS/MODEL/OUT` 제거, `corpus_rel` 인자 추가, `main()` 제거 |
+| `archive/exp17_generalization/build.py` | `char_overlap`, `build_toc_rooms`, `attach_positions`, `apply_keep_demote`, `convert_toc_to_common_schema`, `absorb_empty_rooms` | `palace/build_rooms.py` | 모듈 상수 `K/DOMAIN/MODEL/NODE_BUDGET/N_RUNS/RUBRIC_CACHE/SET1_METHOD` 전부 인자로 외화. `build_graph_rooms`, `build_blind`, `compute_metrics`, `render_markdown`, `main()`은 복사 안 함 |
+| `archive/exp10_room_gen/room_gen.py` | `load_snapshot`, `make_azure_client`, `call_json`, `derive_rubric`, `_stage_b_prompt`, `_stage_b_cache_key`, `_run_stage_b_once`, `_resolve_keep_membership`, `assign_rooms`, `check_invariants`, `HARD_CAP_K` | `palace/room_gen.py` | GRAPH arm(`base_cluster`, `_stack_normalized`, `split_oversized`, `_split_one`, `merge_to_k`, `_cluster_centroid`, `_merge_embedding`, `representatives`, `_merge_llm`, `generate_rooms`, `_summarize`)은 복사 안 함 |
+| `archive/exp10_room_gen/export_palace.py` | 전체 (`normalize_title`, `caption_of`, `load_rooms`, `build_ent_lookup`, `compute_position`, `assign_palace_ids`, `build_entity_record`, `collect_relationships`, `export`, `validate`, `main`) | `palace/export_palace.py` | CWD 상대 `ROOMS=Path('archive/rooms')` 제거, `sys.path.insert` 제거, `export()`에 `rooms_dir` 인자 추가 |
+| `archive/node_order_probe/node_metrics.py` | `build_text_unit_positions`, `_surface_variants`, `_count_in_chunk`, `_first_in_text`, `compute_entity_metrics` | `palace/node_metrics.py` | 모듈 상수 `SNAPSHOT/TXT_PATH` 제거, probe 전용 `load_text`, `load_snapshot_frames`, `tie_cluster_sizes`는 복사 안 함 |
+| `archive/exp10_room_gen/run_repro_run3_toc.py` | `stop_if_missing`, `phase_toc`, `phase_rooms`의 와이어링 구조 | `palace/run.py` | 한국사 하드코딩(`RUN_ID/CORPUS/SNAPSHOT/DOMAIN/K/NODE_BUDGET/MODEL/RUBRIC_CACHE/STAGE_B_CACHE`)은 모두 config JSON으로 외화 |
 
 ### 폴더 grandfather 동결 목록
 
@@ -249,18 +249,18 @@ exp16에서 TOC vs GRAPH 헤드투헤드, exp17에서 end-to-end TOC arm + repro
 
 | 폴더 | 동결 사유 |
 | --- | --- |
-| `results/exp05_stage2_merge` | type 기준 keep/demote 1차 안전망, LLM rubric으로 대체됨 |
-| `results/exp06_room_probe` | 임베딩 ward 클러스터 원형, GRAPH arm 참고용 |
-| `results/exp07_keep_demote` | Stage A/B 방법론 원형, exp10에서 모듈화됨 |
-| `results/exp08_toc_feasibility` | TOC 섹션 매핑 진단, exp15→exp17→palace로 이어짐 |
-| `results/exp09_rechunk` | semantic/pagesplit 비교, palace 미사용 |
-| `results/exp10_room_gen` | end-to-end 모듈화, palace로 Stage A/B + export_palace 이식 |
-| `results/exp11_k_sweep` | GRAPH arm K 결정 진단, palace 미사용 |
-| `results/exp12_n3_stability` | Stage B n=3 안정성, `n_runs` 인자로 palace에 흡수 |
-| `results/exp13_generic_filter` | degree 사전 컷 미채택 |
-| `results/exp14_overlap200_stability` | LLM-only 배정 미채택 |
-| `results/exp15_toc_chapters` | char-overlap occurrence 진단, exp17로 이어짐 |
-| `results/exp16_room_compare` | TOC vs GRAPH 비교, palace는 TOC 단일 |
-| `results/exp17_generalization` | TOC arm 구현부, palace로 `toc_gen.py` + build TOC 함수 이식 |
-| `results/pipeline` | GRAPH arm canonical, 구 정본, GRAPH 참고용 |
-| `results/node_order_probe` | 위치 metric, palace.node_metrics로 이식 |
+| `archive/exp05_stage2_merge` | type 기준 keep/demote 1차 안전망, LLM rubric으로 대체됨 |
+| `archive/exp06_room_probe` | 임베딩 ward 클러스터 원형, GRAPH arm 참고용 |
+| `archive/exp07_keep_demote` | Stage A/B 방법론 원형, exp10에서 모듈화됨 |
+| `archive/exp08_toc_feasibility` | TOC 섹션 매핑 진단, exp15→exp17→palace로 이어짐 |
+| `archive/exp09_rechunk` | semantic/pagesplit 비교, palace 미사용 |
+| `archive/exp10_room_gen` | end-to-end 모듈화, palace로 Stage A/B + export_palace 이식 |
+| `archive/exp11_k_sweep` | GRAPH arm K 결정 진단, palace 미사용 |
+| `archive/exp12_n3_stability` | Stage B n=3 안정성, `n_runs` 인자로 palace에 흡수 |
+| `archive/exp13_generic_filter` | degree 사전 컷 미채택 |
+| `archive/exp14_overlap200_stability` | LLM-only 배정 미채택 |
+| `archive/exp15_toc_chapters` | char-overlap occurrence 진단, exp17로 이어짐 |
+| `archive/exp16_room_compare` | TOC vs GRAPH 비교, palace는 TOC 단일 |
+| `archive/exp17_generalization` | TOC arm 구현부, palace로 `toc_gen.py` + build TOC 함수 이식 |
+| `archive/pipeline` | GRAPH arm canonical, 구 정본, GRAPH 참고용 |
+| `archive/node_order_probe` | 위치 metric, palace.node_metrics로 이식 |

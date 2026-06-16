@@ -1,10 +1,10 @@
 # 레포 컨벤션
 
-향후 작업에 적용할 규칙. 과거(코드 없는 exp1~4 보고서, snapshots 내부 명명, `results/reports/` 번호)는 grandfather: 그대로 두고 새로 만드는 것부터 따른다.
+향후 작업에 적용할 규칙. 과거(코드 없는 exp1~4 보고서, snapshots 내부 명명, `archive/reports/` 번호)는 grandfather: 그대로 두고 새로 만드는 것부터 따른다.
 
 ## 실험 디렉토리
 
-- 위치: `results/exp{NN}_{slug}/` (예: `results/exp10_<slug>/`, `results/exp11_k_sweep/`). slug는 짧고 영문 소문자, 단어 사이는 `_`.
+- 위치: `results/exp{NN}_{slug}/` (예: `archive/exp10_<slug>/`, `archive/exp11_k_sweep/`). slug는 짧고 영문 소문자, 단어 사이는 `_`.
 - 번호는 두 자리 0패딩(`exp05`, `exp09`, `exp10`). 신규 디렉토리는 항상 패딩, 사전 정렬과 한 자리/두 자리 혼재 방지.
 - 안에 코드·산출·리포트가 같이 산다.
   - 코드: `*.py`. 진입점이 하나면 `probe.py`, 여러 단계면 의미 있는 이름(`build_inputs.py`, `run_full.py`, `eval_run.py` 등).
@@ -16,7 +16,7 @@
 ## 인덱스
 
 - 정본: `results/EXPERIMENTS.md`. 모든 실험을 한 곳에서 훑을 수 있는 narrative. 새 실험 끝나면 여기 한 섹션 추가.
-- 보조: `results/reports/INDEX.md` (구 체계, exp1~5 보고서 매핑). 새 실험은 여기 안 추가, EXPERIMENTS.md만 갱신.
+- 보조: `archive/reports/INDEX.md` (구 체계, exp1~5 보고서 매핑). 새 실험은 여기 안 추가, EXPERIMENTS.md만 갱신.
 
 ## 스냅샷
 

@@ -117,13 +117,13 @@ index 는 다음을 보장해야 한다:
   --language Korean --selection-method all --output prompts_tuned --chunk-size 1200 --overlap 100`
   (`--no-discover` 없음 = discover ON; 작은 코퍼스라 `--selection-method all` 필수).
 - 레포에 정확히 기록된 prompt-tune 호출은 exp17(별개 실험):
-  `results/exp17_generalization/PHASE_A_CHECKPOINT.md:50`:
+  `archive/exp17_generalization/PHASE_A_CHECKPOINT.md:50`:
   ```
   .venv/Scripts/python.exe -m graphrag prompt-tune --root . --no-discover-entity-types \
     --domain "통계학 기초 강의 자료 (모집단·표본·확률 분포·가설 검정·상관분석)" \
     --language Korean --output prompts --selection-method top --limit 2 --min-examples-required 2
   ```
-  산출: `results/exp17_generalization/prompts/`.
+  산출: `archive/exp17_generalization/prompts/`.
 - ai_school(proj_ai_school/prompts_tuned/) 을 만든 **정확한 호출은 레포에 없음**. exp17
   패턴의 유추 = `--root proj_ai_school --output prompts_tuned --domain "통계 기초 교안 ..."`
   (구현 전 확인 필요, 미해결).
@@ -311,7 +311,7 @@ fallback 으로 둔다.
 1. (해소됨) ai_school 정확 명령 = 2026-06-14_stop1_index_recipe.md 로 세션 로그에서 확정.
    prompt-tune discover ON + selection-method all, index --root proj_ai_school, Copy-Item 복사.
 2. graphrag CLI subprocess vs `graphrag.api.index.build_index`(in-process, exp09 가 사용:
-   results/exp09_rechunk/run_full.py:14,29) 선택. orchestrator 는 asyncio/lancedb 격리상
+   archive/exp09_rechunk/run_full.py:14,29) 선택. orchestrator 는 asyncio/lancedb 격리상
    subprocess 선호 → `python -m graphrag index --root <jobroot>` 권장.
 3. proj_ai_school base_dir 의 `..` 상대경로를 잡 root 기준으로 재작성 필요.
 4. 도메인→entity_types 룩업 커버리지(미지 도메인 폴백 품질).

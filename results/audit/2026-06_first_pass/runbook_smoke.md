@@ -27,16 +27,16 @@ CWD 가정: 모든 명령은 repo 루트에서 실행. `.env`에 `GRAPHRAG_API_K
 
 ### exp2: max_cluster_size=15
 
-계단 4. 명령은 `graphrag index --root .`. 산출(`results/snapshots/exp2_max15/`, `logs/exp2_results.json`, `logs/exp2_run.log`, `results/reports/01_max15.md`) 전부 존재: PASS (형태).
+계단 4. 명령은 `graphrag index --root .`. 산출(`archive/snapshots/exp2_max15/`, `logs/exp2_results.json`, `logs/exp2_run.log`, `archive/reports/01_max15.md`) 전부 존재: PASS (형태).
 "cache 새로 (rm -rf cache/) 권장" 주석이 있고 캐시 디렉토리 존재 확인됨.
 
 ### exp3: 재현성 + max 순수 효과
 
-계단 4. 명령은 `graphrag index --root .` × 5회 (캐시 프레시 2회 + max 변경 2회 + run1=exp2). 산출(`results/snapshots/{snap_max10,snap_max20,repro_run2,repro_run3}/`, 대응 `logs/*` , 리포트 `02_/03_*`) 전부 존재: PASS (형태).
+계단 4. 명령은 `graphrag index --root .` × 5회 (캐시 프레시 2회 + max 변경 2회 + run1=exp2). 산출(`archive/snapshots/{snap_max10,snap_max20,repro_run2}/`, `results/snapshots/repro_run3/`, 대응 `logs/*` , 리포트 `02_/03_*`) 전부 존재: PASS (형태).
 
 ### exp4: use_lcc=true
 
-계단 4. 명령 `graphrag index --root .` 1회. 산출(`results/snapshots/exp4_lcc_true/`, `logs/exp4_lcc_results.json`, `logs/exp4_lcc_run.log`, `logs/exp4_missing_analysis.txt`, `results/reports/04_use_lcc.md`) 전부 존재: PASS (형태).
+계단 4. 명령 `graphrag index --root .` 1회. 산출(`archive/snapshots/exp4_lcc_true/`, `logs/exp4_lcc_results.json`, `logs/exp4_lcc_run.log`, `logs/exp4_missing_analysis.txt`, `archive/reports/04_use_lcc.md`) 전부 존재: PASS (형태).
 현재 `settings.yaml`이 max=15/use_lcc=true 상태라 이 exp의 종료 상태와 일치.
 
 ### exp5: 방 병합
@@ -49,7 +49,7 @@ CWD 가정: 모든 명령은 repo 루트에서 실행. `.env`에 `GRAPHRAG_API_K
 
 **RUNBOOK 수정 권장 1**: exp5 표에서 `exp5_embed.py`와 `type_select_test.py`에 붙은 `LLM $` 표기는 잘못. 둘 다 LLM 호출 없음 (전자는 precomputed lancedb 임베딩 read-only, 후자는 grep 결과 API 호출 0건). 비용 0. `LLM $` 제거 권장.
 
-**RUNBOOK 수정 권장 2**: `results/exp05_stage2_merge/COMMANDS.md`의 "처음부터 재현하는 원래 명령" 블록은 "CWD = `results/exp05_stage2_merge/`" 라고 적었지만, 4 스크립트 모두 `Path('results/snapshots/repro_run3')`로 repo 루트 기준 상대경로를 씀. `results/exp05_stage2_merge/`에서 실행하면 `results/exp05_stage2_merge/results/snapshots/repro_run3` 를 찾다 실패함. CWD를 repo 루트로 고치거나 `cd results/exp5` 후 `../../` 접두를 붙이도록 정정해야 함. RUNBOOK 본문이 CWD=repo 루트라고 적어 둔 점은 맞음, COMMANDS.md만 어긋남.
+**RUNBOOK 수정 권장 2**: `archive/exp05_stage2_merge/COMMANDS.md`의 "처음부터 재현하는 원래 명령" 블록은 "CWD = `archive/exp05_stage2_merge/`" 라고 적었지만, 4 스크립트 모두 `Path('results/snapshots/repro_run3')`로 repo 루트 기준 상대경로를 씀. `archive/exp05_stage2_merge/`에서 실행하면 `archive/exp05_stage2_merge/results/snapshots/repro_run3` 를 찾다 실패함. CWD를 repo 루트로 고치거나 `cd results/exp5` 후 `../../` 접두를 붙이도록 정정해야 함. RUNBOOK 본문이 CWD=repo 루트라고 적어 둔 점은 맞음, COMMANDS.md만 어긋남.
 
 ### exp6: 직접 ward vs community 병합
 
@@ -73,13 +73,13 @@ CWD 가정: 모든 명령은 repo 루트에서 실행. `.env`에 `GRAPHRAG_API_K
 
 **RUNBOOK 수정 권장 3**: exp9의 마지막 두 줄
 ```
-python results/exp09_rechunk/eval_run.py --label semantic_run1
-python results/exp09_rechunk/eval_run.py --label pagesplit_run1
+python archive/exp09_rechunk/eval_run.py --label semantic_run1
+python archive/exp09_rechunk/eval_run.py --label pagesplit_run1
 ```
 에서 `--label` 제거 (positional). 정정안:
 ```
-python results/exp09_rechunk/eval_run.py semantic_run1
-python results/exp09_rechunk/eval_run.py pagesplit_run1
+python archive/exp09_rechunk/eval_run.py semantic_run1
+python archive/exp09_rechunk/eval_run.py pagesplit_run1
 ```
 
 ### exp10: end-to-end 방 제너레이터
@@ -87,7 +87,7 @@ python results/exp09_rechunk/eval_run.py pagesplit_run1
 계단 2 + 3.
 - `run_repro_run3.py --dry` 실제 실행: PASS. snapshot 357 ent, k_base=12, split 0회 (repro_run3 happy path) 출력 확인. LLM 호출 0.
 - 풀 실행(`--dry` 제거)은 시도 안 함. `room_gen.py` 내부에 `GRAPHRAG_API_KEY/BASE` 검사 코드 존재 확인. `.venv/Scripts/python.exe` 경로 정확.
-- `eval_rooms.py --spec results/rooms/repro_run3_K10_embedding.json --anchors results/exp10_room_gen/anchors_korean_history.json` 실제 실행: PASS. anchor matching 출력 정상, `results\rooms\repro_run3_K10_embedding.eval.json` 갱신.
+- `eval_rooms.py --spec archive/rooms/repro_run3_K10_embedding.json --anchors archive/exp10_room_gen/anchors_korean_history.json` 실제 실행: PASS. anchor matching 출력 정상, `results\rooms\repro_run3_K10_embedding.eval.json` 갱신.
 
 ### 분석 보조
 
@@ -103,5 +103,5 @@ python results/exp09_rechunk/eval_run.py pagesplit_run1
 
 1. exp5 표의 `exp5_embed.py`, `type_select_test.py` 줄에서 `LLM $` 제거 (실제로 LLM 호출 없음).
 2. exp9 마지막 두 명령에서 `--label` 플래그 삭제 (positional 인자만 받음).
-3. (부가) `results/exp05_stage2_merge/COMMANDS.md`의 "CWD = `results/exp05_stage2_merge/`" 한 줄을 "CWD = repo 루트"로 정정. RUNBOOK 본문은 이미 맞음.
+3. (부가) `archive/exp05_stage2_merge/COMMANDS.md`의 "CWD = `archive/exp05_stage2_merge/`" 한 줄을 "CWD = repo 루트"로 정정. RUNBOOK 본문은 이미 맞음.
 4. (부가) exp1 라인에서 "settings.yaml = max=10, use_lcc=false" 가 산출 줄(`산출:` 뒤)에 묻혀 있어 팀원이 놓치기 쉬움. 명령 위쪽 별도 한 줄로 빼는 게 안전.

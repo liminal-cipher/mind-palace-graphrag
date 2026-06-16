@@ -9,7 +9,7 @@
 ## 사전 준비 (한 번)
 
 - `.venv` 활성화 (`.venv\Scripts\activate`). `requirements.txt` 설치.
-- `.env`에 `GRAPHRAG_API_KEY`, `GRAPHRAG_API_BASE` 둘 다 채움. Azure 리소스에 deployment 이름이 정확히 `gpt-4.1-mini`로 있어야 함(`model=`이 Azure deployment 이름에 매핑됨, palace/exp10/exp12/exp14 모두 이 deployment 이름이 config 또는 코드에 하드코딩). api_version은 `2024-12-01-preview` 고정(`palace/room_gen.py`와 `results/exp10_room_gen/room_gen.py`의 `make_azure_client`에 박힘). 다른 deployment 이름을 쓰는 별도 Azure 리소스라면 LLM 단계가 404로 막힐 수 있음(현재 env화 안 됨, 필요시 추후 과제).
+- `.env`에 `GRAPHRAG_API_KEY`, `GRAPHRAG_API_BASE` 둘 다 채움. Azure 리소스에 deployment 이름이 정확히 `gpt-4.1-mini`로 있어야 함(`model=`이 Azure deployment 이름에 매핑됨, palace/exp10/exp12/exp14 모두 이 deployment 이름이 config 또는 코드에 하드코딩). api_version은 `2024-12-01-preview` 고정(`palace/room_gen.py`와 `archive/exp10_room_gen/room_gen.py`의 `make_azure_client`에 박힘). 다른 deployment 이름을 쓰는 별도 Azure 리소스라면 LLM 단계가 404로 막힐 수 있음(현재 env화 안 됨, 필요시 추후 과제).
 - CWD는 항상 repo 루트(`C:/Users/AJourney/Desktop/graphrag/`). 모든 .py가 그 기준으로 경로 하드코딩.
 - exp5~17 및 palace 모두 입력은 `results/snapshots/repro_run3/` (357 entities, level 0 = 40방, `max=15`). 절대 건드리지 말 것. (exp9만 추가로 `semantic_run1`, `pagesplit_run1` 스냅샷을 같이 씀.)
 - baseline(`output/`, max=10, 385 ent)과 repro_run3(snapshot, max=15)는 서로 다른 런이다.
@@ -53,10 +53,10 @@ graphrag index --root .                                           # LLM $ 재인
 ```
 # 1) settings.yaml의 cluster_graph.max_cluster_size 10 → 15 편집
 graphrag index --root .                                           # LLM $ 재인덱싱: 약 6.5분, $0.92. 캐시 새로(rm -rf cache/) 권장.
-# 2) output/ 전체를 results/snapshots/exp2_max15/로 복사
+# 2) output/ 전체를 archive/snapshots/exp2_max15/로 복사
 ```
 
-산출: `results/snapshots/exp2_max15/` (parquet 7 + lancedb 3), `logs/exp2_results.json`, `logs/exp2_run.log`, 리포트 `results/reports/01_max15.md`.
+산출: `archive/snapshots/exp2_max15/` (parquet 7 + lancedb 3), `logs/exp2_results.json`, `logs/exp2_run.log`, 리포트 `archive/reports/01_max15.md`.
 
 ### exp3: 재현성 + max 순수 효과
 
@@ -75,7 +75,7 @@ graphrag index --root .                                           # LLM $ 묶기
 graphrag index --root .                                           # LLM $ 묶기 재실행: 약 1.1분, +$0.05. (snap_max20)
 ```
 
-산출: `results/snapshots/{snap_max10,snap_max20,repro_run2,repro_run3}/`, `logs/{snap_max10,snap_max20,repro_run2,repro_run3}_{results.json,run.log}`. 리포트 `results/reports/02_snap_max{10,20}.md`, `03_repro_step{1,2,3}_*.md`.
+산출: `archive/snapshots/{snap_max10,snap_max20,repro_run2}/`, `results/snapshots/repro_run3/`, `logs/{snap_max10,snap_max20,repro_run2,repro_run3}_{results.json,run.log}`. 리포트 `archive/reports/02_snap_max{10,20}.md`, `03_repro_step{1,2,3}_*.md`.
 
 ### exp4: use_lcc=true
 
@@ -84,109 +84,109 @@ graphrag index --root .                                           # LLM $ 묶기
 graphrag index --root .                                           # LLM $ 묶기 재실행: 약 1.5분, +$0.10. 357 → 245 ent (112개 소실).
 ```
 
-산출: `results/snapshots/exp4_lcc_true/` (`missing_analysis_full.txt` 포함), `logs/exp4_lcc_results.json`, `logs/exp4_lcc_run.log`, `logs/exp4_missing_analysis.txt`. 리포트 `results/reports/04_use_lcc.md`.
+산출: `archive/snapshots/exp4_lcc_true/` (`missing_analysis_full.txt` 포함), `logs/exp4_lcc_results.json`, `logs/exp4_lcc_run.log`, `logs/exp4_missing_analysis.txt`. 리포트 `archive/reports/04_use_lcc.md`.
 
 ### exp5: 방 병합(type · 임베딩 · LLM)
 
-상세는 `results/exp05_stage2_merge/COMMANDS.md`. 요약:
+상세는 `archive/exp05_stage2_merge/COMMANDS.md`. 요약:
 
 ```
-python results/exp05_stage2_merge/exp5_embed.py                                 # LLM 없음, $0. 사전 lancedb 임베딩 read-only, ward 병합 stage2(K=5/8/10). 결정적.
-python results/exp05_stage2_merge/exp5_llm.py                                   # LLM $ v1 partition (16/16 전부 실패 기록용).
-python results/exp05_stage2_merge/exp5_llm_v2.py                                # LLM $ v2 assignment (K=5 × 3런, valid 통과).
-python results/exp05_stage2_merge/type_select_test.py                           # LLM 없음, $0. entity type keep/demote 분류 점검(API 0건).
+python archive/exp05_stage2_merge/exp5_embed.py                                 # LLM 없음, $0. 사전 lancedb 임베딩 read-only, ward 병합 stage2(K=5/8/10). 결정적.
+python archive/exp05_stage2_merge/exp5_llm.py                                   # LLM $ v1 partition (16/16 전부 실패 기록용).
+python archive/exp05_stage2_merge/exp5_llm_v2.py                                # LLM $ v2 assignment (K=5 × 3런, valid 통과).
+python archive/exp05_stage2_merge/type_select_test.py                           # LLM 없음, $0. entity type keep/demote 분류 점검(API 0건).
 ```
 
-산출: `results/exp05_stage2_merge/stage2_emb_K{5,8,10}.json`, `stage2_llm_v2_K5_run{1,2,3}.json`, `llm_reliability.json`, `llm_v2_reliability.json`, `embed_silhouette_summary.json`, `embed_reliability.json`, `entity_breakdown_v2.html`, `llm_v2_raw/run{1,2,3}.txt`, `llm_merge_probe.md`.
+산출: `archive/exp05_stage2_merge/stage2_emb_K{5,8,10}.json`, `stage2_llm_v2_K5_run{1,2,3}.json`, `llm_reliability.json`, `llm_v2_reliability.json`, `embed_silhouette_summary.json`, `embed_reliability.json`, `entity_breakdown_v2.html`, `llm_v2_raw/run{1,2,3}.txt`, `llm_merge_probe.md`.
 
 ### exp6: 직접 ward vs community 병합
 
 ```
-python results/exp06_room_probe/probe.py                           # 결정적, LLM 없음. 약 30초.
+python archive/exp06_room_probe/probe.py                           # 결정적, LLM 없음. 약 30초.
 ```
 
-산출: `results/exp06_room_probe/report.md`.
+산출: `archive/exp06_room_probe/report.md`.
 
 ### exp7: 방 위 LLM 레이어(rubric · 3런 안정성)
 
 ```
-python results/exp07_keep_demote/probe.py                                      # LLM $ 3런 × (rubric 1 + 클러스터 10) = 33회 호출.
+python archive/exp07_keep_demote/probe.py                                      # LLM $ 3런 × (rubric 1 + 클러스터 10) = 33회 호출.
 ```
 
-산출: `results/exp07_keep_demote/report.md`, `results/exp07_keep_demote/raw/run{1,2,3}/{stage_a.txt, stage_b_cluster{0..9}.txt}`.
+산출: `archive/exp07_keep_demote/report.md`, `archive/exp07_keep_demote/raw/run{1,2,3}/{stage_a.txt, stage_b_cluster{0..9}.txt}`.
 
 ### exp8: 목차/섹션 feasibility
 
 ```
-python results/exp08_toc_feasibility/probe.py                      # 결정적, LLM 없음. 텍스트 정규식 + parquet 매핑.
+python archive/exp08_toc_feasibility/probe.py                      # 결정적, LLM 없음. 텍스트 정규식 + parquet 매핑.
 ```
 
-산출: `results/exp08_toc_feasibility/report.md`.
+산출: `archive/exp08_toc_feasibility/report.md`.
 
 ### exp9: 청킹 비교(semantic vs pagesplit)
 
 ```
-python results/exp09_rechunk/build_inputs.py                       # LLM 없음. input/ → proj_{semantic,pagesplit}/input/*_docs.json.
-python results/exp09_rechunk/run_verify.py                         # LLM 없음. text_units 행 수 사전검증.
-python results/exp09_rechunk/run_full.py                           # LLM $ 재인덱싱 (community_reports 빠진 풀 파이프라인). semantic ~7분, pagesplit ~18분. ±10 흔들림.
-python results/exp09_rechunk/eval_run.py semantic_run1             # LLM 없음. eval_semantic_run1.json 생성. (positional 인자, --label 없음)
-python results/exp09_rechunk/eval_run.py pagesplit_run1            # LLM 없음. eval_pagesplit_run1.json 생성.
+python archive/exp09_rechunk/build_inputs.py                       # LLM 없음. input/ → proj_{semantic,pagesplit}/input/*_docs.json.
+python archive/exp09_rechunk/run_verify.py                         # LLM 없음. text_units 행 수 사전검증.
+python archive/exp09_rechunk/run_full.py                           # LLM $ 재인덱싱 (community_reports 빠진 풀 파이프라인). semantic ~7분, pagesplit ~18분. ±10 흔들림.
+python archive/exp09_rechunk/eval_run.py semantic_run1             # LLM 없음. eval_semantic_run1.json 생성. (positional 인자, --label 없음)
+python archive/exp09_rechunk/eval_run.py pagesplit_run1            # LLM 없음. eval_pagesplit_run1.json 생성.
 ```
 
-산출: `results/snapshots/{semantic,pagesplit}_run1/` (entity_description.lance 포함, community_reports/text_unit_text 테이블 없음), `results/exp09_rechunk/eval_{semantic,pagesplit}_run1.json`, `comparison.md`, `logs/exp9_*.log`, `logs/{semantic_run1,pagesplit_run1}/indexing-engine.log`.
+산출: `archive/snapshots/{semantic,pagesplit}_run1/` (entity_description.lance 포함, community_reports/text_unit_text 테이블 없음), `archive/exp09_rechunk/eval_{semantic,pagesplit}_run1.json`, `comparison.md`, `logs/exp9_*.log`, `logs/{semantic_run1,pagesplit_run1}/indexing-engine.log`.
 
 ### exp10: end-to-end 방 제너레이터
 
 ```
-.venv/Scripts/python.exe results/exp10_room_gen/run_repro_run3.py --dry   # LLM 없음. 파이프라인 모양만 출력.
-.venv/Scripts/python.exe results/exp10_room_gen/run_repro_run3.py         # LLM $ 4 combo(K=10/5 × embedding/llm) = 33회 호출, ~105초.
-python results/exp10_room_gen/eval_rooms.py --spec results/rooms/<run_id>.json --anchors results/exp10_room_gen/anchors_korean_history.json   # LLM 없음. 단일 spec 재평가.
+.venv/Scripts/python.exe archive/exp10_room_gen/run_repro_run3.py --dry   # LLM 없음. 파이프라인 모양만 출력.
+.venv/Scripts/python.exe archive/exp10_room_gen/run_repro_run3.py         # LLM $ 4 combo(K=10/5 × embedding/llm) = 33회 호출, ~105초.
+python archive/exp10_room_gen/eval_rooms.py --spec archive/rooms/<run_id>.json --anchors archive/exp10_room_gen/anchors_korean_history.json   # LLM 없음. 단일 spec 재평가.
 ```
 
-산출: `results/rooms/repro_run3_K{5,10}_{embedding,llm}.{json,md,eval.json}` (4 combo × 3 파일), rubric 캐시 `cache/exp10_room_gen/rubric_repro_run3.json` (한 번만 도출), `results/rooms/dump_repro_run3_K10_embedding.txt` (사람 읽기용 덤프).
+산출: `archive/rooms/repro_run3_K{5,10}_{embedding,llm}.{json,md,eval.json}` (4 combo × 3 파일), rubric 캐시 `cache/exp10_room_gen/rubric_repro_run3.json` (한 번만 도출), `archive/rooms/dump_repro_run3_K10_embedding.txt` (사람 읽기용 덤프).
 
 ### exp11: K(방 수) sweep
 
 ```
-python results/exp11_k_sweep/sweep_runner.py                       # LLM 없음. K=2..10 결정적 sweep(embedding merge). 같은 K 두 번 호출해 결정성 점검 포함.
-python results/exp11_k_sweep/sweep_analyze.py                      # LLM 없음. sweep 결과 + results/rooms/ 기존 K5/K10 embedding 결과 읽어 분석 출력.
+python archive/exp11_k_sweep/sweep_runner.py                       # LLM 없음. K=2..10 결정적 sweep(embedding merge). 같은 K 두 번 호출해 결정성 점검 포함.
+python archive/exp11_k_sweep/sweep_analyze.py                      # LLM 없음. sweep 결과 + archive/rooms/ 기존 K5/K10 embedding 결과 읽어 분석 출력.
 ```
 
-산출: `results/exp11_k_sweep/sweep_K{2..10}.json` (9개), 리포트 `results/exp11_k_sweep/report.md`.
+산출: `archive/exp11_k_sweep/sweep_K{2..10}.json` (9개), 리포트 `archive/exp11_k_sweep/report.md`.
 
 ### exp12: Stage B n=3 안정성
 
 ```
-python results/exp12_n3_stability/run_n3.py                        # LLM $ K∈{10,5} × n=3 × 클러스터 10 = 60 호출 (rubric 캐시 hit, Stage A 0회).
-python results/exp12_n3_stability/aggregate_n3.py                  # LLM 없음. 다수결 + flip rate + 앵커 hit 재계산.
+python archive/exp12_n3_stability/run_n3.py                        # LLM $ K∈{10,5} × n=3 × 클러스터 10 = 60 호출 (rubric 캐시 hit, Stage A 0회).
+python archive/exp12_n3_stability/aggregate_n3.py                  # LLM 없음. 다수결 + flip rate + 앵커 hit 재계산.
 ```
 
-산출: `results/exp12_n3_stability/K{10,5}_run{1,2,3}.json` (6개), 리포트 `results/exp12_n3_stability/report.md`. rubric 캐시는 `cache/exp10_room_gen/rubric_repro_run3.json`(exp10에서 1회 도출).
+산출: `archive/exp12_n3_stability/K{10,5}_run{1,2,3}.json` (6개), 리포트 `archive/exp12_n3_stability/report.md`. rubric 캐시는 `cache/exp10_room_gen/rubric_repro_run3.json`(exp10에서 1회 도출).
 
 ### exp13: generic 사전 제거(degree pre-cut)
 
 ```
-python results/exp13_generic_filter/run_filter.py                  # LLM 없음. N∈{0,10,20,30} degree 상위 제거 후 같은 결정적 파이프라인(K=10).
-python results/exp13_generic_filter/analyze_filter.py              # LLM 없음. 앵커 부작용·방 균형·이성계 위치 변화 분석.
+python archive/exp13_generic_filter/run_filter.py                  # LLM 없음. N∈{0,10,20,30} degree 상위 제거 후 같은 결정적 파이프라인(K=10).
+python archive/exp13_generic_filter/analyze_filter.py              # LLM 없음. 앵커 부작용·방 균형·이성계 위치 변화 분석.
 ```
 
-산출: `results/exp13_generic_filter/filter_N{0,10,20,30}.json` (4개), 리포트 `results/exp13_generic_filter/report.md`.
+산출: `archive/exp13_generic_filter/filter_N{0,10,20,30}.json` (4개), 리포트 `archive/exp13_generic_filter/report.md`.
 
 ### exp14: overlap200 step-3 재현성(n=3)
 
 overlap200 아이디어의 step-3(LLM이 GraphRAG 커뮤니티+엔티티를 받아 학습용 방을 설계)에 대한 충실 재구현 + 같은 frozen 입력에 3런 일치도 측정. 팀원 최종 코드와 동일 동작은 보장 안 함, 접근 방식 재현성만. 모델 `gpt-4.1-mini`, temp=0. 입력은 `results/snapshots/repro_run3/`의 level-0 커뮤니티(40) + community report + 엔티티 357.
 
-**결과만 보려면(실행 불필요)**: repo pull 후 `results/exp14_overlap200_stability/report.md`를 열면 된다. 리포트는 사람이 쓴 요약이고 git에 이미 트래킹돼 있어 돌리지 않아도 보임. 함께 트래킹돼 있어 같이 보면 좋은 산출: `run{1,2,3}.json`(3런 원본), `agreement.json`(자카드·앵커·이성계 stability 집계), `frozen_input.json`(3런 공통 입력).
+**결과만 보려면(실행 불필요)**: repo pull 후 `archive/exp14_overlap200_stability/report.md`를 열면 된다. 리포트는 사람이 쓴 요약이고 git에 이미 트래킹돼 있어 돌리지 않아도 보임. 함께 트래킹돼 있어 같이 보면 좋은 산출: `run{1,2,3}.json`(3런 원본), `agreement.json`(자카드·앵커·이성계 stability 집계), `frozen_input.json`(3런 공통 입력).
 
 **직접 돌리려면**: Azure(`gpt-4.1-mini` deployment) 호출 필요. 없으면 위 "결과만 보려면" 경로로. "사전 준비" 완료 후 아래 3 명령을 **순서대로** 실행해 새 산출을 만든다(이전 산출은 덮어쓴다).
 
 ```
-.venv/Scripts/python.exe results/exp14_overlap200_stability/build_input.py     # LLM 없음. snapshot → frozen_input.json (3런 공통 입력 고정).
-.venv/Scripts/python.exe results/exp14_overlap200_stability/run_design.py --n 3 # LLM $ 한 런 = 1 호출, 3런 = 3 호출. 합 prompt~91K + completion~43K 토큰, 런당 ~2분 (총 ~6분).
-.venv/Scripts/python.exe results/exp14_overlap200_stability/analyze.py         # LLM 없음. 자카드 greedy 매칭 + 앵커·이성계 stability → agreement.json + 콘솔 일치도 표.
+.venv/Scripts/python.exe archive/exp14_overlap200_stability/build_input.py     # LLM 없음. snapshot → frozen_input.json (3런 공통 입력 고정).
+.venv/Scripts/python.exe archive/exp14_overlap200_stability/run_design.py --n 3 # LLM $ 한 런 = 1 호출, 3런 = 3 호출. 합 prompt~91K + completion~43K 토큰, 런당 ~2분 (총 ~6분).
+.venv/Scripts/python.exe archive/exp14_overlap200_stability/analyze.py         # LLM 없음. 자카드 greedy 매칭 + 앵커·이성계 stability → agreement.json + 콘솔 일치도 표.
 ```
 
-새로 만들어지는 산출: `results/exp14_overlap200_stability/`의 `frozen_input.json`, `run{1,2,3}.json`, `agreement.json` + `analyze.py` 콘솔 표(일치도 aggregate/pairwise + 앵커 요약 + 이성계 per-run). `report.md`는 사람이 쓴 요약이라 자동으로 갱신되지 않음(필요시 손으로 갱신).
+새로 만들어지는 산출: `archive/exp14_overlap200_stability/`의 `frozen_input.json`, `run{1,2,3}.json`, `agreement.json` + `analyze.py` 콘솔 표(일치도 aggregate/pairwise + 앵커 요약 + 이성계 per-run). `report.md`는 사람이 쓴 요약이라 자동으로 갱신되지 않음(필요시 손으로 갱신).
 
 부분 재실행: `run_design.py --n 1 --start 3`이면 run3만 다시 돈다(전후 `analyze.py`로 일치도 재계산).
 

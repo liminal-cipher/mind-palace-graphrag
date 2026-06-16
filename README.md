@@ -4,7 +4,7 @@
 
 ## 정본은 `palace/`
 
-여기만 보면 된다. 나머지 `results/exp*`, `results/pipeline`은 정본이 확정되기까지의 실험 아카이브이고, 각 폴더에 `ARCHIVED.md`로 동결 표시돼 있다. 정본 파이프라인의 레이아웃·동작·실행 명령은 [palace/README.md](./palace/README.md), 재현 절차 한 장은 [results/RUNBOOK.md](./results/RUNBOOK.md), 실험 누적 narrative는 [results/EXPERIMENTS.md](./results/EXPERIMENTS.md) 참조.
+여기만 보면 된다. 나머지 `archive/exp*`, `archive/pipeline`은 정본이 확정되기까지의 실험 아카이브이고, 각 폴더에 `ARCHIVED.md`로 동결 표시돼 있다. 정본 파이프라인의 레이아웃·동작·실행 명령은 [palace/README.md](./palace/README.md), 재현 절차 한 장은 [results/RUNBOOK.md](./results/RUNBOOK.md), 실험 누적 narrative는 [results/EXPERIMENTS.md](./results/EXPERIMENTS.md) 참조.
 
 ## 환경 준비
 
