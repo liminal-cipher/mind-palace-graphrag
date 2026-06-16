@@ -1,7 +1,7 @@
 # image-caption matching accuracy (2026-06-11, v2)
 
 - palace: `palace/handoff/repro_run3_K6_toc.palace.json`
-- snapshot: `results/snapshots/repro_run3`
+- snapshot: `snapshots/repro_run3`
 - figures dir: `input/img_국사`
 - captions: `input/extracted_figures.md`
 - pagesplit: `input/history_joseon_pagesplit.txt`

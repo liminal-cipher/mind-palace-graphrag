@@ -1,7 +1,7 @@
 [
   {
     "row": 4,
-    "path": "input/korean_history/img/fig_6_3.png",
+    "path": "images/fig_6_3.png",
     "page": 6,
     "caption_title": "교린지",
     "caption": "교린지 | 일본, 여진 등과의 교린 정책과 외교사를 정리한 책이다.",
@@ -10,7 +10,7 @@
   },
   {
     "row": 6,
-    "path": "input/korean_history/img/fig_7_3.png",
+    "path": "images/fig_7_3.png",
     "page": 7,
     "caption_title": "왜관도",
     "caption": "왜관도(국립 중앙 박물관 소장) | 왜관은 부산 초량의 일본인들이 살던 곳이다.",
@@ -19,7 +19,7 @@
   },
   {
     "row": 12,
-    "path": "input/korean_history/img/fig_12_2.png",
+    "path": "images/fig_12_2.png",
     "page": 12,
     "caption_title": "영릉",
     "caption": "영릉 | 경기 여주 세종 대왕과 소헌 왕후의 능이다.",
@@ -28,7 +28,7 @@
   },
   {
     "row": 17,
-    "path": "input/korean_history/img/fig_17_2.png",
+    "path": "images/fig_17_2.png",
     "page": 17,
     "caption_title": "필암 서원 확연루",
     "caption": "필암 서원 확연루 | 전남 장성 운 서원이다. 김인후를 추모하기 위해 그의 고향에 세",
@@ -37,7 +37,7 @@
   },
   {
     "row": 23,
-    "path": "input/korean_history/img/fig_28_2.png",
+    "path": "images/fig_28_2.png",
     "page": 28,
     "caption_title": "봉사도",
     "caption": "봉사도 | 조선 후기에 청의 사신을 맞이하는 그림이다.",
@@ -46,7 +46,7 @@
   },
   {
     "row": 25,
-    "path": "input/korean_history/img/fig_31_2.png",
+    "path": "images/fig_31_2.png",
     "page": 31,
     "caption_title": "이완이 썼던 투구",
     "caption": "이완이 썼던 투구(경기도 박물관 소장)",
@@ -55,7 +55,7 @@
   },
   {
     "row": 28,
-    "path": "input/korean_history/img/fig_36_2.png",
+    "path": "images/fig_36_2.png",
     "page": 36,
     "caption_title": "대장간",
     "caption": "대장간 | 김홍도 땀흘려 일 하는 조선 후기 서민들의 모습을 사실적으로 그렸다.",
@@ -64,7 +64,7 @@
   },
   {
     "row": 30,
-    "path": "input/korean_history/img/fig_37_4.png",
+    "path": "images/fig_37_4.png",
     "page": 37,
     "caption_title": "거중기 모형",
     "caption": "거중기 모형(경기도 박물관) | 화성을 쌓을 때에 사용하 였다.",
@@ -73,7 +73,7 @@
   },
   {
     "row": 31,
-    "path": "input/korean_history/img/fig_38_2.png",
+    "path": "images/fig_38_2.png",
     "page": 38,
     "caption_title": "옥산 서원",
     "caption": "옥산 서원 ㅣ 경북 경주 이언적을 추모하여 세운 서원이다.",
@@ -82,7 +82,7 @@
   },
   {
     "row": 34,
-    "path": "input/korean_history/img/fig_49_2.png",
+    "path": "images/fig_49_2.png",
     "page": 49,
     "caption_title": "논갈이",
     "caption": "논갈이 | 김홍도",

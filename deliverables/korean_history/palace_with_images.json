@@ -12,7 +12,7 @@
     "room_count": 6,
     "generated_at": "2026-06-11T17:40:11.385022+00:00",
     "pipeline": {
-      "snapshot": "results/snapshots/repro_run3",
+      "snapshot": "snapshots/repro_run3",
       "k": 6,
       "merge": "toc",
       "embedding_model": "text-embedding-3-small",
@@ -112,7 +112,7 @@
           ],
           "images": [
             {
-              "path": "input/korean_history/img/fig_5_3.png",
+              "path": "images/fig_5_3.png",
               "caption": "호패 | 오늘날의 주민 등록증과 같은 것으로, 16세 이상의 남성이 들고 다녔던 신분 증명패이다.",
               "score": 0.804
             }
@@ -214,7 +214,7 @@
           ],
           "images": [
             {
-              "path": "input/korean_history/img/fig_6_2.png",
+              "path": "images/fig_6_2.png",
               "caption": "경국대전 | 세조 때 편찬을 시작하여 성종 때 완성한, 조선 시대의 기본 법전이다.",
               "score": 1.283
             }
@@ -327,7 +327,7 @@
           "description": "조선은 1392년에 이성계가 건국한 한반도의 왕조로, 유교 이념을 중심으로 관료제를 운영하며 중앙집권 체제를 강화하였다. 이 왕조는 영토 확장과 대외 교류를 활발히 추진하는 한편, 통치 제도를 정비하여 안정된 국가 운영을 도모하였다. 또한 농업과 문화의 발전에 힘쓰면서 조선 사회의 기반을 튼튼히 하였고, 유교적 가치관을 토대로 행정과 교육 체계를 구축하여 한반도의 정치적·사회적 질서를 확립하는 데 중요한 역할을 하였다.",
           "images": [
             {
-              "path": "input/korean_history/img/fig_9_2.png",
+              "path": "images/fig_9_2.png",
               "caption": "조선의 8도",
               "score": 0.66
             }
@@ -544,7 +544,7 @@
           "description": "조선 왕조 건국 초기 100년간의 시기로, 나라의 기틀 확립과 역사서 및 지리서 편찬이 이루어진 시기이다",
           "images": [
             {
-              "path": "input/korean_history/img/fig_11_2.png",
+              "path": "images/fig_11_2.png",
               "caption": "조선 시대의 조창과 조운",
               "score": 0.897
             }
@@ -656,7 +656,7 @@
           "description": "세종 때 최윤덕이 설치한 북쪽 국경 방어를 위한 군사 기지>",
           "images": [
             {
-              "path": "input/korean_history/img/fig_7_2.png",
+              "path": "images/fig_7_2.png",
               "caption": "4군과 6진",
               "score": 0.981
             }
@@ -894,7 +894,7 @@
           "description": "문자를 익히고 초보적인 유학 지식과 한문을 배우는 교육 기관이며, 주로 양반 자제가 아닌 양인이상도 대상이 되었다",
           "images": [
             {
-              "path": "input/korean_history/img/fig_10_2.png",
+              "path": "images/fig_10_2.png",
               "caption": "서당 | 김홍도",
               "score": 0.783
             }
@@ -915,7 +915,7 @@
           "description": "서울 외 각 지방 군·현에 설치된 교육 기관으로, 소학과 사서 등 유교 경전을 공부하였다",
           "images": [
             {
-              "path": "input/korean_history/img/fig_10_2.png",
+              "path": "images/fig_10_2.png",
               "caption": "향교 알성도 | 김홍도",
               "score": 0.879
             }
@@ -1013,7 +1013,7 @@
           "description": "지방의 중요한 읍에 쌓아 올린 성으로, 방어를 튼튼히 하는 역할을 하였다",
           "images": [
             {
-              "path": "input/korean_history/img/fig_10_3.png",
+              "path": "images/fig_10_3.png",
               "caption": "고창 읍성 | 전북 고창 호남 지방을 방어하는 요충지였다.",
               "score": 0.804
             }
@@ -1132,7 +1132,7 @@
           "description": "세종 대왕이 1446년에 창제하여 반포한 독창적이고 과학적인 한글 문자로, 모든 사람이 쉽게 배우고 익힐 수 있는 우수한 문자이다",
           "images": [
             {
-              "path": "input/korean_history/img/fig_12_3.png",
+              "path": "images/fig_12_3.png",
               "caption": "훈민정음(언해본)",
               "score": 0.849
             }
@@ -1188,7 +1188,7 @@
           "description": "조선 왕조의 역사를 상세히 기록한 공식 역사책으로, 조선 초기 편찬되어 역사 연구 및 행정에 활용되었다",
           "images": [
             {
-              "path": "input/korean_history/img/fig_13_2.png",
+              "path": "images/fig_13_2.png",
               "caption": "조선왕조실록 | 조선 시대의 역사와 문화를 이해하는 데 기본이 되는 사서이다.",
               "score": 1.206
             }
@@ -1279,7 +1279,7 @@
           "description": "조선 전기에 서양보다 약 200년 앞서 제작된 강수량 측정 기기로서 농업에 적극 활용되어 농사 혁신에 이바지하였다",
           "images": [
             {
-              "path": "input/korean_history/img/fig_13_4.png",
+              "path": "images/fig_13_4.png",
               "caption": "측우기 | 서울의 관상감과 각 지방 군 · 현 에 측우기를 설치하여 강수량을 측정하였다.",
               "score": 1.086
             }
@@ -1342,7 +1342,7 @@
           "description": "성종 때 영남 출신 사림 세력의 중추 인물로, 고려 말 정몽주와 길재의 학통을 이어받아 사림 정치 성장에 큰 영향을 끼쳤다",
           "images": [
             {
-              "path": "input/korean_history/img/fig_16_2.png",
+              "path": "images/fig_16_2.png",
               "caption": "김종직 교지 | 김종직은 고려 말 정몽주, 길재의 학통을 이어받아 조선 시대 도학(道學)의 맥을 이어 가는 중추적 역할을 하였다.",
               "score": 1.114
             }
@@ -1407,7 +1407,7 @@
           "related": [],
           "images": [
             {
-              "path": "input/korean_history/img/fig_18_2.png",
+              "path": "images/fig_18_2.png",
               "caption": "농사직설",
               "score": 1.054
             }
@@ -1496,7 +1496,7 @@
           ],
           "images": [
             {
-              "path": "input/korean_history/img/fig_2_2.png",
+              "path": "images/fig_2_2.png",
               "caption": "도산 서원 ㅣ 경북 안동 사림은 서원을 세워 학문 연구와 교육에 힘썼다.",
               "score": 0.838
             }
@@ -1796,7 +1796,7 @@
           ],
           "images": [
             {
-              "path": "input/korean_history/img/fig_25_2.png",
+              "path": "images/fig_25_2.png",
               "caption": "충무공 이순신 영정",
               "score": 0.832
             }
@@ -2152,7 +2152,7 @@
           "description": "소수 서원은 조선 중기 대표적인 서원으로, 본래 백운동 서원이라 불렸으며, 조선 유학자 이황의 건의에 따라 왕이 공식 현판을 내린 서원이다. 이로 인해 국가지원을 받으며 영남 지방을 중심으로 서원 제도가 확산되는 데 중요한 역할을 했다. 소수 서원은 한국 유교 교육과 학문 연구의 중심지로 자리매김하였고, 특히 영남 지역에서 서원 설립과 운영을 촉진하는 모델이 되었다.",
           "images": [
             {
-              "path": "input/korean_history/img/fig_19_3.png",
+              "path": "images/fig_19_3.png",
               "caption": "소수 서원의 명륜당 ㅣ 경북 영주 서원은 제사와 교육의 기능을 가졌는데. 명륜당은 학문을 익히는 교실이 었다.",
               "score": 1.028
             }
@@ -2264,7 +2264,7 @@
           "description": "유정(사명대사)은 승려 출신으로 조선 시대 의병 운동에 적극 참여하여 왜군과 맞서 싸운 인물이다. 그는 단순한 승려가 아니라 조선 방위를 위해 몸소 무장 투쟁에 나선 대표적인 승병 지도자로서, 불교계의 저항 정신을 체현하며 지역 사회에서 중요한 항일 저항 세력으로 활동하였다. 유정은 승려로서의 종교적 신분을 바탕으로 의병 조직과 연계해 조국 수호에 앞장섰으며, 그의 역할은 단순한 군사적 투쟁을 넘어 조선의 민족 독립 의지를 상징하는 사례로 평가된다.",
           "images": [
             {
-              "path": "input/korean_history/img/fig_25_3.png",
+              "path": "images/fig_25_3.png",
               "caption": "유정(사명대사) 영정",
               "score": 1.037
             }
@@ -2327,7 +2327,7 @@
           "description": "조선에서 일본으로 파견된 공식 외교 사절단으로 일본 에도까지 방문하여 막부와 외교를 진행하고 문화 교류와 협력을 촉진하였다. 일본 내에서 조선 문화가 확산되는 계기가 되었고 19세기 초까지 활동하였다",
           "images": [
             {
-              "path": "input/korean_history/img/fig_27_3.png",
+              "path": "images/fig_27_3.png",
               "caption": "통신사 행렬도(국사 편찬 위원회 소장) |  조선의 통신사 일행을 맞이하기 위해 일본측에 서 그린 배치도의 일부분이다.",
               "score": 0.961
             }
@@ -2411,7 +2411,7 @@
           "description": "1627년 후금군이 조선 사회 혼란을 틈타 압록강을 넘어 침략한 사건으로, 조선과 후금은 일시 화의를 맺음",
           "images": [
             {
-              "path": "input/korean_history/img/fig_30_2.png",
+              "path": "images/fig_30_2.png",
               "caption": "정묘호란과 병자호란",
               "score": 0.959
             }
@@ -2439,7 +2439,7 @@
           "description": "효종 시기 북벌 운동에 참여하며 군사력 강화와 성곽 수축 작업에 관여한 인물",
           "images": [
             {
-              "path": "input/korean_history/img/fig_39_2.png",
+              "path": "images/fig_39_2.png",
               "caption": "송시열 초상(호암 미술관 소장) | 효종~숙종 때의 학자, 관료로서 서인(노론)의 중심 인물이 었다.",
               "score": 0.969
             }
@@ -2453,7 +2453,7 @@
           "description": "효종 시대 북벌 운동의 주역 중 하나로, 성곽 보수 및 군대 양성에 힘씀",
           "images": [
             {
-              "path": "input/korean_history/img/fig_31_3.png",
+              "path": "images/fig_31_3.png",
               "caption": "이완에게 내린 홍패 교지(경기도 박물관 소장) | 홍패는 문과나 무과에 급제한 사람에게 발급되는 증서 이다.",
               "score": 0.807
             }
@@ -2682,7 +2682,7 @@
           ],
           "images": [
             {
-              "path": "input/korean_history/img/fig_37_3.png",
+              "path": "images/fig_37_3.png",
               "caption": "영조 어진(국립 고궁 박물관 소장) | 영조는 탕평책을 실시하여 왕권을 강화하고자 하였다.",
               "score": 1.056
             }
@@ -2712,7 +2712,7 @@
           "description": "조선이 두 차례에 걸쳐 조총 부대를 출병시켜 청과 함께 러시아를 물리친 군사 작전이다",
           "images": [
             {
-              "path": "input/korean_history/img/fig_31_4.png",
+              "path": "images/fig_31_4.png",
               "caption": "나선 정벌",
               "score": 0.901
             }
@@ -2753,7 +2753,7 @@
           "related": [],
           "images": [
             {
-              "path": "input/korean_history/img/fig_40_2.png",
+              "path": "images/fig_40_2.png",
               "caption": "탕평비 ㅣ 서울 성균관 대학교 구내",
               "score": 0.846
             }
@@ -3928,7 +3928,7 @@
   ],
   "image_matching": {
     "ran_at": "2026-06-11T18:39:49+00:00",
-    "source_palace": "palace/handoff/korean_history.palace.json",
+    "source_palace": "deliverables/korean_history/palace.json",
     "threshold_local": 0.45,
     "threshold_cascade": 0.55,
     "name_match_bonus": 0.5,

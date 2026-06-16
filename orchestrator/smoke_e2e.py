@@ -237,7 +237,7 @@ def _check_ai_school(api_palace: dict, fails: list[str], notes: list[str]) -> No
 def _check_live(job_id: str, api_palace: dict, fails: list[str], notes: list[str]) -> None:
     """라이브 인덱싱 경로(진짜 graphrag index). 느슨한 구조 검증 + 프리베이크로 안
     샜는지 확인: 잡 스냅샷이 var/jobs/<id>/index_root/output 이어야 한다(국사/통계
-    프리베이크 results/snapshots 가 아니라)."""
+    프리베이크 snapshots 가 아니라)."""
     room_count, kept, demoted = _palace_totals(api_palace)
     names = [r.get("name") for r in api_palace.get("rooms", [])]
     notes.append(f"room_count={room_count} kept={kept} demoted={demoted}")

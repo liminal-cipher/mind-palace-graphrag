@@ -7,7 +7,7 @@
     PALACE_CONFIGS 는 SHOWCASE_SNAPSHOTS 와 분리돼 있어 scaffold 가정이 안 샌다.
   - build_palace: 진짜. palace/run.py 를 subprocess 로 구동해 per-job config 로 방을
     빌드한다. korean_history 는 frozen_toc -> rooms 만, 그 외는 full(toc+클램프+rooms).
-    모든 출력/캐시는 var/jobs/<id>/ 로 격리(잡마다 새 캐시 = cold). results/snapshots 는
+    모든 출력/캐시는 var/jobs/<id>/ 로 격리(잡마다 새 캐시 = cold). snapshots 는
     읽기 전용.
   - rag: 진짜. 빌드/매핑된 스냅샷을 serve 에 register.
 
@@ -76,7 +76,7 @@ async def _index_scaffold(job: Job, store: JobStore, sleep_seconds: float) -> No
         raise ValueError(
             f"미지원 showcase '{job.showcase_key}'. 지원: {supported}."
         )
-    # 결정 기록은 잡 폴더(var, 쓰기 가능)에만. 가리키는 스냅샷 dir(results/snapshots)은
+    # 결정 기록은 잡 폴더(var, 쓰기 가능)에만. 가리키는 스냅샷 dir(snapshots)은
     # 읽기 전용으로만 쓰므로 절대 건드리지 않는다.
     _touch(
         Path(job.snapshot_path).parent / "_index_scaffold.json",

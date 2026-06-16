@@ -12,16 +12,14 @@ logs/
 palace/tests/runs/
 
 # ai_school canary 인덱싱 산출물 (throwaway, 곧 재인덱싱)
-results/snapshots/ai_school/
+snapshots/ai_school/
 proj_ai_school/
 
 # 입력 자료 (저작물)
 input/
-results/exp09_rechunk/proj_pagesplit/input/
-results/exp09_rechunk/proj_semantic/input/
-# 쇼케이스 배포 자산: 팰리스가 참조하는 PNG 사본은 input/ 제외에서 되살림
-!data/showcases/images/input/
-!data/showcases/images/input/**
+archive/exp09_rechunk/proj_pagesplit/input/
+archive/exp09_rechunk/proj_semantic/input/
+# 게시 이미지(deliverables/<domain>/images/)는 input/ 밖이라 그대로 추적됨
 
 # 오케스트레이션 런타임 산출물 (잡 폴더 + SQLite, 재생성 가능)
 var/

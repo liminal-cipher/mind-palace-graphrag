@@ -5,9 +5,9 @@ showcase_api 앱이 하던) 팰리스 보기까지 superset 으로 서빙한다.
 JSON 과 그 PNG 들을 그대로 재사용한다(중복 사본 없음). serve 가 '/' 를 쓰므로 backend_app 은
 이 라우트들을 '/' 마운트 '앞'에 등록해 /palace·/images 로 충돌 없이 얹는다.
 
-데이터 위치: 레포 루트 data/showcases/. 팰리스 JSON 은 여기 평평하게 두고, 이미지는 단일
-정적 마운트 루트 data/showcases/images 아래에 input/<showcase>/img/... 구조로 둔다(노드의
-images[].path 를 그대로 미러하므로 URL 이 불변이다).
+데이터 위치: 레포 루트 deliverables/<name>/. 도메인마다 자기완결 폴더(palace_with_images.json
++ images/<file>.png)다. 노드의 images[].path 는 deliverable 상대('images/fig_5_3.png')이고,
+도메인을 URL 로 스코프해 GET /images/<name>/<file> 로 서빙한다.
 
 라이브 잡 팰리스는 여기 없다: orchestrator 가 이미 GET /jobs/{id}/palace 로 서빙하고,
 통합 앱에선 /orchestrator/jobs/{id}/palace 로 노출된다(프리베이크 쇼케이스 + 라이브 잡
@@ -17,17 +17,12 @@ from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
+DELIVERABLES = Path(__file__).resolve().parent / "deliverables"
 
-_SHOWCASE_DATA = Path(__file__).resolve().parent / "data" / "showcases"
-DATA_DIR = _SHOWCASE_DATA
-IMAGES_DIR = _SHOWCASE_DATA / "images"
-
-# 쇼케이스 이름 -> 동결 _with_images 팰리스 JSON(data/showcases 아래).
-# ai_school 미등록: 교안 _with_images 팰리스가 아직 없다(STOP-and-report). 데이터가
-# 생기면 여기 한 줄(`"ai_school": DATA_DIR / "ai_school_with_images.palace.json"`)만 추가.
+# 쇼케이스 이름 -> 자기완결 deliverable 폴더(deliverables/<name>/). 팰리스 JSON 과
+# 그 PNG(images/)가 한 폴더에 있다. 새 도메인은 deliverables/<name>/ 한 줄만 추가.
 SHOWCASE_PALACES: dict[str, Path] = {
-    "korean_history": DATA_DIR / "korean_history_with_images.palace.json",
+    "korean_history": DELIVERABLES / "korean_history" / "palace_with_images.json",
 }
 
 router = APIRouter()
@@ -49,7 +44,15 @@ def showcase_palace(name: str):
     return FileResponse(path, media_type="application/json")
 
 
-def images_staticfiles() -> StaticFiles:
-    """팰리스가 참조하는 PNG 정적 마운트(data/showcases/images). 노드의 images[].path 를
-    그대로 미러: 'input/korean_history/img/fig_5_3.png' -> GET /images/input/korean_history/img/fig_5_3.png."""
-    return StaticFiles(directory=IMAGES_DIR)
+@router.get("/images/{name}/{filename}")
+def showcase_image(name: str, filename: str):
+    """팰리스가 참조하는 PNG. 노드의 images[].path 는 deliverable 상대('images/fig_5_3.png')
+    이므로 도메인을 URL 로 스코프: GET /images/korean_history/fig_5_3.png ->
+    deliverables/korean_history/images/fig_5_3.png."""
+    if name not in SHOWCASE_PALACES:
+        raise HTTPException(status_code=404, detail=f"미등록 쇼케이스 '{name}'.")
+    img_root = (DELIVERABLES / name / "images").resolve()
+    path = (img_root / filename).resolve()
+    if img_root not in path.parents or not path.is_file():
+        raise HTTPException(status_code=404, detail=f"이미지 없음: {filename}")
+    return FileResponse(path)

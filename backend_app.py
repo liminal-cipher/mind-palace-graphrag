@@ -62,8 +62,7 @@ app.add_middleware(
 )
 
 # 라우트 등록 순서 = 매칭 우선순위. 더 구체적인 프리픽스를 serve 의 '/' 캐치올보다 먼저
-# 등록해야 한다: /orchestrator -> /palace -> /images -> 마지막에 '/'(serve).
+# 등록해야 한다: /orchestrator -> /palace·/images(router) -> 마지막에 '/'(serve).
 app.mount("/orchestrator", orchestrator_app)
-app.include_router(showcase_view.router)  # GET /palace/{name}
-app.mount("/images", showcase_view.images_staticfiles(), name="images")
+app.include_router(showcase_view.router)  # GET /palace/{name}, GET /images/{name}/{file}
 app.mount("/", serve_app)

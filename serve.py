@@ -57,7 +57,7 @@ ROOT = Path(__file__).resolve().parent
 
 # POST /snapshots/register는 내부 전용(127.0.0.1 바인드 전제, 외부 노출 금지). 임의
 # 파일시스템 경로 로드를 막기 위해, 등록 path는 이 루트들 아래만 허용한다:
-#   results/snapshots - showcase/검증 스냅샷
+#   snapshots - showcase/검증 스냅샷
 #   var/jobs          - 오케스트레이터 잡 산출물
 _ALLOWED_REGISTER_ROOTS = (
     ROOT / "results" / "snapshots",
@@ -68,8 +68,8 @@ _ALLOWED_REGISTER_ROOTS = (
 # 키 = run_id(제품/콘텐츠 정체성), 값 = 스냅샷 디렉터리(빌드/provenance, repo 상대).
 # 런타임에 추가 가능한 가변 dict(미래 오케스트레이터가 빌드 후 register).
 SNAPSHOTS: dict[str, str] = {
-    "korean_history": "results/snapshots/repro_run3",
-    "ai_school": "results/snapshots/ai_school",
+    "korean_history": "snapshots/repro_run3",
+    "ai_school": "snapshots/ai_school",
 }
 
 # 기본 스냅샷(snapshot 미지정 시). 국사 = canonical 데모.
@@ -244,7 +244,7 @@ class JobQueryRequest(BaseModel):
 
 
 def _validate_snapshot_path(path: str) -> Path:
-    """register path가 허용 루트(results/snapshots 또는 var/jobs) 아래인지 검증.
+    """register path가 허용 루트(snapshots 또는 var/jobs) 아래인지 검증.
     임의 파일시스템 경로 로드를 막는다. 통과 시 resolve된 절대 경로 반환."""
     p = Path(path)
     if not p.is_absolute():
@@ -254,7 +254,7 @@ def _validate_snapshot_path(path: str) -> Path:
         if p == root.resolve() or p.is_relative_to(root.resolve()):
             return p
     raise ValueError(
-        f"path '{path}' 허용 루트 밖. results/snapshots 또는 var/jobs 아래만 등록 가능."
+        f"path '{path}' 허용 루트 밖. snapshots 또는 var/jobs 아래만 등록 가능."
     )
 
 

@@ -12,7 +12,7 @@
     "room_count": 7,
     "generated_at": "2026-06-12T19:17:58.775818+00:00",
     "pipeline": {
-      "snapshot": "results/snapshots/repro_run3",
+      "snapshot": "snapshots/repro_run3",
       "k": 10,
       "merge": "toc",
       "embedding_model": "text-embedding-3-small",

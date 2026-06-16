@@ -1,7 +1,7 @@
 # image-caption matching accuracy (2026-06-12, v3)
 
-- palace: `palace/handoff/korean_history.palace.json`
-- snapshot: `results/snapshots/repro_run3`
+- palace: `deliverables/korean_history/palace.json`
+- snapshot: `snapshots/repro_run3`
 - figures dir: `input/korean_history/img`
 - captions: `input/korean_history/captions.md`
 - pagesplit: `input/korean_history/pagesplit.txt`

@@ -20,7 +20,7 @@
 
 ## 스냅샷
 
-- 위치: `results/snapshots/<name>/`. 작아서(개당 수 MB) repo에 같이 커밋한다. 재현은 재인덱싱이 아니라 이 스냅샷을 로드해서.
+- 위치: `snapshots/<name>/`. 작아서(개당 수 MB) repo에 같이 커밋한다. 재현은 재인덱싱이 아니라 이 스냅샷을 로드해서.
 - 새 이름은 `<descriptor>_run<N>` 권장 (예: `pagesplit_run1`, `semantic_run2`). 과거 명명(`repro_runN`, `snap_maxN`, `exp{N}_{var}`)은 grandfather라 그대로 둔다.
 - 한 스냅샷 = entities/relationships/communities/community_reports parquet + lancedb/ 한 묶음. 부분만 떠 있으면 안 됨.
 - 코드(`Path(...)`)에서 참조하거나 report.md에서 인용된 스냅샷만 커밋. 일회성 산출은 로컬에서만 보관.

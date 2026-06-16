@@ -18,7 +18,7 @@ import 자체는 가볍다(부수효과 없음). 무거운 로드는 load_engine
      ask()/_engine() 첫 호출이 기본 스냅샷을 lazy 로드한다.
 
 기본 스냅샷(레거시 모듈 API의 대상):
-  results/snapshots/repro_run3 (config/DFS/ENGINES/_engine/ask가 가리키는 곳).
+  snapshots/repro_run3 (config/DFS/ENGINES/_engine/ask가 가리키는 곳).
 settings.yaml은 건드리지 않고, in-memory cli_overrides로만 스냅샷 경로를 바꾼다.
 """
 

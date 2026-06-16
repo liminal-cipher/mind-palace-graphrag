@@ -11,7 +11,7 @@
 - `.venv` 활성화 (`.venv\Scripts\activate`). `requirements.txt` 설치.
 - `.env`에 `GRAPHRAG_API_KEY`, `GRAPHRAG_API_BASE` 둘 다 채움. Azure 리소스에 deployment 이름이 정확히 `gpt-4.1-mini`로 있어야 함(`model=`이 Azure deployment 이름에 매핑됨, palace/exp10/exp12/exp14 모두 이 deployment 이름이 config 또는 코드에 하드코딩). api_version은 `2024-12-01-preview` 고정(`palace/room_gen.py`와 `archive/exp10_room_gen/room_gen.py`의 `make_azure_client`에 박힘). 다른 deployment 이름을 쓰는 별도 Azure 리소스라면 LLM 단계가 404로 막힐 수 있음(현재 env화 안 됨, 필요시 추후 과제).
 - CWD는 항상 repo 루트(`C:/Users/AJourney/Desktop/graphrag/`). 모든 .py가 그 기준으로 경로 하드코딩.
-- exp5~17 및 palace 모두 입력은 `results/snapshots/repro_run3/` (357 entities, level 0 = 40방, `max=15`). 절대 건드리지 말 것. (exp9만 추가로 `semantic_run1`, `pagesplit_run1` 스냅샷을 같이 씀.)
+- exp5~17 및 palace 모두 입력은 `snapshots/repro_run3/` (357 entities, level 0 = 40방, `max=15`). 절대 건드리지 말 것. (exp9만 추가로 `semantic_run1`, `pagesplit_run1` 스냅샷을 같이 씀.)
 - baseline(`output/`, max=10, 385 ent)과 repro_run3(snapshot, max=15)는 서로 다른 런이다.
 
 재인덱싱(exp1~4, exp9 run_full)은 ±10 자연 편차가 있어 매번 동일 결과 보장 안 됨. 또한 graphrag 추출 워크플로가 CU(claims/units) 기반으로 바뀌면 `graphrag index --root .` 명령 자체가 달라질 수 있음.
@@ -66,7 +66,7 @@ graphrag index --root .                                           # LLM $ 재인
 # A. 자연 편차 측정 (캐시 프레시, N=3)
 rm -rf cache/ && graphrag index --root .                          # LLM $ 재인덱싱: repro_run2, ~5분, $0.88. ±10 흔들림.
 rm -rf cache/ && graphrag index --root .                          # LLM $ 재인덱싱: repro_run3, ~6.5분, $0.93. ±10 흔들림.
-# 각 run 후 output/ → results/snapshots/repro_run{2,3}/로 복사
+# 각 run 후 output/ → snapshots/repro_run{2,3}/로 복사
 
 # B. max 순수 효과 (추출 고정, 묶기만 재실행)
 # settings.yaml: max_cluster_size 15 → 10, cache 유지
@@ -75,7 +75,7 @@ graphrag index --root .                                           # LLM $ 묶기
 graphrag index --root .                                           # LLM $ 묶기 재실행: 약 1.1분, +$0.05. (snap_max20)
 ```
 
-산출: `archive/snapshots/{snap_max10,snap_max20,repro_run2}/`, `results/snapshots/repro_run3/`, `logs/{snap_max10,snap_max20,repro_run2,repro_run3}_{results.json,run.log}`. 리포트 `archive/reports/02_snap_max{10,20}.md`, `03_repro_step{1,2,3}_*.md`.
+산출: `archive/snapshots/{snap_max10,snap_max20,repro_run2}/`, `snapshots/repro_run3/`, `logs/{snap_max10,snap_max20,repro_run2,repro_run3}_{results.json,run.log}`. 리포트 `archive/reports/02_snap_max{10,20}.md`, `03_repro_step{1,2,3}_*.md`.
 
 ### exp4: use_lcc=true
 
@@ -174,7 +174,7 @@ python archive/exp13_generic_filter/analyze_filter.py              # LLM 없음.
 
 ### exp14: overlap200 step-3 재현성(n=3)
 
-overlap200 아이디어의 step-3(LLM이 GraphRAG 커뮤니티+엔티티를 받아 학습용 방을 설계)에 대한 충실 재구현 + 같은 frozen 입력에 3런 일치도 측정. 팀원 최종 코드와 동일 동작은 보장 안 함, 접근 방식 재현성만. 모델 `gpt-4.1-mini`, temp=0. 입력은 `results/snapshots/repro_run3/`의 level-0 커뮤니티(40) + community report + 엔티티 357.
+overlap200 아이디어의 step-3(LLM이 GraphRAG 커뮤니티+엔티티를 받아 학습용 방을 설계)에 대한 충실 재구현 + 같은 frozen 입력에 3런 일치도 측정. 팀원 최종 코드와 동일 동작은 보장 안 함, 접근 방식 재현성만. 모델 `gpt-4.1-mini`, temp=0. 입력은 `snapshots/repro_run3/`의 level-0 커뮤니티(40) + community report + 엔티티 357.
 
 **결과만 보려면(실행 불필요)**: repo pull 후 `archive/exp14_overlap200_stability/report.md`를 열면 된다. 리포트는 사람이 쓴 요약이고 git에 이미 트래킹돼 있어 돌리지 않아도 보임. 함께 트래킹돼 있어 같이 보면 좋은 산출: `run{1,2,3}.json`(3런 원본), `agreement.json`(자카드·앵커·이성계 stability 집계), `frozen_input.json`(3런 공통 입력).
 

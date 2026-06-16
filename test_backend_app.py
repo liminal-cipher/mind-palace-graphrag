@@ -12,7 +12,7 @@ from starlette.routing import Mount
 import backend_app
 
 ROOT = Path(__file__).resolve().parent
-PALACE_JSON = ROOT / "data" / "showcases" / "korean_history_with_images.palace.json"
+PALACE_JSON = ROOT / "deliverables" / "korean_history" / "palace_with_images.json"
 
 
 def _client() -> TestClient:
@@ -35,8 +35,8 @@ def test_palace_unknown_is_404():
 
 
 def test_image_served():
-    """팰리스 참조 PNG 정적 마운트가 이미지 1개를 200으로 준다."""
-    r = _client().get("/images/input/korean_history/img/fig_10_2.png")
+    """팰리스 참조 PNG 라우트가 이미지 1개를 200으로 준다."""
+    r = _client().get("/images/korean_history/fig_10_2.png")
     assert r.status_code == 200
     assert r.headers["content-type"] == "image/png"
     assert len(r.content) > 0
@@ -53,10 +53,10 @@ def test_palace_and_images_registered_before_serve_catchall():
     """serve의 '/' 캐치올보다 /palace·/images가 먼저 등록돼야 매칭된다."""
     paths = [getattr(r, "path", "") for r in backend_app.app.routes]
     assert "/palace/{name}" in paths
-    assert "/images" in paths
+    assert "/images/{name}/{filename}" in paths
     # '' = serve가 마운트된 '/' (Starlette Mount의 path).
     assert paths.index("/palace/{name}") < paths.index("")
-    assert paths.index("/images") < paths.index("")
+    assert paths.index("/images/{name}/{filename}") < paths.index("")
 
 
 def test_query_and_orchestrator_route_to_their_subapps():

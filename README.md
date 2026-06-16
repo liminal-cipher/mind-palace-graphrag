@@ -15,7 +15,7 @@
    pip install -r requirements.txt
    ```
 2. `.env.example`을 `.env`로 복사하고 Azure OpenAI 키·엔드포인트(`GRAPHRAG_API_KEY`, `GRAPHRAG_API_BASE`)를 채운다.
-3. 베이스 스냅샷 `results/snapshots/repro_run3/`이 있어야 후속 실험(exp5~17) 및 palace 골든 검증 재현 가능.
+3. 베이스 스냅샷 `snapshots/repro_run3/`이 있어야 후속 실험(exp5~17) 및 palace 골든 검증 재현 가능.
 
 정본 실행 예 (한국사 K=6 골든):
 

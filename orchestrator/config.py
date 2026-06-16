@@ -1,5 +1,5 @@
 """런타임 경로 + 상수. 모든 산출은 repo 루트의 var/ 아래(추적 안 함)에 격리해
-frozen results/snapshots/ 영역을 오염시키지 않는다.
+frozen snapshots/ 영역을 오염시키지 않는다.
 """
 from __future__ import annotations
 
@@ -31,8 +31,8 @@ SEED_PALACE_CACHE = os.environ.get("ORCH_SEED_PALACE_CACHE", "1") != "0"
 # index 스테이지가 새로 빌드하는 대신 이 dir로 snapshot_path를 가리켜, rag가 등록할
 # "진짜 스냅샷"이 생긴다. 둘 다 community_reports 있음(global search 가능).
 SHOWCASE_SNAPSHOTS: dict[str, str] = {
-    "korean_history": "results/snapshots/repro_run3",
-    "ai_school": "results/snapshots/ai_school",
+    "korean_history": "snapshots/repro_run3",
+    "ai_school": "snapshots/ai_school",
 }
 
 # 도메인 -> palace 빌드 베이스 config (repo 상대). build_palace 가 이걸 베이스로

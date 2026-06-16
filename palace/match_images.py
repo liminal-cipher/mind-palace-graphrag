@@ -3,7 +3,7 @@
 Pairing assumption: captions in `extracted_figures.md` (document order) align 1:1
 with PNGs in `input/img_국사/` sorted by (page, idx) parsed from `fig_{p}_{i}.png`.
 
-Output: console table + `results/audit/<DATE>_image_match_accuracy.md`.
+Output: console table + `docs/audit/<DATE>_image_match_accuracy.md`.
 No `.palace.json` write here; accuracy first.
 """
 from __future__ import annotations
@@ -12,6 +12,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 from datetime import date, datetime, timezone
 from pathlib import Path
 
@@ -34,12 +35,12 @@ EMBED_DEPLOYMENT = 'text-embedding-3-small'
 API_VERSION = '2024-12-01-preview'
 
 REPO = Path(__file__).resolve().parents[1]
-DEFAULT_PALACE = REPO / 'palace' / 'handoff' / 'korean_history.palace.json'
-DEFAULT_SNAPSHOT = REPO / 'results' / 'snapshots' / 'repro_run3'
+DEFAULT_PALACE = REPO / 'deliverables' / 'korean_history' / 'palace.json'
+DEFAULT_SNAPSHOT = REPO / 'snapshots' / 'repro_run3'
 DEFAULT_FIG_DIR = REPO / 'input' / 'korean_history' / 'img'
 DEFAULT_CAPTIONS = REPO / 'input' / 'korean_history' / 'captions.md'
 DEFAULT_PAGESPLIT = REPO / 'input' / 'korean_history' / 'pagesplit.txt'
-DEFAULT_OUT_DIR = REPO / 'results' / 'audit'
+DEFAULT_OUT_DIR = REPO / 'docs' / 'audit'
 
 CAPTION_TAG_RE = re.compile(r'<figcaption>(.*?)</figcaption>', re.DOTALL)
 SPLIT_BAR_RE = re.compile(r'\s*[|￨ㅣ]\s*')  # ASCII bar, halfwidth bar, hangul I
@@ -322,7 +323,7 @@ def write_palace_copy(
         if not r.get('match'):
             continue
         title_to_images.setdefault(r['match'], []).append({
-            'path': r['png'],
+            'path': f'images/{Path(r["png"]).name}',
             'caption': r['caption'],
             'score': round(r['score'], 3),
         })
@@ -347,7 +348,7 @@ def write_palace_copy(
         reason = 'collision' if r['tier'] == '미배치 (충돌)' else 'no_fit'
         unplaced.append({
             'row': i,
-            'path': r['png'],
+            'path': f'images/{Path(r["png"]).name}',
             'page': r['page'],
             'caption_title': r['cap_title'],
             'caption': r['caption'],
@@ -371,18 +372,20 @@ def write_palace_copy(
         'unplaced_figures': len(unplaced),
     }
 
+    # Deliverable is self-contained: palace_with_images.json + unplaced_figures.json
+    # sit beside the source palace.json, and every referenced figure (placed or
+    # unplaced) is copied into images/ so node paths ('images/<file>') resolve
+    # against the same folder the API serves.
     base_dir = out_dir or palace_path.parent
-    base_dir.mkdir(parents=True, exist_ok=True)
-    name = palace_path.name
-    for ext in ('.palace.json', '.json'):
-        if name.endswith(ext):
-            stem = name[: -len(ext)]
-            break
-    else:
-        stem = palace_path.stem
+    img_dir = base_dir / 'images'
+    img_dir.mkdir(parents=True, exist_ok=True)
+    for r in rows:
+        src = REPO / r['png']
+        if src.exists():
+            shutil.copy2(src, img_dir / src.name)
 
-    out_palace = base_dir / f'{stem}_with_images.palace.json'
-    out_unplaced = base_dir / f'{stem}_unplaced_figures.json'
+    out_palace = base_dir / 'palace_with_images.json'
+    out_unplaced = base_dir / 'unplaced_figures.json'
     out_palace.write_text(
         json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8'
     )
