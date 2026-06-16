@@ -32,7 +32,7 @@ SEED_PALACE_CACHE = os.environ.get("ORCH_SEED_PALACE_CACHE", "1") != "0"
 # "진짜 스냅샷"이 생긴다. 둘 다 community_reports 있음(global search 가능).
 SHOWCASE_SNAPSHOTS: dict[str, str] = {
     "korean_history": "snapshots/repro_run3",
-    "ai_school": "snapshots/ai_school",
+    "statistics": "snapshots/statistics",
 }
 
 # 도메인 -> palace 빌드 베이스 config (repo 상대). build_palace 가 이걸 베이스로
@@ -41,7 +41,7 @@ SHOWCASE_SNAPSHOTS: dict[str, str] = {
 # 레지스트리라 scaffold 가정이 build_palace 로 새지 않는다).
 PALACE_CONFIGS: dict[str, str] = {
     "korean_history": "palace/configs/korean_history.json",
-    "ai_school": "palace/configs/ai_school.json",
+    "statistics": "palace/configs/statistics.json",
 }
 
 

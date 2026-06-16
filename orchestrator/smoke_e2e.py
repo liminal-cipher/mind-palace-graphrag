@@ -13,7 +13,7 @@
       meta.run_id / palace.id / palace.title 만 제외한 뒤 diff 0),
       build_palace LLM 0콜(잡 캐시 == seed 캐시, 새 항목 0).
       하나라도 어긋나면 FAIL.
-  - ai_school (full TOC+rooms): 느슨.
+  - statistics (full TOC+rooms): 느슨.
       방 >= 1 + 보존 엔티티 > 0 + 쿼리 응답 비어있지 않음.
       방 이름은 라이브 TOC 가 매 실행 미세하게 흔들리는 알려진 noise 라
       이름 차이로 FAIL 처리하지 않는다(구조는 Stage B seed 로 안정적).
@@ -223,7 +223,7 @@ def _check_korean_history(job_id: str, api_palace: dict, fails: list[str], notes
         notes.append(f"build_palace LLM 0콜 (잡 캐시 == seed, 파일 {len(job_fp)}개 동일)")
 
 
-def _check_ai_school(api_palace: dict, fails: list[str], notes: list[str]) -> None:
+def _check_statistics(api_palace: dict, fails: list[str], notes: list[str]) -> None:
     room_count, kept, demoted = _palace_totals(api_palace)
     names = [r.get("name") for r in api_palace.get("rooms", [])]
     notes.append(f"room_count={room_count} kept={kept} demoted={demoted}")
@@ -269,10 +269,10 @@ DOMAINS = [
         # global search 는 overview/요약형 질문에 강하다. 좁은 "A와 B의 차이" 류는
         # 커뮤니티 리포트에 대조항이 없으면 거절 폴백이 나오므로(체인과 무관한
         # 질문-스냅샷 적합도 문제) 요약형으로 둔다.
-        "domain": "ai_school",
-        "showcase": "ai_school",
+        "domain": "statistics",
+        "showcase": "statistics",
         "question": "이 자료의 핵심 통계 개념들을 요약해줘.",
-        "checker": "ai_school",
+        "checker": "statistics",
     },
     {
         # 라이브 인덱싱: showcase 없음 -> 진짜 graphrag index. 업로드 domain 은 라벨일
@@ -315,7 +315,7 @@ def run_one(spec: dict) -> bool:
         elif spec["checker"] == "live":
             _check_live(job_id, api_palace, fails, notes)
         else:
-            _check_ai_school(api_palace, fails, notes)
+            _check_statistics(api_palace, fails, notes)
 
         # 공통: 쿼리 응답 비어있지 않은지(체인 페이로프).
         answer = _query(job_id, spec["question"])

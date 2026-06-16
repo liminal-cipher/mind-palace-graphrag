@@ -1,0 +1,18 @@
+{
+  "run_id": "statistics",
+  "corpus": "input/statistics/corpus.txt",
+  "corpus_rel": "input/statistics/corpus.txt",
+  "snapshot": "snapshots/statistics",
+  "snapshot_rel": "snapshots/statistics",
+  "rooms_dir": "palace/tests/runs/statistics",
+  "toc_out": "palace/tests/runs/statistics/statistics.toc_llm.json",
+  "min_rooms": 1,
+  "max_rooms": 10,
+  "min_room_nodes": 2,
+  "node_budget": 20,
+  "n_runs": 1,
+  "model": "gpt-4.1-mini",
+  "domain": "통계 기초 교안 (기술통계·확률분포·추정·가설검정·상관분석)",
+  "rubric_cache_path": "cache/palace/statistics/rubric_statistics_toc.json",
+  "stage_b_cache_dir": "cache/palace/statistics/stage_b_statistics_toc"
+}

@@ -69,7 +69,8 @@ _ALLOWED_REGISTER_ROOTS = (
 # 런타임에 추가 가능한 가변 dict(미래 오케스트레이터가 빌드 후 register).
 SNAPSHOTS: dict[str, str] = {
     "korean_history": "snapshots/repro_run3",
-    "ai_school": "snapshots/ai_school",
+    # statistics: 재인덱싱 전까지 snapshots/statistics 없음 -> warmup 에러 격리(korean 무관).
+    "statistics": "snapshots/statistics",
 }
 
 # 기본 스냅샷(snapshot 미지정 시). 국사 = canonical 데모.
@@ -326,7 +327,7 @@ async def ready(snapshot: Optional[str] = None):
     게이팅에 쓴다.
 
     snapshot 지정: 그 키 하나의 준비 여부만 본다(미등록이면 404). 미지정: 등록된 모든
-    showcase 스냅샷이 준비됐을 때만 200. ai_school처럼 한 스냅샷이 error여도 격리되므로,
+    showcase 스냅샷이 준비됐을 때만 200. statistics처럼 한 스냅샷이 error여도 격리되므로,
     특정 스냅샷만 게이팅하려면 snapshot 파라미터로 그 키를 콕 집어라."""
     if snapshot is not None:
         key = _resolve_key(snapshot)
