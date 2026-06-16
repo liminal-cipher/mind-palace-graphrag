@@ -23,3 +23,7 @@ var/
 # 자료 전처리 결과
 preprocessing/result/
 
+# 원본 PDF(저작물). 규약 문서(README)만 추적.
+preprocessing/source/*
+!preprocessing/source/README.md
+

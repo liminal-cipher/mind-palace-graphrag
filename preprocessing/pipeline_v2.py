@@ -1,10 +1,10 @@
 """
 전처리 파이프라인 v2
 
-실행:
-    python pipeline_v2.py --pdf "../data/raw/통계기초.pdf"
-    python pipeline_v2.py --pdf "../data/raw/통계기초.pdf" --debug
-    python pipeline_v2.py --pdf "../data/raw/스캔본.pdf" --scan
+실행 (원본 PDF는 preprocessing/source/<domain>.pdf 규약):
+    python -m preprocessing.pipeline_v2 --pdf preprocessing/source/statistics.pdf
+    python -m preprocessing.pipeline_v2 --pdf preprocessing/source/korean_history.pdf --debug
+    python -m preprocessing.pipeline_v2 --pdf preprocessing/source/<domain>.pdf --scan
 """
 
 import argparse
