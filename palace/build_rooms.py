@@ -43,20 +43,53 @@ def build_toc_rooms(
     *,
     K: int,
     corpus_rel: str,
+    ent_metrics: list[dict] | None = None,
 ) -> tuple[dict, dict]:
-    """Char-overlap weighted occurrence, deterministic argmax."""
+    """Assign each entity to the TOC section that contains its first-occurrence
+    char offset (pos_first_fine). text_units (chunks) are token-sized and far
+    coarser than TOC sections, so the old chunk-span ↔ section-span overlap
+    argmax collapsed every entity onto the few sections that dominated a chunk's
+    footprint. pos_first_fine is the entity surface form's true first position in
+    the corpus and is reused here straight from compute_entity_metrics.
+
+    When ``ent_metrics`` is omitted the function falls back to the legacy
+    chunk-overlap argmax for every entity (back-compat for callers that do not
+    supply metrics).
+    """
     positions = node_metrics.build_text_unit_positions(tu_df, text)
     sec_spans = [(s['start_offset'], s['end_offset']) for s in sections]
+    sec_starts = [s['start_offset'] for s in sections]
+    n_sec = len(sec_spans)
 
     title_to_uids: dict[str, list] = {}
     for _, r in ent_df.iterrows():
         uids = list(r['text_unit_ids']) if r['text_unit_ids'] is not None else []
         title_to_uids[str(r['title'])] = uids
 
-    assignments: dict[str, dict] = {}
-    for e in entities:
-        uids = title_to_uids.get(e['title'], [])
-        weights = [0] * len(sec_spans)
+    metrics_by_title = {m['entity']: m for m in (ent_metrics or [])}
+
+    def _section_of_pos(pos: int) -> int:
+        """Containment lookup over monotonic, distinct sections: a position
+        lands in the last section whose start_offset is <= pos (so each section
+        owns [start_i, start_{i+1}); the final section owns its end and beyond).
+        A position before the first section's start falls back to section 0.
+        """
+        if pos < sec_starts[0]:
+            return 0
+        dom = 0
+        for i in range(n_sec):
+            if pos >= sec_starts[i]:
+                dom = i
+            else:
+                break
+        return dom
+
+    def _chunk_overlap(title: str) -> tuple[int, float, int]:
+        """Legacy fallback: argmax char-overlap of the entity's text_unit spans
+        against section spans. Used only when the entity has no exact surface
+        match in the corpus (so no trustworthy first-occurrence offset)."""
+        uids = title_to_uids.get(title, [])
+        weights = [0] * n_sec
         for uid in uids:
             cs, ce, _, _ = positions.get(uid, (-1, -1, -1, 0))
             if cs < 0:
@@ -65,18 +98,30 @@ def build_toc_rooms(
                 weights[si] += char_overlap((cs, ce), sec_span)
         total = sum(weights)
         if total == 0:
-            dom = 0
-            ratio = 0.0
+            return 0, 0.0, 0
+        best_w = max(weights)
+        dom = next(i for i, w in enumerate(weights) if w == best_w)
+        return dom, best_w / total, total
+
+    assignments: dict[str, dict] = {}
+    for e in entities:
+        m = metrics_by_title.get(e['title'])
+        if m is not None and m.get('fine_matched'):
+            dom = _section_of_pos(int(m['pos_first_fine']))
+            assignments[e['title']] = {
+                'dominant_section': dom,
+                'assign_method': 'fine_pos',
+                'fine_pos': int(m['pos_first_fine']),
+                'dominance_ratio': 1.0,
+            }
         else:
-            best_w = max(weights)
-            dom = next(i for i, w in enumerate(weights) if w == best_w)
-            ratio = best_w / total
-        assignments[e['title']] = {
-            'dominant_section': dom,
-            'weights': weights,
-            'dominance_ratio': round(ratio, 4),
-            'total_overlap': total,
-        }
+            dom, ratio, total = _chunk_overlap(e['title'])
+            assignments[e['title']] = {
+                'dominant_section': dom,
+                'assign_method': 'chunk_overlap',
+                'dominance_ratio': round(ratio, 4),
+                'total_overlap': total,
+            }
 
     by_section: dict[int, list[dict]] = defaultdict(list)
     for e in entities:
@@ -102,7 +147,12 @@ def build_toc_rooms(
     spec = {
         'meta': {
             'method': 'toc',
-            'source': 'char-overlap weighted occurrence (text_unit span ↔ section span)',
+            'source': (
+                'fine-pos containment (entity first-occurrence offset ↔ '
+                'section span), chunk-overlap fallback'
+                if ent_metrics else
+                'char-overlap weighted occurrence (text_unit span ↔ section span)'
+            ),
             'corpus': corpus_rel,
             'n_entities': len(entities),
             'n_rooms': len(rooms),

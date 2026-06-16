@@ -22,6 +22,10 @@ Config schema (paths are repo-relative):
     min_room_nodes      int    (optional) rooms with fewer total nodes
                                (kept + demoted) are merged into a neighbor
                                (default 2)
+    assignment          str    (optional) entity->section placement:
+                               "fine_pos" (default) = first-occurrence offset
+                               containment; "chunk_overlap" = legacy chunk-span
+                               argmax (pins pre-fine-pos behavior)
     node_budget         int    keep cap per room
     n_runs              int    Stage B passes per room (1 = single pass)
     model               str    Azure deployment name
@@ -158,10 +162,18 @@ def phase_rooms(cfg: dict, repo: Path) -> None:
     ent_metrics = node_metrics.compute_entity_metrics(ent_df, tu_df, text)
 
     corpus_rel = cfg.get('corpus_rel') or cfg['corpus']
-    print('building TOC arm (occurrence weighted by char overlap)...')
+    assignment = cfg.get('assignment', 'fine_pos')
+    if assignment not in ('fine_pos', 'chunk_overlap'):
+        print(f"STOP: unknown assignment {assignment!r} "
+              f"(expected 'fine_pos' or 'chunk_overlap')")
+        sys.exit(2)
+    # fine_pos -> entity first-occurrence containment; chunk_overlap -> legacy
+    # chunk-span argmax (ent_metrics withheld so build_toc_rooms falls back).
+    toc_metrics = ent_metrics if assignment == 'fine_pos' else None
+    print(f'building TOC arm (assignment={assignment})...')
     toc_spec, _ = build_toc_rooms(
         entities, ent_df, tu_df, text, sections,
-        K=max_rooms, corpus_rel=corpus_rel,
+        K=max_rooms, corpus_rel=corpus_rel, ent_metrics=toc_metrics,
     )
     print(f'  raw room sizes: {[r["size"] for r in toc_spec["rooms"]]}')
 
