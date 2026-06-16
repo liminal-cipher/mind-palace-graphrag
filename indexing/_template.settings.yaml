@@ -39,6 +39,7 @@ embedding_models:
 
 input:
   type: text
+  file_pattern: '.*corpus.txt'  # only the corpus; sibling .txt (pagesplit) stays out of the index
 
 chunking:
   type: tokens

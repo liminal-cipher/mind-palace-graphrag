@@ -23,6 +23,7 @@ DELIVERABLES = Path(__file__).resolve().parent / "deliverables"
 # 그 PNG(images/)가 한 폴더에 있다. 새 도메인은 deliverables/<name>/ 한 줄만 추가.
 SHOWCASE_PALACES: dict[str, Path] = {
     "korean_history": DELIVERABLES / "korean_history" / "palace_with_images.json",
+    "statistics": DELIVERABLES / "statistics" / "palace_with_images.json",
 }
 
 router = APIRouter()

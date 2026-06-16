@@ -28,6 +28,7 @@ embedding_models:
 
 input:
   type: text
+  file_pattern: '.*corpus.txt'  # 폴더의 다른 .txt(pagesplit 등)는 인덱싱 제외
 
 chunking:
   type: tokens
