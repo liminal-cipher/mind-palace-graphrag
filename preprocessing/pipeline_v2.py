@@ -14,6 +14,7 @@ import json
 import os
 import re
 import sys
+import tiktoken
 import time
 from pathlib import Path
 
@@ -475,6 +476,17 @@ _OAI_MINI     = os.environ.get("OPEN_AI_DEPLOYMENT_NAME_4.1_MINI", "")
 _OAI_4O       = os.environ.get("OPEN_AI_DEPLOYMENT_NAME_4O", "")
 _OAI_API_VER  = "2024-10-21"
 _TEXT_CHUNK_MAX = 40_000
+# Refine output is ~1:1 with input; a 40K-char chunk under a 4096-token cap
+# truncated the tail (lost ~80% on large docs). Chunk by TOKENS (same encoding
+# graphrag indexes with) so the cleaned output always fits well under the cap,
+# and _oai_chat raises on any length-truncation so loss can never be silent.
+_REFINE_ENC = tiktoken.get_encoding("o200k_base")
+_REFINE_CHUNK_TOKENS = 6_000   # input tokens/chunk; refined output (~<=input) << cap
+_REFINE_MAX_TOKENS = 16_384    # gpt-4.1-mini output cap; ~2.7x the chunk budget
+
+
+class _Truncated(RuntimeError):
+    """LLM 출력이 max_tokens에서 잘림 -> refine이 청크를 더 쪼개 재시도."""
 
 
 def _oai_chat(messages: list[dict], deployment: str, max_tokens: int = 4096) -> str:
@@ -488,45 +500,75 @@ def _oai_chat(messages: list[dict], deployment: str, max_tokens: int = 4096) -> 
     if not resp.ok:
         print(f"  [LLM ERROR] {resp.status_code}: {resp.text[:500]}")
     resp.raise_for_status()
-    return resp.json()["choices"][0]["message"]["content"].strip()
+    choice = resp.json()["choices"][0]
+    if choice.get("finish_reason") == "length":
+        # Output hit max_tokens = the tail was dropped. Never accept it silently;
+        # the refine path catches this and re-splits the chunk (see _refine_one).
+        raise _Truncated(f"output truncated at max_tokens={max_tokens}")
+    return choice["message"]["content"].strip()
 
 
 def _split_chunks(text: str) -> list[str]:
-    """[pageN] 경계 기준으로 40,000자 이하 청크 분할."""
-    if len(text) <= _TEXT_CHUNK_MAX:
+    """[pageN] 경계 기준으로 refine 토큰 상한(_REFINE_CHUNK_TOKENS) 이하로 분할."""
+    def ntok(s: str) -> int:
+        return len(_REFINE_ENC.encode(s))
+
+    if ntok(text) <= _REFINE_CHUNK_TOKENS:
         return [text]
     parts = re.split(r"(\[page\d+\])", text)
-    chunks, cur = [], ""
+    chunks, cur, cur_tok = [], "", 0
     for part in parts:
-        if len(cur) + len(part) > _TEXT_CHUNK_MAX and cur:
+        ptok = ntok(part)
+        if cur_tok + ptok > _REFINE_CHUNK_TOKENS and cur:
             chunks.append(cur)
-            cur = part
+            cur, cur_tok = part, ptok
         else:
             cur += part
+            cur_tok += ptok
     if cur:
         chunks.append(cur)
     return chunks
 
 
+_REFINE_SYS = (
+    "당신은 한국어 교육 문서 편집 전문가입니다. "
+    "LaTeX 수식 오류, OCR 잡음, 불필요한 특수문자를 교정하고 "
+    "자연스러운 문장 흐름으로 정리하세요. "
+    "[pageN] 마커는 반드시 원본 위치 그대로 유지하세요. 내용은 변경하지 마세요."
+)
+
+
+def _halve(text: str) -> tuple[str, str]:
+    """중앙에 가장 가까운 [pageN] 경계에서 분할(없으면 글자 중앙). 페이지 마커 보존."""
+    mid = len(text) // 2
+    marks = [m.start() for m in re.finditer(r"\[page\d+\]", text) if 0 < m.start() < len(text)]
+    cut = min(marks, key=lambda p: abs(p - mid)) if marks else mid
+    return text[:cut], text[cut:]
+
+
+def _refine_one(chunk: str, depth: int = 0) -> str:
+    """청크 1개 정제. 모델이 잘리면(_Truncated) 절반으로 쪼개 재귀 재시도 = 손실 0."""
+    msgs = [
+        {"role": "system", "content": _REFINE_SYS},
+        {"role": "user", "content": f"아래 텍스트를 정제해 주세요.\n\n{chunk}"},
+    ]
+    try:
+        return _oai_chat(msgs, _OAI_MINI, max_tokens=_REFINE_MAX_TOKENS)
+    except _Truncated:
+        a, b = _halve(chunk)
+        if depth >= 8 or not a.strip() or not b.strip():
+            raise  # 더 못 쪼갬: 조용히 잃느니 명시적 실패
+        print(f"    [잘림 감지 -> 절반 분할 재시도 depth={depth + 1}]")
+        return _refine_one(a, depth + 1) + "\n\n" + _refine_one(b, depth + 1)
+
+
 def _refine_body(raw_text: str) -> str:
-    """본문 텍스트 정제. [pageN] 마커 유지."""
+    """본문 텍스트 정제. [pageN] 마커 유지. 토큰 청킹 + 잘림 시 자동 재분할."""
     chunks = _split_chunks(raw_text)
     refined = []
     for i, chunk in enumerate(chunks, 1):
         print(f"  청크 {i}/{len(chunks)} ({len(chunk):,}자)")
-        msgs = [
-            {
-                "role": "system",
-                "content": (
-                    "당신은 한국어 교육 문서 편집 전문가입니다. "
-                    "LaTeX 수식 오류, OCR 잡음, 불필요한 특수문자를 교정하고 "
-                    "자연스러운 문장 흐름으로 정리하세요. "
-                    "[pageN] 마커는 반드시 원본 위치 그대로 유지하세요. 내용은 변경하지 마세요."
-                ),
-            },
-            {"role": "user", "content": f"아래 텍스트를 정제해 주세요.\n\n{chunk}"},
-        ]
-        refined.append(_oai_chat(msgs, _OAI_MINI, max_tokens=4096))
+        refined.append(_refine_one(chunk))
     return "\n\n".join(refined)
 
 
