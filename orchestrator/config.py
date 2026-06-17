@@ -16,6 +16,10 @@ JOBS_DIR = VAR_DIR / "jobs"
 # STUB 스테이지 1개당 sleep(초). 데모/복구 시연용으로 env로 늘릴 수 있게 둔다.
 STUB_STAGE_SECONDS = float(os.environ.get("ORCH_STUB_SECONDS", "2.0"))
 
+# prompt-tune discover subprocess 상한(초). 행걸림 시 워커가 무한 대기하지 않고
+# generic 폴백으로 떨어지게 한다. env로 조정 가능, 잠정 기본 600초.
+PROMPT_TUNE_TIMEOUT_S = float(os.environ.get("ORCH_PROMPT_TUNE_TIMEOUT", "600"))
+
 # rag 스테이지가 빌드된 스냅샷을 등록할 serve 인스턴스. 내부 전용 register라 기본은
 # 로컬. env로 바꿀 수 있게 둔다.
 SERVE_URL = os.environ.get("SERVE_URL", "http://127.0.0.1:8000")

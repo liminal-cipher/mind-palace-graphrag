@@ -73,6 +73,7 @@ def _run_prompt_tune_discover(root: Path, domain: str) -> tuple[int, str]:
     proc = subprocess.run(
         cmd, cwd=str(config.REPO),
         capture_output=True, text=True, encoding="utf-8",
+        timeout=config.PROMPT_TUNE_TIMEOUT_S,
     )
     return proc.returncode, (proc.stdout or "") + (proc.stderr or "")
 
@@ -125,7 +126,11 @@ def resolve_entity_types(root: Path, domain_label: str) -> Resolution:
 
     # 2) discover ON (라벨이 있어야 의미 있음).
     if domain_label:
-        rc, out = _run_prompt_tune_discover(root, domain_label)
+        try:
+            rc, out = _run_prompt_tune_discover(root, domain_label)
+        except subprocess.TimeoutExpired:
+            # 행걸림: rc≠0 폴백과 동일하게 generic 으로 떨어진다.
+            return _apply_generic_fallback(root, "timeout")
         if rc == 0:
             types = parse_discovered_types(root / "prompts" / index_root.EXTRACT_PROMPT_NAME)
             if DISCOVER_MIN_TYPES <= len(types) <= DISCOVER_MAX_TYPES:
