@@ -88,15 +88,24 @@ def parse_discovered_types(extract_prompt: Path) -> list[str]:
 
 
 def _apply_generic_fallback(root: Path, reason: str) -> Resolution:
-    """폴백: extract_graph 프롬프트를 graphrag 기본(중립 제약형)으로 덮고 settings 의
-    entity_types 를 generic 으로 맞춘다. 기본 프롬프트는 {entity_types} 를 런타임에
-    settings 목록으로 치환하므로 generic 축으로 추출이 제약된다."""
+    """폴백: type-bearing 프롬프트(extract_graph/summarize/community_report_graph)를
+    graphrag 기본(도메인 중립) 상수로 덮고 settings 의 entity_types 를 generic 으로
+    맞춘다. 기본 추출 프롬프트는 {entity_types} 를 런타임에 settings 목록으로 치환하므로
+    generic 축으로 추출이 제약되고, 요약/커뮤니티 리포트도 '한국사 전문가' 톤(stock
+    프롬프트 편향)이 사라진다. discover 성공 경로가 같은 3종을 덮는 것과 대칭이며,
+    잡 root 의 prompts/ 에만 쓰고 공유 prompts/ 는 안 건드린다."""
+    from graphrag.prompts.index.community_report import COMMUNITY_REPORT_PROMPT
     from graphrag.prompts.index.extract_graph import GRAPH_EXTRACTION_PROMPT
+    from graphrag.prompts.index.summarize_descriptions import SUMMARIZE_PROMPT
 
     prompts_dir = root / "prompts"
-    (prompts_dir / index_root.EXTRACT_PROMPT_NAME).write_text(
-        GRAPH_EXTRACTION_PROMPT, encoding="utf-8",
+    neutral_prompts = (
+        (index_root.EXTRACT_PROMPT_NAME, GRAPH_EXTRACTION_PROMPT),
+        (index_root.SUMMARIZE_PROMPT_NAME, SUMMARIZE_PROMPT),
+        (index_root.COMMUNITY_GRAPH_PROMPT_NAME, COMMUNITY_REPORT_PROMPT),
     )
+    for name, text in neutral_prompts:
+        (prompts_dir / name).write_text(text, encoding="utf-8")
     index_root.write_settings(root, GENERIC_ENTITY_TYPES)
     logger.info("entity_types 폴백(generic %d종): %s", len(GENERIC_ENTITY_TYPES), reason)
     return Resolution(GENERIC_ENTITY_TYPES, f"fallback:{reason}")
