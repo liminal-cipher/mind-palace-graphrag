@@ -6,7 +6,7 @@ STEP 2-MU — PyMuPDF 추출 (디지털 PDF)
     python step2_extract_mu.py --pdf "../../data/raw/통계기초.pdf" --out "../result/test_v1" --debug
 
 산출물:
-    out_dir/img/fig_{page}_{idx}.png  ← 크롭 이미지
+    out_dir/images/fig_{page}_{idx}.png  ← 크롭 이미지
     out_dir/txt/content_raw.txt       ← 페이지 마커 포함 원본 텍스트 (STEP 5 입력)
     (debug) out_dir/meta/figures.json ← 이미지 메타데이터
 """
@@ -33,7 +33,7 @@ def step2_extract_mu(pdf_path: str, out_dir: Path, debug: bool = False) -> list[
                 "id": "1.1",
                 "page": 1,           # 1-indexed
                 "bbox": [x0,y0,x1,y1],
-                "img_path": "img/fig_1_1.png",
+                "img_path": "images/fig_1_1.png",
                 "caption": "",       # MU 경로: STEP 5에서 LLM 생성
                 "false_positive_type": null,
                 "sub_crops": []
@@ -41,7 +41,7 @@ def step2_extract_mu(pdf_path: str, out_dir: Path, debug: bool = False) -> list[
             ...
         ]
     """
-    img_dir = out_dir / "img"
+    img_dir = out_dir / "images"
     txt_dir = out_dir / "txt"
     img_dir.mkdir(parents=True, exist_ok=True)
     txt_dir.mkdir(parents=True, exist_ok=True)
@@ -98,7 +98,7 @@ def step2_extract_mu(pdf_path: str, out_dir: Path, debug: bool = False) -> list[
                 "id": f"{page_no}.{idx}",
                 "page": page_no,
                 "bbox": [int(v) for v in block["bbox"]],
-                "img_path": str(Path("img") / img_filename),
+                "img_path": str(Path("images") / img_filename),
                 "caption": "",
                 "false_positive_type": None,
                 "sub_crops": [],
@@ -114,14 +114,13 @@ def step2_extract_mu(pdf_path: str, out_dir: Path, debug: bool = False) -> list[
     print(f"\n[MU] content_raw.txt 저장 완료 ({len(raw_text):,}자)")
     print(f"[MU] 이미지 {len(figures)}개 크롭 완료")
 
-    # --- (debug) figures.json 저장 ---
-    if debug:
-        meta_dir = out_dir / "meta"
-        meta_dir.mkdir(exist_ok=True)
-        (meta_dir / "figures.json").write_text(
-            json.dumps(figures, ensure_ascii=False, indent=2), encoding="utf-8"
-        )
-        print(f"[MU] meta/figures.json 저장 완료")
+    # --- figures.json 저장 (step5로 넘기는 필수 핸드오프이므로 항상 저장) ---
+    meta_dir = out_dir / "meta"
+    meta_dir.mkdir(exist_ok=True)
+    (meta_dir / "figures.json").write_text(
+        json.dumps(figures, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    print(f"[MU] meta/figures.json 저장 완료")
 
     return figures
 

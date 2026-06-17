@@ -2,7 +2,7 @@
 STEP 3-CU — 이미지 / 텍스트 / 캡션 분리 (CU 경로 전용)
 
 raw_response.json을 파싱하여:
-  - 이미지: figure bbox → PyMuPDF로 크롭 → img/fig_{page}_{idx}.png
+  - 이미지: figure bbox → PyMuPDF로 크롭 → images/fig_{page}_{idx}.png
   - 본문 텍스트: markdown 정제 → txt/content_raw.txt
   - 캡션: figcaption / figure.caption 필드 추출
 
@@ -56,13 +56,42 @@ def _safe_crop(pil_img: Image.Image, bbox_px: list[int]) -> Image.Image:
     return pil_img.crop((max(0, x0), max(0, y0), min(w, x1), min(h, y1)))
 
 
+# 매 페이지 반복되는 머리말/꼬리말 장식(로고 등)은 제외한다.
+_SKIP_FIGURE_ROLES = {"pageHeader", "pageFooter"}
+
+
 def _collect_raw_figures(data: dict) -> list[dict]:
-    """raw_response.json에서 figure 목록을 모두 모아 반환."""
+    """raw_response.json에서 figure 목록을 모은다.
+
+    figure가 참조하는 paragraph의 role이 pageHeader/pageFooter이면
+    (매 페이지 반복되는 국사편찬위원회 로고 등) 본문 이미지가 아니므로 건너뛴다.
+    """
     figures = []
     for content in data.get("result", {}).get("contents", []):
-        figures.extend(content.get("figures", []))
+        paragraphs = content.get("paragraphs", [])
+        skip_idx = {
+            i for i, p in enumerate(paragraphs)
+            if p.get("role") in _SKIP_FIGURE_ROLES
+        }
+
+        def _is_chrome(fig: dict) -> bool:
+            # 참조 paragraph가 있고 그 role이 전부 header/footer일 때만 장식으로 본다.
+            # (로고는 pageHeader paragraph 1개만 참조. 본문 figure는 여러 paragraph를
+            #  참조하며 일부에 footer가 섞여도 본문이므로 제외하지 않는다.)
+            para_idx = [
+                int(m.group(1))
+                for e in fig.get("elements", [])
+                if (m := re.match(r"/paragraphs/(\d+)$", e))
+            ]
+            return bool(para_idx) and all(i in skip_idx for i in para_idx)
+
+        for fig in content.get("figures", []):
+            if not _is_chrome(fig):
+                figures.append(fig)
         for page in content.get("pages", []):
-            figures.extend(page.get("figures", []))
+            for fig in page.get("figures", []):
+                if not _is_chrome(fig):
+                    figures.append(fig)
     return figures
 
 
@@ -125,6 +154,67 @@ def _extract_inline_captions(text: str) -> tuple[str, list[str]]:
 
 
 # ---------------------------------------------------------------------------
+# 본문 캡션 추출 — figcaption 태그 밖, 본문에 흘러든 캡션
+# 형태: "주제 | 시·도 설명" (파이프 1개 + 뒤에 광역 지역명). 푸터/헤딩/키워드목록 배제.
+# ---------------------------------------------------------------------------
+
+_SIDO = "서울|부산|대구|인천|광주|대전|울산|세종|경기|강원|충북|충남|전북|전남|경북|경남|제주"
+_SIDO_RE = re.compile(rf"(?:{_SIDO})\b")
+
+
+def _is_body_caption(line: str) -> bool:
+    s = line.strip()
+    if not s or s[0] in "#<|":               # 헤딩/주석/표 행 제외
+        return False
+    if (s.count("|") + s.count("ㅣ")) != 1:    # 파이프 정확히 1개(키워드목록 배제)
+        return False
+    after = re.split(r"[|ㅣ]", s, 1)[1].strip()
+    return _SIDO_RE.match(after) is not None    # 파이프 뒤가 지역명으로 시작
+
+
+def _looks_like_block(line: str) -> bool:
+    """캡션 이어붙이기를 멈춰야 하는 줄(빈 줄/새 블록 시작)인지."""
+    s = line.strip()
+    return (not s) or s[0] in "#<|" or _is_body_caption(line)
+
+
+# 캡션 끝에 CU가 잘못 붙인 러닝푸터(쪽번호 + 로마자 단원기호 + 단원명) 제거.
+# 예: "조운선 모형 134 V. 조선의 성립과 발전" → "조운선 모형"
+_FOOTER_RE = re.compile(
+    r"\s*\d{1,3}\s*[ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫIVXWvwx]+\s*\.\s*[가-힣][가-힣\s·]*$"
+)
+
+
+def _strip_footer(text: str) -> str:
+    return _FOOTER_RE.sub("", text).rstrip()
+
+
+def _iter_body_captions(md: str, start_page: int):
+    """본문 캡션을 (offset, page, text, raw_block)로 yield. 이어지는 줄까지 합친다."""
+    lines = md.split("\n")
+    offs, o = [], 0
+    for ln in lines:
+        offs.append(o)
+        o += len(ln) + 1
+    j = 0
+    while j < len(lines):
+        if _is_body_caption(lines[j]):
+            start = offs[j]
+            pb = len(re.findall(r"<!--\s*PageBreak\s*-->", md[:start]))
+            buf = [lines[j].strip()]
+            k = j + 1
+            while k < len(lines) and not _looks_like_block(lines[k]):
+                buf.append(lines[k].strip())
+                k += 1
+            raw_block = "\n".join(lines[j:k])
+            text = " ".join(" ".join(buf).split())
+            yield start, start_page + pb, text, raw_block
+            j = k
+        else:
+            j += 1
+
+
+# ---------------------------------------------------------------------------
 # STEP 3-CU 메인
 # ---------------------------------------------------------------------------
 
@@ -139,7 +229,7 @@ def step3_parse_cu(
 
     Returns: figures 리스트 (figures.json 스키마)
     """
-    img_dir = out_dir / "img"
+    img_dir = out_dir / "images"
     txt_dir = out_dir / "txt"
     img_dir.mkdir(parents=True, exist_ok=True)
     txt_dir.mkdir(parents=True, exist_ok=True)
@@ -187,13 +277,13 @@ def step3_parse_cu(
         cap_raw = raw_fig.get("caption") or ""
         if isinstance(cap_raw, dict):
             cap_raw = cap_raw.get("content", "")
-        caption = cap_raw.strip()
+        caption = _strip_footer(cap_raw.strip())
 
         figures.append({
             "id":                fig_id,
             "page":              page_no,
             "bbox_inch":         r["bbox"],
-            "img_path":          str(Path("img") / img_filename),
+            "img_path":          str(Path("images") / img_filename),
             "caption":           caption,
             "false_positive_type": None,
             "sub_crops":         [],
@@ -211,9 +301,11 @@ def step3_parse_cu(
             md_parts.append(md)
     full_md = "\n\n".join(md_parts)
 
-    # figcaption에서 캡션 먼저 수집 (본문 텍스트 정제 전)
+    # figcaption + 본문 캡션을 문서 위치(offset) 순서로 수집 (페이지번호 포함)
+    caption_entries: list[tuple[int, int, str]] = []   # (offset, page, text)
+    body_blocks: list[str] = []                        # 본문에서 제거할 캡션 블록
+    cursor = 0
     fig_pat = re.compile(r"<figcaption>(.*?)</figcaption>", re.DOTALL)
-    figcaption_list: list[dict] = []
     for c in contents:
         md = c.get("markdown") or c.get("markdownContent", "")
         if not md:
@@ -221,11 +313,17 @@ def step3_parse_cu(
         start_page = c.get("startPageNumber", 1)
         for m in fig_pat.finditer(md):
             pb = len(re.findall(r"<!--\s*PageBreak\s*-->", md[: m.start()]))
-            text = m.group(1).strip()
+            text = _strip_footer(m.group(1).strip())   # \n 유지(한 블록 캡션 2개면 step4 분리에 사용)
             if text:
-                figcaption_list.append({"page": start_page + pb, "text": text})
+                caption_entries.append((cursor + m.start(), start_page + pb, text))
+        for off, page, text, raw_block in _iter_body_captions(md, start_page):
+            caption_entries.append((cursor + off, page, _strip_footer(text)))
+            body_blocks.append(raw_block)
+        cursor += len(md) + 2           # full_md "\n\n".join 보정
 
-    # 본문 정제
+    # 추출한 본문 캡션은 content_raw.txt에 중복되지 않도록 본문에서 제거 후 정제
+    for blk in body_blocks:
+        full_md = full_md.replace(blk, "", 1)
     body = _clean_markdown(full_md)
     body, inline_caps = _extract_inline_captions(body)
     body = re.sub(r"\n{3,}", "\n\n", body).strip()
@@ -237,34 +335,70 @@ def step3_parse_cu(
         (txt_dir / "content_raw.md").write_text(full_md, encoding="utf-8")
         print(f"[CU] content_raw.md 저장 완료 (debug)")
 
-    # ── 3. 캡션 병합 저장 ────────────────────────────────────────────────────
-    # figcaption 우선, 그 다음 inline 혼입 캡션
-    # figures 각 항목의 caption 필드는 이미 위에서 채워짐
-    # figcaption_list는 STEP 5에서 LLM 정제 입력으로 사용
+    # ── 3. 캡션 → figure 매칭 (페이지 단위) ───────────────────────────────────
+    # 문서 순서로 정렬해 페이지별 캡션 풀을 만든다.
+    caption_entries.sort()
+    caps_by_page: dict[int, list[str]] = {}
+    for _off, page, text in caption_entries:
+        caps_by_page.setdefault(page, []).append(text)
 
-    caption_lines = [f"[page{c['page']}] {c['text']}" for c in figcaption_list]
-    caption_lines += [f"[inline] {t}" for t in inline_caps if t]
+    def _norm(t: str) -> str:
+        return "".join(t.split())
 
-    # caption.txt는 STEP 5 LLM 정제 후 덮어쓸 예정이므로 여기서는 _raw 저장
+    # C 분리 전 원본 figure.caption(병합본 포함) 정규화 집합 — 같은 캡션이 <figcaption>
+    # 마크다운으로 풀에도 들어와 다른 figure에 중복 배정되는 것을 막기 위함.
+    prior_caps = {_norm(f["caption"]) for f in figures if f.get("caption")}
+
+    # 병합 캡션 분리: figure.caption에 '주제 | 시·도 …' 형태의 별개 캡션이 \n으로
+    # 묶여 있으면(예: page37 영조 어진 + 녹우단), 첫 캡션만 남기고 떼어낸 캡션은
+    # 같은 페이지 풀에 넣어 빈 figure에 배정한다.
+    # 게이트: 떼어낼 줄이 '| 시·도' 독립 캡션일 때만 → '향교 | 김홍도'(작가) 등은
+    # 분리하지 않아 step4 이미지 분리 로직(page10)을 깨지 않는다.
+    for fig in figures:
+        cap = fig.get("caption", "")
+        if "\n" not in cap:
+            continue
+        lines = [ln.strip() for ln in cap.split("\n") if ln.strip()]
+        # 첫 줄은 항상 본 캡션으로 유지. 둘째 줄 이후에서 '| 시·도' 독립 캡션만 떼어낸다
+        # (소프트랩 연속 줄은 본 캡션에 붙여 둠 → page17 같은 한 문장 캡션 보존).
+        keep = [lines[0]]
+        split_off = []
+        for ln in lines[1:]:
+            (split_off if _is_body_caption(ln) else keep).append(ln)
+        if split_off:
+            fig["caption"] = " ".join(keep)
+            caps_by_page.setdefault(fig["page"], []).extend(split_off)
+
     if debug:
+        caption_lines = [f"[page{p}] {t}" for _o, p, t in caption_entries]
+        caption_lines += [f"[inline] {t}" for t in inline_caps if t]
         (txt_dir / "caption_raw.txt").write_text(
             "\n".join(caption_lines), encoding="utf-8"
         )
         print(f"[CU] caption_raw.txt 저장 완료 (debug, {len(caption_lines)}개)")
 
-    # figures.json (debug)
-    if debug:
-        meta_dir = out_dir / "meta"
-        meta_dir.mkdir(exist_ok=True)
-        (meta_dir / "figures.json").write_text(
-            json.dumps(figures, ensure_ascii=False, indent=2), encoding="utf-8"
-        )
-        print(f"[CU] meta/figures.json 저장 완료 (debug)")
+    # 같은 페이지의 캡션을 figure에 위→아래(문서 순서)로 배정 → 페이지 넘는 오배정 방지.
+    # 원본·현재 figure.caption과 같은 풀 항목은 제외(병합본 중복 방지 포함).
+    assigned = prior_caps | {_norm(f["caption"]) for f in figures if f["caption"]}
+    pools = {
+        pg: [t for t in txts if _norm(t) not in assigned]
+        for pg, txts in caps_by_page.items()
+    }
+    for fig in figures:
+        if fig["caption"]:
+            continue
+        pool = pools.get(fig["page"])
+        if pool:
+            fig["caption"] = pool.pop(0)
 
-    # figcaption 정보를 figures에 보완 (순서 기반 매칭)
-    for i, fig in enumerate(figures):
-        if not fig["caption"] and i < len(figcaption_list):
-            fig["caption"] = figcaption_list[i]["text"]
+    # figures.json — step4·step5로 넘기는 필수 핸드오프이므로 항상 저장
+    # (캡션 보완까지 끝난 최종 figures를 기록)
+    meta_dir = out_dir / "meta"
+    meta_dir.mkdir(exist_ok=True)
+    (meta_dir / "figures.json").write_text(
+        json.dumps(figures, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    print(f"[CU] meta/figures.json 저장 완료")
 
     return figures
 

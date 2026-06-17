@@ -13,7 +13,6 @@ STEP 2-CU — Content Understanding API 추출 (스캔 PDF)
 """
 
 import argparse
-import base64
 import json
 import os
 import sys
@@ -28,8 +27,8 @@ load_dotenv(Path(__file__).parent.parent.parent / ".env")
 
 ENDPOINT    = os.environ.get("CONTENT_UNDERSTANDING_ENDPOINT", "").rstrip("/")
 KEY         = os.environ.get("CONTENT_UNDERSTANDING_KEY", "")
-API_VER     = os.environ.get("CONTENT_UNDERSTANDING_API_VER", "2025-11-01")
-ANALYZER_ID = "pdf_content_extractor"
+API_VER     = os.environ.get("CONTENT_UNDERSTANDING_API_VER", "2024-12-01-preview")
+ANALYZER_ID = "pdf_content_extractor_noform"  # GA(2025-11-01): analyzerId 하이픈 불가
 
 _BASE_HDR = {"Ocp-Apim-Subscription-Key": KEY}
 _JSON_HDR = {**_BASE_HDR, "Content-Type": "application/json"}
@@ -43,6 +42,9 @@ def _find_cached_raw(pdf_path: str, out_dir: Path) -> Path | None:
     """
     동일 PDF의 result/ 하위 버전 폴더에서 raw_response.json을 탐색.
     가장 최신 버전 우선. out_dir 자신도 포함.
+
+    단, 캐시 응답의 apiVersion이 현재 설정된 API_VER과 다르면 재사용하지 않는다.
+    (스키마가 달라 figure bbox가 없는 옛 응답을 그대로 쓰는 것을 방지)
     """
     pdf_stem = Path(pdf_path).stem
     result_dir = out_dir.parent  # result/
@@ -55,7 +57,15 @@ def _find_cached_raw(pdf_path: str, out_dir: Path) -> Path | None:
             break
         raw = folder / "raw_response.json"
         if raw.exists():
-            found = raw  # 마지막으로 발견된 것 = 최신 버전
+            try:
+                data = json.loads(raw.read_text(encoding="utf-8"))
+                cached_ver = data.get("result", {}).get("apiVersion", "")
+            except Exception:
+                cached_ver = ""
+            if cached_ver == API_VER:
+                found = raw  # 마지막으로 발견된 것 = 최신 버전
+            else:
+                print(f"  캐시 무시: {raw}  (apiVersion={cached_ver!r} ≠ {API_VER!r})")
         v += 1
     return found
 
@@ -69,7 +79,14 @@ def _ensure_analyzer() -> None:
     url = f"{ENDPOINT}/contentunderstanding/analyzers/{ANALYZER_ID}?api-version={API_VER}"
     body = {
         "description": "PDF 텍스트·이미지·표·다이어그램 추출기",
-        "baseAnalyzerId": "prebuilt-document",
+        "baseAnalyzerId": "prebuilt-document",  # GA: custom 분석기는 prebuilt base 필수(문서 base)
+        "config": {
+            "returnDetails": True,   # figure bbox(source) 반환에 필수
+            "enableOcr": True,
+            "enableLayout": True,
+            "enableBarcode": False,
+            "enableFormula": False,  # 한글이 LaTeX 수식($...$)으로 오인식되는 것 방지
+        },
     }
     resp = requests.put(url, headers=_JSON_HDR, json=body, timeout=60)
 
@@ -94,11 +111,11 @@ def _ensure_analyzer() -> None:
 
 
 def _submit_analyze(pdf_path: str) -> str:
-    """PDF를 base64 JSON으로 전송 → Operation-Location URL 반환."""
-    url  = f"{ENDPOINT}/contentunderstanding/analyzers/{ANALYZER_ID}:analyze?api-version={API_VER}"
-    b64  = base64.b64encode(Path(pdf_path).read_bytes()).decode()
-    body = {"inputs": [{"data": b64}]}
-    resp = requests.post(url, headers=_JSON_HDR, json=body, timeout=120)
+    """PDF를 application/pdf 바이너리로 전송 → Operation-Location URL 반환."""
+    # GA: 로컬 파일 직접 업로드는 :analyzeBinary (raw 바이너리). :analyze는 JSON {url} 전용.
+    url  = f"{ENDPOINT}/contentunderstanding/analyzers/{ANALYZER_ID}:analyzeBinary?api-version={API_VER}"
+    hdrs = {**_BASE_HDR, "Content-Type": "application/pdf"}
+    resp = requests.post(url, headers=hdrs, data=Path(pdf_path).read_bytes(), timeout=120)
     if not resp.ok:
         print(f"  [ERROR] {resp.status_code}: {resp.text[:1000]}")
     resp.raise_for_status()
