@@ -39,6 +39,33 @@ def _touch(path: Path, text: str = "") -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def _is_pdf(path: Path) -> bool:
+    """입력이 PDF 인지 매직바이트(%PDF)로 판별. 파일명 확장자는 임의일 수 있으므로
+    내용으로 본다. PDF 만 전처리(텍스트 추출)를 타고, .txt(이미 추출된 텍스트)는
+    그대로 통과한다."""
+    try:
+        with open(path, "rb") as f:
+            return f.read(5).startswith(b"%PDF-")
+    except OSError:
+        return False
+
+
+def _run_preprocess(pdf_path: Path, out_dir: Path) -> tuple[int, str]:
+    """preprocessing/pipeline_v2.py 를 subprocess 로 돈다(_run_index 와 동형 seam).
+    무거운 torch import + step5 스레드풀을 워커 프로세스에서 격리한다. env(.env 로드분)를
+    상속해 OPEN_AI_*/CONTENT_UNDERSTANDING_* 가 steps 에서 풀린다. preprocessing 은
+    패키지가 아니므로 -m 대신 스크립트 경로로 실행한다(-X utf8: 한글 출력 안전)."""
+    config.load_env()
+    script = config.REPO / "preprocessing" / "pipeline_v2.py"
+    proc = subprocess.run(
+        [sys.executable, "-X", "utf8", str(script),
+         "--pdf", str(pdf_path), "--out-dir", str(out_dir)],
+        cwd=str(config.REPO),
+        capture_output=True, text=True, encoding="utf-8",
+    )
+    return proc.returncode, (proc.stdout or "") + (proc.stderr or "")
+
+
 async def preprocess(
     job: Job,
     store: JobStore,
@@ -46,9 +73,45 @@ async def preprocess(
     *,
     substeps: Optional[list[str]] = None,  # 미래: 전처리 2단계 분리
 ) -> None:
+    """업로드를 인덱싱 가능한 .txt 로 만든다. 쇼케이스(프리베이크) 잡과 이미 텍스트인
+    업로드는 추출이 필요 없어 통과하고, 생 PDF 만 pipeline_v2 로 실제 전처리한다.
+    추출 성공 시 store 의 input_path 를 추출 본문(content.txt)으로 갱신해, index 가
+    fresh 로 그 텍스트를 받게 한다(snapshot_path 와 같은 store seam)."""
     store.update(job.job_id, state=State.PREPROCESSING)
-    await asyncio.sleep(sleep_seconds)
-    _touch(Path(job.input_path).parent / "_preprocess.done", "stub preprocess\n")
+
+    # 쇼케이스: index 가 프리베이크 스냅샷으로 scaffold 하므로 입력 전처리 불필요(스텁 유지).
+    if job.showcase_key:
+        await asyncio.sleep(sleep_seconds)
+        _touch(Path(job.input_path).parent / "_preprocess.done", "showcase: skip preprocess\n")
+        return
+
+    src = Path(job.input_path)
+    if not _is_pdf(src):
+        # 이미 텍스트(.txt) 업로드: 추출 불필요, 그대로 통과(현행 라이브 .txt 경로 무변경).
+        _touch(src.parent / "_preprocess.done", "passthrough (non-pdf input)\n")
+        return
+
+    # PDF: 작업 격리 디렉터리에서 pipeline_v2 로 본문/이미지/캡션 추출(인덱스 시점 1회).
+    out_dir = config.job_dir(job.job_id) / "preprocess"
+    loop = asyncio.get_running_loop()
+    rc, out = await loop.run_in_executor(None, _run_preprocess, src, out_dir)
+    if rc != 0:
+        raise RuntimeError(
+            f"전처리(pipeline_v2) 실패 (rc={rc}) job={job.job_id}:\n{out[-1500:]}"
+        )
+
+    content = out_dir / "txt" / "content.txt"
+    if not content.is_file() or content.stat().st_size == 0:
+        raise RuntimeError(
+            f"전처리 완료했으나 본문 추출 없음 job={job.job_id}: {content} "
+            "(빈/깨진 PDF 또는 추출 실패 추정)."
+        )
+    # index 가 읽을 입력을 추출 본문으로 교체(store seam; 워커가 넘긴 job 은 stale).
+    store.update(job.job_id, input_path=str(content))
+    logger.info(
+        "preprocess 완료 job=%s pdf=%s -> %s (%d자)",
+        job.job_id, src.name, content, content.stat().st_size,
+    )
 
 
 async def index(
@@ -122,6 +185,9 @@ async def _index_live(job: Job, store: JobStore) -> None:
     """진짜 GraphRAG 인덱싱: 도메인 감지 -> entity_types 해소(discover/폴백) ->
     격리 root 에서 graphrag index subprocess -> 산출(parquet 7종 + lancedb)을 잡
     스냅샷으로 등록. snapshot_path seam 으로 build_palace 가 fresh 로 받아 흐른다."""
+    # preprocess 가 input_path 를 추출 본문(content.txt)으로 갱신했을 수 있다. 워커가
+    # 넘긴 job 은 stale 하므로 store 에서 fresh 로 다시 읽는다(build_palace 와 동일 seam).
+    job = store.get(job.job_id) or job
     corpus = Path(job.input_path)
     if not corpus.is_file():
         raise RuntimeError(f"업로드 입력 없음: {corpus}")

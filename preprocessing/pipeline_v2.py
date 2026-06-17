@@ -51,6 +51,15 @@ def _make_out_dir(pdf_path: str) -> Path:
     return out
 
 
+def _prepare_out_dir(out_dir: Path) -> Path:
+    """명시된 출력 디렉터리에 표준 하위 구조(images/ txt/)를 만든다(멱등).
+    오케스트레이터가 작업 격리 디렉터리(var/jobs/<id>/preprocess)를 직접 줄 때 쓴다."""
+    out_dir = Path(out_dir)
+    (out_dir / "images").mkdir(parents=True, exist_ok=True)
+    (out_dir / "txt").mkdir(parents=True, exist_ok=True)
+    return out_dir
+
+
 # ---------------------------------------------------------------------------
 # 실행 로그 저장
 # ---------------------------------------------------------------------------
@@ -95,43 +104,42 @@ def _write_run_log(out_dir: Path, pdf_path: str, is_scan: bool, timings: dict, f
 # main
 # ---------------------------------------------------------------------------
 
-def main():
-    parser = argparse.ArgumentParser(description="전처리 파이프라인 v2")
-    parser.add_argument("--pdf", required=True, help="입력 PDF 경로")
-    parser.add_argument("--scan", action="store_true", help="스캔 PDF로 강제 지정")
-    parser.add_argument("--debug", action="store_true", help="중간 파일 저장")
-    args = parser.parse_args()
+def run_pipeline(pdf_path: str, out_dir=None, *, force_scan: bool = False, debug: bool = False) -> dict:
+    """PDF 한 부를 전처리해 산출 디렉터리를 채운다.
 
-    pdf_path = args.pdf
+    out_dir 가 None 이면 result/{stem}_vN/ 로 자동 버전, 주어지면 그 디렉터리(작업
+    격리)에 직접 쓴다. steps 호출 순서·인자는 main 과 동일 — 추출/정제 로직은 여기서
+    바꾸지 않는다(steps/ 가 단일 진실원본). 반환: out_dir/is_scan/content_path 등.
+    """
     timings: dict[str, float | None] = {}
     notes: list[str] = []
 
     # STEP 1 — 스캔/디지털 판별
     t = time.time()
-    step1 = detect_scan(pdf_path, force_scan=args.scan)
+    step1 = detect_scan(pdf_path, force_scan=force_scan)
     timings["STEP 1 스캔 판별"] = time.time() - t
     print(f"[STEP 1] {step1['reason']}")
 
-    out_dir = _make_out_dir(pdf_path)
+    out_dir = _prepare_out_dir(out_dir) if out_dir is not None else _make_out_dir(pdf_path)
     print(f"[OUT]    {out_dir}")
 
     if step1["is_scan"]:
         # 스캔 경로: CU 추출 → 파싱 → 이미지 후처리
         t = time.time()
-        raw = step2_extract_cu(pdf_path, out_dir, debug=args.debug)
+        raw = step2_extract_cu(pdf_path, out_dir, debug=debug)
         timings["STEP 2-CU API 추출"] = time.time() - t
 
         t = time.time()
-        figures = step3_parse_cu(raw, pdf_path, out_dir, debug=args.debug)
+        figures = step3_parse_cu(raw, pdf_path, out_dir, debug=debug)
         timings["STEP 3-CU 분리"] = time.time() - t
 
         t = time.time()
-        figures = step4_cv_refine(figures, pdf_path, out_dir, debug=args.debug)
+        figures = step4_cv_refine(figures, pdf_path, out_dir, debug=debug)
         timings["STEP 4 이미지 후처리"] = time.time() - t
     else:
         # 디지털 경로: PyMuPDF 추출 (STEP 3/4 미적용)
         t = time.time()
-        figures = step2_extract_mu(pdf_path, out_dir, debug=args.debug)
+        figures = step2_extract_mu(pdf_path, out_dir, debug=debug)
         timings["STEP 2-MU 추출"] = time.time() - t
         timings["STEP 3-CU 분리"] = None
         timings["STEP 4 이미지 후처리"] = None
@@ -139,13 +147,33 @@ def main():
 
     # STEP 5 — LLM 정제·캡션·목차 (스캔 여부 전달)
     t = time.time()
-    figures = step5_llm(out_dir, is_scan=step1["is_scan"], figures=figures, debug=args.debug)
+    figures = step5_llm(out_dir, is_scan=step1["is_scan"], figures=figures, debug=debug)
     timings["STEP 5 LLM 전체"] = time.time() - t
 
     _write_run_log(out_dir, pdf_path, step1["is_scan"], timings, figures, notes)
 
     total = sum(v for v in timings.values() if v is not None)
     print(f"[DONE]   파이프라인 완료 (총 {total:.1f}s)")
+    return {
+        "out_dir": out_dir,
+        "is_scan": step1["is_scan"],
+        "content_path": out_dir / "txt" / "content.txt",
+        "timings": timings,
+        "figures": figures,
+    }
+
+
+def main():
+    parser = argparse.ArgumentParser(description="전처리 파이프라인 v2")
+    parser.add_argument("--pdf", required=True, help="입력 PDF 경로")
+    parser.add_argument("--scan", action="store_true", help="스캔 PDF로 강제 지정")
+    parser.add_argument("--debug", action="store_true", help="중간 파일 저장")
+    parser.add_argument(
+        "--out-dir", default=None,
+        help="출력 디렉터리(미지정 시 result/{pdf이름}_vN/ 자동 버전)",
+    )
+    args = parser.parse_args()
+    run_pipeline(args.pdf, out_dir=args.out_dir, force_scan=args.scan, debug=args.debug)
 
 
 if __name__ == "__main__":
