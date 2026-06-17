@@ -88,19 +88,21 @@ def _get_router() -> Any:
     return _ROUTER
 
 
-def _route_mode(question: str, method: Optional[str], st: "_SnapshotState") -> str:
-    """질문을 local/global 중 하나로 해소. method가 'local'/'global'이면 그대로(강제),
-    그 외('auto'/None)면 라우터 결정. 라우터 없음/예외면 global로 폴백(검색은 안 깨짐)."""
-    if method in ("local", "global"):
-        return method
+def _route_mode(question: str, method: Optional[str], st: "_SnapshotState") -> tuple[str, list]:
+    """질문을 local/global/basic 으로 해소하고 (mode, entity_hits)를 반환한다. method가
+    'local'/'global'/'basic'이면 그대로 강제(엔티티 힌트 없음), 그 외('auto'/None)면 라우터
+    결정 + 매치된 엔티티(entity_hits)도 함께. 라우터 없음/예외면 global 폴백(검색 안 깨짐)."""
+    if method in ("local", "global", "basic"):
+        return method, []
     router = _get_router()
     if router is None:
-        return "global"
+        return "global", []
     try:
-        return router.route(question, st.entity_titles).mode
+        r = router.route(question, st.entity_titles)
+        return r.mode, list(r.entity_hits or [])
     except Exception as e:  # noqa: BLE001  라우팅 실패는 global 폴백.
         logger.warning("라우팅 실패(global 폴백): %s", e)
-        return "global"
+        return "global", []
 
 
 def _extract_titles(bundle: Any) -> list[str]:
@@ -278,8 +280,23 @@ def _search_blocking(run_id: str, question: str, method: Optional[str] = "auto")
     라우터)한 뒤 그 엔진으로 검색한다. warm_query와 동일하게 asyncio.run으로 코루틴을
     돌린다(이 스레드엔 루프가 없으므로 OK). (answer, 사용한 mode)를 돌려준다."""
     st = STATE.snapshots[run_id]
-    mode = _route_mode(question, method, st)
-    result = asyncio.run(st.engine.engine(mode).search(question))
+    mode, entity_hits = _route_mode(question, method, st)
+    eng = st.engine.engine(mode)
+    # 라우터가 찾은 엔티티를 local 컨텍스트에 강제 포함(include_entity_names). graphrag의
+    # 커뮤니티-필터 엔티티 집합에서 빠진 orphan(예: degree=0)도 이 경로로 grounded 가능.
+    cbp = getattr(eng, "context_builder_params", None)
+    inject = mode == "local" and bool(entity_hits) and isinstance(cbp, dict)
+    if inject:
+        prev = cbp.get("include_entity_names")
+        cbp["include_entity_names"] = entity_hits
+    try:
+        result = asyncio.run(eng.search(question))
+    finally:
+        if inject:
+            if prev is None:
+                cbp.pop("include_entity_names", None)
+            else:
+                cbp["include_entity_names"] = prev
     answer = result.response if hasattr(result, "response") else str(result)
     return _localize_no_data(answer), mode
 

@@ -333,8 +333,11 @@ def _make_local(b: LoadedEngine):
             b.dfs["community_reports"], b.dfs["communities"], COMMUNITY_LEVEL
         ),
         text_units=read_indexer_text_units(b.dfs["text_units"]),
+        # community_level=None: 커뮤니티 미소속(orphan, 예: degree=0 측우기)도 엔티티 집합에
+        # 포함한다. 그래야 라우터가 매치한 엔티티를 include_entity_names로 컨텍스트에 강제
+        # 포함해 grounded 답변이 가능하다(reports는 COMMUNITY_LEVEL 그대로 유지).
         entities=read_indexer_entities(
-            b.dfs["entities"], b.dfs["communities"], COMMUNITY_LEVEL
+            b.dfs["entities"], b.dfs["communities"], None
         ),
         relationships=read_indexer_relationships(b.dfs["relationships"]),
         covariates={
