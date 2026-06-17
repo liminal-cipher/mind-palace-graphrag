@@ -17,14 +17,17 @@ rag 스테이지는 register(job.run_id, job.snapshot_path)로 이 레지스트�
   - 단일 워커라 /query는 직렬 처리된다. global search 자체가 무거운 단발성 호출이라
     서빙 코어엔 충분하다.
 
-RAG는 global search만. 라우터 없음(질문 내용으로 데이터셋을 추론하지 않는다). 어느
-스냅샷에 묻는지는 요청의 snapshot 파라미터(run_id 또는 alias)로 정한다.
+검색 모드: 기본 method="auto"면 BGE-M3 라우터가 질문을 local/global로 보낸다(RAG_ROUTING
+=0이면 끄고 항상 global; 라우터 로드 실패 시에도 global 폴백). method="local"/"global"로
+강제 가능. 어느 스냅샷에 묻는지는 요청의 snapshot 파라미터(run_id 또는 alias)로 정한다.
+라우터는 질문 내용으로 검색 family만 고르고, 데이터셋(스냅샷) 선택엔 관여하지 않는다.
 합성 모델: RAG config 기준. global search 합성만 gpt-5.4-mini로 배선한다.
 파이프라인 공용 default_completion_model(추출/TOC/Stage B = gpt-4.1-mini)은 안 건드린다.
 """
 
 import asyncio
 import logging
+import os
 import time
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import asynccontextmanager
@@ -52,6 +55,63 @@ _executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="graphrag")
 # global search(서빙) 합성 모델. RAG config 기준으로만 배선되고, 파이프라인 공용
 # default_completion_model은 불변. 인덱스 산출물(parquet/LanceDB)도 안 바뀐다.
 RAG_SYNTHESIS_MODEL = "gpt-5.4-mini"
+
+# BGE-M3 local/global 라우팅. 켜면 method="auto" 질문을 라우터가 local/global로 보낸다.
+# 끄면(또는 모델 로드 실패 시) 항상 global(기존 동작). env로 토글.
+ROUTING_ENABLED = os.environ.get("RAG_ROUTING", "1") != "0"
+
+# 라우터 로드 시 함께 여는 임베딩 스토어(local search 가 entity_description LanceDB 필요).
+# 라우팅 OFF면 global 만 서빙하므로 스토어를 안 연다(기존 경량 경로 유지).
+_ROUTING_STORES = frozenset({"entity_desc", "text_unit", "full_content"})
+
+# BGE 라우터 싱글톤. 전용 _executor 스레드에서만 로드/사용(단일 워커라 락 불필요).
+# 로드 실패는 _ROUTER_FAILED로 박제해 매 질문 재시도하지 않고 global로 폴백한다.
+_ROUTER: Any = None
+_ROUTER_FAILED = False
+
+
+def _get_router() -> Any:
+    """BGE 라우터를 lazy 로드해 돌려준다(실패/비활성 시 None -> global 폴백).
+    _executor 단일 스레드에서만 호출되므로 별도 락 없이 안전하다."""
+    global _ROUTER, _ROUTER_FAILED
+    if _ROUTER is not None or _ROUTER_FAILED or not ROUTING_ENABLED:
+        return _ROUTER
+    try:
+        from backend.routing.routing_bge import BGERouter
+
+        t0 = time.perf_counter()
+        _ROUTER = BGERouter()
+        logger.info("BGE 라우터 로드 완료 %.1fs (model=%s)", time.perf_counter() - t0, _ROUTER.model_path)
+    except Exception as e:  # noqa: BLE001  로드 실패는 박제하고 global 폴백.
+        _ROUTER_FAILED = True
+        logger.warning("BGE 라우터 로드 실패(라우팅 비활성, global 폴백): %s", e)
+    return _ROUTER
+
+
+def _route_mode(question: str, method: Optional[str], st: "_SnapshotState") -> str:
+    """질문을 local/global 중 하나로 해소. method가 'local'/'global'이면 그대로(강제),
+    그 외('auto'/None)면 라우터 결정. 라우터 없음/예외면 global로 폴백(검색은 안 깨짐)."""
+    if method in ("local", "global"):
+        return method
+    router = _get_router()
+    if router is None:
+        return "global"
+    try:
+        return router.route(question, st.entity_titles).mode
+    except Exception as e:  # noqa: BLE001  라우팅 실패는 global 폴백.
+        logger.warning("라우팅 실패(global 폴백): %s", e)
+        return "global"
+
+
+def _extract_titles(bundle: Any) -> list[str]:
+    """번들의 entities DataFrame에서 엔티티 title 목록을 뽑는다(엔티티-히트 가드용)."""
+    try:
+        df = bundle.dfs.get("entities")
+        if df is None or "title" not in df.columns:
+            return []
+        return [str(x).strip() for x in df["title"].dropna().astype(str).tolist() if str(x).strip()]
+    except Exception:  # noqa: BLE001  title 추출 실패는 빈 목록(가드만 비활성, 라우팅은 동작).
+        return []
 
 ROOT = Path(__file__).resolve().parent.parent  # backend/ -> repo root
 
@@ -121,6 +181,7 @@ class _SnapshotState:
         self.warmup_seconds: Optional[float] = None
         self.engine: Any = None  # warm_query.LoadedEngine
         self.synthesis_model: Optional[str] = None
+        self.entity_titles: list[str] = []  # 라우터 엔티티-히트 가드용(warm 시 채움)
 
 
 class _State:
@@ -141,12 +202,17 @@ def _warm_one(st: _SnapshotState) -> None:
     t0 = time.perf_counter()
     try:
         # global만 서빙 -> 임베딩 스토어/LanceDB 미접근. 합성 모델만 RAG config로 배선.
+        # 라우팅 ON이면 local 엔진이 쓸 임베딩 스토어(entity_description LanceDB 등)까지
+        # 연다. OFF면 None -> global 에 필요한 것만(기존 경량 경로).
         bundle = wq.load_engine(
             st.snapshot_dir,
             method="global",
             synthesis_model=RAG_SYNTHESIS_MODEL,
+            open_stores=_ROUTING_STORES if ROUTING_ENABLED else None,
         )
         st.engine = bundle
+        if ROUTING_ENABLED:
+            st.entity_titles = _extract_titles(bundle)
         # 빌드된 엔진이 실제로 바인딩한 모델을 확인해 찍는다(검증용).
         eng = bundle.engine("global")
         bound = getattr(eng, "model", None)
@@ -187,14 +253,21 @@ def _warmup_blocking() -> None:
             st = _SnapshotState(run_id, snapshot_dir)
             STATE.snapshots[run_id] = st
         _warm_one(st)
+    # 스냅샷 warm 뒤 라우터를 사전 로드(첫 auto 질문이 113s 모델 로드를 떠안지 않게).
+    # 실패해도 _get_router가 흡수하고 이후 질문은 global로 폴백한다.
+    if ROUTING_ENABLED:
+        _get_router()
 
 
-def _search_blocking(run_id: str, question: str) -> str:
-    """전용 스레드에서 해당 스냅샷 global search 한 번. warm_query와 동일하게
-    asyncio.run으로 engine.search 코루틴을 돌린다(이 스레드엔 루프가 없으므로 OK)."""
-    bundle = STATE.snapshots[run_id].engine
-    result = asyncio.run(bundle.engine("global").search(question))
-    return result.response if hasattr(result, "response") else str(result)
+def _search_blocking(run_id: str, question: str, method: Optional[str] = "auto") -> tuple[str, str]:
+    """전용 스레드에서 해당 스냅샷 search 한 번. 먼저 method를 local/global로 해소(auto면
+    라우터)한 뒤 그 엔진으로 검색한다. warm_query와 동일하게 asyncio.run으로 코루틴을
+    돌린다(이 스레드엔 루프가 없으므로 OK). (answer, 사용한 mode)를 돌려준다."""
+    st = STATE.snapshots[run_id]
+    mode = _route_mode(question, method, st)
+    result = asyncio.run(st.engine.engine(mode).search(question))
+    answer = result.response if hasattr(result, "response") else str(result)
+    return answer, mode
 
 
 @asynccontextmanager
@@ -217,6 +290,12 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="회랑 RAG 서빙 코어", lifespan=lifespan)
 
 
+_METHOD_DESC = (
+    "검색 모드. 'auto'(기본): BGE 라우터가 local/global 자동 선택. "
+    "'local'/'global': 강제. 라우팅 OFF/실패 시 'auto'는 global로 폴백."
+)
+
+
 class QueryRequest(BaseModel):
     question: str = Field(..., description="자연어 질문")
     snapshot: Optional[str] = Field(
@@ -226,11 +305,13 @@ class QueryRequest(BaseModel):
             f"등록 키: {', '.join(SNAPSHOTS)} (alias: {', '.join(ALIASES) or '-'})."
         ),
     )
+    method: Optional[str] = Field(default="auto", description=_METHOD_DESC)
 
 
 class QueryResponse(BaseModel):
     answer: str
     snapshot: str  # 실제로 답한 키(showcase run_id 또는 live job_id).
+    mode: Optional[str] = None  # 실제로 사용한 검색 모드(local/global).
     # related_nodes: 팰리스 노드 연결은 나중 레이어. 지금은 자리만 비워둔다.
 
 
@@ -241,6 +322,7 @@ class RegisterRequest(BaseModel):
 
 class JobQueryRequest(BaseModel):
     question: str = Field(..., description="자연어 질문")
+    method: Optional[str] = Field(default="auto", description=_METHOD_DESC)
 
 
 def _validate_snapshot_path(path: str) -> Path:
@@ -258,9 +340,9 @@ def _validate_snapshot_path(path: str) -> Path:
     )
 
 
-async def _run_query(key: str, question: str) -> str:
-    """키 -> 번들 -> global search. /query와 /jobs/{id}/query가 공유하는 코어.
-    검색은 _executor 단일 스레드에서 직렬 실행된다."""
+async def _run_query(key: str, question: str, method: Optional[str] = "auto") -> tuple[str, str]:
+    """키 -> 번들 -> (라우팅된) search. /query와 /jobs/{id}/query가 공유하는 코어.
+    검색은 _executor 단일 스레드에서 직렬 실행된다. (answer, 사용한 mode) 반환."""
     st = STATE.snapshots.get(key)
     if st is None:
         raise HTTPException(
@@ -278,9 +360,9 @@ async def _run_query(key: str, question: str) -> str:
 
     loop = asyncio.get_running_loop()
     t0 = time.perf_counter()
-    answer = await loop.run_in_executor(_executor, _search_blocking, key, q)
-    logger.info("query [%s] %.1fs: %s", key, time.perf_counter() - t0, q[:50])
-    return answer
+    answer, mode = await loop.run_in_executor(_executor, _search_blocking, key, q, method)
+    logger.info("query [%s] mode=%s %.1fs: %s", key, mode, time.perf_counter() - t0, q[:50])
+    return answer, mode
 
 
 def _snapshot_health(st: Optional[_SnapshotState], snapshot_dir: str) -> dict:
@@ -404,13 +486,13 @@ async def query(req: QueryRequest):
                 f"(alias: {', '.join(ALIASES) or '-'})."
             ),
         )
-    answer = await _run_query(key, req.question)
-    return QueryResponse(answer=answer, snapshot=key)
+    answer, mode = await _run_query(key, req.question, req.method)
+    return QueryResponse(answer=answer, snapshot=key, mode=mode)
 
 
 @app.post("/jobs/{job_id}/query", response_model=QueryResponse)
 async def job_query(job_id: str, req: JobQueryRequest):
     """잡별 질의. 라이브 등록 키 = job_id이므로 키 라우팅 한 줄이다(코어 공유).
     잡 메타는 오케스트레이터(/jobs/{id}/status) 소관이고 여기선 엔진만 라우팅한다."""
-    answer = await _run_query(job_id, req.question)
-    return QueryResponse(answer=answer, snapshot=job_id)
+    answer, mode = await _run_query(job_id, req.question, req.method)
+    return QueryResponse(answer=answer, snapshot=job_id, mode=mode)
