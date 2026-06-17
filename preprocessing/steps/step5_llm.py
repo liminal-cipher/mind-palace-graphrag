@@ -166,22 +166,41 @@ def _refine_caption(caption_text: str) -> str:
                 "- 단어를 새로 추가하거나(예: '영정'→'영정 사진') 내용을 지어내지 마세요. "
                 "끊기거나 깨진 부분도 추측해 채우지 말고 그대로 두세요.\n"
                 "- 어떤 글자도 삭제하지 마세요. 특히 캡션 뒤의 설명 문장을 절대 지우지 마세요.\n"
+                "- 단, 문장 조각의 순서가 뒤바뀌어 있으면(문장 끝부분이 중간보다 앞에 온 경우) "
+                "이미 있는 조각들의 순서만 바로잡아 자연스러운 한 문장으로 이어 붙이세요. "
+                "이때도 단어를 바꾸거나 추가·삭제하지 말고 있는 글자만 재배열하세요. "
+                "(예: '경남 진주 아 주는 역할을 하였다. 임진왜란 때 왜군의 호남 진출을 막' "
+                "→ '경남 진주 임진왜란 때 왜군의 호남 진출을 막아 주는 역할을 하였다.')\n"
                 "- 고칠 것이 없으면 원문을 그대로 반환하고, 결과 텍스트만 출력하세요."
             ),
         },
-        {"role": "user", "content": f"다음 캡션의 띄어쓰기·오탈자만 교정해 주세요.\n\n{caption_text}"},
+        {"role": "user", "content": f"다음 캡션을 교정해 주세요(띄어쓰기·오탈자, 그리고 순서가 뒤바뀐 조각의 재배열만).\n\n{caption_text}"},
     ]
     return _oai_chat(msgs, _OAI_MINI, max_tokens=256, temperature=0)
 
 
-def _generate_caption(img_path: Path) -> str:
+_MATH_RULE = (
+    " 수식이 있으면 LaTeX 명령이나 $ 기호를 쓰지 말고 유니코드 평문으로 표기하세요"
+    " (위첨자 ²³ⁿ, 아래첨자 ₁₂ᵢ, 그리스문자 σ μ Σ √, 분수는 (분자)/(분모))."
+)
+
+
+def _generate_caption(img_path: Path, math_unicode: bool = False) -> str:
+    """이미지를 보고 캡션을 생성한다.
+
+    math_unicode=True면 수식을 LaTeX 대신 유니코드 평문으로 표기하도록 지시한다
+    (디지털 경로 전용 — 스캔 경로엔 적용하지 않아 결과 변화를 막는다).
+    """
     b64 = base64.b64encode(img_path.read_bytes()).decode()
+    prompt = "아래 이미지의 내용을 간결하게 설명하는 캡션을 한 문장으로 작성해 주세요."
+    if math_unicode:
+        prompt += _MATH_RULE
     msgs = [
         {"role": "system", "content": "당신은 교육 자료의 이미지를 설명하는 전문가입니다."},
         {
             "role": "user",
             "content": [
-                {"type": "text", "text": "아래 이미지의 내용을 간결하게 설명하는 캡션을 한 문장으로 작성해 주세요."},
+                {"type": "text", "text": prompt},
                 {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{b64}"}},
             ],
         },
@@ -215,18 +234,21 @@ def step5_llm(out_dir: Path, is_scan: bool, figures: list[dict], debug: bool = F
     print(f"[STEP 5-2] 캡션 처리 시작 ({len(figures)}개)")
 
     def _process_caption(fig: dict) -> str:
-        raw_cap = fig.get("caption", "").strip()
+        # 캡션 내부 줄바꿈/연속 공백을 단일 공백으로 정규화(한 줄 캡션).
+        # STEP 4 분리는 이미 끝난 시점이라 page10 같은 줄 분리 로직에는 영향 없음.
+        raw_cap = " ".join(fig.get("caption", "").split())
         # STEP 4에서 vision으로 캡션을 이미 전사한 figure는 그대로 둔다.
         if fig.get("caption_done"):
             return raw_cap
         if is_scan:
-            # 인쇄 캡션이 있으면 교정, 없으면 이미지로 생성 폴백
+            # 인쇄 캡션이 있으면 교정, 없으면 이미지로 생성 폴백(수식 규칙 미적용)
             if raw_cap:
                 return _refine_caption(raw_cap)
             img_path = out_dir / fig.get("img_path", "")
             return _generate_caption(img_path) if img_path.exists() else ""
+        # 디지털 경로: 수식 유니코드 표기 적용
         img_path = out_dir / fig.get("img_path", "")
-        return _generate_caption(img_path) if img_path.exists() else ""
+        return _generate_caption(img_path, math_unicode=True) if img_path.exists() else ""
 
     # 캡션들도 서로 독립 → 병렬 처리. 결과는 figures 순서대로 모임.
     refined_caps = _parallel_map(_process_caption, figures, label="캡션")
