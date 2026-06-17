@@ -28,7 +28,7 @@ load_dotenv(Path(__file__).parent.parent.parent / ".env")
 ENDPOINT    = os.environ.get("CONTENT_UNDERSTANDING_ENDPOINT", "").rstrip("/")
 KEY         = os.environ.get("CONTENT_UNDERSTANDING_KEY", "")
 API_VER     = os.environ.get("CONTENT_UNDERSTANDING_API_VER", "2024-12-01-preview")
-ANALYZER_ID = "pdf-content-extractor-noform"
+ANALYZER_ID = "pdf_content_extractor_noform"  # GA(2025-11-01): analyzerId 하이픈 불가
 
 _BASE_HDR = {"Ocp-Apim-Subscription-Key": KEY}
 _JSON_HDR = {**_BASE_HDR, "Content-Type": "application/json"}
@@ -79,7 +79,7 @@ def _ensure_analyzer() -> None:
     url = f"{ENDPOINT}/contentunderstanding/analyzers/{ANALYZER_ID}?api-version={API_VER}"
     body = {
         "description": "PDF 텍스트·이미지·표·다이어그램 추출기",
-        "scenario": "document",
+        "baseAnalyzerId": "prebuilt-document",  # GA: custom 분석기는 prebuilt base 필수(문서 base)
         "config": {
             "returnDetails": True,   # figure bbox(source) 반환에 필수
             "enableOcr": True,
@@ -112,7 +112,8 @@ def _ensure_analyzer() -> None:
 
 def _submit_analyze(pdf_path: str) -> str:
     """PDF를 application/pdf 바이너리로 전송 → Operation-Location URL 반환."""
-    url  = f"{ENDPOINT}/contentunderstanding/analyzers/{ANALYZER_ID}:analyze?api-version={API_VER}"
+    # GA: 로컬 파일 직접 업로드는 :analyzeBinary (raw 바이너리). :analyze는 JSON {url} 전용.
+    url  = f"{ENDPOINT}/contentunderstanding/analyzers/{ANALYZER_ID}:analyzeBinary?api-version={API_VER}"
     hdrs = {**_BASE_HDR, "Content-Type": "application/pdf"}
     resp = requests.post(url, headers=hdrs, data=Path(pdf_path).read_bytes(), timeout=120)
     if not resp.ok:
