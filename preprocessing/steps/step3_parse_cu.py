@@ -56,13 +56,42 @@ def _safe_crop(pil_img: Image.Image, bbox_px: list[int]) -> Image.Image:
     return pil_img.crop((max(0, x0), max(0, y0), min(w, x1), min(h, y1)))
 
 
+# 매 페이지 반복되는 머리말/꼬리말 장식(로고 등)은 제외한다.
+_SKIP_FIGURE_ROLES = {"pageHeader", "pageFooter"}
+
+
 def _collect_raw_figures(data: dict) -> list[dict]:
-    """raw_response.json에서 figure 목록을 모두 모아 반환."""
+    """raw_response.json에서 figure 목록을 모은다.
+
+    figure가 참조하는 paragraph의 role이 pageHeader/pageFooter이면
+    (매 페이지 반복되는 국사편찬위원회 로고 등) 본문 이미지가 아니므로 건너뛴다.
+    """
     figures = []
     for content in data.get("result", {}).get("contents", []):
-        figures.extend(content.get("figures", []))
+        paragraphs = content.get("paragraphs", [])
+        skip_idx = {
+            i for i, p in enumerate(paragraphs)
+            if p.get("role") in _SKIP_FIGURE_ROLES
+        }
+
+        def _is_chrome(fig: dict) -> bool:
+            # 참조 paragraph가 있고 그 role이 전부 header/footer일 때만 장식으로 본다.
+            # (로고는 pageHeader paragraph 1개만 참조. 본문 figure는 여러 paragraph를
+            #  참조하며 일부에 footer가 섞여도 본문이므로 제외하지 않는다.)
+            para_idx = [
+                int(m.group(1))
+                for e in fig.get("elements", [])
+                if (m := re.match(r"/paragraphs/(\d+)$", e))
+            ]
+            return bool(para_idx) and all(i in skip_idx for i in para_idx)
+
+        for fig in content.get("figures", []):
+            if not _is_chrome(fig):
+                figures.append(fig)
         for page in content.get("pages", []):
-            figures.extend(page.get("figures", []))
+            for fig in page.get("figures", []):
+                if not _is_chrome(fig):
+                    figures.append(fig)
     return figures
 
 
@@ -252,19 +281,19 @@ def step3_parse_cu(
         )
         print(f"[CU] caption_raw.txt 저장 완료 (debug, {len(caption_lines)}개)")
 
-    # figures.json (debug)
-    if debug:
-        meta_dir = out_dir / "meta"
-        meta_dir.mkdir(exist_ok=True)
-        (meta_dir / "figures.json").write_text(
-            json.dumps(figures, ensure_ascii=False, indent=2), encoding="utf-8"
-        )
-        print(f"[CU] meta/figures.json 저장 완료 (debug)")
-
     # figcaption 정보를 figures에 보완 (순서 기반 매칭)
     for i, fig in enumerate(figures):
         if not fig["caption"] and i < len(figcaption_list):
             fig["caption"] = figcaption_list[i]["text"]
+
+    # figures.json — step4·step5로 넘기는 필수 핸드오프이므로 항상 저장
+    # (캡션 보완까지 끝난 최종 figures를 기록)
+    meta_dir = out_dir / "meta"
+    meta_dir.mkdir(exist_ok=True)
+    (meta_dir / "figures.json").write_text(
+        json.dumps(figures, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    print(f"[CU] meta/figures.json 저장 완료")
 
     return figures
 
