@@ -22,9 +22,11 @@ class GraphRAGSearchClient:
         self.repo_root = Path(
             repo_root or os.getenv("GRAPHRAG_REPO_ROOT", ".")
         ).resolve()
-        warm_query_path = self.repo_root / "warm_query.py"
+        # warm_query.py was renamed to backend/query.py in the backend refactor;
+        # the legacy module API (DFS/_engine/ask) still lives there.
+        warm_query_path = self.repo_root / "backend" / "query.py"
         if not warm_query_path.exists():
-            raise FileNotFoundError(f"warm_query.py not found: {warm_query_path}")
+            raise FileNotFoundError(f"backend/query.py not found: {warm_query_path}")
 
         if str(self.repo_root) not in sys.path:
             sys.path.insert(0, str(self.repo_root))
@@ -33,7 +35,7 @@ class GraphRAGSearchClient:
             "warm_query_runtime", warm_query_path
         )
         if spec is None or spec.loader is None:
-            raise RuntimeError(f"cannot import warm_query.py: {warm_query_path}")
+            raise RuntimeError(f"cannot import backend/query.py: {warm_query_path}")
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         self.warm_query = module
