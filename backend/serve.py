@@ -113,6 +113,20 @@ def _extract_titles(bundle: Any) -> list[str]:
     except Exception:  # noqa: BLE001  title 추출 실패는 빈 목록(가드만 비활성, 라우팅은 동작).
         return []
 
+
+# global search가 무데이터 시 코드 레벨(프롬프트 미경유)에서 반환하는 graphrag 영어 거절.
+# graphrag.prompts.query.global_search_reduce_system_prompt.NO_DATA_ANSWER 와 동일 문자열.
+# local/basic은 프롬프트의 한국어 거절 문구를 쓰므로 보통 여기 안 걸리지만, 모드 무관하게
+# 방어적으로 처리한다. graphrag가 이 문자열을 바꾸면 매칭이 빗나가 영어가 그대로 나갈 뿐
+# (무해 degrade). 한국어 문구는 쿼리 프롬프트(local/global/basic)의 거절 문구와 동일하게 맞췄다.
+_GRAPHRAG_NO_DATA = "I am sorry but I am unable to answer this question given the provided data."
+KOREAN_NO_DATA = "현재 주신 자료에는 없는 내용이에요. 다시 한 번 확인해주세요."
+
+
+def _localize_no_data(answer: str) -> str:
+    """graphrag global search의 코드 레벨 영어 무데이터 거절을 한국어 고정 문구로 바꾼다."""
+    return KOREAN_NO_DATA if answer.strip() == _GRAPHRAG_NO_DATA else answer
+
 ROOT = Path(__file__).resolve().parent.parent  # backend/ -> repo root
 
 # POST /snapshots/register는 내부 전용(127.0.0.1 바인드 전제, 외부 노출 금지). 임의
@@ -267,7 +281,7 @@ def _search_blocking(run_id: str, question: str, method: Optional[str] = "auto")
     mode = _route_mode(question, method, st)
     result = asyncio.run(st.engine.engine(mode).search(question))
     answer = result.response if hasattr(result, "response") else str(result)
-    return answer, mode
+    return _localize_no_data(answer), mode
 
 
 @asynccontextmanager
