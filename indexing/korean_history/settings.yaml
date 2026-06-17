@@ -64,13 +64,13 @@ embed_text:
 
 extract_graph:
   completion_model_id: default_completion_model
-  prompt: "../../prompts/extract_graph.txt"
+  prompt: "prompts/extract_graph.txt"  # domain-tuned (this domain's own copy; shared prompts/ is neutral)
   entity_types: [인물, 사건, 정책, 문물, 서적, 기관, 장소]
   max_gleanings: 2
 
 summarize_descriptions:
   completion_model_id: default_completion_model
-  prompt: "../../prompts/summarize_descriptions.txt"
+  prompt: "prompts/summarize_descriptions.txt"  # domain-tuned
   max_length: 500
 
 extract_graph_nlp:
@@ -90,8 +90,8 @@ extract_claims:
 
 community_reports:
   completion_model_id: default_completion_model
-  graph_prompt: "../../prompts/community_report_graph.txt"
-  text_prompt: "../../prompts/community_report_text.txt"
+  graph_prompt: "prompts/community_report_graph.txt"  # domain-tuned
+  text_prompt: "../../prompts/community_report_text.txt"  # shared neutral text prompt
   max_length: 2000
   max_input_length: 8000
 
