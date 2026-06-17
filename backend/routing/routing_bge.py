@@ -167,8 +167,8 @@ class BGERouter:
             mode = "global"
             reason = "global score is sufficiently higher than local"
         else:
-            mode = "local"
-            reason = "no strong global signal, defaulting to local"
+            mode = "basic"
+            reason = "no strong local/global signal, defaulting to basic"
 
         confidence = "clear" if mode != raw_mode or gap >= 0.04 else "ambiguous"
         return RouteResult(
