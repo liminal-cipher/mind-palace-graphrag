@@ -1,87 +1,249 @@
 [
   {
-    "row": 4,
-    "path": "images/fig_6_3.png",
-    "page": 6,
-    "caption_title": "교린지",
-    "caption": "교린지 | 일본, 여진 등과의 교린 정책과 외교사를 정리한 책이다.",
+    "row": 1,
+    "path": "images/fig_1_1.png",
+    "page": 1,
+    "caption_title": "\"조선의 성립과 발전을 대표하는 경복궁의 근정전과 제승당을 설명하는 역사 자료입니다.\"",
+    "caption": "\"조선의 성립과 발전을 대표하는 경복궁의 근정전과 제승당을 설명하는 역사 자료입니다.\"",
     "reason": "no_fit",
-    "best_score": 0.388
+    "best_score": 0.472
   },
   {
-    "row": 6,
+    "row": 5,
+    "path": "images/fig_3_1_cv_2.png",
+    "page": 3,
+    "caption_title": "해시계(앙부일구) 세종 때 처음 만들어 백성들이 편리하게 사용하도록 하였다.",
+    "caption": "해시계(앙부일구) 세종 때 처음 만들어 백성들이 편리하게 사용하도록 하였다.",
+    "reason": "collision",
+    "best_score": 0.796
+  },
+  {
+    "row": 14,
     "path": "images/fig_7_3.png",
     "page": 7,
-    "caption_title": "왜관도",
-    "caption": "왜관도(국립 중앙 박물관 소장) | 왜관은 부산 초량의 일본인들이 살던 곳이다.",
+    "caption_title": "수직 왜인 고신(국사편찬위원회 소장) 우리나라에 귀화한 일본인에게 벼슬을 내린다는 문서이다.",
+    "caption": "수직 왜인 고신(국사편찬위원회 소장) 우리나라에 귀화한 일본인에게 벼슬을 내린다는 문서이다.",
+    "reason": "collision",
+    "best_score": 0.73
+  },
+  {
+    "row": 16,
+    "path": "images/fig_9_1.png",
+    "page": 9,
+    "caption_title": "조선의 8도",
+    "caption": "조선의 8도",
+    "reason": "collision",
+    "best_score": 0.66
+  },
+  {
+    "row": 23,
+    "path": "images/fig_12_1.png",
+    "page": 12,
+    "caption_title": "영릉",
+    "caption": "영릉 | 경기 여주 세종대왕과 소헌왕후의 능이다.",
+    "reason": "no_fit",
+    "best_score": 0.344
+  },
+  {
+    "row": 28,
+    "path": "images/fig_15_1.png",
+    "page": 15,
+    "caption_title": "양진당",
+    "caption": "양진당 | 경북 안동 하회 마을 조선 시대 양반의 전형적인 주택으로, 유성룡의 형이 살았던 집이다.",
+    "reason": "no_fit",
+    "best_score": 0.403
+  },
+  {
+    "row": 30,
+    "path": "images/fig_16_2.png",
+    "page": 16,
+    "caption_title": "원형 테두리 안에 링 바인더를 묘사한 이미지입니다.",
+    "caption": "원형 테두리 안에 링 바인더를 묘사한 이미지입니다.",
+    "reason": "no_fit",
+    "best_score": 0.262
+  },
+  {
+    "row": 31,
+    "path": "images/fig_17_1.png",
+    "page": 17,
+    "caption_title": "필암 서원 확연루",
+    "caption": "필암 서원 확연루 | 전남 장성 운서원이다.",
+    "reason": "collision",
+    "best_score": 0.826
+  },
+  {
+    "row": 32,
+    "path": "images/fig_17_2.png",
+    "page": 17,
+    "caption_title": "링 바인더 형태의 노트 또는 파일을 표현한 이미지입니다.",
+    "caption": "링 바인더 형태의 노트 또는 파일을 표현한 이미지입니다.",
+    "reason": "no_fit",
+    "best_score": 0.21
+  },
+  {
+    "row": 33,
+    "path": "images/fig_17_3.png",
+    "page": 17,
+    "caption_title": "필암 서원 확연루",
+    "caption": "필암 서원 확연루 | 전남 장성 운서원이다. 김인후를 추모하기 위해 그의 고향에 세",
+    "reason": "collision",
+    "best_score": 0.78
+  },
+  {
+    "row": 36,
+    "path": "images/fig_21_1.png",
+    "page": 21,
+    "caption_title": "태극 문양을 형상화한 대한민국의 상징 로고.",
+    "caption": "태극 문양을 형상화한 대한민국의 상징 로고.",
     "reason": "no_fit",
     "best_score": 0.353
   },
   {
-    "row": 12,
-    "path": "images/fig_12_2.png",
-    "page": 12,
-    "caption_title": "영릉",
-    "caption": "영릉 | 경기 여주 세종 대왕과 소헌 왕후의 능이다.",
-    "reason": "no_fit",
-    "best_score": 0.359
-  },
-  {
-    "row": 17,
-    "path": "images/fig_17_2.png",
-    "page": 17,
-    "caption_title": "필암 서원 확연루",
-    "caption": "필암 서원 확연루 | 전남 장성 운 서원이다. 김인후를 추모하기 위해 그의 고향에 세",
+    "row": 37,
+    "path": "images/fig_21_2.png",
+    "page": 21,
+    "caption_title": "누백포호(왼쪽) 고려 때 최누백이 호랑이한테 잡아먹힌 아버지의 복수를 하고자 15세의 어린 나이에 호랑이를 찾아 도끼로 죽이고 아버지의 장사를 지냈다는 이야기이다. 석진단지(오른쪽) 조선 때 고산현의 관리였던 유석진이 아버지가 나쁜 병에 걸리자, 자신의 손가락을 잘라 나오는 피를 아버지께 드려 병이 나았다는 이야기이다.",
+    "caption": "누백포호(왼쪽) 고려 때 최누백이 호랑이한테 잡아먹힌 아버지의 복수를 하고자 15세의 어린 나이에 호랑이를 찾아 도끼로 죽이고 아버지의 장사를 지냈다는 이야기이다. 석진단지(오른쪽) 조선 때 고산현의 관리였던 유석진이 아버지가 나쁜 병에 걸리자, 자신의 손가락을 잘라 나오는 피를 아버지께 드려 병이 나았다는 이야기이다.",
     "reason": "collision",
-    "best_score": 0.772
+    "best_score": 0.593
   },
   {
-    "row": 23,
-    "path": "images/fig_28_2.png",
-    "page": 28,
-    "caption_title": "봉사도",
-    "caption": "봉사도 | 조선 후기에 청의 사신을 맞이하는 그림이다.",
+    "row": 39,
+    "path": "images/fig_23_2.png",
+    "page": 23,
+    "caption_title": "고풍스러운 전통 건축 양식의 누각이 정원을 배경으로 자리하고 있습니다.",
+    "caption": "고풍스러운 전통 건축 양식의 누각이 정원을 배경으로 자리하고 있습니다.",
     "reason": "no_fit",
-    "best_score": 0.394
+    "best_score": 0.387
   },
   {
-    "row": 25,
-    "path": "images/fig_31_2.png",
-    "page": 31,
-    "caption_title": "이완이 썼던 투구",
-    "caption": "이완이 썼던 투구(경기도 박물관 소장)",
+    "row": 41,
+    "path": "images/fig_24_1.png",
+    "page": 24,
+    "caption_title": "문경 새재 제3관문",
+    "caption": "문경 새재 제3관문 | 경북 문경 한양과 영남을 이어 주는 교통의 요지이며 군사적 요충지였다.",
+    "reason": "no_fit",
+    "best_score": 0.389
+  },
+  {
+    "row": 46,
+    "path": "images/fig_26_2.png",
+    "page": 26,
+    "caption_title": "파란 링 바인더가 원 안에 있는 이미지입니다.",
+    "caption": "파란 링 바인더가 원 안에 있는 이미지입니다.",
+    "reason": "no_fit",
+    "best_score": 0.244
+  },
+  {
+    "row": 47,
+    "path": "images/fig_27_1.png",
+    "page": 27,
+    "caption_title": "초량 객사(국립중앙박물관 소장) 동래부사가 일본 사신을 접대하는 그림이다.",
+    "caption": "초량 객사(국립중앙박물관 소장) 동래부사가 일본 사신을 접대하는 그림이다.",
     "reason": "collision",
-    "best_score": 0.768
+    "best_score": 0.732
   },
   {
-    "row": 28,
-    "path": "images/fig_36_2.png",
+    "row": 57,
+    "path": "images/fig_36_1.png",
     "page": 36,
     "caption_title": "대장간",
-    "caption": "대장간 | 김홍도 땀흘려 일 하는 조선 후기 서민들의 모습을 사실적으로 그렸다.",
+    "caption": "대장간 | 김홍도 땀 흘려 일하는 조선 후기 서민들의 모습을 사실적으로 그렸다.",
     "reason": "no_fit",
-    "best_score": 0.489
+    "best_score": 0.491
   },
   {
-    "row": 30,
-    "path": "images/fig_37_4.png",
+    "row": 58,
+    "path": "images/fig_36_2.png",
+    "page": 36,
+    "caption_title": "기성랑 계회도 병조의 관원들이 친목을 다지기 위해 계 모임을 하고 있는 그림이다.",
+    "caption": "기성랑 계회도 병조의 관원들이 친목을 다지기 위해 계 모임을 하고 있는 그림이다.",
+    "reason": "no_fit",
+    "best_score": 0.443
+  },
+  {
+    "row": 59,
+    "path": "images/fig_36_3.png",
+    "page": 36,
+    "caption_title": "18세기 세계 각국의 주요 제국, 식민지 및 세력권 분포를 나타낸 지도.",
+    "caption": "18세기 세계 각국의 주요 제국, 식민지 및 세력권 분포를 나타낸 지도.",
+    "reason": "no_fit",
+    "best_score": 0.442
+  },
+  {
+    "row": 60,
+    "path": "images/fig_37_1_cv_1.png",
     "page": 37,
-    "caption_title": "거중기 모형",
-    "caption": "거중기 모형(경기도 박물관) | 화성을 쌓을 때에 사용하 였다.",
+    "caption_title": "\"해남 윤씨 녹우단 전경",
+    "caption": "\"해남 윤씨 녹우단 전경 | 전남 해남 고산 윤선도의 고택이다.\"",
     "reason": "no_fit",
-    "best_score": 0.395
+    "best_score": 0.339
   },
   {
-    "row": 31,
-    "path": "images/fig_38_2.png",
+    "row": 62,
+    "path": "images/fig_37_1_cv_3.png",
+    "page": 37,
+    "caption_title": "\"가격은 숫자 (예: ¢ 대신)만 적으세요.\"",
+    "caption": "\"가격은 숫자 (예: ¢ 대신)만 적으세요.\"",
+    "reason": "no_fit",
+    "best_score": 0.284
+  },
+  {
+    "row": 63,
+    "path": "images/fig_38_1.png",
     "page": 38,
     "caption_title": "옥산 서원",
-    "caption": "옥산 서원 ㅣ 경북 경주 이언적을 추모하여 세운 서원이다.",
+    "caption": "옥산 서원 | 경북 경주 이언적을 추모하여 세운 서원이다.",
     "reason": "collision",
-    "best_score": 0.728
+    "best_score": 0.744
   },
   {
-    "row": 34,
+    "row": 65,
+    "path": "images/fig_39_2.png",
+    "page": 39,
+    "caption_title": "링 바인더 형태의 검은색 노트를 간략히 묘사한 이미지입니다.",
+    "caption": "링 바인더 형태의 검은색 노트를 간략히 묘사한 이미지입니다.",
+    "reason": "no_fit",
+    "best_score": 0.245
+  },
+  {
+    "row": 69,
+    "path": "images/fig_42_2.png",
+    "page": 42,
+    "caption_title": "연필과 종이가 놓여있는 장면.",
+    "caption": "연필과 종이가 놓여있는 장면.",
+    "reason": "no_fit",
+    "best_score": 0.248
+  },
+  {
+    "row": 70,
+    "path": "images/fig_42_3.png",
+    "page": 42,
+    "caption_title": "지지대 비각 및 각자",
+    "caption": "지지대 비각 및 각자 | 경기 수원",
+    "reason": "no_fit",
+    "best_score": 0.35
+  },
+  {
+    "row": 71,
+    "path": "images/fig_43_1.png",
+    "page": 43,
+    "caption_title": "벼 타작",
+    "caption": "벼 타작 | 김홍도",
+    "reason": "no_fit",
+    "best_score": 0.375
+  },
+  {
+    "row": 76,
+    "path": "images/fig_49_1.png",
+    "page": 49,
+    "caption_title": "대한민국 정부를 상징하는 태극 로고입니다.",
+    "caption": "대한민국 정부를 상징하는 태극 로고입니다.",
+    "reason": "no_fit",
+    "best_score": 0.375
+  },
+  {
+    "row": 77,
     "path": "images/fig_49_2.png",
     "page": 49,
     "caption_title": "논갈이",
