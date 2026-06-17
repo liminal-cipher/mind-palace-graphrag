@@ -6,7 +6,7 @@ fixed names graphrag + palace.match_images expect:
     txt/content.txt        -> corpus.txt        (graphrag index corpus)
     txt/content_paged.txt  -> pagesplit.txt      (verbatim; [pageN] is the canonical marker)
     txt/caption.txt        -> captions.md        ([pageN] text -> <figcaption>text</figcaption>)
-    img/*.png              -> images/            (figures for match_images)
+    images/*.png              -> images/            (figures for match_images)
 
 The page-marker format is "[pageN]" end-to-end (preprocessing pipeline_v2 emits it,
 palace.match_images PAGE_MARKER_RE parses it), so pagesplit is copied unchanged.
@@ -47,7 +47,7 @@ def normalize(result_dir: Path, domain: str) -> Path:
     content = txt / "content.txt"
     paged = txt / "content_paged.txt"
     caption = txt / "caption.txt"
-    img_src = result_dir / "img"
+    img_src = result_dir / "images"
     for p in (content, paged, caption):
         if not p.exists():
             raise SystemExit(f"STOP: missing {p.relative_to(REPO)}")

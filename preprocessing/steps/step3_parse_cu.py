@@ -2,7 +2,7 @@
 STEP 3-CU — 이미지 / 텍스트 / 캡션 분리 (CU 경로 전용)
 
 raw_response.json을 파싱하여:
-  - 이미지: figure bbox → PyMuPDF로 크롭 → img/fig_{page}_{idx}.png
+  - 이미지: figure bbox → PyMuPDF로 크롭 → images/fig_{page}_{idx}.png
   - 본문 텍스트: markdown 정제 → txt/content_raw.txt
   - 캡션: figcaption / figure.caption 필드 추출
 
@@ -229,7 +229,7 @@ def step3_parse_cu(
 
     Returns: figures 리스트 (figures.json 스키마)
     """
-    img_dir = out_dir / "img"
+    img_dir = out_dir / "images"
     txt_dir = out_dir / "txt"
     img_dir.mkdir(parents=True, exist_ok=True)
     txt_dir.mkdir(parents=True, exist_ok=True)
@@ -283,7 +283,7 @@ def step3_parse_cu(
             "id":                fig_id,
             "page":              page_no,
             "bbox_inch":         r["bbox"],
-            "img_path":          str(Path("img") / img_filename),
+            "img_path":          str(Path("images") / img_filename),
             "caption":           caption,
             "false_positive_type": None,
             "sub_crops":         [],

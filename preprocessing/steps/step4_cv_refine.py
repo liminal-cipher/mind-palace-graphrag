@@ -60,7 +60,7 @@ def step4_cv_refine(
     debug: bool = False,
 ) -> list[dict]:
     """CU figure crop의 오탐을 정제한다. Returns: 정제된 figures 리스트."""
-    img_dir = out_dir / "img"
+    img_dir = out_dir / "images"
     doc = fitz.open(pdf_path)
 
     debug_dir = None
@@ -125,7 +125,7 @@ def step4_cv_refine(
                 crop.crop(b).save(img_dir / sub_name, format="PNG")
                 child = dict(fig)                              # 부모 메타(page 등) 상속
                 child["id"]       = f"{fig.get('id', '')}_cv_{i}"
-                child["img_path"] = str(Path("img") / sub_name)
+                child["img_path"] = str(Path("images") / sub_name)
                 child["false_positive_type"] = "B"
                 # 자식 bbox_inch 재계산 (부모 crop의 px/inch로 환산, stale 상속 제거)
                 if pbb and cw and ch:

@@ -46,7 +46,7 @@ def _make_out_dir(pdf_path: str) -> Path:
         if not out.exists():
             break
         v += 1
-    (out / "img").mkdir(parents=True)
+    (out / "images").mkdir(parents=True)
     (out / "txt").mkdir(parents=True)
     return out
 
