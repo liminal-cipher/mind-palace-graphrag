@@ -27,7 +27,7 @@ load_dotenv(Path(__file__).parent.parent.parent / ".env")
 
 ENDPOINT    = os.environ.get("CONTENT_UNDERSTANDING_ENDPOINT", "").rstrip("/")
 KEY         = os.environ.get("CONTENT_UNDERSTANDING_KEY", "")
-API_VER     = os.environ.get("CONTENT_UNDERSTANDING_API_VER", "2024-12-01-preview")
+API_VER     = os.environ.get("CONTENT_UNDERSTANDING_API_VER", "2025-11-01")  # GA. preview(2024-12-01)는 이 리소스에서 410 Gone
 ANALYZER_ID = "pdf_content_extractor_noform"  # GA(2025-11-01): analyzerId 하이픈 불가
 
 _BASE_HDR = {"Ocp-Apim-Subscription-Key": KEY}

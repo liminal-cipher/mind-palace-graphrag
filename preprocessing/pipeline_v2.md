@@ -83,8 +83,8 @@ PDF 입력
 
 ## STEP 2-CU — Content Understanding API 추출 (스캔)  (`steps/step2_extract_cu.py`)
 
-- Azure AI Content Understanding API (`2024-12-01-preview`)
-- **Analyzer ID: `pdf-content-extractor-noform`** — `enableFormula=False` 로 생성
+- Azure AI Content Understanding API (`2025-11-01`, GA)
+- **Analyzer ID: `pdf_content_extractor_noform`** (analyzerId 하이픈 불가) — `enableFormula=False` 로 생성
   - 한글 캡션을 LaTeX 수식(`$\lambda…$`)으로 오인식하는 문제 방지
     (예: '시호'가 `$\lambda | \widetilde{\bar{\mathcal{G}}}$` 로 잘못 읽히던 현상 제거)
   - 분석기 설정 변경 시 기존 분석기를 지우고 재생성해야 반영됨 →
@@ -98,18 +98,18 @@ PDF 입력
 STEP 3-CU 의 이미지 크롭은 응답의 **`result.contents[].figures[].source`** 필드
 (예: `D(1,0.453,0.0767,...)`, 인치 좌표)에 전적으로 의존한다. 이 필드는 API 버전에 따라 반환 여부가 갈린다.
 
-| api-version | `figures[].source` (bbox) | markdown 이미지 표기 | 비고 |
-|-------------|:--:|------|------|
-| `2024-12-01-preview` | ✅ 반환 | `<figure>...</figure>` | **bbox 크롭 가능 → 이 버전 사용** |
-| `2025-11-01` | ❌ 미반환 | `![](figures/N.M)` | 크롭 불가 |
+현재 이 리소스(`services.ai.azure.com`)는 GA(`2025-11-01`)만 받는다. preview(`2024-12-01-preview`)는
+410 Gone으로 retired됨. GA에서도 `result.contents[].figures[].source`는 동일 포맷(`D(page,inch...)`)으로
+정상 반환되므로 STEP 3-CU 크롭은 그대로 동작한다. (과거 "2025는 bbox 미반환"이라던 메모는 오인이었음 - `returnDetails:true` 필요)
 
-**버전별 요청 형식도 다르다**(버전만 바꾸면 깨짐):
+**GA(`2025-11-01`) 요청 형식 (이것만 사용):**
 
-| 항목 | `2024-12-01-preview` | `2025-11-01` |
-|------|------|------|
-| 분석기 생성 | `scenario:"document"` + `config:{returnDetails, enableOcr, enableLayout, enableFormula:false}` | `baseAnalyzerId:"prebuilt-document"` |
-| analyze 제출 | `Content-Type: application/pdf` + raw 바이너리 | `application/json` + `{"inputs":[{"data":"base64"}]}` |
-| 결과 조회 | 응답 헤더 `Operation-Location` GET 폴링 (공통) | 동일 |
+| 항목 | 내용 |
+|------|------|
+| 분석기 생성 | `PUT .../analyzers/{id}` body에 `baseAnalyzerId:"prebuilt-document"` (custom은 prebuilt base 필수) + `config:{returnDetails:true, enableOcr, enableLayout, enableFormula:false}` |
+| analyze 제출 | 로컬 파일은 `{id}:analyzeBinary` + `Content-Type: application/pdf` raw 바이너리 (`:analyze`는 JSON `{url}` 전용) |
+| 결과 조회 | 응답 헤더 `Operation-Location` GET 폴링 |
+| analyzerId 제약 | 하이픈(`-`) 불가 → 언더스코어(`pdf_content_extractor_noform`) |
 
 ---
 
@@ -306,7 +306,7 @@ pip install python-dotenv openai pymupdf pillow requests \
 | 환경변수 | 용도 |
 |----------|------|
 | `CONTENT_UNDERSTANDING_ENDPOINT` / `_KEY` | Azure CU API |
-| `CONTENT_UNDERSTANDING_API_VER` | CU API 버전 (**`2024-12-01-preview`** — bbox 반환) |
+| `CONTENT_UNDERSTANDING_API_VER` | CU API 버전 (**`2025-11-01`** GA — figure source/bbox 반환) |
 | `OPEN_AI_ENDPOINT` / `OPEN_AI_KEY` | Azure OpenAI |
 | `OPEN_AI_DEPLOYMENT_NAME_4.1_MINI` | 텍스트 정제 모델(본문·캡션) |
 | `OPEN_AI_DEPLOYMENT_NAME_4O` | 비전 모델(캡션 전사/생성) |

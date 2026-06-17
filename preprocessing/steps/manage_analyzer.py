@@ -6,12 +6,12 @@ CU 분석기 관리 — 목록 조회 / 삭제
 
 사용:
     python manage_analyzer.py --list
-    python manage_analyzer.py --delete pdf_content_extractor
+    python manage_analyzer.py --delete pdf_content_extractor_noform
 
 환경변수 (.env):
     CONTENT_UNDERSTANDING_ENDPOINT
     CONTENT_UNDERSTANDING_KEY
-    CONTENT_UNDERSTANDING_API_VER (기본 2024-12-01-preview)
+    CONTENT_UNDERSTANDING_API_VER (기본 2025-11-01, GA)
 """
 
 import argparse
@@ -26,7 +26,7 @@ load_dotenv(Path(__file__).parent.parent.parent / ".env")
 
 ENDPOINT = os.environ.get("CONTENT_UNDERSTANDING_ENDPOINT", "").rstrip("/")
 KEY      = os.environ.get("CONTENT_UNDERSTANDING_KEY", "")
-API_VER  = os.environ.get("CONTENT_UNDERSTANDING_API_VER", "2024-12-01-preview")
+API_VER  = os.environ.get("CONTENT_UNDERSTANDING_API_VER", "2025-11-01")
 HDR      = {"Ocp-Apim-Subscription-Key": KEY}
 
 

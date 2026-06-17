@@ -104,7 +104,7 @@ pip install python-dotenv openai pymupdf pillow requests \
 # Azure Content Understanding (스캔 PDF)
 CONTENT_UNDERSTANDING_ENDPOINT=https://...
 CONTENT_UNDERSTANDING_KEY=...
-CONTENT_UNDERSTANDING_API_VER=2024-12-01-preview   # figure bbox 반환 버전
+CONTENT_UNDERSTANDING_API_VER=2025-11-01   # GA. figure source(bbox) 반환
 
 # Azure OpenAI (LLM 정제/캡션)
 OPEN_AI_ENDPOINT=https://...
@@ -167,8 +167,9 @@ result/{pdf이름}_vN/
 
 ## 주의사항
 
-- **스캔 PDF는 `2024-12-01-preview` CU 버전 + `enableFormula=False` 분석기**(`pdf-content-extractor-noform`)를 사용합니다.
-  버전이 다르면 figure bbox가 반환되지 않아 크롭이 불가합니다. 분석기 설정 변경 시 `steps/manage_analyzer.py` 로 재생성하세요.
+- **스캔 PDF는 `2025-11-01`(GA) CU 버전 + `enableFormula=False` 분석기**(`pdf_content_extractor_noform`, analyzerId에 하이픈 불가)를 사용합니다.
+  GA는 custom 분석기에 `baseAnalyzerId:"prebuilt-document"`가 필수이고, 로컬 파일은 `:analyzeBinary`로 제출합니다.
+  figure source(bbox)는 정상 반환되어 크롭 가능합니다. 분석기 설정 변경 시 `steps/manage_analyzer.py` 로 재생성하세요.
 - **PyMuPDF 경로는 벡터 그래픽(차트 등)을 감지하지 못합니다.** 벡터 차트가 많은 문서는 `--scan` 으로 CU 경로를 쓰세요.
 - doclayout-yolo는 **사진 위에 겹친 인셋이나 전면 bleed 사진**을 구조적으로 잘 분리하지 못해 일부 캡션이 누락될 수 있습니다.
 - 일부 캡션은 CU OCR 단계에서 아예 누락되어, 해당 figure는 STEP 5에서 이미지 기반으로 캡션이 생성됩니다.
