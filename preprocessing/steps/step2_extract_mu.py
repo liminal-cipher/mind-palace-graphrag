@@ -114,14 +114,13 @@ def step2_extract_mu(pdf_path: str, out_dir: Path, debug: bool = False) -> list[
     print(f"\n[MU] content_raw.txt 저장 완료 ({len(raw_text):,}자)")
     print(f"[MU] 이미지 {len(figures)}개 크롭 완료")
 
-    # --- (debug) figures.json 저장 ---
-    if debug:
-        meta_dir = out_dir / "meta"
-        meta_dir.mkdir(exist_ok=True)
-        (meta_dir / "figures.json").write_text(
-            json.dumps(figures, ensure_ascii=False, indent=2), encoding="utf-8"
-        )
-        print(f"[MU] meta/figures.json 저장 완료")
+    # --- figures.json 저장 (step5로 넘기는 필수 핸드오프이므로 항상 저장) ---
+    meta_dir = out_dir / "meta"
+    meta_dir.mkdir(exist_ok=True)
+    (meta_dir / "figures.json").write_text(
+        json.dumps(figures, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    print(f"[MU] meta/figures.json 저장 완료")
 
     return figures
 
