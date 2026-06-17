@@ -35,11 +35,8 @@ EMBED_DEPLOYMENT = 'text-embedding-3-small'
 API_VERSION = '2024-12-01-preview'
 
 REPO = Path(__file__).resolve().parents[1]
-DEFAULT_PALACE = REPO / 'deliverables' / 'korean_history' / 'palace.json'
-DEFAULT_SNAPSHOT = REPO / 'snapshots' / 'repro_run3'
-DEFAULT_FIG_DIR = REPO / 'input' / 'korean_history' / 'images'
-DEFAULT_CAPTIONS = REPO / 'input' / 'korean_history' / 'captions.md'
-DEFAULT_PAGESPLIT = REPO / 'input' / 'korean_history' / 'pagesplit.txt'
+# 도메인별 입력/스냅샷 경로는 잡마다 다르므로 자동 기본값을 두지 않는다(특정 도메인으로
+# 조용히 떨어지지 않게): 호출 시 명시한다. 출력 dir 만 도메인 무관이라 기본값 유지.
 DEFAULT_OUT_DIR = REPO / 'docs' / 'audit'
 
 CAPTION_TAG_RE = re.compile(r'<figcaption>(.*?)</figcaption>', re.DOTALL)
@@ -409,11 +406,16 @@ def signal_str(meta: dict) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument('--palace', default=str(DEFAULT_PALACE))
-    ap.add_argument('--snapshot', default=str(DEFAULT_SNAPSHOT))
-    ap.add_argument('--figures-dir', default=str(DEFAULT_FIG_DIR))
-    ap.add_argument('--captions', default=str(DEFAULT_CAPTIONS))
-    ap.add_argument('--pagesplit', default=str(DEFAULT_PAGESPLIT))
+    ap.add_argument('--palace', required=True,
+                    help='palace.json (예: deliverables/<domain>/palace.json)')
+    ap.add_argument('--snapshot', required=True,
+                    help='entities/text_units parquet 가 있는 스냅샷 dir (예: snapshots/<id>)')
+    ap.add_argument('--figures-dir', required=True,
+                    help='figure 이미지 dir (예: input/<domain>/images)')
+    ap.add_argument('--captions', required=True,
+                    help='captions markdown (예: input/<domain>/captions.md)')
+    ap.add_argument('--pagesplit', required=True,
+                    help='pagesplit 텍스트 (예: input/<domain>/pagesplit.txt)')
     ap.add_argument('--out-dir', default=str(DEFAULT_OUT_DIR))
     ap.add_argument('--tag', default=OUT_TAG,
                     help='filename suffix for new audit md '

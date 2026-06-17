@@ -102,8 +102,8 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="heavy backend warm + readiness poll")
     ap.add_argument("--base-url", default="http://127.0.0.1:8000",
                     help="serve 베이스 URL (combined backend 도 serve 는 루트 마운트라 동일)")
-    ap.add_argument("--snapshot", default="korean_history",
-                    help="게이팅/warm 대상 스냅샷 키 (기본 canonical 데모)")
+    ap.add_argument("--snapshot", required=True,
+                    help="게이팅/warm 대상 스냅샷 키 (명시 필수; 자동 기본 도메인 없음)")
     ap.add_argument("--question", default="이 자료는 무엇에 대한 것인가?",
                     help="warm 용 trivial 질문")
     ap.add_argument("--ready-timeout", type=float, default=600.0,
