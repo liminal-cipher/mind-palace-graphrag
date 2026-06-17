@@ -16,6 +16,7 @@
 """
 
 import argparse
+import json
 import sys
 import time
 from datetime import date
@@ -149,6 +150,17 @@ def run_pipeline(pdf_path: str, out_dir=None, *, force_scan: bool = False, debug
     t = time.time()
     figures = step5_llm(out_dir, is_scan=step1["is_scan"], figures=figures, debug=debug)
     timings["STEP 5 LLM 전체"] = time.time() - t
+
+    # meta/figures.json 을 최종 figures 로 다시 쓴다. step3/step2-MU 가 저장한 버전은
+    # STEP4 분리(자식 _cv_ 추가·부모 폐기)와 STEP5 캡션 정제 전이라, 함수 호출 경로에선
+    # 그걸 반영한 최종본을 아무도 저장하지 않았다(단독 실행 step4 만 저장). 다운스트림
+    # (match_images)이 보는 단일 진실원본이므로 분리 자식 + 정제 캡션까지 담아 갱신한다.
+    meta_dir = out_dir / "meta"
+    meta_dir.mkdir(parents=True, exist_ok=True)
+    (meta_dir / "figures.json").write_text(
+        json.dumps(figures, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    print(f"[META]   meta/figures.json 갱신 ({len(figures)}개, 최종)")
 
     _write_run_log(out_dir, pdf_path, step1["is_scan"], timings, figures, notes)
 

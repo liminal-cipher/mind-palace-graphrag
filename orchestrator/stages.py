@@ -338,6 +338,25 @@ def _run_palace(config_path: Path, phase: str) -> tuple[int, str]:
     return proc.returncode, (proc.stdout or "") + (proc.stderr or "")
 
 
+def _run_match_images(
+    palace: Path, snapshot: Path, figures_json: Path, pagesplit: Path, out_dir: Path,
+) -> tuple[int, str]:
+    """palace/match_images 를 subprocess 로 돌려 figures.json 기반 이미지↔노드 매칭 후
+    palace_with_images.json + unplaced_figures.json + images/ 를 out_dir 에 만든다.
+    lancedb + numpy + Azure 임베딩을 워커 이벤트 루프에서 격리(_run_palace 와 동형 seam).
+    env(.env)를 상속해 캡션 임베딩의 GRAPHRAG_API_KEY/BASE 가 풀린다."""
+    config.load_env()
+    proc = subprocess.run(
+        [sys.executable, "-m", "palace.match_images",
+         "--palace", str(palace), "--snapshot", str(snapshot),
+         "--figures-json", str(figures_json), "--pagesplit", str(pagesplit),
+         "--out-dir", str(out_dir)],
+        cwd=str(config.REPO),
+        capture_output=True, text=True, encoding="utf-8",
+    )
+    return proc.returncode, (proc.stdout or "") + (proc.stderr or "")
+
+
 async def build_palace(
     job: Job,
     store: JobStore,
@@ -364,6 +383,30 @@ async def build_palace(
     palace_path = config.job_dir(job.job_id) / "palace_out" / f"{job.run_id}.palace.json"
     if not palace_path.exists():
         raise RuntimeError(f"build_palace 완료했으나 산출물 없음: {palace_path}")
+
+    # 라이브 PDF 잡: 전처리 이미지(figures.json)를 palace 노드에 매칭해 self-contained
+    # 산출물(palace_with_images.json + unplaced_figures.json + images/)을 palace_out 에
+    # 만든다. STEP4 분리 자식(_cv_)도 figures.json 레코드라 자기 캡션 달고 흐른다.
+    # 쇼케이스(프리베이크)는 preprocess 를 건너뛰어 figures.json 이 없으니 자동 스킵,
+    # .txt 라이브 업로드도 이미지가 없어 스킵. 매칭 실패는 텍스트 palace/RAG 와 무관해
+    # 잡을 죽이지 않고 경고만 남긴다(best-effort; 텍스트 체인은 그대로 진행).
+    pre = config.job_dir(job.job_id) / "preprocess"
+    figures_json = pre / "meta" / "figures.json"
+    pagesplit = pre / "txt" / "content_paged.txt"
+    if not job.showcase_key and figures_json.exists() and pagesplit.exists():
+        out_dir = config.job_dir(job.job_id) / "palace_out"
+        rc, out = await loop.run_in_executor(
+            None, _run_match_images,
+            palace_path, Path(fresh.snapshot_path), figures_json, pagesplit, out_dir,
+        )
+        if rc != 0:
+            logger.warning(
+                "이미지 매칭 실패(텍스트 palace 유지, best-effort) job=%s rc=%d:\n%s",
+                job.job_id, rc, out[-800:],
+            )
+        else:
+            logger.info("이미지 매칭 완료 job=%s: %s", job.job_id, out.strip()[-300:])
+
     store.update(
         job.job_id,
         state=State.PALACE_READY,

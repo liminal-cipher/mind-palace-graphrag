@@ -43,6 +43,8 @@ CAPTION_TAG_RE = re.compile(r'<figcaption>(.*?)</figcaption>', re.DOTALL)
 SPLIT_BAR_RE = re.compile(r'\s*[|￨ㅣ]\s*')  # ASCII bar, halfwidth bar, hangul I
 PAGE_MARKER_RE = re.compile(r'\[page(\d+)\]\n?')  # preprocessing pipeline_v2 format
 FIG_NAME_RE = re.compile(r'fig_(\d+)_(\d+)\.png$')
+# STEP4 분리 자식(fig_p_i_cv_k.png)까지 page/idx 를 뽑기 위한 관대한 패턴(정렬·표시용).
+FIG_NAME_RE_ANY = re.compile(r'fig_(\d+)_(\d+)(?:_cv_(\d+))?\.png$')
 TRAILING_PAREN_RE = re.compile(r'\s*\([^)]*\)\s*$')
 
 
@@ -404,50 +406,61 @@ def signal_str(meta: dict) -> str:
     return ' '.join(parts)
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument('--palace', required=True,
-                    help='palace.json (예: deliverables/<domain>/palace.json)')
-    ap.add_argument('--snapshot', required=True,
-                    help='entities/text_units parquet 가 있는 스냅샷 dir (예: snapshots/<id>)')
-    ap.add_argument('--figures-dir', required=True,
-                    help='figure 이미지 dir (예: input/<domain>/images)')
-    ap.add_argument('--captions', required=True,
-                    help='captions markdown (예: input/<domain>/captions.md)')
-    ap.add_argument('--pagesplit', required=True,
-                    help='pagesplit 텍스트 (예: input/<domain>/pagesplit.txt)')
-    ap.add_argument('--out-dir', default=str(DEFAULT_OUT_DIR))
-    ap.add_argument('--tag', default=OUT_TAG,
-                    help='filename suffix for new audit md '
-                         '(default: %(default)s)')
-    ap.add_argument('--prev-tag', default=PREV_TAG,
-                    help="filename suffix for prior audit md to diff against "
-                         "('' = no prior, no diff section)")
-    ap.add_argument('--write-palace', action='store_true',
-                    help='also write `{stem}_with_images.palace.json` and '
-                         '`{stem}_unplaced_figures.json` next to the source palace')
-    ap.add_argument('--palace-out-dir', default=None,
-                    help='override directory for --write-palace outputs '
-                         '(default: same dir as --palace)')
-    args = ap.parse_args()
+def figure_rows_from_json(figures_json: Path) -> list[dict]:
+    """전처리 meta/figures.json(단일 진실원본)에서 매칭 행을 만든다.
 
-    _load_dotenv(REPO / '.env')
+    각 figure 레코드가 img_path + caption + page 를 들고 있으므로, STEP4 분리 자식
+    (fig_p_i_cv_k)도 자기 캡션과 함께 그대로 흘러간다. 옛 경로(캡션파일 + 파일명
+    정규식 + 위치 zip)와 달리 파일명 패턴·순서에 의존하지 않는다. write_palace_copy 가
+    `REPO / png` 로 이미지를 복사하므로 png 는 repo-상대 posix 로 둔다(figures.json 의
+    img_path 는 'images/<file>' 상대 → figures.json 부모의 부모(preprocess dir) 기준).
+    캡션 없는 figure 도 갤러리(미배치)에 남도록 빈 캡션 행으로 포함한다."""
+    figs = json.loads(figures_json.read_text(encoding='utf-8'))
+    base = figures_json.parent.parent  # <preprocess>/meta/figures.json -> <preprocess>
+    rows: list[dict] = []
+    for fig in figs:
+        rel = fig.get('img_path')
+        if not rel:
+            continue
+        png_abs = (base / rel).resolve()
+        if not png_abs.exists():
+            continue
+        png_repo_rel = png_abs.relative_to(REPO).as_posix()
+        page = int(fig.get('page') or 0)
+        m = FIG_NAME_RE_ANY.match(png_abs.name)
+        idx = int(m.group(2)) if m else 0
+        cap = (fig.get('caption') or '').strip()
+        pairs = detect_joined_caption(cap) if cap else []
+        if not pairs:
+            pairs = [('', '')]
+        for cap_title, cap_full in pairs:
+            rows.append({
+                'png': png_repo_rel, 'page': page, 'idx': idx,
+                'cap_title': cap_title, 'caption': cap_full,
+            })
+    rows.sort(key=lambda r: (r['page'], r['idx']))
+    return rows
 
-    palace_path = Path(args.palace).resolve()
-    snapshot = Path(args.snapshot).resolve()
-    fig_dir = Path(args.figures_dir).resolve()
-    cap_path = Path(args.captions).resolve()
-    pagesplit = Path(args.pagesplit).resolve()
-    out_dir = Path(args.out_dir).resolve()
-    out_dir.mkdir(parents=True, exist_ok=True)
 
+def match_and_write(
+    palace_path: Path,
+    snapshot: Path,
+    figures_json: Path,
+    pagesplit: Path,
+    out_dir: Path | None = None,
+) -> tuple[Path, Path, dict]:
+    """figures.json 기반 이미지↔노드 매칭 후 palace_with_images.json +
+    unplaced_figures.json 를 out_dir(없으면 palace 옆)에 쓴다. audit md 는 만들지
+    않는다(데모/라이브 전용). 캡션 임베딩(text-embedding-3-small) 호출이 있어 Azure
+    자격증명(GRAPHRAG_API_KEY/BASE)이 필요하다. 매칭 로직(임계값·이름가산·허브감점·
+    페이지윈도·충돌해소)은 기존과 동일. CLI(main)와 오케스트레이터가 공유한다."""
     nodes = load_palace_nodes(palace_path)
     titles = sorted(nodes.keys())
 
     ents_df = pd.read_parquet(snapshot / 'entities.parquet')
     title_to_id = dict(zip(ents_df['title'], ents_df['id']))
     title_to_degree = {t: int(d) for t, d in zip(ents_df['title'], ents_df['degree'])}
-    max_degree = int(ents_df['degree'].max())
+    max_degree = int(ents_df['degree'].max()) if len(ents_df) else 0
 
     db = lancedb.connect(str(snapshot / 'lancedb'))
     desc_tab = db.open_table('entity_description').to_pandas()
@@ -468,27 +481,19 @@ def main() -> int:
     pages = build_page_bodies(pagesplit)
     title_pages = build_entity_pages(titles, pages)
 
-    raw_captions = parse_captions(cap_path)
-    pngs = list_pngs(fig_dir)
-    if len(raw_captions) != len(pngs):
-        raise SystemExit(
-            f'STOP: caption count {len(raw_captions)} != png count {len(pngs)}'
-        )
+    rows = figure_rows_from_json(figures_json)
 
-    rows: list[dict] = []
-    for cap, (png_path, page, idx) in zip(raw_captions, pngs):
-        for cap_title, cap_full in detect_joined_caption(cap):
-            rows.append({
-                'png': png_path.relative_to(REPO).as_posix(),
-                'page': page, 'idx': idx,
-                'cap_title': cap_title, 'caption': cap_full,
-            })
-
-    unique_caps = sorted({r['caption'] for r in rows})
-    vecs = embed_captions(unique_caps)
-    cap_to_vec = {t: vecs[i] for i, t in enumerate(unique_caps)}
+    unique_caps = sorted({r['caption'] for r in rows if r['caption'].strip()})
+    cap_to_vec: dict[str, np.ndarray] = {}
+    if unique_caps:
+        vecs = embed_captions(unique_caps)
+        cap_to_vec = {t: vecs[i] for i, t in enumerate(unique_caps)}
 
     for r in rows:
+        # 캡션 없는 figure 는 매칭 불가 → 미배치(갤러리). 빈 문자열 임베딩 회피.
+        if not r['caption'].strip():
+            r['tier'], r['match'], r['score'], r['meta'] = '미배치', None, 0.0, {}
+            continue
         cap_vec = cap_to_vec[r['caption']]
         cap_tokens = tokenize_caption(r['cap_title'])
         r['cap_tokens'] = cap_tokens
@@ -502,24 +507,19 @@ def main() -> int:
             bt, bs, bm = best_in(cand_1st, cap_tokens, cap_vec,
                                  title_vecs, title_to_degree, max_degree)
         if bt is not None and bs >= THRESHOLD_LOCAL:
-            r['tier'] = '1차'
-            r['match'] = bt
-            r['score'] = bs
-            r['meta'] = bm
+            r['tier'], r['match'], r['score'], r['meta'] = '1차', bt, bs, bm
             continue
         bt2, bs2, bm2 = best_in(titles, cap_tokens, cap_vec,
                                 title_vecs, title_to_degree, max_degree)
         if bt2 is not None and bs2 >= THRESHOLD_CASCADE:
-            r['tier'] = '캐스케이드'
-            r['match'] = bt2
-            r['score'] = bs2
-            r['meta'] = bm2
+            r['tier'], r['match'], r['score'], r['meta'] = '캐스케이드', bt2, bs2, bm2
         else:
             r['tier'] = '미배치'
             r['match'] = None
             r['score'] = bs2 if bt2 is not None else bs
             r['meta'] = bm2 if bt2 is not None else bm
 
+    # 충돌 해소: 한 노드에 여러 figure 가 붙으면 최고점만 남기고 나머지는 미배치(충돌).
     by_node: dict[str, list[dict]] = {}
     for r in rows:
         if r['match']:
@@ -532,81 +532,40 @@ def main() -> int:
             loser['tier'] = '미배치 (충돌)'
             loser['match'] = None
 
-    DATE = date.today().isoformat()
-    out_tag = args.tag
-    prev_tag = args.prev_tag
-    out_md = (
-        out_dir / f'{DATE}_image_match_accuracy_{out_tag}.md'
-        if out_tag
-        else out_dir / f'{DATE}_image_match_accuracy.md'
+    return write_palace_copy(palace_path, rows, out_dir=out_dir)
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(
+        description='figures.json 기반 이미지↔palace 노드 매칭 → '
+                    'palace_with_images.json + unplaced_figures.json')
+    ap.add_argument('--palace', required=True,
+                    help='palace.json (예: var/jobs/<id>/palace_out/<run>.palace.json)')
+    ap.add_argument('--snapshot', required=True,
+                    help='entities.parquet + lancedb 가 있는 스냅샷 dir')
+    ap.add_argument('--figures-json', required=True,
+                    help='전처리 meta/figures.json (단일 진실원본)')
+    ap.add_argument('--pagesplit', required=True,
+                    help='[pageN] 마커 본문 (전처리 txt/content_paged.txt)')
+    ap.add_argument('--out-dir', default=None,
+                    help='출력 dir (palace_with_images.json/unplaced_figures.json/images). '
+                         '미지정 시 palace 옆.')
+    args = ap.parse_args()
+
+    _load_dotenv(REPO / '.env')
+    out_palace, out_unplaced, meta = match_and_write(
+        Path(args.palace).resolve(),
+        Path(args.snapshot).resolve(),
+        Path(args.figures_json).resolve(),
+        Path(args.pagesplit).resolve(),
+        out_dir=Path(args.out_dir).resolve() if args.out_dir else None,
     )
-    prev_md = (
-        out_dir / f'{DATE}_image_match_accuracy_{prev_tag}.md'
-        if prev_tag
-        else out_dir / f'{DATE}_image_match_accuracy.md'
-    )
-
-    md_lines = [
-        f'# image-caption matching accuracy ({DATE}, {out_tag or "no-tag"})',
-        '',
-        f'- palace: `{palace_path.relative_to(REPO).as_posix()}`',
-        f'- snapshot: `{snapshot.relative_to(REPO).as_posix()}`',
-        f'- figures dir: `{fig_dir.relative_to(REPO).as_posix()}`',
-        f'- captions: `{cap_path.relative_to(REPO).as_posix()}`',
-        f'- pagesplit: `{pagesplit.relative_to(REPO).as_posix()}`',
-        f'- T_local = {THRESHOLD_LOCAL}, T_cascade = {THRESHOLD_CASCADE}, '
-        f'name bonus = +{NAME_MATCH_BONUS}, hub max = -{HUB_PENALTY_MAX}, '
-        f'page window = +/-{PAGE_WINDOW}, min_name_len = {MIN_NAME_LEN}',
-        f'- name-match: whitespace tokens from TITLE only (trailing '
-        f'parenthetical stripped) + exact/prefix (symmetric), '
-        f'length-1 tokens & ent titles excluded',
-        f'- rows: {len(rows)} (figures: {len(pngs)}, palace nodes: {len(nodes)})',
-        '',
-        '| # | 제목 | 페이지 | 파일 | 매칭 노드 | tier | 점수 | 근거 |',
-        '|---:|---|---:|---|---|---|---:|---|',
-    ]
-    for i, r in enumerate(rows, 1):
-        md_lines.append(
-            f'| {i} | {r["cap_title"]} | {r["page"]} | '
-            f'`{r["png"]}` | {r["match"] or "-"} | {r["tier"]} | '
-            f'{r["score"]:.3f} | {signal_str(r["meta"])} |'
-        )
-
-    diff_section = _build_diff_section(prev_md, rows)
-    if diff_section:
-        md_lines.append('')
-        md_lines.extend(diff_section)
-
-    out_md.write_text('\n'.join(md_lines), encoding='utf-8')
-
-    print('=' * 110)
-    print(f'{"#":>3}  {"제목":<22} {"p":>3}  {"매칭 노드":<22} {"tier":<14} '
-          f'{"점수":>7}  근거')
-    print('-' * 110)
-    for i, r in enumerate(rows, 1):
-        ctitle = (r['cap_title'][:20] + '..') if len(r['cap_title']) > 22 else r['cap_title']
-        match = r['match'] or '-'
-        match = (match[:20] + '..') if len(match) > 22 else match
-        print(f'{i:>3}  {ctitle:<22} {r["page"]:>3}  {match:<22} '
-              f'{r["tier"]:<14} {r["score"]:>7.3f}  {signal_str(r["meta"])}')
-    n_t1 = sum(1 for r in rows if r['tier'] == '1차')
-    n_casc = sum(1 for r in rows if r['tier'] == '캐스케이드')
-    n_unp = sum(1 for r in rows if r['tier'].startswith('미배치'))
-    print('-' * 110)
-    print(f'1차={n_t1}  캐스케이드={n_casc}  미배치={n_unp}  '
-          f'(T_local={THRESHOLD_LOCAL}, T_cascade={THRESHOLD_CASCADE})')
-    print(f'\nwrote: {out_md.relative_to(REPO).as_posix()}')
-
-    if args.write_palace:
-        out_palace, out_unplaced, im_meta = write_palace_copy(
-            palace_path, rows,
-            out_dir=Path(args.palace_out_dir) if args.palace_out_dir else None,
-        )
-        print(f'\n[write-palace] attached_nodes={im_meta["attached_nodes"]}, '
-              f'attached_figures={im_meta["attached_figures"]}, '
-              f'unplaced={im_meta["unplaced_figures"]}')
-        print(f'  {out_palace.relative_to(REPO).as_posix()}')
-        print(f'  {out_unplaced.relative_to(REPO).as_posix()}')
+    print(f'[match_images] caption_rows={meta["caption_rows"]} '
+          f'attached_nodes={meta["attached_nodes"]} '
+          f'attached_figures={meta["attached_figures"]} '
+          f'unplaced={meta["unplaced_figures"]}')
+    print(f'  {out_palace.relative_to(REPO).as_posix()}')
+    print(f'  {out_unplaced.relative_to(REPO).as_posix()}')
     return 0
 
 
