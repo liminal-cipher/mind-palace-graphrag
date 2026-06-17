@@ -73,9 +73,6 @@ SNAPSHOTS: dict[str, str] = {
     "statistics": "snapshots/statistics",
 }
 
-# 기본 스냅샷(snapshot 미지정 시). 국사 = canonical 데모.
-DEFAULT_SNAPSHOT = "korean_history"
-
 # alias -> 정규 run_id. 빌드/provenance 이름(repro_run3)이나 구버전 키를 받아준다.
 # repro_run3는 디렉터리명이자 예전 serve.py 기본 키였다 -> 같은 국사 엔진으로 보낸다.
 ALIASES: dict[str, str] = {
@@ -83,10 +80,12 @@ ALIASES: dict[str, str] = {
 }
 
 
-def _resolve_key(requested: Optional[str]) -> str:
-    """요청 snapshot 값을 정규 run_id로 해소. 미지정 -> DEFAULT. alias 우선 해소."""
+def _resolve_key(requested: Optional[str]) -> Optional[str]:
+    """요청 snapshot 값을 정규 run_id로 해소(alias 우선). 미지정이면 None을 돌려준다.
+    자동 기본 도메인은 두지 않는다(특정 도메인으로 조용히 떨어지지 않게): 호출부가
+    명시 키를 요구한다."""
     if not requested:
-        return DEFAULT_SNAPSHOT
+        return None
     return ALIASES.get(requested, requested)
 
 
@@ -314,7 +313,6 @@ async def health():
     return {
         "status": "ok" if any_ready else "warming",
         "method": "global",
-        "default": DEFAULT_SNAPSHOT,
         "aliases": ALIASES,
         "snapshots": snaps,
     }
@@ -388,7 +386,16 @@ async def register_snapshot(req: RegisterRequest):
 async def query(req: QueryRequest):
     """질문 -> (snapshot 라우팅) -> global search -> 답 텍스트. showcase 진입점."""
     key = _resolve_key(req.snapshot)
-    # showcase(미지정/alias 포함) 또는 런타임 등록 키가 아니면 명시적으로 막는다.
+    # 자동 기본 도메인이 없으므로 무키 요청은 명시적으로 막는다(국사로 조용히 안 떨어짐).
+    if key is None:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "snapshot 키가 필요합니다. 등록 키: "
+                f"{', '.join(SNAPSHOTS)} (alias: {', '.join(ALIASES) or '-'})."
+            ),
+        )
+    # showcase(alias 포함) 또는 런타임 등록 키가 아니면 명시적으로 막는다.
     if key not in SNAPSHOTS and key not in STATE.snapshots:
         raise HTTPException(
             status_code=400,
