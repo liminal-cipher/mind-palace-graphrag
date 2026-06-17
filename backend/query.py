@@ -130,7 +130,7 @@ _patch_basic_search()
 ROOT = Path(__file__).resolve().parent.parent if "__file__" in globals() else Path.cwd()  # backend/ -> repo root
 
 # 레거시 모듈 API(config/DFS/ENGINES/_engine/ask)의 대상 스냅샷.
-SNAPSHOT = ROOT / "results" / "snapshots" / "repro_run3"
+SNAPSHOT = ROOT / "snapshots" / "repro_run3"
 
 COMMUNITY_LEVEL = 2
 RESPONSE_TYPE = "Single Paragraph"

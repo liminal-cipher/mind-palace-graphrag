@@ -60,7 +60,7 @@ ROOT = Path(__file__).resolve().parent.parent  # backend/ -> repo root
 #   snapshots - showcase/검증 스냅샷
 #   var/jobs          - 오케스트레이터 잡 산출물
 _ALLOWED_REGISTER_ROOTS = (
-    ROOT / "results" / "snapshots",
+    ROOT / "snapshots",
     ROOT / "var" / "jobs",
 )
 
