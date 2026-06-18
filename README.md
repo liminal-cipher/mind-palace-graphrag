@@ -71,6 +71,30 @@ curl -X POST "http://127.0.0.1:8000/orchestrator/upload?filename=corpus.txt&doma
   --data-binary @input/statistics/corpus.txt
 ```
 
+## 프론트 연동 노트
+
+라이브 잡과 쇼케이스는 경로 규칙이 다르다. 아래를 그대로 따른다.
+
+**경로 prefix 주의**
+- 잡 상태/팰리스/이미지는 `/orchestrator/jobs/{id}/...`.
+- 라이브 RAG 질의만 prefix 없는 루트 `/jobs/{id}/query` (serve가 `/`에 마운트). `/orchestrator/jobs/{id}/query` 가 아니다.
+
+**노드 이미지 → 실제 URL.** 노드의 `images[].path` 는 라이브·쇼케이스 모두 `images/<file>` 형식(끝의 파일명만 의미). 서빙 URL은 출처별로 조립한다:
+- 쇼케이스: `/images/{name}/<file>` (예: `images/fig_10_2.png` → `/images/korean_history/fig_10_2.png`)
+- 라이브 잡: `/orchestrator/jobs/{id}/images/<file>` (예: `/orchestrator/jobs/<job_id>/images/fig_6_3_cv_1.png`)
+- 즉 둘 다 `<file>`(basename)만 떼어 각자 base에 붙인다.
+
+**잡 상태 폴링** `GET /orchestrator/jobs/{id}/status` 응답: `{job_id, state, palace_ready, rag_ready, domain, showcase_key, run_id, error, created_at, updated_at}`.
+- `state`: `QUEUED → PREPROCESSING → INDEXING → PALACE_READY → DONE` (실패 시 `FAILED`, `error`에 사유). `RAG_READY`는 DONE 직전의 순간 상태.
+- `palace_ready=true` 면 `/palace` 호출 가능, `rag_ready=true`(=DONE) 면 `/jobs/{id}/query` 가능.
+
+**질의 본문/응답**
+- `POST /query` body: `{"question": str, "snapshot": str, "method"?: "auto"|"local"|"global"}`. `snapshot` 누락 시 400.
+- `POST /jobs/{id}/query` body: `{"question": str, "method"?: ...}` (snapshot 불필요, job_id가 path).
+- 응답(둘 공통): `{"answer": str, "snapshot": str, "mode": "local"|"global"|null}`.
+
+**업로드 제한.** `POST /orchestrator/upload` 본문 30MB 초과 시 `413`, 빈 본문 `422`.
+
 ## 도메인 추가 (큐레이션 쇼케이스)
 
 ```
