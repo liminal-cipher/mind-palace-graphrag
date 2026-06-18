@@ -283,6 +283,12 @@ _SOURCE_MAX_ENTITIES = int(os.environ.get("RAG_SOURCE_MAX_ENTITIES") or 12)
 
 _REPORTS_RE = re.compile(r"Reports?\s*\(([^)]*)\)")
 _ENTITIES_RE = re.compile(r"Entities?\s*\(([^)]*)\)")
+_RELATIONSHIPS_RE = re.compile(r"Relationships?\s*\(([^)]*)\)")
+_SOURCES_RE = re.compile(r"Sources?\s*\(([^)]*)\)")
+
+# provenance 우선순위(낮을수록 강함): 답변이 직접 인용한 엔티티/관계(local) > 인용 청크의
+# 엔티티(basic) > 커뮤니티 펼침(global, 근사). 같은 엔티티가 여러 경로면 강한 것을 남긴다.
+_PROV_RANK = {"cited": 0, "chunk": 1, "related": 2}
 
 
 def _cited_nums(text: str, pat: "re.Pattern") -> set[int]:
@@ -313,57 +319,97 @@ def _as_id_list(v) -> list[str]:
 
 
 def _extract_sources(answer: str, bundle, max_entities: int = _SOURCE_MAX_ENTITIES) -> Optional[dict]:
-    """답변의 [Data: Reports (...)] 인용을 그 커뮤니티의 구성 엔티티로 펼쳐(=(B)) degree 상위
-    N 개를 '관련 개념'으로 돌려준다. local 인용의 Entities()도 직접 흡수. best-effort:
-    실패하면 None(답변은 그대로 나간다)."""
+    """답변 인용을 엔티티(노드)로 변환해 돌려준다. 라우터가 고른 검색 모드마다 인용 종류가
+    달라 모두 처리한다:
+      - `Entities(N)`      local 직접 인용 -> 엔티티 (provenance=cited, 정확)
+      - `Relationships(M)` local 관계 인용 -> 양끝 엔티티 (cited)
+      - `Sources(K)`       basic/local 청크 인용 -> text_units.entity_ids (chunk)
+      - `Reports(R)`       global 커뮤니티 인용 -> communities.entity_ids degree 상위 (related, 근사)
+    같은 엔티티가 여러 경로로 잡히면 가장 강한 provenance 유지. cited 먼저, 그다음 degree
+    순으로 max_entities 컷. reports 는 실제 인용된 커뮤니티 리포트. best-effort: 실패하면 None."""
     try:
         import pandas as pd
 
         dfs = getattr(bundle, "dfs", None) or {}
-        cr, comm, ent = dfs.get("community_reports"), dfs.get("communities"), dfs.get("entities")
+        ent = dfs.get("entities")
         if ent is None:
             return None
+        cr, comm = dfs.get("community_reports"), dfs.get("communities")
+        rel, tu = dfs.get("relationships"), dfs.get("text_units")
+
         report_nums = _cited_nums(answer, _REPORTS_RE)
         entity_nums = _cited_nums(answer, _ENTITIES_RE)
+        rel_nums = _cited_nums(answer, _RELATIONSHIPS_RE)
+        source_nums = _cited_nums(answer, _SOURCES_RE)
 
+        prov: dict[str, str] = {}  # entity uuid -> provenance(강한 것 유지)
+
+        def _mark(uuid, p):
+            u = str(uuid)
+            if u and (u not in prov or _PROV_RANK[p] < _PROV_RANK[prov[u]]):
+                prov[u] = p
+
+        hr_to_uuid = {str(h): str(i) for h, i in zip(ent["human_readable_id"], ent["id"])}
+        title_to_uuid = {str(t): str(i) for t, i in zip(ent["title"], ent["id"])}
+
+        # 1) local: Entities() 직접 인용
+        for n in entity_nums:
+            u = hr_to_uuid.get(str(n))
+            if u:
+                _mark(u, "cited")
+        # 2) local: Relationships() -> 양끝 엔티티(source/target = title)
+        if rel is not None and rel_nums and "human_readable_id" in rel.columns:
+            rrows = rel[rel["human_readable_id"].astype(str).isin({str(n) for n in rel_nums})]
+            for _, r in rrows.iterrows():
+                for t in (r.get("source"), r.get("target")):
+                    u = title_to_uuid.get(str(t))
+                    if u:
+                        _mark(u, "cited")
+        # 3) basic/local: Sources() -> 청크의 entity_ids
+        if tu is not None and source_nums and {"human_readable_id", "entity_ids"} <= set(tu.columns):
+            trows = tu[tu["human_readable_id"].astype(str).isin({str(n) for n in source_nums})]
+            for v in trows["entity_ids"]:
+                for u in _as_id_list(v):
+                    _mark(u, "chunk")
+        # 4) global: Reports() -> community -> entity_ids
         reports_out: list[dict] = []
-        community_ids: set[str] = set()
         if cr is not None and report_nums:
             want = {str(n) for n in report_nums}
             rows = cr[cr["community"].astype(str).isin(want)
                       | cr["human_readable_id"].astype(str).isin(want)]
-            seen = set()
+            cids, seen = set(), set()
             for _, r in rows.iterrows():
                 c = str(r["community"])
-                community_ids.add(c)
+                cids.add(c)
                 if c not in seen:
                     seen.add(c)
                     reports_out.append({"id": c, "title": r.get("title")})
+            if comm is not None and cids:
+                crows = comm[comm["community"].astype(str).isin(cids)]
+                for v in crows["entity_ids"]:
+                    for u in _as_id_list(v):
+                        _mark(u, "related")
 
-        uuids: set[str] = set()
-        if comm is not None and community_ids:
-            crows = comm[comm["community"].astype(str).isin(community_ids)]
-            for v in crows["entity_ids"]:
-                uuids.update(_as_id_list(v))
+        if not prov and not reports_out:
+            return None
 
-        sel = ent[ent["id"].astype(str).isin(uuids)
-                  | ent["human_readable_id"].astype(str).isin({str(n) for n in entity_nums})]
-        if "degree" in sel.columns:
-            sel = sel.sort_values("degree", ascending=False)
+        sel = ent[ent["id"].astype(str).isin(prov.keys())].copy()
+        sel["_prov"] = sel["id"].astype(str).map(prov)
+        sel["_prank"] = sel["_prov"].map(_PROV_RANK)
+        sel["_deg"] = pd.to_numeric(sel["degree"], errors="coerce").fillna(0) if "degree" in sel.columns else 0
+        sel = sel.sort_values(["_prank", "_deg"], ascending=[True, False])
         total = int(len(sel))
         entities_out = []
         for _, r in sel.head(max_entities).iterrows():
-            desc = str(r.get("description") or "").strip()
             hr = r.get("human_readable_id")
             entities_out.append({
                 "id": int(hr) if pd.notna(hr) else None,
                 "title": r.get("title"),
                 "type": r.get("type"),
-                "degree": int(r["degree"]) if "degree" in r and pd.notna(r["degree"]) else None,
-                "description": desc[:200],
+                "degree": int(r["_deg"]),
+                "description": str(r.get("description") or "").strip()[:200],
+                "provenance": r["_prov"],
             })
-        if not entities_out and not reports_out:
-            return None
         return {"reports": reports_out, "entities": entities_out, "entities_total": total}
     except Exception as e:  # noqa: BLE001
         logger.warning("sources 추출 실패(답변은 그대로 반환): %s", e)

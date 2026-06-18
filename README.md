@@ -127,7 +127,7 @@ if (active) {
 **질의 본문/응답**
 - `POST /query` body: `{"question": str, "snapshot": str, "method"?: "auto"|"local"|"global"}`. `snapshot` 누락 시 400.
 - `POST /jobs/{id}/query` body: `{"question": str, "method"?: ...}` (snapshot 불필요, job_id가 path).
-- 응답(둘 공통): `{"answer", "snapshot", "mode", "sources"}`. `sources`는 답변 인용을 펼친 근거 = `{reports:[{id,title}], entities:[{id,title,type,degree,description}], entities_total}`. global은 인용 커뮤니티(Reports)의 구성 개념을 degree 상위 N(`RAG_SOURCE_MAX_ENTITIES`, 기본 12)으로 펼친 "관련 개념"이다(정확한 사용 엔티티가 아닌 근사 superset). 인용이 없으면 `sources`는 `null`. 프론트는 `entities[].title`로 나중에 방과 이을 수 있다.
+- 응답(둘 공통): `{"answer", "snapshot", "mode", "sources"}`. `sources` = `{reports:[{id,title}], entities:[{id,title,type,degree,description,provenance}], entities_total}`. 라우터가 고른 모드의 인용 종류에 맞춰 엔티티(노드)로 변환하며, 각 엔티티에 **`provenance`**가 붙는다: `cited`(local — 답변이 직접 인용한 엔티티/관계, **정확**) · `chunk`(basic — 인용 청크 `Sources`의 엔티티) · `related`(global — 인용 커뮤니티 `Reports` 구성 개념을 degree 상위로 펼친 **근사**). 상위 N은 `RAG_SOURCE_MAX_ENTITIES`(기본 12), `cited` 우선 정렬. `reports`는 실제 인용된 커뮤니티 리포트(global). 인용 없으면 `sources`는 `null`. 프론트는 `entities[].title`로 방과 잇는다.
 
 **업로드 제한.** `POST /orchestrator/upload` 본문 30MB 초과 시 `413`, 빈 본문 `422`.
 
