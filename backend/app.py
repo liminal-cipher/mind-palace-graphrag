@@ -32,7 +32,8 @@ from contextlib import AsyncExitStack, asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend import quiz_page, showcase
+from backend import showcase
+from backend.quiz import quiz_page
 from backend.serve import app as serve_app
 from backend.serve import lifespan as serve_lifespan
 from orchestrator.app import app as orchestrator_app

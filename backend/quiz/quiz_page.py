@@ -2,7 +2,7 @@
 
 모듈 전체 문서는 `docs/quiz.md` 참조. quiz_generator의 EvidenceBuilder + generate_quizzes 를
 그대로 호출해 form 제출만으로 퀴즈를 만들고, 사용자 풀이를 받아 채점한다.
-기존 코드(serve/query/quiz_generator)는 건드리지 않는다.
+기존 코드(serve/query)는 건드리지 않는다.
 
 렌더는 Jinja2(`templates/`)로 한다. HTML은 이 모듈 인라인 문자열이 아니라 별도
 템플릿 파일이며, 값 주입/escape 는 Jinja2가 처리한다(수동 html.escape 불필요):
@@ -30,10 +30,10 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
-from backend.quiz_generator import EvidenceBuilder, generate_quizzes
+from backend.quiz.quiz_generator import EvidenceBuilder, generate_quizzes
 
-ROOT = Path(__file__).resolve().parent.parent  # backend/ -> repo root
-SNAPSHOT_DIR = ROOT / "snapshots" / "repro_run3"
+ROOT = Path(__file__).resolve().parents[2]  # backend/quiz/ -> repo root
+SNAPSHOT_DIR = ROOT / "snapshots" / "korean_history"
 
 TYPE_LABELS = {
     "multiple_choice": "객관식",

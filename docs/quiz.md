@@ -16,7 +16,7 @@ GraphRAG parquet 산출물로부터 **한국사 학습 퀴즈를 생성·채점*
   1. **`quiz_generator.py`** — 순수 생성·검증 로직(웹/상태 없음). 안정적이고 재사용 가능.
   2. **`quiz_page.py` + `templates/`** — FastAPI 라우터 + Jinja2 서버 렌더링 **테스트 페이지**
      (생성·풀이·채점·근거 보기). "트랙 A"(최소 동작 확인용)다.
-- **현재 상태**: 테스트 페이지는 **단일 스냅샷(`snapshots/repro_run3`)을 디스크에서 1회 로드**해
+- **현재 상태**: 테스트 페이지는 **단일 스냅샷(`snapshots/korean_history`)을 디스크에서 1회 로드**해
   동작한다. 프로덕션 통합("트랙 B": serve의 인메모리 dfs 재사용, 멀티 스냅샷, 503 게이트)은
   **아직 미구현**이며 §8에 통합 가이드를 둔다.
 - **엔드포인트**: `GET /quiz`(폼) · `POST /quiz`(생성+렌더) · `POST /quiz/grade`(채점 JSON).
@@ -29,13 +29,14 @@ GraphRAG parquet 산출물로부터 **한국사 학습 퀴즈를 생성·채점*
 
 ```
 graphrag/backend/
-├── quiz_generator.py        # ① 생성·검증 순수 로직 (상태/HTTP 없음). Node 원본 server.js 포팅.
-├── quiz_page.py             # ② FastAPI APIRouter: /quiz, /quiz/grade + 채점·은닉·근거 정리
-├── templates/
-│   ├── base.html            #    공통 셸(<head>·인라인 CSS·{% block body %}·{% block script %})
-│   └── quiz.html            #    생성 폼 + (POST 시) 입력 UI·채점 JS·근거 서랍
+├── quiz/
+│   ├── quiz_generator.py    # ① 생성·검증 순수 로직 (상태/HTTP 없음). Node 원본 server.js 포팅.
+│   ├── quiz_page.py         # ② FastAPI APIRouter: /quiz, /quiz/grade + 채점·은닉·근거 정리
+│   └── templates/
+│       ├── base.html        #    공통 셸(<head>·인라인 CSS·{% block body %}·{% block script %})
+│       └── quiz.html        #    생성 폼 + (POST 시) 입력 UI·채점 JS·근거 서랍
 ├── app.py                   # ③ ASGI 조립: include_router(quiz_page.router) (serve '/' 캐치올 앞)
-└── snapshots/repro_run3/    #    데이터: 6종 parquet (테스트 페이지가 디스크에서 직접 로드)
+└── ../snapshots/korean_history/  #    데이터: 6종 parquet (테스트 페이지가 디스크에서 직접 로드)
 
 graphrag/docs/quiz.md        # (이 문서)
 ```
@@ -60,7 +61,7 @@ graphrag/docs/quiz.md        # (이 문서)
 [브라우저] POST /quiz (topic, count, quiz_types)
    │
    ▼ quiz_page.quiz_submit
-   builder = EvidenceBuilder(snapshots/repro_run3)        # lazy, 최초 1회 디스크 로드
+   builder = EvidenceBuilder(snapshots/korean_history)        # lazy, 최초 1회 디스크 로드
    selected = builder.select_candidates(topic, count)     # 근거 랭킹/샘플
    result   = await generate_quizzes(selected, ...)        # LLM 생성→검증→fallback
    │   result = {mode, quizzes[정답포함], evidence, reviews, warning?}
@@ -186,9 +187,9 @@ graphrag/docs/quiz.md        # (이 문서)
 ### 3.6 공개 API 요약
 
 ```python
-from backend.quiz_generator import EvidenceBuilder, generate_quizzes
+from backend.quiz.quiz_generator import EvidenceBuilder, generate_quizzes
 
-builder = EvidenceBuilder("snapshots/repro_run3")              # 디스크 로드 (현재 유일 경로)
+builder = EvidenceBuilder("snapshots/korean_history")              # 디스크 로드 (현재 유일 경로)
 selected = builder.select_candidates(topic="조선 건국", count=10)
 result   = await generate_quizzes(selected, count=10, topic="조선 건국")
 ```
@@ -237,7 +238,7 @@ _builder = None
 def _get_builder():           # 첫 POST /quiz 때 1회만 디스크 로드 → 부팅 비차단
     global _builder
     if _builder is None:
-        _builder = EvidenceBuilder(SNAPSHOT_DIR)   # snapshots/repro_run3 고정
+        _builder = EvidenceBuilder(SNAPSHOT_DIR)   # snapshots/korean_history 고정
     return _builder
 ```
 - **현재는 단일 스냅샷 고정**(멀티 스냅샷/스냅샷 파라미터 없음 — 트랙 B에서 도입).
@@ -414,4 +415,4 @@ def __init__(self, data_dir=None, *, raw=None):
 6. **단답형 채점은 느슨(부분 문자열).** "이성계"가 "태조 이성계"에 매칭된다(§5.3). 더 엄격히
    하려면 `_is_correct`를 정규화 완전일치 등으로 바꾼다.
 
-7. **단일 스냅샷 고정.** 테스트 페이지는 `snapshots/repro_run3`만 본다. 멀티 스냅샷은 트랙 B(§8.3).
+7. **단일 스냅샷 고정.** 테스트 페이지는 `snapshots/korean_history`만 본다. 멀티 스냅샷은 트랙 B(§8.3).

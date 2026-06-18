@@ -11,7 +11,7 @@ from starlette.routing import Mount
 
 from backend import app as backend_app
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent  # backend/ -> repo root
 PALACE_JSON = ROOT / "deliverables" / "korean_history" / "palace_with_images.json"
 
 
