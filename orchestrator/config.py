@@ -9,7 +9,11 @@ from pathlib import Path
 # orchestrator/ 는 repo 루트 바로 아래 -> 부모의 부모가 루트.
 REPO = Path(__file__).resolve().parent.parent
 
-VAR_DIR = REPO / "var"
+# 런타임 산출(잡 DB + 잡 폴더) 위치. App Service 는 코드가 휘발성 /tmp/<hash> 에서 돌아
+# 기본 REPO/var 는 재시작/재배포 시 날아간다(진행·완료 잡 유실 -> 404). 배포에선
+# ORCH_VAR_DIR=/home/var 로 영구 스토리지를 가리켜 잡이 보존되게 한다(로컬은 미설정 ->
+# REPO/var 그대로). serve 의 등록-허용 루트도 이 JOBS_DIR 을 참조한다(단일 소스).
+VAR_DIR = Path(os.environ.get("ORCH_VAR_DIR") or (REPO / "var"))
 DB_PATH = VAR_DIR / "orchestrator.db"
 JOBS_DIR = VAR_DIR / "jobs"
 
