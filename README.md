@@ -54,6 +54,7 @@ gunicorn backend.app:app --worker-class uvicorn.workers.UvicornWorker --bind 0.0
 | `GET /health` · `/ready` | 헬스 / 스냅샷 준비 여부 |
 | `POST /orchestrator/upload?filename=&domain=` | 파일(raw body) 업로드 → 자동 체인 → `job_id` |
 | `GET /orchestrator/jobs/{id}/status` · `/palace` | 잡 진행 / 산출 팰리스(이미지 매칭 시 노드에 `images[]` 포함) |
+| `GET /orchestrator/jobs/{id}/toc` | 조기 LLM 목차(방 생성 전, `toc_ready` 시). 둘러보기 페이지용 |
 | `GET /orchestrator/jobs/{id}/images/{file}` | 라이브 잡이 매칭한 그림(노드 `images[].path` = `images/<file>`) |
 | `POST /jobs/{id}/query` | 라이브 잡 RAG 질의 |
 
@@ -84,9 +85,11 @@ curl -X POST "http://127.0.0.1:8000/orchestrator/upload?filename=corpus.txt&doma
 - 라이브 잡: `/orchestrator/jobs/{id}/images/<file>` (예: `/orchestrator/jobs/<job_id>/images/fig_6_3_cv_1.png`)
 - 즉 둘 다 `<file>`(basename)만 떼어 각자 base에 붙인다.
 
-**잡 상태 폴링** `GET /orchestrator/jobs/{id}/status` 응답: `{job_id, state, palace_ready, rag_ready, domain, showcase_key, run_id, error, created_at, updated_at}`.
-- `state`: `QUEUED → PREPROCESSING → INDEXING → PALACE_READY → DONE` (실패 시 `FAILED`, `error`에 사유). `RAG_READY`는 DONE 직전의 순간 상태.
-- `palace_ready=true` 면 `/palace` 호출 가능, `rag_ready=true`(=DONE) 면 `/jobs/{id}/query` 가능.
+**잡 상태 폴링** `GET /orchestrator/jobs/{id}/status` 응답: `{job_id, state, toc_ready, palace_ready, rag_ready, domain, showcase_key, run_id, error, created_at, updated_at}`.
+- `state`: `QUEUED → PREPROCESSING → TOC_READY → INDEXING → PALACE_READY → DONE` (실패 시 `FAILED`, `error`에 사유). `RAG_READY`는 DONE 직전의 순간 상태.
+- 게이팅: `toc_ready=true` 면 `/orchestrator/jobs/{id}/toc`(방 생성 전 목차 미리보기), `palace_ready=true` 면 `/orchestrator/jobs/{id}/palace`, `rag_ready=true`(=DONE) 면 `/jobs/{id}/query`.
+
+**조기 목차** `GET /orchestrator/jobs/{id}/toc` → LLM 목차 JSON `{..., "sections":[{"name", "start_marker", ...}]}`. 인덱싱(방 생성)과 분리돼 먼저 생성되므로 PDF 업로드 직후 둘러보기 페이지에서 목차를 보여줄 수 있다. `toc_ready=true` 전엔 409.
 
 **질의 본문/응답**
 - `POST /query` body: `{"question": str, "snapshot": str, "method"?: "auto"|"local"|"global"}`. `snapshot` 누락 시 400.

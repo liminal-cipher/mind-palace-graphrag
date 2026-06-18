@@ -23,6 +23,7 @@ class State:
 
     QUEUED = "QUEUED"
     PREPROCESSING = "PREPROCESSING"
+    TOC_READY = "TOC_READY"
     INDEXING = "INDEXING"
     PALACE_READY = "PALACE_READY"
     RAG_READY = "RAG_READY"
@@ -54,6 +55,9 @@ class Job:
     # 프리베이크 스냅샷을 고른다(scaffold). domain 라벨과 분리돼 있어, 감지/선언된
     # domain 이 무엇이든 스냅샷 선택엔 절대 관여하지 않는다.
     showcase_key: Optional[str] = None
+    # toc_ready: LLM 목차(toc_llm.json)가 인덱싱 전에 먼저 나왔는지. 프론트가 둘러보기
+    # 페이지에서 방 생성 전에 목차를 보여줄 수 있게 하는 조기 플래그(palace_ready 와 독립).
+    toc_ready: bool = False
 
     def to_status(self) -> dict:
         """GET /jobs/{id}/status 응답 모양. readiness 는 독립 플래그로 노출."""
@@ -61,6 +65,7 @@ class Job:
             "job_id": self.job_id,
             "state": self.state,
             "palace_ready": self.palace_ready,
+            "toc_ready": self.toc_ready,
             "rag_ready": self.rag_ready,
             "domain": self.domain,
             "showcase_key": self.showcase_key,
@@ -85,7 +90,8 @@ CREATE TABLE IF NOT EXISTS jobs (
     error         TEXT,
     created_at    TEXT NOT NULL,
     updated_at    TEXT NOT NULL,
-    showcase_key  TEXT
+    showcase_key  TEXT,
+    toc_ready     INTEGER NOT NULL DEFAULT 0
 );
 """
 
@@ -107,6 +113,7 @@ def _row_to_job(row: sqlite3.Row) -> Job:
         updated_at=row["updated_at"],
         # 구 DB(마이그레이션 전)에는 컬럼이 없을 수 있으므로 방어적으로 읽는다.
         showcase_key=row["showcase_key"] if "showcase_key" in keys else None,
+        toc_ready=bool(row["toc_ready"]) if "toc_ready" in keys else False,
     )
 
 
@@ -131,6 +138,10 @@ class JobStore:
             cols = {r["name"] for r in conn.execute("PRAGMA table_info(jobs)")}
             if "showcase_key" not in cols:
                 conn.execute("ALTER TABLE jobs ADD COLUMN showcase_key TEXT")
+            if "toc_ready" not in cols:
+                conn.execute(
+                    "ALTER TABLE jobs ADD COLUMN toc_ready INTEGER NOT NULL DEFAULT 0"
+                )
             conn.commit()
 
     def create(
@@ -171,12 +182,13 @@ class JobStore:
         allowed = {
             "state", "domain", "run_id", "input_path", "snapshot_path",
             "palace_path", "palace_ready", "rag_ready", "error", "showcase_key",
+            "toc_ready",
         }
         bad = set(fields) - allowed
         if bad:
             raise ValueError(f"unknown job columns: {sorted(bad)}")
         # bool -> int (sqlite 는 bool 컬럼이 없다).
-        for k in ("palace_ready", "rag_ready"):
+        for k in ("palace_ready", "rag_ready", "toc_ready"):
             if k in fields:
                 fields[k] = 1 if fields[k] else 0
         cols = ", ".join(f"{k} = ?" for k in fields)

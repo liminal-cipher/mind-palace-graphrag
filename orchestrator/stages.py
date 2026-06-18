@@ -114,6 +114,54 @@ async def preprocess(
     )
 
 
+def _detect_domain_label(text: str, declared: str) -> str:
+    """corpus 본문으로 도메인 라벨 1개를 해소한다. 감지 실패 시 선언 라벨(빈값/unknown
+    제외)로 폴백. toc 단계에서 1회 수행해 store 에 저장하고 index 는 그 값을 재사용한다."""
+    label = domain_detect.detect_domain(text)
+    return label or ("" if declared in ("", "unknown") else declared)
+
+
+async def toc(
+    job: Job,
+    store: JobStore,
+    sleep_seconds: float,
+) -> None:
+    """인덱싱과 분리된 조기 목차 단계. phase_toc 는 corpus 만 읽고 snapshot(인덱스)은
+    안 쓰므로 index 앞에서 돌릴 수 있다 -> 프론트가 방 생성 전에 목차를 본다(toc_ready).
+    도메인 감지도 여기서 1회 수행해 store 에 저장한다(index/build_palace 가 그 값을
+    재사용 -> 중복 LLM 콜 제거). best-effort: 목차 생성이 실패해도 잡을 죽이지 않고
+    build_palace 가 toc+rooms 로 폴백한다(단, 도메인은 이미 저장됨)."""
+    await asyncio.sleep(sleep_seconds)
+    fresh = store.get(job.job_id) or job
+    # 쇼케이스(프리베이크 팰리스)는 toc 생성 불필요.
+    if fresh.showcase_key:
+        return
+    loop = asyncio.get_running_loop()
+    # 도메인 감지(단일 소스). corpus 는 preprocess 가 갱신한 추출 본문(content.txt).
+    corpus = Path(fresh.input_path)
+    if corpus.is_file():
+        text = corpus.read_text(encoding="utf-8", errors="replace")
+        effective = await loop.run_in_executor(
+            None, _detect_domain_label, text, fresh.domain
+        )
+        if effective:
+            store.update(job.job_id, domain=effective)
+            fresh = store.get(job.job_id) or fresh
+    cfg_path, cfg, _ = _build_job_palace_config(fresh, fresh.snapshot_path)
+    # frozen_toc(커밋 목차) 도메인은 생성 안 함 -> build_palace 가 동결 목차로 rooms.
+    if cfg.get("frozen_toc"):
+        return
+    rc, out = await loop.run_in_executor(None, _run_palace, cfg_path, "toc")
+    if rc != 0:
+        logger.warning(
+            "조기 toc 실패(best-effort, build_palace 가 재생성) job=%s rc=%d:\n%s",
+            job.job_id, rc, out[-800:],
+        )
+        return
+    store.update(job.job_id, state=State.TOC_READY, toc_ready=True)
+    logger.info("toc 완료(조기) job=%s domain=%s", job.job_id, fresh.domain)
+
+
 async def index(
     job: Job,
     store: JobStore,
@@ -193,14 +241,14 @@ async def _index_live(job: Job, store: JobStore) -> None:
         raise RuntimeError(f"업로드 입력 없음: {corpus}")
     loop = asyncio.get_running_loop()
 
-    # 1) 도메인 감지(단일 라벨). 실패하면 빈 문자열 -> 폴백 신호. 블로킹 LLM 콜이라
-    #    executor 로(_run_palace 와 같은 이유: 워커 루프 비차단).
-    text = corpus.read_text(encoding="utf-8", errors="replace")
-    label = await loop.run_in_executor(None, domain_detect.detect_domain, text)
-    effective = label or ("" if job.domain in ("", "unknown") else job.domain)
-    if effective:
-        # 감지/선언 라벨을 단일 소스로 저장 -> build_palace/toc 가 이 domain 을 본다.
-        store.update(job.job_id, domain=effective)
+    # 1) 도메인은 toc 단계가 이미 감지·저장했다(단일 소스) -> 그 값을 재사용해 중복
+    #    LLM 콜을 피한다. toc 가 스킵/실패해 미해소(빈값/unknown)면 여기서 폴백 감지.
+    effective = job.domain if job.domain not in ("", "unknown") else ""
+    if not effective:
+        text = corpus.read_text(encoding="utf-8", errors="replace")
+        effective = await loop.run_in_executor(None, domain_detect.detect_domain, text) or ""
+        if effective:
+            store.update(job.job_id, domain=effective)
 
     # 2) 격리 root materialize(초기 generic, resolve 가 확정 치환).
     root = index_root.build_index_root(
@@ -380,6 +428,11 @@ async def build_palace(
     # from the base config. korean_history has frozen_toc -> rooms only; others
     # run the full live path (toc + clamp -> rooms).
     phases = ["rooms"] if cfg.get("frozen_toc") else ["toc", "rooms"]
+    # toc 단계가 이미 목차를 만들었으면(toc_out 존재) rooms 만 돈다(중복 생성 제거).
+    # toc 가 스킵/실패해 toc_out 이 없으면 기존대로 toc+rooms 로 폴백한다.
+    toc_out_path = config.job_dir(job.job_id) / "palace_out" / f"{job.run_id}.toc_llm.json"
+    if not cfg.get("frozen_toc") and toc_out_path.exists():
+        phases = ["rooms"]
     loop = asyncio.get_running_loop()
     for phase in phases:
         rc, out = await loop.run_in_executor(None, _run_palace, cfg_path, phase)
@@ -462,4 +515,4 @@ async def rag(
 
 
 # 워커가 순서대로 도는 STUB 파이프라인. 각 항목은 (job, store, sleep) 로 호출된다.
-PIPELINE = (preprocess, index, build_palace, rag)
+PIPELINE = (preprocess, toc, index, build_palace, rag)

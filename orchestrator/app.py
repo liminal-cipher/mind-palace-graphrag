@@ -163,6 +163,26 @@ async def job_palace(job_id: str):
     return JSONResponse(content=json.loads(serve_path.read_text(encoding="utf-8")))
 
 
+@app.get("/jobs/{job_id}/toc")
+async def job_toc(job_id: str):
+    """toc_ready 면 인덱싱과 분리돼 먼저 생성된 LLM 목차(toc_llm.json)를 반환한다.
+    프론트가 방 생성(palace) 전에 둘러보기 페이지에서 목차를 보여줄 수 있게 하는 조기
+    엔드포인트. 아직이면 409, 잡 없으면 404."""
+    store: JobStore = app.state.store
+    job = store.get(job_id)
+    if job is None:
+        raise HTTPException(status_code=404, detail=f"job_id '{job_id}' 없음")
+    if not job.toc_ready:
+        raise HTTPException(
+            status_code=409,
+            detail=f"toc 아직 준비 안 됨 (state={job.state}, toc_ready={job.toc_ready})",
+        )
+    toc_path = config.job_dir(job_id) / "palace_out" / f"{job.run_id}.toc_llm.json"
+    if not toc_path.exists():
+        raise HTTPException(status_code=500, detail="toc_ready 인데 산출물 파일이 없다")
+    return JSONResponse(content=json.loads(toc_path.read_text(encoding="utf-8")))
+
+
 @app.get("/jobs/{job_id}/images/{filename}")
 async def job_image(job_id: str, filename: str):
     """라이브 잡이 매칭한 PNG 를 서빙한다: palace_out/images/<filename>. 프론트는 노드의

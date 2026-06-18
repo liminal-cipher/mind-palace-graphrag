@@ -80,17 +80,20 @@ def _abs(repo: Path, rel: str) -> Path:
     return p if p.is_absolute() else (repo / p)
 
 
-def _stop_if_missing(cfg: dict, repo: Path) -> None:
+def _stop_if_missing(cfg: dict, repo: Path, *, need_snapshot: bool = True) -> None:
+    # toc 는 corpus 만 읽고 snapshot(인덱스)은 안 쓴다 -> phase toc 에선 snapshot 검사
+    # 생략(인덱싱 전 단계로 끌어와 목차를 일찍 만들 수 있게). rooms 는 snapshot 필수.
     missing = []
     corpus = _abs(repo, cfg['corpus'])
     if not corpus.exists():
         missing.append(cfg['corpus'])
-    snapshot = _abs(repo, cfg['snapshot'])
-    for name in ('entities.parquet', 'text_units.parquet', 'documents.parquet'):
-        if not (snapshot / name).exists():
-            missing.append(f'{cfg["snapshot"]}/{name}')
-    if not (snapshot / 'lancedb').exists():
-        missing.append(f'{cfg["snapshot"]}/lancedb')
+    if need_snapshot:
+        snapshot = _abs(repo, cfg['snapshot'])
+        for name in ('entities.parquet', 'text_units.parquet', 'documents.parquet'):
+            if not (snapshot / name).exists():
+                missing.append(f'{cfg["snapshot"]}/{name}')
+        if not (snapshot / 'lancedb').exists():
+            missing.append(f'{cfg["snapshot"]}/lancedb')
     if missing:
         print('STOP: required inputs missing:')
         for m in missing:
@@ -283,7 +286,7 @@ def main() -> None:
     cfg = json.loads(cfg_path.read_text(encoding='utf-8'))
 
     _load_dotenv(REPO / '.env')
-    _stop_if_missing(cfg, REPO)
+    _stop_if_missing(cfg, REPO, need_snapshot=(args.phase != 'toc'))
 
     if args.phase == 'toc':
         phase_toc(cfg, REPO)
