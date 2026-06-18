@@ -33,6 +33,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend import showcase
+from backend.mnemonic import routes as mnemonic_routes
 from backend.quiz import quiz_page
 from backend.serve import app as serve_app
 from backend.serve import lifespan as serve_lifespan
@@ -67,4 +68,5 @@ app.add_middleware(
 app.mount("/orchestrator", orchestrator_app)
 app.include_router(showcase.router)  # GET /palace/{name}, GET /images/{name}/{file}
 app.include_router(quiz_page.router)  # GET/POST /quiz + POST /quiz/grade (테스트 페이지, 서버 채점)
+app.include_router(mnemonic_routes.router)  # POST /mnemonic (핫스팟→학습노드 연상 장면 생성)
 app.mount("/", serve_app)

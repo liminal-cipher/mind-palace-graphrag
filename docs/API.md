@@ -35,7 +35,7 @@
 ### `GET /health`
 serve 헬스. **항상 200**(콜드 시작에 헬스 프로브가 컨테이너를 죽이지 않게). 본문에 스냅샷별 warm 상태.
 ```json
-{"status": "ok", "method": "global", "aliases": {}, "snapshots": {"korean_history": {"status": "ok", "ready": true, "snapshot_dir": "snapshots/repro_run3"}, "statistics": {"status": "ok", "ready": true}}}
+{"status": "ok", "method": "global", "aliases": {}, "snapshots": {"korean_history": {"status": "ok", "ready": true, "snapshot_dir": "snapshots/korean_history"}, "statistics": {"status": "ok", "ready": true}}}
 ```
 - `status`: 하나라도 ready면 `ok`, 전부 아니면 `warming`.
 
@@ -157,6 +157,40 @@ GraphRAG parquet로 한국사 학습 퀴즈 생성 + 서버 채점.
 - 서버가 보관한(`quiz_id`) 정답과 대조. **제출한 문항만** 채점·반환(안 푼 문항 정답은 은닉 유지).
 - 응답: `{"score": 2, "total": 3, "results": [{"index": 0, "correct": true, "answerText": "...", "explanation": "..."}]}`. (`total`=채점된 문항 수.)
 - `404`: 만료/미존재 `quiz_id`(서버 재시작 시 세션 소실).
+
+---
+
+## 연상법 생성 (핫스팟 → 학습 노드)
+
+사용자가 3D 씬에서 핫스팟(오브젝트)을 **누를 때만** 프론트가 호출한다(투명성 원칙). 백엔드는
+무상태로 LLM 을 호출해 그 오브젝트를 다시 봤을 때 학습 노드가 떠오르는 기억 장면(마크다운)을
+만들어 돌려준다. 프롬프트 본문은 서버가 소유한다.
+
+### `POST /mnemonic` (JSON)
+요청 body (camelCase·snake_case 둘 다 수용):
+```json
+{
+  "object": "꽃병",
+  "nodeName": "삼권분립",
+  "nodeDescription": "국가 권력을 입법·행정·사법으로 나눠 권력 집중을 막는 원리.",
+  "keywords": ["입법", "행정", "사법"],
+  "markerPosition": [3.191, 0.97, -2.398],
+  "detectedClass": "vase",
+  "roomContext": "cozy 모던 리빙룸"
+}
+```
+- `object`(필수): 핫스팟 라벨. 프론트가 3D 씬 스캔 결과의 `object`를 그대로 보낸다.
+- `nodeName`·`nodeDescription`(필수): 그 핫스팟에 매칭된 학습 노드의 이름(개념)과 설명(요약).
+- `keywords`·`markerPosition`·`detectedClass`·`roomContext`(선택): 있으면 장면이 풍부해진다.
+- **시각적 특징/연상은 프론트가 보내지 않는다** — LLM 이 `object`(+`detectedClass`)로 직접 추론.
+
+응답:
+```json
+{"markdown": "# 위치 기반 기억 연상 장면\n\n## 📍 시각 단서\n..."}
+```
+- 200: `markdown`은 시각 단서·핵심 연결고리·기억 장면·키워드 표·기억 포인트 섹션을 가진 한국어 마크다운. 프론트가 그대로 렌더.
+- `422`: 필수 필드(`object`/`nodeName`/`nodeDescription`) 누락.
+- `502`: LLM 자격증명 미설정/네트워크/업스트림 오류 또는 빈 응답(`detail`에 사유).
 
 ---
 
