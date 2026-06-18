@@ -19,11 +19,13 @@ Two halves:
 2. ``generate_quizzes(selected, ...)`` takes a list of candidate items (from
    ``select_candidates`` or supplied directly) and produces verified quizzes.
 
-Configure Azure OpenAI through these environment variables:
-    AZURE_OPENAI_API_KEY
-    AZURE_OPENAI_ENDPOINT       (resource base URL or full /openai/responses URL)
-    AZURE_OPENAI_API_VERSION    (optional, default 2025-04-01-preview)
-    AZURE_OPENAI_DEPLOYMENT
+Azure OpenAI 자격증명은 레포 공용 OPEN_AI_* 환경변수를 그대로 쓴다(전처리 step5 와
+동일 리소스/스킴 재사용 -> 별도 키 체계를 새로 만들지 않는다):
+    OPEN_AI_KEY
+    OPEN_AI_ENDPOINT                  (resource base URL 또는 전체 /openai/responses URL)
+    OPEN_AI_DEPLOYMENT_NAME_4_1_MINI  (App Service 는 점(.) env 이름을 못 받아 밑줄형 우선,
+                                       로컬 .env 의 점형 OPEN_AI_DEPLOYMENT_NAME_4.1_MINI 폴백)
+Responses API 버전은 step5 의 _OAI_API_VER 처럼 코드 상수로 고정한다(.env 에 버전 변수 없음).
 """
 
 from __future__ import annotations
@@ -473,9 +475,13 @@ Quizzes to verify:
 
 # --- Azure OpenAI client ---------------------------------------------------
 
+# Responses API 버전. step5_llm 의 _OAI_API_VER 와 같은 패턴으로 코드에 고정(.env 미사용).
+_RESPONSES_API_VERSION = "2025-04-01-preview"
+
+
 def get_azure_responses_url() -> str | None:
-    endpoint = os.environ.get("AZURE_OPENAI_ENDPOINT")
-    api_version = os.environ.get("AZURE_OPENAI_API_VERSION") or "2025-04-01-preview"
+    endpoint = os.environ.get("OPEN_AI_ENDPOINT")
+    api_version = _RESPONSES_API_VERSION
     if not endpoint:
         return None
 
@@ -515,12 +521,16 @@ def extract_response_text(data: dict[str, Any]) -> str:
 
 
 async def call_llm(input_payload: Any, max_output_tokens: int = 2400) -> str:
-    api_key = os.environ.get("AZURE_OPENAI_API_KEY")
-    deployment = os.environ.get("AZURE_OPENAI_DEPLOYMENT")
+    api_key = os.environ.get("OPEN_AI_KEY")
+    # App Service env 는 점(.)을 못 받아 밑줄형이 올라간다; step5_llm 과 동일 폴백.
+    deployment = (os.environ.get("OPEN_AI_DEPLOYMENT_NAME_4_1_MINI")
+                  or os.environ.get("OPEN_AI_DEPLOYMENT_NAME_4.1_MINI"))
     url = get_azure_responses_url()
 
     if not (api_key and deployment and url):
-        raise RuntimeError(".env의 Azure OpenAI 설정이 부족합니다.")
+        raise RuntimeError(
+            "OPEN_AI_KEY / OPEN_AI_ENDPOINT / OPEN_AI_DEPLOYMENT_NAME_4_1_MINI 설정이 부족합니다."
+        )
 
     try:
         async with httpx.AsyncClient(timeout=60) as client:

@@ -197,17 +197,19 @@ result   = await generate_quizzes(selected, count=10, topic="조선 건국")
 
 ### 3.7 환경변수 (LLM)
 
-`call_llm`이 읽는 4개. 누락/오설정이면 호출이 실패해 **조용히 `fallback`(단답형)으로 떨어진다**
-(에러가 200 응답의 `warning`으로 흡수되므로 눈치채기 어렵다).
+`call_llm`이 읽는 값. 레포 공용 `OPEN_AI_*`(전처리 step5 와 동일 리소스/스킴)를 재사용한다
+— 별도 `AZURE_OPENAI_*` 체계를 새로 만들지 않는다. 누락/오설정이면 호출이 실패해 **조용히
+`fallback`(단답형)으로 떨어진다**(에러가 200 응답의 `warning`으로 흡수되므로 눈치채기 어렵다).
 
 ```
-AZURE_OPENAI_API_KEY        AZURE_OPENAI_ENDPOINT
-AZURE_OPENAI_API_VERSION    AZURE_OPENAI_DEPLOYMENT
+OPEN_AI_KEY        OPEN_AI_ENDPOINT
+OPEN_AI_DEPLOYMENT_NAME_4_1_MINI   (App Service 밑줄형 우선, 로컬 .env 점형 폴백)
 ```
+- Responses API 버전은 `_RESPONSES_API_VERSION` 코드 상수로 고정(.env 변수 아님).
 - `ENDPOINT`가 base URL이면 `get_azure_responses_url`이 `/openai/responses?api-version=…`를
   자동 부착한다.
-- ⚠️ `AZURE_OPENAI_DEPLOYMENT`가 실재 배포명이 아니면 404 → 전부 fallback. 스모크 테스트에서
-  `mode=="llm_verified"`가 나오는지로 검증할 것.
+- ⚠️ deployment 가 실재 배포명이 아니면 404 → 전부 fallback. 스모크 테스트에서
+  `mode=="llm_verified"`가 나오는지로 검증할 것(키가 맞아야 fallback 아닌 LLM 생성이 됨).
 
 ---
 
