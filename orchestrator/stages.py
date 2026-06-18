@@ -417,6 +417,9 @@ async def build_palace(
     store: JobStore,
     sleep_seconds: float,
 ) -> None:
+    # 방 생성(toc 재사용 시 rooms-only + 이미지 매칭) 진행 표시용 state. 프론트 로딩
+    # 바가 인덱싱과 방 생성을 구분해 보여줄 수 있게 한다(완료 시 PALACE_READY 로 전이).
+    store.update(job.job_id, state=State.BUILDING_PALACE)
     # gotcha 2: index updated snapshot_path in the store; the worker's job is stale.
     fresh = store.get(job.job_id) or job
     cfg_path, cfg, seeded = _build_job_palace_config(fresh, fresh.snapshot_path)

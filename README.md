@@ -85,9 +85,25 @@ curl -X POST "http://127.0.0.1:8000/orchestrator/upload?filename=corpus.txt&doma
 - 라이브 잡: `/orchestrator/jobs/{id}/images/<file>` (예: `/orchestrator/jobs/<job_id>/images/fig_6_3_cv_1.png`)
 - 즉 둘 다 `<file>`(basename)만 떼어 각자 base에 붙인다.
 
-**잡 상태 폴링** `GET /orchestrator/jobs/{id}/status` 응답: `{job_id, state, toc_ready, palace_ready, rag_ready, domain, showcase_key, run_id, error, created_at, updated_at}`.
-- `state`: `QUEUED → PREPROCESSING → TOC_READY → INDEXING → PALACE_READY → DONE` (실패 시 `FAILED`, `error`에 사유). `RAG_READY`는 DONE 직전의 순간 상태.
+**잡 상태 폴링** `GET /orchestrator/jobs/{id}/status` 응답: `{job_id, state, toc_ready, palace_ready, rag_ready, domain, showcase_key, run_id, error, created_at, updated_at, progress}`.
+- `state`: `QUEUED → PREPROCESSING → TOC_READY → INDEXING → BUILDING_PALACE → PALACE_READY → DONE` (실패 시 `FAILED`, `error`에 사유). `RAG_READY`는 DONE 직전의 순간 상태.
 - 게이팅: `toc_ready=true` 면 `/orchestrator/jobs/{id}/toc`(방 생성 전 목차 미리보기), `palace_ready=true` 면 `/orchestrator/jobs/{id}/palace`, `rag_ready=true`(=DONE) 면 `/jobs/{id}/query`.
+
+**로딩 바** 응답의 `progress` 를 그대로 쓴다(`state`+플래그에서 파생):
+```json
+"progress": {
+  "percent": 25,
+  "current_step": "indexing",
+  "steps": [
+    {"key":"preprocess","label":"전처리","weight":25,"est_seconds":90,"status":"done"},
+    {"key":"indexing","label":"인덱싱","weight":55,"est_seconds":280,"status":"active"},
+    {"key":"rooms","label":"방 생성","weight":20,"est_seconds":60,"status":"pending"}
+  ]
+}
+```
+- `status`: `pending | active | done | failed`. 스텝퍼는 이걸 그대로 그리면 된다.
+- `percent`: 완료 step 가중치 합(서버는 단계 **내부** 진행률을 모름). 긴 인덱싱 구간은 `active` step 의 `est_seconds` + `updated_at`(그 state 진입 시각)으로 프론트가 보간해 바를 움직인다.
+- 텍스트 추출·정제는 한 백엔드 단계라 `preprocess`(전처리)로 합쳐 있다. 목차 완료는 별도 `toc_ready` 플래그로 표시(원하면 그 사이 "목차 준비됨" 표기).
 
 **조기 목차** `GET /orchestrator/jobs/{id}/toc` → LLM 목차 JSON `{..., "sections":[{"name", "start_marker", ...}]}`. 인덱싱(방 생성)과 분리돼 먼저 생성되므로 PDF 업로드 직후 둘러보기 페이지에서 목차를 보여줄 수 있다. `toc_ready=true` 전엔 409.
 

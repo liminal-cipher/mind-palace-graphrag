@@ -25,12 +25,60 @@ class State:
     PREPROCESSING = "PREPROCESSING"
     TOC_READY = "TOC_READY"
     INDEXING = "INDEXING"
+    BUILDING_PALACE = "BUILDING_PALACE"
     PALACE_READY = "PALACE_READY"
     RAG_READY = "RAG_READY"
     DONE = "DONE"
     FAILED = "FAILED"
 
     TERMINAL = frozenset({DONE, FAILED})
+
+
+# 프론트 로딩 바용 단계 정의. weight=가중치(합 100, 관측 소요 기반), est_seconds=대략
+# 소요(활성 구간 보간용). 텍스트추출·정제는 한 백엔드 단계(preprocess)라 "전처리"로 합침.
+_PROGRESS_STEPS = (
+    {"key": "preprocess", "label": "전처리", "weight": 25, "est_seconds": 90},
+    {"key": "indexing", "label": "인덱싱", "weight": 55, "est_seconds": 280},
+    {"key": "rooms", "label": "방 생성", "weight": 20, "est_seconds": 60},
+)
+_STATE_ORDER = {
+    State.QUEUED: 0, State.PREPROCESSING: 1, State.TOC_READY: 2,
+    State.INDEXING: 3, State.BUILDING_PALACE: 4, State.PALACE_READY: 5,
+    State.RAG_READY: 6, State.DONE: 7,
+}
+_STEP_ACTIVE_STATE = {
+    "preprocess": State.PREPROCESSING,
+    "indexing": State.INDEXING,
+    "rooms": State.BUILDING_PALACE,
+}
+
+
+def _progress(state: str, toc_ready: bool, palace_ready: bool, rag_ready: bool) -> dict:
+    """state(현재 활동) + 완료 플래그로 각 step 의 done/active/pending/failed 를 만든다.
+    percent 는 완료 step 가중치 합(서버는 단계 내부 진행률을 모르므로, 프론트가 활성 step
+    의 est_seconds + updated_at 으로 보간한다). FAILED 면 완료 못 한 첫 step 을 failed 로."""
+    ordv = _STATE_ORDER.get(state, 0)
+    failed = state == State.FAILED
+    done_by_key = {
+        "preprocess": toc_ready or palace_ready or rag_ready or ordv >= 3,
+        "indexing": palace_ready or rag_ready or ordv >= 4,
+        "rooms": palace_ready or rag_ready or ordv >= 5,
+    }
+    steps, percent, current, failed_marked = [], 0, None, False
+    for s in _PROGRESS_STEPS:
+        if done_by_key[s["key"]]:
+            status = "done"
+            percent += s["weight"]
+        elif failed and not failed_marked:
+            status, failed_marked, current = "failed", True, s["key"]
+        elif (not failed) and state == _STEP_ACTIVE_STATE[s["key"]]:
+            status, current = "active", s["key"]
+        else:
+            status = "pending"
+        steps.append({**s, "status": status})
+    if state == State.DONE:
+        percent = 100
+    return {"percent": percent, "current_step": current, "steps": steps}
 
 
 def _now() -> str:
@@ -73,6 +121,10 @@ class Job:
             "error": self.error,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
+            # 프론트 로딩 바용 단계 진행 정보(state+플래그에서 파생, 별도 저장 안 함).
+            "progress": _progress(
+                self.state, self.toc_ready, self.palace_ready, self.rag_ready
+            ),
         }
 
 
