@@ -39,6 +39,8 @@ GraphRAG 인덱스 위에서 질의(RAG)와 쇼케이스 팰리스를 서빙한�
 gunicorn backend.app:app --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
 # 개발:  uvicorn backend.app:app --reload
 # App Service: "Startup Command" = bash startup.sh
+# App Service 앱 설정: ORCH_VAR_DIR=/home/var (잡 DB·잡 폴더·라이브 이미지를 영구
+#   스토리지에 둬 재시작/재배포에도 보존. 미설정 시 REPO/var = 휘발성 /tmp 라 유실)
 ```
 
 서빙 도메인: `korean_history`, `statistics`.
@@ -50,7 +52,8 @@ gunicorn backend.app:app --worker-class uvicorn.workers.UvicornWorker --bind 0.0
 | `POST /query` | RAG 질의. body `{"question": "...", "snapshot": "korean_history"}` → `{"answer", "snapshot"}` |
 | `GET /health` · `/ready` | 헬스 / 스냅샷 준비 여부 |
 | `POST /orchestrator/upload?filename=&domain=` | 파일(raw body) 업로드 → 자동 체인 → `job_id` |
-| `GET /orchestrator/jobs/{id}/status` · `/palace` | 잡 진행 / 산출 팰리스 |
+| `GET /orchestrator/jobs/{id}/status` · `/palace` | 잡 진행 / 산출 팰리스(이미지 매칭 시 노드에 `images[]` 포함) |
+| `GET /orchestrator/jobs/{id}/images/{file}` | 라이브 잡이 매칭한 그림(노드 `images[].path` = `images/<file>`) |
 | `POST /jobs/{id}/query` | 라이브 잡 RAG 질의 |
 
 ```bash
