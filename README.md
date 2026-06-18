@@ -39,8 +39,9 @@ GraphRAG 인덱스 위에서 질의(RAG)와 쇼케이스 팰리스를 서빙한�
 gunicorn backend.app:app --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
 # 개발:  uvicorn backend.app:app --reload
 # App Service: "Startup Command" = bash startup.sh
-# App Service 앱 설정: ORCH_VAR_DIR=/home/var (잡 DB·잡 폴더·라이브 이미지를 영구
-#   스토리지에 둬 재시작/재배포에도 보존. 미설정 시 REPO/var = 휘발성 /tmp 라 유실)
+# var 위치는 ORCH_VAR_DIR 로 바꿀 수 있으나 /home(Azure Files/SMB)은 쓰지 말 것:
+#   스냅샷 lancedb 가 SMB 에서 0바이트로 깨진다(palace rooms·RAG load 실패). 기본값
+#   REPO/var(로컬)로 두고, 재시작 생존이 필요하면 Blob 영속을 따로 붙인다(예정).
 ```
 
 서빙 도메인: `korean_history`, `statistics`.

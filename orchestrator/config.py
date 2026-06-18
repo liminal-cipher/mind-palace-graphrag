@@ -9,16 +9,22 @@ from pathlib import Path
 # orchestrator/ 는 repo 루트 바로 아래 -> 부모의 부모가 루트.
 REPO = Path(__file__).resolve().parent.parent
 
-# 런타임 산출(잡 DB + 잡 폴더) 위치. App Service 는 코드가 휘발성 /tmp/<hash> 에서 돌아
-# 기본 REPO/var 는 재시작/재배포 시 날아간다(진행·완료 잡 유실 -> 404). 배포에선
-# ORCH_VAR_DIR=/home/var 로 영구 스토리지를 가리켜 잡이 보존되게 한다(로컬은 미설정 ->
-# REPO/var 그대로). serve 의 등록-허용 루트도 이 JOBS_DIR 을 참조한다(단일 소스).
+# 런타임 산출(잡 DB + 잡 폴더) 위치. ORCH_VAR_DIR 로 바꿀 수 있으나 /home(Azure
+# Files/SMB)은 쓰지 말 것: 스냅샷 lancedb 가 SMB 에서 0바이트로 깨져 palace rooms·RAG
+# load 가 실패한다. 기본 REPO/var(로컬 /tmp/<hash>)는 lancedb 가 정상이나 재시작 시
+# 휘발한다(라이브 잡 유실). 재시작 생존이 필요하면 Blob 영속을 따로 붙인다(예정).
 VAR_DIR = Path(os.environ.get("ORCH_VAR_DIR") or (REPO / "var"))
 DB_PATH = VAR_DIR / "orchestrator.db"
 JOBS_DIR = VAR_DIR / "jobs"
 
 # STUB 스테이지 1개당 sleep(초). 데모/복구 시연용으로 env로 늘릴 수 있게 둔다.
 STUB_STAGE_SECONDS = float(os.environ.get("ORCH_STUB_SECONDS", "2.0"))
+
+# 공개 업로드 크기 상한(MB). 공개 /upload 가 인증 없이 열려 있어, 거대 파일로 인한
+# 메모리/디스크 폭증을 막는 유일한 가드레일이다. 스캔 PDF 까지 받게 넉넉히 두되(기본
+# 30MB) env 로 조정한다. 직렬 워커라 동시 업로드는 큐로 순차 처리되므로 건수 제한은 없다.
+MAX_UPLOAD_MB = int(os.environ.get("ORCH_MAX_UPLOAD_MB") or 30)
+MAX_UPLOAD_BYTES = MAX_UPLOAD_MB * 1024 * 1024
 
 # prompt-tune discover subprocess 상한(초). 행걸림 시 워커가 무한 대기하지 않고
 # generic 폴백으로 떨어지게 한다. env로 조정 가능, 잠정 기본 600초.

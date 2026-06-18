@@ -76,9 +76,28 @@ async def upload(
             detail=f"미지원 showcase '{showcase}'. 지원: {supported}.",
         )
 
+    # 공개 업로드 크기 상한. Content-Length 로 본문을 메모리에 읽기 전에 먼저 거절하고
+    # (거대 파일이 RAM 을 치기 전에 차단), 헤더가 없거나 거짓이면 실제 길이로 폴백 검증.
+    limit = config.MAX_UPLOAD_BYTES
+    cl = request.headers.get("content-length")
+    if cl is not None:
+        try:
+            if int(cl) > limit:
+                raise HTTPException(
+                    status_code=413,
+                    detail=f"파일이 너무 큼: 상한 {config.MAX_UPLOAD_MB}MB",
+                )
+        except ValueError:
+            pass  # 헤더가 정수가 아니면 무시하고 아래 실제 길이 검증에 맡긴다.
+
     data = await request.body()
     if not data:
         raise HTTPException(status_code=422, detail="빈 본문. 파일 바이트가 필요하다.")
+    if len(data) > limit:
+        raise HTTPException(
+            status_code=413,
+            detail=f"파일이 너무 큼: {len(data) // (1024 * 1024)}MB (상한 {config.MAX_UPLOAD_MB}MB)",
+        )
 
     job_id = uuid.uuid4().hex
     run_id = job_id  # run_id == job_id.
