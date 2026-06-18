@@ -146,7 +146,7 @@ _ALLOWED_REGISTER_ROOTS = (
 # 키 = run_id(제품/콘텐츠 정체성), 값 = 스냅샷 디렉터리(빌드/provenance, repo 상대).
 # 런타임에 추가 가능한 가변 dict(미래 오케스트레이터가 빌드 후 register).
 SNAPSHOTS: dict[str, str] = {
-    "korean_history": "snapshots/repro_run3",
+    "korean_history": "snapshots/korean_history",
     # statistics: 재인덱싱 전까지 snapshots/statistics 없음 -> warmup 에러 격리(korean 무관).
     "statistics": "snapshots/statistics",
 }

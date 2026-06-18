@@ -45,7 +45,7 @@ SEED_PALACE_CACHE = os.environ.get("ORCH_SEED_PALACE_CACHE", "1") != "0"
 # index 스테이지가 새로 빌드하는 대신 이 dir로 snapshot_path를 가리켜, rag가 등록할
 # "진짜 스냅샷"이 생긴다. 둘 다 community_reports 있음(global search 가능).
 SHOWCASE_SNAPSHOTS: dict[str, str] = {
-    "korean_history": "snapshots/repro_run3",
+    "korean_history": "snapshots/korean_history",
     "statistics": "snapshots/statistics",
 }
 

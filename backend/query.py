@@ -13,12 +13,12 @@ import 자체는 가볍다(부수효과 없음). 무거운 로드는 load_engine
 
 사용 방식 (둘 중 하나):
   1) python warm_query.py
-     기본 스냅샷(repro_run3)을 lazy 로드하고 REPL이 떠서 질문 입력만 받음.
+     기본 스냅샷(korean_history)을 lazy 로드하고 REPL이 떠서 질문 입력만 받음.
   2) VSCode/PyCharm interactive 셀 단위(`# %%`)로 실행.
      ask()/_engine() 첫 호출이 기본 스냅샷을 lazy 로드한다.
 
 기본 스냅샷(레거시 모듈 API의 대상):
-  snapshots/repro_run3 (config/DFS/ENGINES/_engine/ask가 가리키는 곳).
+  snapshots/korean_history (config/DFS/ENGINES/_engine/ask가 가리키는 곳).
 settings.yaml은 건드리지 않고, in-memory cli_overrides로만 스냅샷 경로를 바꾼다.
 """
 
@@ -130,7 +130,7 @@ _patch_basic_search()
 ROOT = Path(__file__).resolve().parent.parent if "__file__" in globals() else Path.cwd()  # backend/ -> repo root
 
 # 레거시 모듈 API(config/DFS/ENGINES/_engine/ask)의 대상 스냅샷.
-SNAPSHOT = ROOT / "snapshots" / "repro_run3"
+SNAPSHOT = ROOT / "snapshots" / "korean_history"
 
 COMMUNITY_LEVEL = 2
 RESPONSE_TYPE = "Single Paragraph"
@@ -415,7 +415,7 @@ _BUILDERS = {
 }
 
 
-# %% [레거시 모듈 API] 기본 스냅샷(repro_run3) lazy 번들 ============
+# %% [레거시 모듈 API] 기본 스냅샷(korean_history) lazy 번들 ============
 # warm_query를 모듈로 쓰는 기존 코드(exp_warm_compare.py, exp_method_sweep.py)와
 # REPL은 config/DFS/ENGINES/_engine/_build_*/ask 를 모듈 전역으로 기대한다.
 # import 부수효과는 없애되 이 심볼들은 첫 접근 시 기본 번들을 lazy 로드해 보존한다.

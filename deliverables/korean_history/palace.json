@@ -12,7 +12,7 @@
     "room_count": 6,
     "generated_at": "2026-06-11T17:40:11.385022+00:00",
     "pipeline": {
-      "snapshot": "snapshots/repro_run3",
+      "snapshot": "snapshots/korean_history",
       "k": 6,
       "merge": "toc",
       "embedding_model": "text-embedding-3-small",

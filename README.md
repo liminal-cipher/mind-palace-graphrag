@@ -13,7 +13,7 @@ GraphRAG 인덱스 위에서 질의(RAG)와 쇼케이스 팰리스를 서빙한�
 | `palace/` | 방 빌드 정본. TOC → 방 배정/선별 → `palace.json` (`run.py`, `build_rooms.py`, `configs/`, `tests/`) |
 | `indexing/` | 도메인별 GraphRAG 인덱싱 config (`<domain>/settings.yaml` + 튜닝 프롬프트, `_template.settings.yaml`) |
 | `preprocessing/` | 원본 PDF → 정제 코퍼스 (`pipeline_v2.py`, `normalize.py`, `source/`, `result/`) |
-| `snapshots/` | 빌드된 GraphRAG 인덱스 (`repro_run3`=국사 골든, `statistics`) |
+| `snapshots/` | 빌드된 GraphRAG 인덱스 (`korean_history`=국사 골든, `statistics`) |
 | `deliverables/` | 프론트가 읽는 도메인별 산출물 (`<domain>/palace.json`, `palace_with_images.json`, `images/`) |
 | `docs/` | 분석 문서 (`RUNBOOK.md`, `EXPERIMENTS.md`, `CONVENTIONS.md`, `audit/`) |
 | `input/` | 도메인별 정제 코퍼스 (저작물, gitignored) |
@@ -31,7 +31,7 @@ GraphRAG 인덱스 위에서 질의(RAG)와 쇼케이스 팰리스를 서빙한�
 2. `.env.example`을 `.env`로 복사하고 키를 채운다(.env는 gitignored):
    - `GRAPHRAG_API_KEY`, `GRAPHRAG_API_BASE`: 쿼리·인덱싱(Azure OpenAI)
    - `CONTENT_UNDERSTANDING_*`, `OPEN_AI_*`: 전처리(`preprocessing/pipeline_v2.py`)에서만 필요
-3. 기본 스냅샷 `snapshots/repro_run3/`(국사, 357 엔티티)가 있어야 골든 검증 재현 가능.
+3. 기본 스냅샷 `snapshots/korean_history/`(국사, 357 엔티티)가 있어야 골든 검증 재현 가능.
 
 ## 백엔드 실행 + API
 
