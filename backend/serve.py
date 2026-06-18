@@ -25,9 +25,11 @@ rag 스테이지는 register(job.run_id, job.snapshot_path)로 이 레지스트�
 파이프라인 공용 default_completion_model(추출/TOC/Stage B = gpt-4.1-mini)은 안 건드린다.
 """
 
+import ast
 import asyncio
 import logging
 import os
+import re
 import time
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import asynccontextmanager
@@ -275,7 +277,100 @@ def _warmup_blocking() -> None:
         _get_router()
 
 
-def _search_blocking(run_id: str, question: str, method: Optional[str] = "auto") -> tuple[str, str]:
+# 답변에 함께 줄 "관련 개념" 엔티티 상한(degree 상위 N). 커뮤니티가 크면 전부 주면 과해서
+# 자른다. env 로 조정 가능.
+_SOURCE_MAX_ENTITIES = int(os.environ.get("RAG_SOURCE_MAX_ENTITIES") or 12)
+
+_REPORTS_RE = re.compile(r"Reports?\s*\(([^)]*)\)")
+_ENTITIES_RE = re.compile(r"Entities?\s*\(([^)]*)\)")
+
+
+def _cited_nums(text: str, pat: "re.Pattern") -> set[int]:
+    """답변/리포트 본문의 [Data: ...] 인용에서 숫자 id 만 뽑는다('+more' 등은 무시)."""
+    out: set[int] = set()
+    for m in pat.finditer(text or ""):
+        for tok in m.group(1).split(","):
+            tok = tok.strip()
+            if tok.isdigit():
+                out.add(int(tok))
+    return out
+
+
+def _as_id_list(v) -> list[str]:
+    """communities.entity_ids 값(numpy array / list / 문자열)을 uuid 문자열 리스트로."""
+    if v is None:
+        return []
+    if isinstance(v, (list, tuple)):
+        return [str(x) for x in v]
+    if hasattr(v, "tolist"):
+        return [str(x) for x in v.tolist()]
+    if isinstance(v, str):
+        try:
+            return [str(x) for x in ast.literal_eval(v)]
+        except Exception:  # noqa: BLE001
+            return re.findall(r"[0-9a-fA-F-]{8,}", v)
+    return []
+
+
+def _extract_sources(answer: str, bundle, max_entities: int = _SOURCE_MAX_ENTITIES) -> Optional[dict]:
+    """답변의 [Data: Reports (...)] 인용을 그 커뮤니티의 구성 엔티티로 펼쳐(=(B)) degree 상위
+    N 개를 '관련 개념'으로 돌려준다. local 인용의 Entities()도 직접 흡수. best-effort:
+    실패하면 None(답변은 그대로 나간다)."""
+    try:
+        import pandas as pd
+
+        dfs = getattr(bundle, "dfs", None) or {}
+        cr, comm, ent = dfs.get("community_reports"), dfs.get("communities"), dfs.get("entities")
+        if ent is None:
+            return None
+        report_nums = _cited_nums(answer, _REPORTS_RE)
+        entity_nums = _cited_nums(answer, _ENTITIES_RE)
+
+        reports_out: list[dict] = []
+        community_ids: set[str] = set()
+        if cr is not None and report_nums:
+            want = {str(n) for n in report_nums}
+            rows = cr[cr["community"].astype(str).isin(want)
+                      | cr["human_readable_id"].astype(str).isin(want)]
+            seen = set()
+            for _, r in rows.iterrows():
+                c = str(r["community"])
+                community_ids.add(c)
+                if c not in seen:
+                    seen.add(c)
+                    reports_out.append({"id": c, "title": r.get("title")})
+
+        uuids: set[str] = set()
+        if comm is not None and community_ids:
+            crows = comm[comm["community"].astype(str).isin(community_ids)]
+            for v in crows["entity_ids"]:
+                uuids.update(_as_id_list(v))
+
+        sel = ent[ent["id"].astype(str).isin(uuids)
+                  | ent["human_readable_id"].astype(str).isin({str(n) for n in entity_nums})]
+        if "degree" in sel.columns:
+            sel = sel.sort_values("degree", ascending=False)
+        total = int(len(sel))
+        entities_out = []
+        for _, r in sel.head(max_entities).iterrows():
+            desc = str(r.get("description") or "").strip()
+            hr = r.get("human_readable_id")
+            entities_out.append({
+                "id": int(hr) if pd.notna(hr) else None,
+                "title": r.get("title"),
+                "type": r.get("type"),
+                "degree": int(r["degree"]) if "degree" in r and pd.notna(r["degree"]) else None,
+                "description": desc[:200],
+            })
+        if not entities_out and not reports_out:
+            return None
+        return {"reports": reports_out, "entities": entities_out, "entities_total": total}
+    except Exception as e:  # noqa: BLE001
+        logger.warning("sources 추출 실패(답변은 그대로 반환): %s", e)
+        return None
+
+
+def _search_blocking(run_id: str, question: str, method: Optional[str] = "auto") -> tuple[str, str, Optional[dict]]:
     """전용 스레드에서 해당 스냅샷 search 한 번. 먼저 method를 local/global로 해소(auto면
     라우터)한 뒤 그 엔진으로 검색한다. warm_query와 동일하게 asyncio.run으로 코루틴을
     돌린다(이 스레드엔 루프가 없으므로 OK). (answer, 사용한 mode)를 돌려준다."""
@@ -297,8 +392,10 @@ def _search_blocking(run_id: str, question: str, method: Optional[str] = "auto")
                 cbp.pop("include_entity_names", None)
             else:
                 cbp["include_entity_names"] = prev
-    answer = result.response if hasattr(result, "response") else str(result)
-    return _localize_no_data(answer), mode
+    answer = _localize_no_data(result.response if hasattr(result, "response") else str(result))
+    # 답변 인용을 근거(관련 개념)로 구조화. st.engine 은 dfs 를 든 LoadedEngine 번들.
+    sources = _extract_sources(answer, st.engine)
+    return answer, mode, sources
 
 
 @asynccontextmanager
@@ -343,7 +440,11 @@ class QueryResponse(BaseModel):
     answer: str
     snapshot: str  # 실제로 답한 키(showcase run_id 또는 live job_id).
     mode: Optional[str] = None  # 실제로 사용한 검색 모드(local/global).
-    # related_nodes: 팰리스 노드 연결은 나중 레이어. 지금은 자리만 비워둔다.
+    # sources: 답변이 인용한 근거를 구조화해 함께 준다. global은 Reports(커뮤니티) 인용만
+    # 나오므로 그 커뮤니티의 구성 엔티티로 펼쳐(degree 상위 N) "관련 개념"으로 내려준다
+    # (정확한 사용 엔티티가 아니라 근사 superset). local 인용의 Entities()도 같이 흡수.
+    sources: Optional[dict] = None
+    # related_nodes(팰리스 방 연결)는 프론트가 entities[].title 로 나중에 잇는다.
 
 
 class RegisterRequest(BaseModel):
@@ -371,9 +472,11 @@ def _validate_snapshot_path(path: str) -> Path:
     )
 
 
-async def _run_query(key: str, question: str, method: Optional[str] = "auto") -> tuple[str, str]:
+async def _run_query(
+    key: str, question: str, method: Optional[str] = "auto",
+) -> tuple[str, str, Optional[dict]]:
     """키 -> 번들 -> (라우팅된) search. /query와 /jobs/{id}/query가 공유하는 코어.
-    검색은 _executor 단일 스레드에서 직렬 실행된다. (answer, 사용한 mode) 반환."""
+    검색은 _executor 단일 스레드에서 직렬 실행된다. (answer, mode, sources) 반환."""
     st = STATE.snapshots.get(key)
     if st is None:
         raise HTTPException(
@@ -391,9 +494,9 @@ async def _run_query(key: str, question: str, method: Optional[str] = "auto") ->
 
     loop = asyncio.get_running_loop()
     t0 = time.perf_counter()
-    answer, mode = await loop.run_in_executor(_executor, _search_blocking, key, q, method)
+    answer, mode, sources = await loop.run_in_executor(_executor, _search_blocking, key, q, method)
     logger.info("query [%s] mode=%s %.1fs: %s", key, mode, time.perf_counter() - t0, q[:50])
-    return answer, mode
+    return answer, mode, sources
 
 
 def _snapshot_health(st: Optional[_SnapshotState], snapshot_dir: str) -> dict:
@@ -517,13 +620,13 @@ async def query(req: QueryRequest):
                 f"(alias: {', '.join(ALIASES) or '-'})."
             ),
         )
-    answer, mode = await _run_query(key, req.question, req.method)
-    return QueryResponse(answer=answer, snapshot=key, mode=mode)
+    answer, mode, sources = await _run_query(key, req.question, req.method)
+    return QueryResponse(answer=answer, snapshot=key, mode=mode, sources=sources)
 
 
 @app.post("/jobs/{job_id}/query", response_model=QueryResponse)
 async def job_query(job_id: str, req: JobQueryRequest):
     """잡별 질의. 라이브 등록 키 = job_id이므로 키 라우팅 한 줄이다(코어 공유).
     잡 메타는 오케스트레이터(/jobs/{id}/status) 소관이고 여기선 엔진만 라우팅한다."""
-    answer, mode = await _run_query(job_id, req.question, req.method)
-    return QueryResponse(answer=answer, snapshot=job_id, mode=mode)
+    answer, mode, sources = await _run_query(job_id, req.question, req.method)
+    return QueryResponse(answer=answer, snapshot=job_id, mode=mode, sources=sources)

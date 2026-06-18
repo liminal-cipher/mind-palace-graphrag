@@ -127,7 +127,7 @@ if (active) {
 **질의 본문/응답**
 - `POST /query` body: `{"question": str, "snapshot": str, "method"?: "auto"|"local"|"global"}`. `snapshot` 누락 시 400.
 - `POST /jobs/{id}/query` body: `{"question": str, "method"?: ...}` (snapshot 불필요, job_id가 path).
-- 응답(둘 공통): `{"answer": str, "snapshot": str, "mode": "local"|"global"|null}`.
+- 응답(둘 공통): `{"answer", "snapshot", "mode", "sources"}`. `sources`는 답변 인용을 펼친 근거 = `{reports:[{id,title}], entities:[{id,title,type,degree,description}], entities_total}`. global은 인용 커뮤니티(Reports)의 구성 개념을 degree 상위 N(`RAG_SOURCE_MAX_ENTITIES`, 기본 12)으로 펼친 "관련 개념"이다(정확한 사용 엔티티가 아닌 근사 superset). 인용이 없으면 `sources`는 `null`. 프론트는 `entities[].title`로 나중에 방과 이을 수 있다.
 
 **업로드 제한.** `POST /orchestrator/upload` 본문 30MB 초과 시 `413`, 빈 본문 `422`.
 
