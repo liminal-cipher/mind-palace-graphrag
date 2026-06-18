@@ -15,7 +15,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 
 from orchestrator import config
 from orchestrator.jobs import JobStore, State
@@ -135,4 +135,29 @@ async def job_palace(job_id: str):
     path = Path(job.palace_path)
     if not path.exists():
         raise HTTPException(status_code=500, detail="palace_ready 인데 산출물 파일이 없다")
-    return JSONResponse(content=json.loads(path.read_text(encoding="utf-8")))
+    # 라이브 PDF 잡이면 이미지 매칭이 palace_out/palace_with_images.json 을 남긴다(노드에
+    # images[] 부착). 있으면 그걸 우선 반환해 프론트가 노드 이미지를 받게 하고, 없으면
+    # (.txt 업로드/매칭 스킵/실패) 기존 텍스트 palace 로 폴백한다. /jobs/{id}/images 로
+    # 서빙되는 PNG 와 짝(node.images[].path = 'images/<file>').
+    with_images = path.parent / "palace_with_images.json"
+    serve_path = with_images if with_images.exists() else path
+    return JSONResponse(content=json.loads(serve_path.read_text(encoding="utf-8")))
+
+
+@app.get("/jobs/{job_id}/images/{filename}")
+async def job_image(job_id: str, filename: str):
+    """라이브 잡이 매칭한 PNG 를 서빙한다: palace_out/images/<filename>. 프론트는 노드의
+    images[].path('images/fig_X.png')를 이 경로로 풀어 <img> 렌더. 쇼케이스의
+    /images/{name}/{file} 와 평행한 라이브 잡 전용 경로. 경로 traversal 은 resolve 후
+    images_dir 하위인지 검증해 차단한다(절대/.. 차단)."""
+    store: JobStore = app.state.store
+    job = store.get(job_id)
+    if job is None:
+        raise HTTPException(status_code=404, detail=f"job_id '{job_id}' 없음")
+    images_dir = (config.job_dir(job_id) / "palace_out" / "images").resolve()
+    target = (images_dir / filename).resolve()
+    if images_dir not in target.parents:
+        raise HTTPException(status_code=400, detail="잘못된 이미지 경로")
+    if not target.is_file():
+        raise HTTPException(status_code=404, detail=f"이미지 '{filename}' 없음")
+    return FileResponse(target)
