@@ -39,6 +39,16 @@ REPO = Path(__file__).resolve().parents[1]
 # 조용히 떨어지지 않게): 호출 시 명시한다. 출력 dir 만 도메인 무관이라 기본값 유지.
 DEFAULT_OUT_DIR = REPO / 'docs' / 'audit'
 
+
+def _repo_rel_or_abs(p: Path) -> str:
+    """REPO 하위면 repo-상대, 아니면 절대 posix. 라이브 잡 palace 는 ORCH_VAR_DIR=/home/var
+    (REPO 밖)에 있어 relative_to 가 터지므로 메타데이터 기록용으로 절대경로 폴백한다."""
+    rp = Path(p).resolve()
+    try:
+        return rp.relative_to(REPO).as_posix()
+    except ValueError:
+        return rp.as_posix()
+
 CAPTION_TAG_RE = re.compile(r'<figcaption>(.*?)</figcaption>', re.DOTALL)
 SPLIT_BAR_RE = re.compile(r'\s*[|￨ㅣ]\s*')  # ASCII bar, halfwidth bar, hangul I
 PAGE_MARKER_RE = re.compile(r'\[page(\d+)\]\n?')  # preprocessing pipeline_v2 format
@@ -357,7 +367,7 @@ def write_palace_copy(
 
     data['image_matching'] = {
         'ran_at': datetime.now(timezone.utc).isoformat(timespec='seconds'),
-        'source_palace': palace_path.relative_to(REPO).as_posix(),
+        'source_palace': _repo_rel_or_abs(palace_path),
         'threshold_local': THRESHOLD_LOCAL,
         'threshold_cascade': THRESHOLD_CASCADE,
         'name_match_bonus': NAME_MATCH_BONUS,
@@ -425,7 +435,7 @@ def figure_rows_from_json(figures_json: Path) -> list[dict]:
         png_abs = (base / rel).resolve()
         if not png_abs.exists():
             continue
-        png_repo_rel = png_abs.relative_to(REPO).as_posix()
+        png_repo_rel = _repo_rel_or_abs(png_abs)
         page = int(fig.get('page') or 0)
         m = FIG_NAME_RE_ANY.match(png_abs.name)
         idx = int(m.group(2)) if m else 0
@@ -564,8 +574,8 @@ def main() -> int:
           f'attached_nodes={meta["attached_nodes"]} '
           f'attached_figures={meta["attached_figures"]} '
           f'unplaced={meta["unplaced_figures"]}')
-    print(f'  {out_palace.relative_to(REPO).as_posix()}')
-    print(f'  {out_unplaced.relative_to(REPO).as_posix()}')
+    print(f'  {_repo_rel_or_abs(out_palace)}')
+    print(f'  {_repo_rel_or_abs(out_unplaced)}')
     return 0
 
 

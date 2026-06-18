@@ -242,8 +242,15 @@ async def _index_live(job: Job, store: JobStore) -> None:
 
 
 def _rel(p: Path) -> str:
-    """repo-relative posix path string (palace/run.py resolves these vs REPO)."""
-    return p.resolve().relative_to(config.REPO).as_posix()
+    """palace/run.py 의 _abs(REPO, p) 가 해소할 경로 문자열. REPO 하위면 repo-상대로
+    (기존 동작), 아니면 절대경로로 돌려준다. 잡 산출물은 config.VAR_DIR 아래인데 배포에선
+    ORCH_VAR_DIR=/home/var 로 REPO(/tmp/<hash>) 밖이라 relative_to 가 터진다. _abs 는
+    절대경로를 그대로 통과시키므로(p.is_absolute() -> p) 절대경로 폴백이 안전하다."""
+    rp = p.resolve()
+    try:
+        return rp.relative_to(config.REPO).as_posix()
+    except ValueError:
+        return rp.as_posix()
 
 
 def _seed_palace_cache_if_available(base: dict, cache_dir: Path) -> Optional[str]:
