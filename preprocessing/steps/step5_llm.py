@@ -24,7 +24,8 @@ load_dotenv(Path(__file__).parent.parent.parent / ".env")
 
 _OAI_ENDPOINT = os.environ.get("OPEN_AI_ENDPOINT", "").rstrip("/")
 _OAI_KEY      = os.environ.get("OPEN_AI_KEY", "")
-_OAI_MINI     = os.environ.get("OPEN_AI_DEPLOYMENT_NAME_4.1_MINI", "")
+_OAI_MINI     = (os.environ.get("OPEN_AI_DEPLOYMENT_NAME_4_1_MINI")  # Azure Linux App Service 는 env 이름의 '.' 를 못 넘김 -> '_' 형 우선
+                 or os.environ.get("OPEN_AI_DEPLOYMENT_NAME_4.1_MINI", ""))  # 로컬 .env(점 이름) 폴백
 _OAI_4O       = os.environ.get("OPEN_AI_DEPLOYMENT_NAME_4O", "")
 _OAI_API_VER  = "2024-10-21"
 _TEXT_CHUNK_MAX = 12_000
