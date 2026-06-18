@@ -32,7 +32,7 @@ from contextlib import AsyncExitStack, asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend import showcase
+from backend import quiz_page, showcase
 from backend.serve import app as serve_app
 from backend.serve import lifespan as serve_lifespan
 from orchestrator.app import app as orchestrator_app
@@ -65,4 +65,5 @@ app.add_middleware(
 # 등록해야 한다: /orchestrator -> /palace·/images(router) -> 마지막에 '/'(serve).
 app.mount("/orchestrator", orchestrator_app)
 app.include_router(showcase.router)  # GET /palace/{name}, GET /images/{name}/{file}
+app.include_router(quiz_page.router)  # GET/POST /quiz + POST /quiz/grade (테스트 페이지, 서버 채점)
 app.mount("/", serve_app)
