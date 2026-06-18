@@ -56,8 +56,22 @@ def build_sys_prompt(domain: str | None = None, max_rooms: int = 10) -> str:
 SYS_PROMPT = build_sys_prompt()
 
 
-def build_user_prompt(text: str) -> str:
+def build_user_prompt(text: str, toc_hint: str | None = None) -> str:
+    """corpus 본문으로 user 프롬프트를 만든다. toc_hint(전처리에서 추출한 문서 목차)가
+    주어지면 본문 앞에 참고용으로 끼워 섹션 name 이 문서 실제 목차 표현에 맞춰지게 한다.
+    start_marker 는 여전히 원문에서 복사해야 하므로 그라운딩(offset 해소)엔 영향 없다."""
+    hint = ''
+    if toc_hint and toc_hint.strip():
+        hint = (
+            '참고 목차 (이 문서를 전처리해 추출한 목차다. 섹션을 묶고 각 섹션의 name 을 '
+            '지을 때 이 목차의 용어·구분을 우선 참고하라. 다만 start_marker 는 반드시 '
+            '아래 자료 원문에서 한 줄을 그대로 복사해야 한다):\n'
+            '"""\n'
+            f'{toc_hint.strip()}\n'
+            '"""\n\n'
+        )
     return (
+        hint +
         '자료:\n'
         '"""\n'
         f'{text}\n'
@@ -130,6 +144,7 @@ def generate_toc(
     min_rooms: int = 1,
     max_rooms: int = 10,
     domain: str | None = None,
+    toc_hint: str | None = None,
 ) -> dict:
     """Run the LLM TOC pass on `corpus_path`, validate marker grounding,
     and return the payload dict. If `out_path` is given, also writes the
@@ -145,7 +160,7 @@ def generate_toc(
         sys_prompt = build_sys_prompt(domain, max_rooms)
     if client is None:
         client = make_azure_client()
-    user_p = build_user_prompt(text)
+    user_p = build_user_prompt(text, toc_hint)
 
     raw, usage = call_json(client, model, sys_prompt, user_p)
     obj = json.loads(raw)
@@ -184,6 +199,7 @@ def generate_toc(
             'n_sections': len(sections),
             'monotonic_offsets': monotonic,
             'distinct_offsets': distinct,
+            'toc_hint_used': bool(toc_hint and toc_hint.strip()),
             'warnings': warnings,
         },
         'sections': sections,

@@ -114,6 +114,16 @@ def phase_toc(cfg: dict, repo: Path) -> None:
     corpus = _abs(repo, cfg['corpus'])
     corpus_rel = cfg.get('corpus_rel') or cfg['corpus']
     min_rooms, max_rooms = _room_bounds(cfg)
+    # toc_hint: 전처리에서 추출한 문서 목차(있으면) 를 LLM 프롬프트에 참고로 넘겨
+    # 섹션 이름을 문서 실제 목차에 맞춘다. 파일이 없으면 무시(기존 동작).
+    toc_hint = None
+    hint_rel = cfg.get('toc_hint')
+    if hint_rel:
+        hint_path = _abs(repo, hint_rel)
+        if hint_path.is_file():
+            toc_hint = hint_path.read_text(encoding='utf-8')
+        else:
+            print(f'[toc] toc_hint 경로 없음(무시): {hint_rel}')
     generate_toc(
         corpus,
         out_path=toc_out,
@@ -122,6 +132,7 @@ def phase_toc(cfg: dict, repo: Path) -> None:
         min_rooms=min_rooms,
         max_rooms=max_rooms,
         domain=cfg.get('domain'),
+        toc_hint=toc_hint,
     )
 
 
