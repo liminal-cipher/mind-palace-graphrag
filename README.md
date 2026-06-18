@@ -105,6 +105,23 @@ curl -X POST "http://127.0.0.1:8000/orchestrator/upload?filename=corpus.txt&doma
 - `percent`: 완료 step 가중치 합(서버는 단계 **내부** 진행률을 모름). 긴 인덱싱 구간은 `active` step 의 `est_seconds` + `updated_at`(그 state 진입 시각)으로 프론트가 보간해 바를 움직인다.
 - 텍스트 추출·정제는 한 백엔드 단계라 `preprocess`(전처리)로 합쳐 있다. 목차 완료는 별도 `toc_ready` 플래그로 표시(원하면 그 사이 "목차 준비됨" 표기).
 
+구현 레시피:
+1. 업로드 응답의 `job_id` 로 `GET /orchestrator/jobs/{id}/status` 를 2~3초 간격 폴링(`state` 가 `DONE`/`FAILED` 면 중단).
+2. 스텝퍼는 `progress.steps[].status` 를 그대로 렌더. 바 기본값은 `progress.percent`.
+3. 긴 `active` 단계(인덱싱)에서 바가 멈춰 보이지 않게, 그 단계만 경과시간으로 보간한다:
+```js
+// status = 방금 받은 progress, enteredAt = 그 state 진입 시각(updated_at)
+const active = status.steps.find(s => s.status === "active");
+let pct = status.percent;
+if (active) {
+  const elapsed = (Date.now() - new Date(enteredAt)) / 1000;
+  const frac = Math.min(elapsed / active.est_seconds, 0.95); // 끝까진 안 채움
+  pct += active.weight * frac;
+}
+// pct 로 바를 그리되, 다음 폴링에서 단계가 넘어가면 그 단계 weight 까지 차오른다.
+```
+4. `FAILED` 면 `failed` 인 step + `error` 를 노출.
+
 **조기 목차** `GET /orchestrator/jobs/{id}/toc` → LLM 목차 JSON `{..., "sections":[{"name", "start_marker", ...}]}`. 인덱싱(방 생성)과 분리돼 먼저 생성되므로 PDF 업로드 직후 둘러보기 페이지에서 목차를 보여줄 수 있다. `toc_ready=true` 전엔 409.
 
 **질의 본문/응답**
