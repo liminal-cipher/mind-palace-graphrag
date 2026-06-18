@@ -164,6 +164,7 @@ python palace/tests/compare_golden.py --run-id korean_history   # 캐시 히트 
 
 ## 더 보기
 
+- 전체 API 명세(프론트 연동 정본): [docs/API.md](./docs/API.md)
 - 정본 방 빌드 상세: [palace/README.md](./palace/README.md)
 - 재현 절차: [docs/RUNBOOK.md](./docs/RUNBOOK.md)
 - 실험 누적 narrative: [docs/EXPERIMENTS.md](./docs/EXPERIMENTS.md)
