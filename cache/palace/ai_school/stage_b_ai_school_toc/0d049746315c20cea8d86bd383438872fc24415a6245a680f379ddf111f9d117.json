@@ -1,4 +1,0 @@
-{
-  "raw": "{\n  \"room_name\": \"가설검정과 상관계수\",\n  \"coherence\": \"coherent\",\n  \"coherence_reason\": \"가설검정 방법과 상관계수 지표 중심으로 핵심 개념만 포함됨\",\n  \"keep_titles\": [\n    \"T-검정(T-TEST)\",\n    \"카이제곱 검정(CHI-SQUARE TEST)\",\n    \"분산 분석(ANOVA)\",\n    \"상관계수(CORRELATION COEFFICIENT)\",\n    \"피어슨 상관계수(PEARSON CORRELATION COEFFICIENT)\",\n    \"스피어만 상관계수(SPEARMAN'S RANK CORRELATION COEFFICIENT)\",\n    \"켄달의 타우(KENDALL'S TAU, KENDALL'S RANK CORRELATION COEFFICIENT)\",\n    \"귀무가설\",\n    \"대립가설\",\n    \"1종 오류\",\n    \"2종 오류\"\n  ]\n}",
-  "model": "gpt-4.1-mini"
-}

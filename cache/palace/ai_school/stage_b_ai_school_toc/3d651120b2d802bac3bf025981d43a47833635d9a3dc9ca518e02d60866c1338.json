@@ -1,4 +1,0 @@
-{
-  "raw": "{\n  \"room_name\": \"통계 핵심 개념\",\n  \"coherence\": \"coherent\",\n  \"coherence_reason\": \"가설검정, 추정, 오류 등 시험과 계산에 직접 활용되는 핵심 통계 개념과 절차로 구성됨\",\n  \"keep_titles\": [\n    \"가설검정 (HYPOTHESIS TESTING)\",\n    \"검정 통계량 계산\",\n    \"기각/채택 결정\",\n    \"P-VALUE\",\n    \"귀무가설 (NULL HYPOTHESIS, H0)\",\n    \"대립가설 (ALTERNATIVE HYPOTHESIS, H1)\",\n    \"1종 오류 (TYPE I ERROR)\",\n    \"2종 오류 (TYPE II ERROR)\",\n    \"구간추정 (INTERVAL ESTIMATION)\",\n    \"점추정 (POINT ESTIMATION)\",\n    \"유의수준 결정\",\n    \"유의수준\",\n    \"T-검정 (T-TEST)\",\n    \"분산 분석\",\n    \"표본 평균\",\n    \"표본 분산\",\n    \"모수\",\n    \"통계량\",\n    \"표본\",\n    \"모집단\"\n  ]\n}",
-  "model": "gpt-4.1-mini"
-}
