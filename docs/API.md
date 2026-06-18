@@ -33,13 +33,19 @@
 ## 헬스 / 준비
 
 ### `GET /health`
-serve 헬스. 200이면 앱 떠 있음.
+serve 헬스. **항상 200**(콜드 시작에 헬스 프로브가 컨테이너를 죽이지 않게). 본문에 스냅샷별 warm 상태.
+```json
+{"status": "ok", "method": "global", "aliases": {}, "snapshots": {"korean_history": {"status": "ok", "ready": true, "snapshot_dir": "snapshots/repro_run3"}, "statistics": {"status": "ok", "ready": true}}}
+```
+- `status`: 하나라도 ready면 `ok`, 전부 아니면 `warming`.
 
 ### `GET /ready`
-스냅샷 warm 상태. 준비된 스냅샷부터 `ready:true`.
+준비 게이트. `/health`와 달리 **준비 안 됐으면 `503`**(warm/poll·게이팅용).
+- 파라미터 없음: 등록 스냅샷이 전부 ready면 200, 아니면 503.
 ```json
-{"ready": true, "snapshots": {"korean_history": {"status": "ok", "ready": true, "snapshot_dir": "snapshots/repro_run3", "warmup_seconds": 0.9, "synthesis_model": "gpt-5.4-mini"}, "statistics": {"status": "ok", "ready": true}}}
+{"ready": true, "snapshots": {"korean_history": {"status": "ok", "ready": true, "warmup_seconds": 0.9, "synthesis_model": "gpt-5.4-mini"}, "statistics": {"status": "ok", "ready": true}}}
 ```
+- `?snapshot=<키>`: 그 키 하나만 게이팅 → 200/503, 응답 `{ready, snapshot, detail}`. 미등록 키면 `404`.
 
 ### `GET /orchestrator/health`
 오케스트레이터(업로드/잡 워커) 헬스.
@@ -148,7 +154,9 @@ GraphRAG parquet로 한국사 학습 퀴즈 생성 + 서버 채점.
 ```json
 {"quiz_id": "51dc779c...", "answers": {"0": "2", "1": "0", "2": "정답텍스트"}}
 ```
-- 응답: `{"score": 2, "total": 3, "results": [{"correct": true, ...}, ...]}` (서버가 보관한 정답과 대조).
+- 서버가 보관한(`quiz_id`) 정답과 대조. **제출한 문항만** 채점·반환(안 푼 문항 정답은 은닉 유지).
+- 응답: `{"score": 2, "total": 3, "results": [{"index": 0, "correct": true, "answerText": "...", "explanation": "..."}]}`. (`total`=채점된 문항 수.)
+- `404`: 만료/미존재 `quiz_id`(서버 재시작 시 세션 소실).
 
 ---
 
