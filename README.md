@@ -78,8 +78,12 @@ graphrag index --root indexing/<domain>                        # -> output/<doma
 python -m palace.run --config palace/configs/<domain>.json --phase toc   # LLM TOC 검토용
 python -m palace.run --config palace/configs/<domain>.json --phase rooms # -> palace.json
 python -m palace.match_images --palace deliverables/<domain>/palace.json \
-  --snapshot snapshots/<domain> --figures-dir input/<domain>/images \
-  --captions input/<domain>/captions.md --pagesplit input/<domain>/pagesplit.txt --write-palace
+  --snapshot snapshots/<domain> \
+  --figures-json preprocessing/result/<domain>_vN/meta/figures.json \
+  --pagesplit preprocessing/result/<domain>_vN/txt/content_paged.txt \
+  --out-dir deliverables/<domain>
+# figures.json 단일 소스로 매칭(STEP4 분리 자식 fig_p_i_cv_k 도 캡션 달고 흐름).
+# -> deliverables/<domain>/{palace_with_images.json, unplaced_figures.json, images/}
 # 마지막: backend/showcase.py SHOWCASE_PALACES 와 backend/serve.py SNAPSHOTS 에 도메인 등록
 ```
 
