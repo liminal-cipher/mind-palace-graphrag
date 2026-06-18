@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>한국사 퀴즈 (테스트)</h1>
+
+{# GET·POST 공통 입력 form. POST 결과 페이지에서도 같은 form을 다시 그려 재제출을 받는다. #}
+<form method="post" action="/quiz">
+  <label>주제 <input type="text" name="topic" value="{{ topic }}"
+    placeholder="예: 조선 건국, 임진왜란 (비우면 전체)"></label>
+  <label>문제 수 <input type="number" name="count" min="1" max="20" value="{{ count }}"></label>
+  <fieldset>
+    {% for value, label in type_labels.items() %}
+    <label><input type="checkbox" name="quiz_types" value="{{ value }}"
+      {%- if value in selected_types %} checked{% endif %}> {{ label }}</label>
+    {% endfor %}
+  </fieldset>
+  <button type="submit">퀴즈 생성</button>
+</form>
+
+{# result 가 있을 때(POST)만 생성 결과를 form 아래에 렌더한다. GET 이면 result=None. #}
+{% if result %}
+<hr>
+{% if result.mode_ok %}
+<p class="mode ok">LLM 검증 통과</p>
+{% else %}
+<p class="mode warn">대체(fallback) 모드{% if result.warning %}: {{ result.warning }}{% endif %}</p>
+{% endif %}
+<p class="meta">주제: {{ topic or "전체" }} · {{ result.quizzes | length }}문항</p>
+
+{# 정답은 마크업에 없다(서버 _SESSIONS에 quiz_id로 보관). 채점 시 JS가 fetch로 받아 채운다. #}
+{% if result.quizzes %}
+<div id="quiz-set" data-quiz-id="{{ result.quiz_id }}">
+{% for quiz in result.quizzes %}
+{% set qi = loop.index0 %}
+<article class="quiz" data-qi="{{ qi }}" data-type="{{ quiz.type }}">
+  <div class="qhead"><span class="qnum">Q{{ loop.index }}</span>
+    <span class="qtype">{{ type_labels.get(quiz.type, quiz.type) }}</span></div>
+  <p class="question">{{ quiz.question }}</p>
+  {% if quiz.choices %}
+  <div class="opts">
+    {% for choice in quiz.choices %}
+    <label class="opt"><input type="radio" name="q{{ qi }}" value="{{ loop.index0 }}"> {{ choice }}</label>
+    {% endfor %}
+  </div>
+  {% else %}
+  <input type="text" class="short-answer" placeholder="정답 입력">
+  {% endif %}
+  <button type="button" class="check-btn">채점</button>
+  <p class="result" hidden></p>
+  <p class="ans" hidden></p>
+  <p class="explain" hidden></p>
+</article>
+{% endfor %}
+</div>
+<button type="button" id="grade-btn">전체 채점</button>
+<p class="score" id="score" hidden></p>
+{% else %}
+<p>생성된 문제가 없습니다.</p>
+{% endif %}
+
+{# 사용된 근거(출처 자료)를 오른쪽 서랍으로. '«' 탭을 누르면 슬라이드로 열린다. #}
+{% if result.evidence %}
+<button type="button" id="evi-toggle" class="evi-tab" aria-controls="evi-drawer" aria-expanded="false">&laquo;</button>
+<aside id="evi-drawer" class="evi-drawer" aria-hidden="true">
+  <header class="evi-head">
+    <p class="eyebrow">Evidence</p>
+    <h2>사용된 근거 {{ result.evidence | length }}건</h2>
+  </header>
+  <div class="evi-list">
+    {% for item in result.evidence %}
+    <article class="evi-card">
+      <div class="evi-meta"><span>{{ loop.index }}</span><strong>{{ item.source }}</strong></div>
+      <h3>{{ item.title }}</h3>
+      <p class="evi-topic">{{ item.kind }}{% if item.topic %} · {{ item.topic }}{% endif %}</p>
+      <p class="evi-text">{{ item.text }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</aside>
+{% endif %}
+{% endif %}
+{% endblock %}
+
+{% block script %}
+{% if result %}
+<script>
+(function () {
+  // 근거 서랍 토글: « 닫힘 / » 열림.
+  const tab = document.getElementById("evi-toggle");
+  const drawer = document.getElementById("evi-drawer");
+  if (tab && drawer) {
+    tab.addEventListener("click", function () {
+      const open = drawer.classList.toggle("open");
+      tab.classList.toggle("open", open);
+      tab.textContent = open ? "»" : "«";
+      tab.setAttribute("aria-expanded", String(open));
+      drawer.setAttribute("aria-hidden", String(!open));
+    });
+  }
+
+  const set = document.getElementById("quiz-set");
+  if (!set) return;
+  const quizId = set.dataset.quizId;
+
+  function readAnswer(card) {
+    if (card.dataset.type === "short_answer") {
+      const input = card.querySelector(".short-answer");
+      return input ? input.value.trim() : "";
+    }
+    const checked = card.querySelector("input[type=radio]:checked");
+    return checked ? checked.value : "";
+  }
+
+  function applyResult(r) {
+    const card = set.querySelector('.quiz[data-qi="' + r.index + '"]');
+    if (!card) return;
+    card.classList.remove("r-ok", "r-no");
+    card.classList.add(r.correct ? "r-ok" : "r-no");
+
+    const result = card.querySelector(".result");
+    result.hidden = false;
+    result.className = "result " + (r.correct ? "ok" : "no");
+    result.textContent = r.correct ? "O 정답입니다." : "X 오답입니다.";
+
+    const ans = card.querySelector(".ans");
+    ans.hidden = false;
+    ans.textContent = "정답: " + (r.answerText || "");
+
+    const explain = card.querySelector(".explain");
+    if (r.explanation) {
+      explain.hidden = false;
+      explain.textContent = r.explanation;
+    }
+  }
+
+  // 채점된 카드(.r-ok/.r-no)를 세어 누적 점수를 갱신. 문제별·전체 채점을 섞어도 일관.
+  function updateScore() {
+    const graded = set.querySelectorAll(".quiz.r-ok, .quiz.r-no").length;
+    const ok = set.querySelectorAll(".quiz.r-ok").length;
+    const score = document.getElementById("score");
+    score.hidden = graded === 0;
+    score.textContent = "점수: " + ok + " / " + graded;
+  }
+
+  async function grade(answers, buttons) {
+    buttons.forEach(function (b) { b.disabled = true; });
+    try {
+      const res = await fetch("/quiz/grade", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quiz_id: quizId, answers: answers }),
+      });
+      if (!res.ok) throw new Error("채점 요청 실패 (" + res.status + ")");
+      const data = await res.json();
+      (data.results || []).forEach(applyResult);
+      updateScore();
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      buttons.forEach(function (b) { b.disabled = false; });
+    }
+  }
+
+  // 문제별 채점: 해당 문항 하나만 제출.
+  set.querySelectorAll(".quiz").forEach(function (card) {
+    const btn = card.querySelector(".check-btn");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      const answers = {};
+      answers[card.dataset.qi] = readAnswer(card);
+      grade(answers, [btn]);
+    });
+  });
+
+  // 전체 채점: 모든 문항을 한 번에 제출.
+  const allBtn = document.getElementById("grade-btn");
+  if (allBtn) {
+    allBtn.addEventListener("click", function () {
+      const answers = {};
+      set.querySelectorAll(".quiz").forEach(function (card) {
+        answers[card.dataset.qi] = readAnswer(card);
+      });
+      grade(answers, [allBtn]);
+    });
+  }
+})();
+</script>
+{% endif %}
+{% endblock %}
