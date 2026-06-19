@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.1",
-  "schema_changelog": "1.0->1.1: images[] 추가 + rank->sequence, order->source_offset, order_confidence->offset_confidence, caption->summary, source_cluster_count 삭제",
+  "schema_version": "1.2",
+  "schema_changelog": "1.1->1.2: images[]에 caption_title 추가(제목/설명 분리). 1.0->1.1: images[] 추가 + rank->sequence, order->source_offset, order_confidence->offset_confidence, caption->summary, source_cluster_count 삭제",
   "palace": {
     "id": "korean_history",
     "title": "기억의 궁전: korean_history",
@@ -86,6 +86,7 @@
           "images": [
             {
               "path": "images/fig_3_1_cv_1.png",
+              "caption_title": "태조 어진",
               "caption": "태조 어진(전북 전주 경기전 소장)",
               "score": 0.86
             }
@@ -116,13 +117,6 @@
           "description": "태종 때에 전국 인구 동태 파악과 조세, 군역 징수에 활용된 신분과 인구 관리 제도",
           "related": [
             "ent_방원_태종"
-          ],
-          "images": [
-            {
-              "path": "images/fig_5_2.png",
-              "caption": "호패 오늘날의 주민등록증과 같은 것으로, 16세 이상의 남자는 모두 가지고 다녔던 신분 증명패이다.",
-              "score": 0.774
-            }
           ]
         },
         {
@@ -222,8 +216,9 @@
           "images": [
             {
               "path": "images/fig_6_1.png",
+              "caption_title": "",
               "caption": "경국대전은 세조 때 편찬을 시작하여 성종 때 완성한, 조선 시대의 기본 법전이다.",
-              "score": 1.278
+              "score": 0.778
             }
           ]
         },
@@ -335,6 +330,7 @@
           "images": [
             {
               "path": "images/fig_8_1.png",
+              "caption_title": "조선의 중앙 정치기구",
               "caption": "조선의 중앙 정치기구",
               "score": 0.804
             }
@@ -426,6 +422,7 @@
           "images": [
             {
               "path": "images/fig_3_1_cv_3.png",
+              "caption_title": "![해시계(앙부일구) 세종 때 처음 만들어 백성들이 편리하게 사용하도록 하였다. 태조 어진(전북 전주 경기전 소장) 해미 읍성의 진남문",
               "caption": "![해시계(앙부일구) 세종 때 처음 만들어 백성들이 편리하게 사용하도록 하였다. 태조 어진(전북 전주 경기전 소장) 해미 읍성의 진남문 | 충남 서산 지방의 중요한 고을에는 읍성을 쌓아 외적의 침입에 대비하였다. 門南鎮 126 v. 조선의 성립과 발전](figures/3.1)",
               "score": 0.841
             }
@@ -559,6 +556,7 @@
           "images": [
             {
               "path": "images/fig_11_1.png",
+              "caption_title": "조선 시대의 조창과 조운",
               "caption": "조선 시대의 조창과 조운",
               "score": 0.897
             }
@@ -671,6 +669,7 @@
           "images": [
             {
               "path": "images/fig_7_1.png",
+              "caption_title": "4군과 6진",
               "caption": "4군과 6진",
               "score": 0.981
             }
@@ -702,14 +701,7 @@
           "title": "일본",
           "type": "국가",
           "summary": "조선과 무역 및 외교 관계를 유지한 국가로, 평화적 무역을 요청하며 제포, 부산포, 염포 등 3포 개항을 통해 교역함>",
-          "description": "조선과 무역 및 외교 관계를 유지한 국가로, 평화적 무역을 요청하며 제포, 부산포, 염포 등 3포 개항을 통해 교역함>",
-          "images": [
-            {
-              "path": "images/fig_6_2.png",
-              "caption": "교린지: 일본, 여진 등과의 교린 정책과 외교사를 정리한 책이다.",
-              "score": 0.789
-            }
-          ]
+          "description": "조선과 무역 및 외교 관계를 유지한 국가로, 평화적 무역을 요청하며 제포, 부산포, 염포 등 3포 개항을 통해 교역함>"
         },
         {
           "id": "ent_제포_진해",
@@ -723,14 +715,7 @@
           "title": "부산포",
           "type": "장소, 항구",
           "summary": "조선이 일본과의 무역을 위해 개항한 3포 중 하나>",
-          "description": "조선이 일본과의 무역을 위해 개항한 3포 중 하나>",
-          "images": [
-            {
-              "path": "images/fig_7_2.png",
-              "caption": "왜관도(국립중앙박물관 소장) 왜관은 부산 초량의 일본인들이 살던 곳이다.",
-              "score": 0.841
-            }
-          ]
+          "description": "조선이 일본과의 무역을 위해 개항한 3포 중 하나>"
         },
         {
           "id": "ent_염포_울산",
@@ -923,6 +908,7 @@
           "images": [
             {
               "path": "images/fig_10_1.png",
+              "caption_title": "서당",
               "caption": "서당 | 김홍도",
               "score": 0.783
             }
@@ -944,6 +930,7 @@
           "images": [
             {
               "path": "images/fig_10_2.png",
+              "caption_title": "향교 알성도",
               "caption": "향교 알성도 | 김홍도",
               "score": 0.879
             }
@@ -958,8 +945,9 @@
           "images": [
             {
               "path": "images/fig_9_2.png",
-              "caption": "과거제 | 사서 | 유교의 경전으로서 논어, 대학, 맹자, 중용을 말한다.",
-              "score": 0.72
+              "caption_title": "과거제",
+              "caption": "과거제 | 사서 | 유교의 경전으로서 논어, 맹자, 대학, 중용을 말한다.",
+              "score": 0.704
             }
           ]
         },
@@ -975,14 +963,7 @@
           "title": "무과",
           "type": "시험 종류",
           "summary": "양반, 향리, 상민 자제가 응시하는 과거 시험으로 군사 및 무관 관련 관리를 선발하였다",
-          "description": "양반, 향리, 상민 자제가 응시하는 과거 시험으로 군사 및 무관 관련 관리를 선발하였다",
-          "images": [
-            {
-              "path": "images/fig_31_2.png",
-              "caption": "이완에게 내린 홍패 교지(경기도 박물관 소장) 홍패는 문과나 무과에 급제한 사람에게 발급되는 증서이다.",
-              "score": 0.888
-            }
-          ]
+          "description": "양반, 향리, 상민 자제가 응시하는 과거 시험으로 군사 및 무관 관련 관리를 선발하였다"
         },
         {
           "id": "ent_잡과",
@@ -1056,6 +1037,7 @@
           "images": [
             {
               "path": "images/fig_10_3.png",
+              "caption_title": "고창 읍성",
               "caption": "고창 읍성 | 전북 고창 호남 지방을 방어하는 요충지였다.",
               "score": 0.804
             }
@@ -1091,6 +1073,7 @@
           "images": [
             {
               "path": "images/fig_11_2.png",
+              "caption_title": "조운선 모형",
               "caption": "조운선 모형",
               "score": 0.889
             }
@@ -1182,6 +1165,7 @@
           "images": [
             {
               "path": "images/fig_12_2.png",
+              "caption_title": "훈민정음",
               "caption": "훈민정음(언해본)",
               "score": 0.849
             }
@@ -1199,7 +1183,15 @@
           "title": "금속활자",
           "type": "기술, 인쇄술",
           "summary": "조선 시대 활판 인쇄술의 발전을 보여주는 금속활자로, 인쇄술이 거듭 개량되어 책의 대량 생산과 보급에 기여하였다",
-          "description": "조선 시대 활판 인쇄술의 발전을 보여주는 금속활자로, 인쇄술이 거듭 개량되어 책의 대량 생산과 보급에 기여하였다"
+          "description": "조선 시대 활판 인쇄술의 발전을 보여주는 금속활자로, 인쇄술이 거듭 개량되어 책의 대량 생산과 보급에 기여하였다",
+          "images": [
+            {
+              "path": "images/fig_17_2.png",
+              "caption_title": "금속 링 바인더",
+              "caption": "이미지 속에는 금속 링으로 제본된 검은색 바인더가 원 안에 표현되어 있습니다.",
+              "score": 0.665
+            }
+          ]
         },
         {
           "id": "ent_중앙_정치_무대",
@@ -1238,8 +1230,9 @@
           "images": [
             {
               "path": "images/fig_13_1.png",
+              "caption_title": "",
               "caption": "조선왕조실록 조선 시대의 역사와 문화를 이해하는 데 기본이 되는 사서이다.",
-              "score": 1.172
+              "score": 0.672
             }
           ]
         },
@@ -1329,8 +1322,9 @@
           "images": [
             {
               "path": "images/fig_13_3.png",
+              "caption_title": "",
               "caption": "측우기 서울의 관상감과 각 지방 군·현에 측우기를 설치하여 강수량을 측정하였다.",
-              "score": 1.083
+              "score": 0.583
             }
           ]
         },
@@ -1364,6 +1358,7 @@
           "images": [
             {
               "path": "images/fig_13_2.png",
+              "caption_title": "",
               "caption": "물시계(자격루) 물이 흐르는 것을 이용하여 자동으로 시각을 알려 주었다.",
               "score": 0.633
             }
@@ -1399,8 +1394,9 @@
           "images": [
             {
               "path": "images/fig_16_1.png",
+              "caption_title": "",
               "caption": "김종직 교지 김종직은 고려 말 정몽주, 길재의 학통을 이어받아 조선 시대 도학(道學)의 맥을 이어가는 중추적 역할을 하였다.",
-              "score": 1.098
+              "score": 0.598
             }
           ]
         },
@@ -1464,6 +1460,7 @@
           "images": [
             {
               "path": "images/fig_18_1.png",
+              "caption_title": "농사직설",
               "caption": "농사직설",
               "score": 1.054
             }
@@ -1553,6 +1550,7 @@
           "images": [
             {
               "path": "images/fig_2_1.png",
+              "caption_title": "도산 서원",
               "caption": "도산 서원 | 경북 안동 사림은 서원을 세워 학문 연구와 교육에 힘썼다.",
               "score": 0.836
             }
@@ -1839,6 +1837,7 @@
           "images": [
             {
               "path": "images/fig_26_1.png",
+              "caption_title": "관군과 의병의 활동",
               "caption": "관군과 의병의 활동",
               "score": 1.006
             }
@@ -1860,6 +1859,7 @@
           "images": [
             {
               "path": "images/fig_25_1.png",
+              "caption_title": "충무공 이순신 영정",
               "caption": "충무공 이순신 영정",
               "score": 0.832
             }
@@ -1956,6 +1956,7 @@
           "images": [
             {
               "path": "images/fig_23_1.png",
+              "caption_title": "행주 산성 충장사",
               "caption": "행주 산성 충장사 | 경기 고양 장군의 사당이다.",
               "score": 1.014
             }
@@ -2004,8 +2005,9 @@
           "images": [
             {
               "path": "images/fig_29_1.png",
+              "caption_title": "광해군 묘",
               "caption": "광해군 묘 | 경기 남양주",
-              "score": 0.941
+              "score": 0.94
             }
           ]
         },
@@ -2058,14 +2060,7 @@
           "title": "국가",
           "type": "조직, 정치체",
           "summary": "조선 왕조의 행정 및 제도 운영 주체로, 서원의 설립과 운영에 재정 및 특권 지원을 담당함",
-          "description": "조선 왕조의 행정 및 제도 운영 주체로, 서원의 설립과 운영에 재정 및 특권 지원을 담당함",
-          "images": [
-            {
-              "path": "images/fig_2_2.png",
-              "caption": "15세기 초의 세계 각 지역 주요 국가 및 제국의 분포를 보여주는 지도.",
-              "score": 0.652
-            }
-          ]
+          "description": "조선 왕조의 행정 및 제도 운영 주체로, 서원의 설립과 운영에 재정 및 특권 지원을 담당함"
         },
         {
           "id": "ent_군사",
@@ -2237,6 +2232,7 @@
           "images": [
             {
               "path": "images/fig_19_1.png",
+              "caption_title": "소수 서원의 명륜당",
               "caption": "소수 서원의 명륜당 | 경북 영주 서원은 제사와 교육의 기능을 가졌는데, 명륜당은 학문을 익히는 교실이었다.",
               "score": 1.025
             }
@@ -2349,7 +2345,8 @@
           "images": [
             {
               "path": "images/fig_25_2.png",
-              "caption": "유정(사명대사) 영정",
+              "caption_title": "유정(사명 대사) 영정",
+              "caption": "유정(사명 대사) 영정",
               "score": 1.037
             }
           ]
@@ -2384,6 +2381,7 @@
           "images": [
             {
               "path": "images/fig_25_3.png",
+              "caption_title": "진주성과 촉석루",
               "caption": "진주성과 촉석루 | 경남 진주 임진왜란 때 왜군의 호남 진출을 막아 주는 역할을 하였다.",
               "score": 1.057
             }
@@ -2419,8 +2417,9 @@
           "images": [
             {
               "path": "images/fig_27_2.png",
+              "caption_title": "",
               "caption": "통신사 행렬도(국사편찬위원회 소장) 조선의 통신사 일행을 맞이하기 위해 일본 측에 서 그린 배치도의 일부분이다.",
-              "score": 0.971
+              "score": 0.471
             }
           ]
         },
@@ -2468,6 +2467,7 @@
           "images": [
             {
               "path": "images/fig_29_2.png",
+              "caption_title": "영창대군 묘",
               "caption": "영창대군 묘 | 경기 안성",
               "score": 0.877
             }
@@ -2510,6 +2510,7 @@
           "images": [
             {
               "path": "images/fig_30_1.png",
+              "caption_title": "정묘호란과 병자호란",
               "caption": "정묘호란과 병자호란",
               "score": 0.959
             }
@@ -2524,6 +2525,7 @@
           "images": [
             {
               "path": "images/fig_23_3.png",
+              "caption_title": "남한산성 동문",
               "caption": "남한산성 동문 | 경기 광주 임진왜란을 겪은 후 조선은 남한산성을 쌓고 외적의 침략에 대비하였다.",
               "score": 0.892
             }
@@ -2545,8 +2547,9 @@
           "images": [
             {
               "path": "images/fig_39_1.png",
+              "caption_title": "",
               "caption": "송시열 초상(호암 미술관 소장) 효종~숙종 때의 학자, 관료로서 서인(노론)의 중심 인물이었다.",
-              "score": 0.959
+              "score": 0.459
             }
           ]
         },
@@ -2559,6 +2562,7 @@
           "images": [
             {
               "path": "images/fig_31_1.png",
+              "caption_title": "이완이 썼던 투구",
               "caption": "이완이 썼던 투구(경기도 박물관 소장)",
               "score": 0.768
             }
@@ -2650,8 +2654,9 @@
           "images": [
             {
               "path": "images/fig_37_1_cv_2.png",
+              "caption_title": "",
               "caption": "영조 어진(국립 고궁 박물관 소장) 영조는 탕평책을 실시하여 왕권을 강화하고",
-              "score": 1.08
+              "score": 0.58
             }
           ]
         },
@@ -2818,6 +2823,7 @@
           "images": [
             {
               "path": "images/fig_31_3.png",
+              "caption_title": "나선정벌",
               "caption": "나선정벌",
               "score": 0.771
             }
@@ -2859,6 +2865,7 @@
           "images": [
             {
               "path": "images/fig_40_1.png",
+              "caption_title": "탕평비",
               "caption": "탕평비 | 서울 성균관대학교 구내",
               "score": 0.871
             }
@@ -2914,13 +2921,6 @@
             "ent_탁지지",
             "ent_규장전운",
             "ent_사도_세자"
-          ],
-          "images": [
-            {
-              "path": "images/fig_41_1.png",
-              "caption": "주합루 정조가 창덕궁 후원에 지은 규장각 건물이다.",
-              "score": 0.837
-            }
           ]
         },
         {
@@ -2990,6 +2990,7 @@
           "images": [
             {
               "path": "images/fig_42_1.png",
+              "caption_title": "탁지지",
               "caption": "탁지지 | 규장각 도서",
               "score": 0.895
             }
@@ -3102,6 +3103,7 @@
           "images": [
             {
               "path": "images/fig_35_1.png",
+              "caption_title": "화성 화서문",
               "caption": "화성 화서문 | 경기 수원 우리나라 전통 성곽 양식의 장점을 살려 건축하였다.",
               "score": 0.875
             }
@@ -3240,6 +3242,7 @@
           "images": [
             {
               "path": "images/fig_44_1.png",
+              "caption_title": "정약용 생가",
               "caption": "정약용 생가 | 경기 남양주",
               "score": 0.948
             }
@@ -3295,13 +3298,6 @@
           "description": "중상 학파 실학자이자 북학파 일원으로 상공업과 청 문물 수용을 중시함",
           "related": [
             "ent_중상_학파"
-          ],
-          "images": [
-            {
-              "path": "images/fig_45_1.png",
-              "caption": "연암집 박지원이 지은 책으로, '열하일기' 외에 상공업에 관한 글이 수록되었다.",
-              "score": 0.908
-            }
           ]
         },
         {
@@ -3376,8 +3372,9 @@
           "images": [
             {
               "path": "images/fig_4_1.png",
+              "caption_title": "",
               "caption": "수선전도 김정호가 만든 것으로 전해지는 서울 시가도이다.",
-              "score": 0.974
+              "score": 0.474
             }
           ]
         },
@@ -3410,14 +3407,7 @@
           "title": "토지 제도",
           "type": "제도_사회 구조",
           "summary": "농민의 토지 소유와 경작에 관한 규칙과 관행으로, 실학자들에 의해 개혁이 요구된 대상",
-          "description": "농민의 토지 소유와 경작에 관한 규칙과 관행으로, 실학자들에 의해 개혁이 요구된 대상",
-          "images": [
-            {
-              "path": "images/fig_5_1.png",
-              "caption": "교지 왕이 신하에게 벼슬, 시호, 토지 등을 내려 주는 문서이다.",
-              "score": 0.621
-            }
-          ]
+          "description": "농민의 토지 소유와 경작에 관한 규칙과 관행으로, 실학자들에 의해 개혁이 요구된 대상"
         },
         {
           "id": "ent_농촌",
@@ -3438,14 +3428,7 @@
           "title": "조선 후기",
           "type": "시기_시대",
           "summary": "조선 왕조 말기의 정치 사회적 상황으로, 붕당 정치의 파탄과 노론 장기 집권, 사회적 모순이 심화되던 시기",
-          "description": "조선 왕조 말기의 정치 사회적 상황으로, 붕당 정치의 파탄과 노론 장기 집권, 사회적 모순이 심화되던 시기",
-          "images": [
-            {
-              "path": "images/fig_28_1.png",
-              "caption": "봉사도 조선 후기에 청의 사신을 맞이하는 그림이다.",
-              "score": 0.835
-            }
-          ]
+          "description": "조선 왕조 말기의 정치 사회적 상황으로, 붕당 정치의 파탄과 노론 장기 집권, 사회적 모순이 심화되던 시기"
         },
         {
           "id": "ent_도시",
@@ -3529,14 +3512,7 @@
           "title": "대동여지도",
           "type": "지도, 기록물",
           "summary": "김정호가 제작한 조선 후기의 정밀 지도로, 산맥, 하천, 도로망 등이 상세히 표시되어 있음",
-          "description": "김정호가 제작한 조선 후기의 정밀 지도로, 산맥, 하천, 도로망 등이 상세히 표시되어 있음",
-          "images": [
-            {
-              "path": "images/fig_46_1.png",
-              "caption": "대동여지도의 목판과 지도첩 대동여지도는 22장의 분첩지도라 휴대하기에 편했다.",
-              "score": 0.878
-            }
-          ]
+          "description": "김정호가 제작한 조선 후기의 정밀 지도로, 산맥, 하천, 도로망 등이 상세히 표시되어 있음"
         },
         {
           "id": "ent_훈민정음운해",
@@ -3568,6 +3544,7 @@
           "images": [
             {
               "path": "images/fig_47_1.png",
+              "caption_title": "실사구시 현판",
               "caption": "실사구시 현판(국립고궁박물관 소장)",
               "score": 0.852
             }
@@ -4102,7 +4079,7 @@
     }
   ],
   "image_matching": {
-    "ran_at": "2026-06-17T18:32:08+00:00",
+    "ran_at": "2026-06-19T07:04:21+00:00",
     "source_palace": "deliverables/korean_history/palace.json",
     "threshold_local": 0.45,
     "threshold_cascade": 0.55,
@@ -4112,8 +4089,8 @@
     "min_name_len": 2,
     "embed_deployment": "text-embedding-3-small",
     "caption_rows": 77,
-    "attached_nodes": 49,
-    "attached_figures": 49,
-    "unplaced_figures": 28
+    "attached_nodes": 40,
+    "attached_figures": 40,
+    "unplaced_figures": 37
   }
 }
