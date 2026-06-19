@@ -59,7 +59,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=False,
-    allow_methods=["GET", "POST"],  # GET=showcase/query, POST=orchestrator /upload
+    allow_methods=["GET", "POST", "DELETE"],  # GET=showcase/query, POST=upload/query, DELETE=잡 삭제
     allow_headers=["*"],
 )
 

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import logging
+import shutil
 import uuid
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -200,3 +201,27 @@ async def job_image(job_id: str, filename: str):
     if not target.is_file():
         raise HTTPException(status_code=404, detail=f"이미지 '{filename}' 없음")
     return FileResponse(target)
+
+
+@app.delete("/jobs/{job_id}")
+async def job_delete(job_id: str):
+    """업로드 잡의 산출물(`var/jobs/<id>` 전체)과 DB 기록을 지운다. 업로드 데이터 삭제
+    (개인정보) + 공개 데모 디스크 정리용. 워커가 폴더를 쓰는 진행 중 잡은 못 지우고,
+    종료된 잡(DONE/FAILED)만 허용한다. 잡 없으면 404, 진행 중이면 409.
+    참고: serve 에 등록된 라이브 스냅샷의 RAM 적재는 별개(스냅샷 eviction 은 추후)."""
+    store: JobStore = app.state.store
+    job = store.get(job_id)
+    if job is None:
+        raise HTTPException(status_code=404, detail=f"job_id '{job_id}' 없음")
+    if job.state not in State.TERMINAL:
+        raise HTTPException(
+            status_code=409,
+            detail=f"진행 중 잡은 삭제 불가 (state={job.state}); DONE/FAILED 만 삭제 가능",
+        )
+    jd = config.job_dir(job_id)
+    removed_dir = jd.exists()
+    if removed_dir:
+        shutil.rmtree(jd, ignore_errors=True)
+    store.delete(job_id)
+    logger.info("deleted job %s (removed_dir=%s)", job_id, removed_dir)
+    return {"deleted": job_id, "removed_dir": removed_dir}

@@ -137,6 +137,12 @@ serve 헬스. **항상 200**(콜드 시작에 헬스 프로브가 컨테이너�
 라이브 잡이 매칭한 그림(PNG).
 - 200: `image/png`. 404: 없음. 400: 경로 traversal 차단.
 
+### `DELETE /orchestrator/jobs/{job_id}`
+업로드 잡의 산출물(`var/jobs/<id>` 전체)과 DB 기록을 삭제(업로드 데이터 삭제 + 디스크 정리). 종료된 잡만 허용.
+- 200: `{"deleted": "<job_id>", "removed_dir": true|false}`.
+- 404: 없는 잡. 409: 진행 중(`DONE`/`FAILED` 아님)이라 삭제 불가.
+- 참고: serve에 등록된 라이브 스냅샷의 RAM 적재 해제는 별개(미구현).
+
 ---
 
 ## 퀴즈 (테스트 페이지)

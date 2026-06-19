@@ -227,6 +227,13 @@ class JobStore:
             ).fetchone()
         return _row_to_job(row) if row else None
 
+    def delete(self, job_id: str) -> bool:
+        """잡 DB row 를 지운다(잡 폴더 정리는 호출부 담당). 지워졌으면 True."""
+        with closing(self._connect()) as conn:
+            cur = conn.execute("DELETE FROM jobs WHERE job_id = ?", (job_id,))
+            conn.commit()
+        return cur.rowcount > 0
+
     def update(self, job_id: str, **fields) -> None:
         """임의 컬럼 갱신. updated_at 은 매번 자동으로 찍는다. 전이마다 즉시 커밋."""
         if not fields:
