@@ -333,6 +333,7 @@ def write_palace_copy(
             continue
         title_to_images.setdefault(r['match'], []).append({
             'path': f'images/{Path(r["png"]).name}',
+            'caption_title': r['cap_title'],
             'caption': r['caption'],
             'score': round(r['score'], 3),
         })
@@ -440,8 +441,14 @@ def figure_rows_from_json(figures_json: Path) -> list[dict]:
         m = FIG_NAME_RE_ANY.match(png_abs.name)
         idx = int(m.group(2)) if m else 0
         cap = (fig.get('caption') or '').strip()
-        pairs = detect_joined_caption(cap) if cap else []
-        if not pairs:
+        # step5 가 caption_title/caption 을 구조화해 박았으면(단일 진실원본) 그대로 쓴다.
+        # 구버전 레코드(caption_title 필드 없음)는 옛 휴리스틱(detect_joined_caption,
+        # bar 분리 + 합쳐진 캡션 2분할)으로 폴백한다.
+        if 'caption_title' in fig:
+            pairs = [((fig.get('caption_title') or '').strip(), cap)]
+        elif cap:
+            pairs = detect_joined_caption(cap)
+        else:
             pairs = [('', '')]
         for cap_title, cap_full in pairs:
             rows.append({

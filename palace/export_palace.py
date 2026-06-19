@@ -270,8 +270,9 @@ def export(
         })
 
     palace = {
-        'schema_version': '1.1',
+        'schema_version': '1.2',
         'schema_changelog': (
+            '1.1->1.2: images[]에 caption_title 추가(제목/설명 분리). '
             '1.0->1.1: images[] 추가 + rank->sequence, order->source_offset, '
             'order_confidence->offset_confidence, caption->summary, '
             'source_cluster_count 삭제'

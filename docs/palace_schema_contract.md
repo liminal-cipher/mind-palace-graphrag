@@ -1,4 +1,4 @@
-# .palace.json 스키마 계약서 (schema_version 1.1)
+# .palace.json 스키마 계약서 (schema_version 1.2)
 
 각 필드의 의미, 타입, 출처(파일/함수), 안정/변동을 코드로 확정한 문서. 추측 없이 코드 인용으로 그라운딩했고,
 코드에서 확정 안 되는 항목은 "코드상 불명"으로 표시한다. 경로는 repo 상대.
@@ -155,8 +155,14 @@ room_gen 공통 스키마 `meta`(= `convert_toc_to_common_schema` 가 만든 것
 | 필드 | 타입 | 의미 | 값의 기원 |
 |---|---|---|---|
 | `path` | str | **PNG 의 repo 상대 경로** (예: `input/img_국사/fig_5_3.png`). | `png_path.relative_to(REPO).as_posix()` (`main` rows 빌드) |
-| `caption` | str | 도판 캡션 전문(임베딩에 쓴 full caption). | `detect_joined_caption` 의 `cap_full` |
+| `caption_title` | str | 도판 제목(명사구). 없으면 빈 문자열. (v1.2 추가) | 전처리 figures.json `caption_title` (step5 분리); 구버전 레코드는 `detect_joined_caption` 의 `cap_title` 폴백 |
+| `caption` | str | 도판 캡션 전문(임베딩에 쓴 full caption, 표시용 본문). | 전처리 figures.json `caption`; 구버전은 `detect_joined_caption` 의 `cap_full` |
 | `score` | float | 매칭 점수(`cos + name_bonus - hub_penalty`), 소수 3자리. | `score_pair` -> `round(..., 3)` |
+
+캡션 분리 정책(전처리 step5): `caption` 은 항상 원문 본문을 보존(빈 caption 은 매칭 자동
+미배치). `caption_title` 은 확실히 아는 제목일 때만 채운다 (LLM 생성 캡션 = 제목+설명 둘 다;
+인쇄 `|` = 앞 조각; 인쇄 명사구 = 끝 괄호 제거한 명사구; 인쇄 종결문장 = 빈 제목). figures.json
+의 `caption_source` ∈ {printed, generated, vision, none} 로 출처를 기록한다.
 
 **소비 노트:** `images[].path` 는 repo 상대 경로다. 도판 서빙은 소비자(3D FastAPI)가 정적 루트(repo 루트)를
 기준으로 이 상대 경로를 붙여 직접 서빙한다. .palace.json 은 경로 문자열만 들고 바이트는 안 들고 있다.
@@ -194,7 +200,17 @@ room_gen 공통 스키마 `meta`(= `convert_toc_to_common_schema` 가 만든 것
 - **images[] 채우는 위치/형식/경로**: `match_images.py::write_palace_copy` (export 아님). 형식 `{path, caption,
   score}`, score 내림차순. `path` 는 **repo 상대**(`relative_to(REPO).as_posix()`).
 
-## 10. v1.0 -> v1.1 변경 (스키마 동작 변경)
+## 10. v1.1 -> v1.2 변경 (스키마 동작 변경)
+
+`palace/export_palace.py::export()` 의 `schema_version` -> `"1.2"`, changelog 갱신.
+`match_images.py::write_palace_copy()` 의 노드 `images[]` 에 `caption_title` 키 추가
+(`{path, caption_title, caption, score}`). 캡션 제목/설명 분리는 전처리 step5
+(`preprocessing/steps/step5_llm.py`)로 이동: figures.json 이 `caption_title`/`caption`/
+`caption_source` 를 들고, match_images 는 그 필드를 직접 읽는다(구버전 레코드는 옛
+`detect_joined_caption` 휴리스틱으로 폴백). export/match 그 외 로직 변경 없음. v1.1 이하
+산출물은 caption_title 이 없으므로 현재 코드로 재생성해야 채워진다.
+
+## 10b. v1.0 -> v1.1 변경 (스키마 동작 변경)
 
 `palace/export_palace.py::export()` 출력 최상위에 추가:
 ```
