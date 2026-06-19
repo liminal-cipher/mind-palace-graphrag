@@ -153,6 +153,55 @@ def _refine_body(raw_text: str) -> str:
     return "\n\n".join(p for p in refined_parts if p)
 
 
+_BAR_RE = re.compile(r"\s*[|￨ㅣ]\s*")  # ASCII bar, halfwidth bar, hangul I
+_TRAILING_PAREN_RE = re.compile(r"\s*\([^)]*\)\s*$")
+# 종결어미/문장부호로 끝나거나 길면 '설명형'(제목 없음), 아니면 '제목형'으로 본다.
+# 새 글자를 만들지 않고 원문 텍스트를 어느 칸에 넣을지만 결정한다(날조 금지).
+_SENTENCE_END_RE = re.compile(r"(?:다|음|함|임|됨|요|이다|지도|문서)\.?$|[.。!?]$")
+
+
+def _looks_like_sentence(text: str) -> bool:
+    return len(text) > 30 or bool(_SENTENCE_END_RE.search(text))
+
+
+def _split_printed_caption(text: str) -> tuple[str, str]:
+    """인쇄/전사 캡션을 (caption_title, caption)으로 가른다. 원문 보존 원칙:
+    caption 은 항상 원문 본문(임베딩·표시용)을 그대로 들고, caption_title 은 '확실히
+    아는 제목'일 때만 채운다. 새 단어를 만들지 않는다(있는 글자를 어느 칸에 넣을지만 결정).
+      - '|' 있음        -> 앞=title, caption=원문 전체(구분자 포함 보존)
+      - '|' 없음 + 문장   -> title='' , caption=원문 전체
+      - '|' 없음 + 명사구 -> title=끝괄호(소장처 등 메타) 제거한 명사구, caption=원문 전체
+    """
+    text = " ".join(text.split())
+    if not text:
+        return "", ""
+    if _BAR_RE.search(text):
+        return _BAR_RE.split(text, 1)[0].strip(), text
+    if _looks_like_sentence(text):
+        return "", text
+    return _TRAILING_PAREN_RE.sub("", text).strip(), text
+
+
+def _parse_caption_json(raw: str) -> dict:
+    """이미지 생성 캡션의 JSON 응답을 파싱한다. 코드펜스/주변 잡텍스트를 관대하게 벗기고,
+    실패하면 전체를 설명(caption)으로 폴백한다(제목 없음)."""
+    s = raw.strip()
+    if s.startswith("```"):
+        s = s.strip("`")
+        s = s.split("\n", 1)[1] if "\n" in s else s
+    m = re.search(r"\{.*\}", s, re.DOTALL)
+    if m:
+        s = m.group(0)
+    try:
+        d = json.loads(s)
+        return {
+            "caption_title": " ".join(str(d.get("caption_title", "")).split()),
+            "caption": " ".join(str(d.get("caption", "")).split()),
+        }
+    except (json.JSONDecodeError, AttributeError, TypeError):
+        return {"caption_title": "", "caption": " ".join(raw.split())}
+
+
 def _refine_caption(caption_text: str) -> str:
     msgs = [
         {
@@ -186,18 +235,24 @@ _MATH_RULE = (
 )
 
 
-def _generate_caption(img_path: Path, math_unicode: bool = False) -> str:
-    """이미지를 보고 캡션을 생성한다.
+def _generate_caption(img_path: Path, math_unicode: bool = False) -> dict:
+    """이미지를 보고 캡션을 생성한다. {caption_title, caption} 둘 다 반환한다.
 
-    math_unicode=True면 수식을 LaTeX 대신 유니코드 평문으로 표기하도록 지시한다
-    (디지털 경로 전용 — 스캔 경로엔 적용하지 않아 결과 변화를 막는다).
+    원문 캡션이 없어 LLM이 저자가 되는 경로이므로 제목(명사구)과 설명(한 문장)을 모두
+    채운다. math_unicode=True면 수식을 LaTeX 대신 유니코드 평문으로 표기하도록 지시한다
+    (디지털 경로 전용, 스캔 경로엔 적용하지 않아 결과 변화를 막는다).
     """
     b64 = base64.b64encode(img_path.read_bytes()).decode()
-    prompt = "아래 이미지의 내용을 간결하게 설명하는 캡션을 한 문장으로 작성해 주세요."
+    prompt = (
+        "아래 이미지를 설명하는 캡션을 만들어 JSON 객체 하나로만 답하세요. "
+        '형식: {"caption_title": "...", "caption": "..."}. '
+        "caption_title 은 이미지의 핵심 대상을 가리키는 짧은 제목(명사구, 5어절 이내), "
+        "caption 은 이미지 내용을 설명하는 한 문장입니다. 두 필드를 모두 반드시 채우세요."
+    )
     if math_unicode:
         prompt += _MATH_RULE
     msgs = [
-        {"role": "system", "content": "당신은 교육 자료의 이미지를 설명하는 전문가입니다."},
+        {"role": "system", "content": "당신은 교육 자료의 이미지를 설명하는 전문가입니다. JSON 으로만 답합니다."},
         {
             "role": "user",
             "content": [
@@ -206,7 +261,7 @@ def _generate_caption(img_path: Path, math_unicode: bool = False) -> str:
             ],
         },
     ]
-    return _oai_chat(msgs, _OAI_4O, max_tokens=256)
+    return _parse_caption_json(_oai_chat(msgs, _OAI_4O, max_tokens=256))
 
 
 def step5_llm(out_dir: Path, is_scan: bool, figures: list[dict], debug: bool = False) -> list[dict]:
@@ -234,34 +289,62 @@ def step5_llm(out_dir: Path, is_scan: bool, figures: list[dict], debug: bool = F
     # 5-2. 캡션 정제 / 생성
     print(f"[STEP 5-2] 캡션 처리 시작 ({len(figures)}개)")
 
-    def _process_caption(fig: dict) -> str:
-        # 캡션 내부 줄바꿈/연속 공백을 단일 공백으로 정규화(한 줄 캡션).
-        # STEP 4 분리는 이미 끝난 시점이라 page10 같은 줄 분리 로직에는 영향 없음.
+    def _process_caption(fig: dict) -> tuple[str, str, str]:
+        """(caption_title, caption, caption_source) 반환. 출처별 정책:
+        원문(인쇄/전사)이면 보존하며 분리하고, 이미지 생성이면 제목+설명을 둘 다 만든다.
+        caption 은 항상 임베딩 가능한 본문을 유지하고(빈 caption 은 매칭 자동 미배치),
+        caption_title 은 확실히 아는 제목일 때만 채운다. 캡션 내부 줄바꿈/연속 공백은
+        단일 공백으로 정규화한다(한 줄 캡션)."""
         raw_cap = " ".join(fig.get("caption", "").split())
-        # STEP 4에서 vision으로 캡션을 이미 전사한 figure는 그대로 둔다.
+        # STEP 4 vision 전사 캡션: 원문으로 취급해 보존 분리.
         if fig.get("caption_done"):
-            return raw_cap
+            t, c = _split_printed_caption(raw_cap)
+            return t, c, "vision"
         if is_scan:
-            # 인쇄 캡션이 있으면 교정, 없으면 이미지로 생성 폴백(수식 규칙 미적용)
+            # 인쇄 캡션 있으면 교정 후 보존 분리, 없으면 이미지로 생성(제목+설명, 수식 규칙 X).
             if raw_cap:
-                return _refine_caption(raw_cap)
+                t, c = _split_printed_caption(_refine_caption(raw_cap))
+                return t, c, "printed"
             img_path = out_dir / fig.get("img_path", "")
-            return _generate_caption(img_path) if img_path.exists() else ""
-        # 디지털 경로: 수식 유니코드 표기 적용
+            if img_path.exists():
+                g = _generate_caption(img_path)
+                return g["caption_title"], g["caption"], "generated"
+            return "", "", "none"
+        # 디지털 경로: 항상 이미지 생성(수식 유니코드 표기), 제목+설명 둘 다.
         img_path = out_dir / fig.get("img_path", "")
-        return _generate_caption(img_path, math_unicode=True) if img_path.exists() else ""
+        if img_path.exists():
+            g = _generate_caption(img_path, math_unicode=True)
+            return g["caption_title"], g["caption"], "generated"
+        return "", "", "none"
 
     # 캡션들도 서로 독립 → 병렬 처리. 결과는 figures 순서대로 모임.
-    refined_caps = _parallel_map(_process_caption, figures, label="캡션")
+    processed = _parallel_map(_process_caption, figures, label="캡션")
 
-    caption_lines = []
-    for fig, refined in zip(figures, refined_caps):
-        fig["caption"] = refined
-        if refined:
-            caption_lines.append(f"[page{fig.get('page', 0)}] {refined}")
+    caption_lines: list[str] = []
+    caption_records: list[dict] = []
+    for fig, (title, cap, source) in zip(figures, processed):
+        fig["caption_title"] = title
+        fig["caption"] = cap
+        fig["caption_source"] = source
+        if not cap:
+            continue
+        page = fig.get("page", 0)
+        # 일관 표기 "[pageN] 제목 | 설명". 제목이 caption 본문에 이미 들어 있으면(인쇄 '|'
+        # 보존/명사구) 중복을 피해 caption 그대로 쓴다.
+        if title and title not in cap:
+            caption_lines.append(f"[page{page}] {title} | {cap}")
+        else:
+            caption_lines.append(f"[page{page}] {cap}")
+        caption_records.append({
+            "page": page, "caption_title": title,
+            "caption": cap, "caption_source": source,
+        })
 
     (txt_dir / "caption.txt").write_text("\n".join(caption_lines), encoding="utf-8")
-    print(f"[STEP 5-2] caption.txt 저장 완료 ({len(caption_lines)}개)")
+    (txt_dir / "caption.json").write_text(
+        json.dumps(caption_records, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    print(f"[STEP 5-2] caption.txt / caption.json 저장 완료 ({len(caption_lines)}개)")
 
     # 5-3. 목차 추출
     print("[STEP 5-3] 목차 추출 시작")
