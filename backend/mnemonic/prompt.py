@@ -64,14 +64,6 @@ INSTRUCTIONS = """너는 기억의 궁전 기반 학습 연상 장면 생성기�
 
 {3~6문장의 생생한 장면}
 
-## 🔑 기억 키워드
-
-| 이미지 단서 | 연결되는 기억 |
-| --- | --- |
-| {visual_feature_1} | {association_1} |
-| {visual_feature_2} | {association_2} |
-| {visual_feature_3} | {association_3} |
-
 ## 👁️ 기억 포인트
 
 이 오브젝트를 보면 "{node_name}"을 떠올린다.
