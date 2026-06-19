@@ -1,47 +1,47 @@
 [
   {
-    "row": 8,
-    "path": "images/fig_30_1.png",
-    "page": 30,
-    "caption_title": "지수적으로 감소하는 함수 \\(f(t) = \\lambda e^{-\\lambda t}\\)의 그래프를 나타냅니다.",
-    "caption": "지수적으로 감소하는 함수 \\(f(t) = \\lambda e^{-\\lambda t}\\)의 그래프를 나타냅니다.",
-    "reason": "no_fit",
-    "best_score": 0.31
+    "row": 2,
+    "path": "images/fig_19_1.png",
+    "page": 19,
+    "caption_title": "확률 밀도 분포 비교",
+    "caption": "Leptokurtic, Mesokurtic, 그리고 Platykurtic 분포를 확률 밀도 기반으로 비교한 그래프입니다.",
+    "reason": "collision",
+    "best_score": 0.853
   },
   {
-    "row": 9,
-    "path": "images/fig_31_1.png",
-    "page": 31,
-    "caption_title": "n값에 따라 분포의 형태가 달라지는 그래프를 나타냅니다.",
-    "caption": "n값에 따라 분포의 형태가 달라지는 그래프를 나타냅니다.",
-    "reason": "no_fit",
-    "best_score": 0.346
-  },
-  {
-    "row": 11,
-    "path": "images/fig_45_1.png",
-    "page": 45,
-    "caption_title": "상관계수 r 값에 따른 음의 상관관계, 무상관, 양의 상관관계의 강도를 나타낸 그래프들입니다.",
-    "caption": "상관계수 r 값에 따른 음의 상관관계, 무상관, 양의 상관관계의 강도를 나타낸 그래프들입니다.",
-    "reason": "no_fit",
-    "best_score": 0.416
+    "row": 5,
+    "path": "images/fig_27_1.png",
+    "page": 27,
+    "caption_title": "정규분포 히스토그램",
+    "caption": "이미지는 데이터 분포를 보여주는 정규분포 히스토그램으로, 중앙값 근처에서 빈도가 높고 양쪽 꼬리에서 적습니다.",
+    "reason": "collision",
+    "best_score": 0.874
   },
   {
     "row": 12,
     "path": "images/fig_48_1.png",
     "page": 48,
-    "caption_title": "사람 A부터 E까지 각각 키와 몸무게의 순위를 나타낸 표입니다.",
-    "caption": "사람 A부터 E까지 각각 키와 몸무게의 순위를 나타낸 표입니다.",
+    "caption_title": "사람별 키와 몸무게",
+    "caption": "사람 A부터 E까지 각 개인의 키와 몸무게 점수가 표로 정리되어 있습니다.",
     "reason": "no_fit",
-    "best_score": 0.313
+    "best_score": 0.396
+  },
+  {
+    "row": 13,
+    "path": "images/fig_48_2.png",
+    "page": 48,
+    "caption_title": "키와 몸무게 비교표",
+    "caption": "사람 A부터 E까지 각 개인의 키와 몸무게를 비교하여 숫자로 정리한 표입니다.",
+    "reason": "no_fit",
+    "best_score": 0.392
   },
   {
     "row": 14,
     "path": "images/fig_48_3.png",
     "page": 48,
-    "caption_title": "사람들의 키와 몸무게 순위를 비교한 표입니다.",
-    "caption": "사람들의 키와 몸무게 순위를 비교한 표입니다.",
+    "caption_title": "키와 몸무게 비교표",
+    "caption": "사람 A부터 E까지의 키와 몸무게를 비교한 표로, 키는 왼쪽에서 오른쪽으로 증가하고 몸무게는 감소합니다.",
     "reason": "no_fit",
-    "best_score": 0.322
+    "best_score": 0.321
   }
 ]
