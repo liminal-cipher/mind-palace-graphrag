@@ -343,7 +343,7 @@ def absorb_empty_rooms(
     """Merge undersized rooms and enforce the room-count cap in a single
     deterministic, smallest-first pass (LLM 0회).
 
-    A room is *undersized* when its total node count (kept + demoted) is below
+    A room is *undersized* when its kept (displayed) node count is below
     ``min_room_nodes``. While any room is undersized, or the room count exceeds
     ``max_rooms``, the smallest-total room (ties broken by reading order, i.e.
     the lowest index) is merged into its preceding neighbor; the first room,
@@ -364,14 +364,20 @@ def absorb_empty_rooms(
     def total(r: dict) -> int:
         return len(r.get('kept', [])) + len(r.get('demoted', []))
 
+    def kept_n(r: dict) -> int:
+        # 방의 "보이는 크기" = kept(채택 노드)만. demoted(후보 탈락)는 화면에 안 떠서
+        # kept=1·demoted多 방이 사용자에겐 1노드로 보인다. 미달 판정/병합 대상 선정은
+        # kept 수로 한다(예전 kept+demoted 합 기준은 그런 방을 못 합쳐 1노드 방이 남았다).
+        return len(r.get('kept', []))
+
     def out_of_bounds() -> bool:
-        return len(rooms) > max_rooms or any(total(r) < min_room_nodes for r in rooms)
+        return len(rooms) > max_rooms or any(kept_n(r) < min_room_nodes for r in rooms)
 
     if len(rooms) <= 1 or not out_of_bounds():
         return rooms_json
 
     while len(rooms) > 1 and out_of_bounds():
-        victim_idx = min(range(len(rooms)), key=lambda i: (total(rooms[i]), i))
+        victim_idx = min(range(len(rooms)), key=lambda i: (kept_n(rooms[i]), i))
         host_idx = victim_idx - 1 if victim_idx > 0 else victim_idx + 1
         victim = rooms[victim_idx]
         host = rooms[host_idx]
