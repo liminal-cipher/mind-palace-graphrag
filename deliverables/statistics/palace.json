@@ -9,8 +9,8 @@
       "language": "ko",
       "entity_count": 164
     },
-    "room_count": 10,
-    "generated_at": "2026-06-19T06:28:20.085784+00:00",
+    "room_count": 9,
+    "generated_at": "2026-06-20T08:51:36.270989+00:00",
     "pipeline": {
       "snapshot": "snapshots/statistics",
       "k": 10,
@@ -435,7 +435,7 @@
       "index": 1,
       "name": "통계 핵심 용어",
       "summary": "모평균, 정규분포 등 통계 분석에 직접 활용되는 구체적 용어 중심",
-      "kept_count": 5,
+      "kept_count": 6,
       "meta": {
         "coherence_flag": "coherent"
       },
@@ -494,6 +494,17 @@
           "summary": "값들의 역수의 산술평균을 다시 역수로 변환하여 계산하는 평균으로, 주로 비율이나 속도 데이터에서 사용된다.",
           "description": "값들의 역수의 산술평균을 다시 역수로 변환하여 계산하는 평균으로, 주로 비율이나 속도 데이터에서 사용된다. 예: {1, 2, 3}의 조화평균은 약 1.636이다.",
           "related": []
+        },
+        {
+          "id": "ent_사분위수_범위",
+          "title": "사분위수 범위",
+          "type": "STATISTICAL MEASURE",
+          "sequence": 6,
+          "source_offset": 3628,
+          "offset_confidence": "fine",
+          "summary": "데이터 분포의 중앙 50%를 포함하는 범위로, 제3사분위수(Q3)와 제1사분위수(Q1)의 차이로 계산된다.",
+          "description": "데이터 분포의 중앙 50%를 포함하는 범위로, 제3사분위수(Q3)와 제1사분위수(Q1)의 차이로 계산된다. 극단값의 영향을 덜 받는 산포도 지표이다. 계산식은 IQR = Q3 − Q1 이다.",
+          "related": []
         }
       ],
       "demoted": [
@@ -503,32 +514,7 @@
           "type": "STATISTICAL CONCEPT",
           "summary": "표본 내 원소들의 중심 위치를 나타내는 지표로, 평균, 중앙값, 최빈값 등 다양한 방식으로 표현된다.",
           "description": "표본 내 원소들의 중심 위치를 나타내는 지표로, 평균, 중앙값, 최빈값 등 다양한 방식으로 표현된다. 데이터를 대표하는 값으로 활용됨."
-        }
-      ]
-    },
-    {
-      "id": "room_02",
-      "index": 2,
-      "name": "산포도 지표",
-      "summary": "산포도와 사분위수 범위는 데이터 변동성 측정 지표로 응집됨",
-      "kept_count": 1,
-      "meta": {
-        "coherence_flag": "coherent"
-      },
-      "kept": [
-        {
-          "id": "ent_사분위수_범위",
-          "title": "사분위수 범위",
-          "type": "STATISTICAL MEASURE",
-          "sequence": 1,
-          "source_offset": 3628,
-          "offset_confidence": "fine",
-          "summary": "데이터 분포의 중앙 50%를 포함하는 범위로, 제3사분위수(Q3)와 제1사분위수(Q1)의 차이로 계산된다.",
-          "description": "데이터 분포의 중앙 50%를 포함하는 범위로, 제3사분위수(Q3)와 제1사분위수(Q1)의 차이로 계산된다. 극단값의 영향을 덜 받는 산포도 지표이다. 계산식은 IQR = Q3 − Q1 이다.",
-          "related": []
-        }
-      ],
-      "demoted": [
+        },
         {
           "id": "ent_산포도",
           "title": "산포도",
@@ -546,8 +532,8 @@
       ]
     },
     {
-      "id": "room_03",
-      "index": 3,
+      "id": "room_02",
+      "index": 2,
       "name": "왜도와 첨도",
       "summary": "왜도와 첨도는 분포의 비대칭성과 뾰족함을 나타내는 구체적 통계 지표로 응집됨",
       "kept_count": 6,
@@ -649,8 +635,8 @@
       ]
     },
     {
-      "id": "room_04",
-      "index": 4,
+      "id": "room_03",
+      "index": 3,
       "name": "확률법칙과분포",
       "summary": "확률법칙, 확률변수, 확률분포 등 핵심 통계 개념과 수식 중심으로 구성됨",
       "kept_count": 18,
@@ -987,8 +973,8 @@
       ]
     },
     {
-      "id": "room_05",
-      "index": 5,
+      "id": "room_04",
+      "index": 4,
       "name": "주요 확률분포 변수",
       "summary": "베르누이, 이항, 푸아송 분포와 관련된 구체적 확률변수 및 수식 중심",
       "kept_count": 8,
@@ -1107,8 +1093,8 @@
       ]
     },
     {
-      "id": "room_06",
-      "index": 6,
+      "id": "room_05",
+      "index": 5,
       "name": "통계검정법",
       "summary": "가설검정과 관련된 구체적 검정법 및 핵심 개념 중심으로 구성됨",
       "kept_count": 3,
@@ -1168,20 +1154,31 @@
       ]
     },
     {
-      "id": "room_07",
-      "index": 7,
-      "name": "추정과 검정 핵심용어",
-      "summary": "추정과 가설검정 관련 구체적 핵심 용어 및 기준으로 구성됨",
-      "kept_count": 7,
+      "id": "room_06",
+      "index": 6,
+      "name": "가설검정 핵심용어",
+      "summary": "가설검정과 추정 관련 구체적 용어 및 기준 중심으로 응집됨",
+      "kept_count": 17,
       "meta": {
         "coherence_flag": "coherent"
       },
       "kept": [
         {
+          "id": "ent_진통제_효과_비교_실험",
+          "title": "진통제 효과 비교 실험",
+          "type": "STATISTICAL TEST",
+          "sequence": 1,
+          "source_offset": 7862,
+          "offset_confidence": "fallback",
+          "summary": "새로운 진통제와 기존 진통제의 효과 차이를 비교하기 위한 임상 실험 예시로, 두 그룹의 통계량을 비교하여 가설검정을 수행한다.",
+          "description": "새로운 진통제와 기존 진통제의 효과 차이를 비교하기 위한 임상 실험 예시로, 두 그룹의 통계량을 비교하여 가설검정을 수행한다.",
+          "related": []
+        },
+        {
           "id": "ent_통계적_검정",
           "title": "통계적 검정",
           "type": "STATISTICAL TEST",
-          "sequence": 1,
+          "sequence": 2,
           "source_offset": 7862,
           "offset_confidence": "fallback",
           "summary": "가설 검정을 포함한 다양한 통계적 방법으로, 데이터에 기반한 가설의 타당성을 평가한다.",
@@ -1192,7 +1189,7 @@
           "id": "ent_표본통계량",
           "title": "표본통계량",
           "type": "STATISTICAL PARAMETER",
-          "sequence": 2,
+          "sequence": 3,
           "source_offset": 7862,
           "offset_confidence": "fallback",
           "summary": "표본 데이터로부터 계산한 통계값으로, 모집단 모수를 추정하는데 이용된다.",
@@ -1203,29 +1200,33 @@
           "id": "ent_점추정",
           "title": "점추정",
           "type": "STATISTICAL METHOD",
-          "sequence": 3,
+          "sequence": 4,
           "source_offset": 8778,
           "offset_confidence": "fine",
           "summary": "모수 추정의 한 방법으로 모집단 모수를 하나의 단일 값(점)으로 추정하는 기법이며, 대표적으로 표본평균을 사용한다.",
           "description": "모수 추정의 한 방법으로 모집단 모수를 하나의 단일 값(점)으로 추정하는 기법이며, 대표적으로 표본평균을 사용한다.",
-          "related": []
+          "related": [
+            "ent_모수_추정"
+          ]
         },
         {
           "id": "ent_구간추정",
           "title": "구간추정",
           "type": "STATISTICAL METHOD",
-          "sequence": 4,
+          "sequence": 5,
           "source_offset": 8912,
           "offset_confidence": "fine",
           "summary": "모집단 모수가 포함될 것으로 예상되는 구간(신뢰구간)을 제시하는 추정 방법으로, 신뢰수준과 신뢰구간으로 구성된다.",
           "description": "모집단 모수가 포함될 것으로 예상되는 구간(신뢰구간)을 제시하는 추정 방법으로, 신뢰수준과 신뢰구간으로 구성된다.",
-          "related": []
+          "related": [
+            "ent_모수_추정"
+          ]
         },
         {
           "id": "ent_신뢰구간",
           "title": "신뢰구간",
           "type": "DECISION CRITERIA",
-          "sequence": 5,
+          "sequence": 6,
           "source_offset": 8991,
           "offset_confidence": "fine",
           "summary": "모집단의 모수가 포함될 것으로 예상되는 값의 범위로, 표본 데이터를 이용해 계산하며, 구간 폭이 넓을수록 포함 확률이 높아진다.",
@@ -1238,7 +1239,7 @@
           "id": "ent_신뢰수준",
           "title": "신뢰수준",
           "type": "DECISION CRITERIA",
-          "sequence": 6,
+          "sequence": 7,
           "source_offset": 9018,
           "offset_confidence": "fine",
           "summary": "신뢰구간 내에 모수가 포함될 확률을 의미하며, 일반적으로 90%, 95%, 99% 등이 사용된다.",
@@ -1252,7 +1253,7 @@
           "id": "ent_유의수준",
           "title": "유의수준",
           "type": "DECISION CRITERIA",
-          "sequence": 7,
+          "sequence": 8,
           "source_offset": 9383,
           "offset_confidence": "fine",
           "summary": "유의수준은 가설검정에서 귀무가설을 기각할 기준으로 사용하는 확률 값으로, 모수가 신뢰구간에 포함되지 않을 확률을 나타낸다.",
@@ -1260,66 +1261,48 @@
           "related": [
             "ent_신뢰수준"
           ]
-        }
-      ],
-      "demoted": [
-        {
-          "id": "ent_진통제_효과_비교_실험",
-          "title": "진통제 효과 비교 실험",
-          "type": "STATISTICAL TEST",
-          "summary": "새로운 진통제와 기존 진통제의 효과 차이를 비교하기 위한 임상 실험 예시로, 두 그룹의 통계량을 비교하여 가설검정을 수행한다.",
-          "description": "새로운 진통제와 기존 진통제의 효과 차이를 비교하기 위한 임상 실험 예시로, 두 그룹의 통계량을 비교하여 가설검정을 수행한다."
         },
         {
-          "id": "ent_통계적_의사결정",
-          "title": "통계적 의사결정",
-          "type": "DECISION CRITERIA",
-          "summary": "통계 분석 결과를 바탕으로 의사결정을 내리는 기준 또는 절차를 의미한다.",
-          "description": "통계 분석 결과를 바탕으로 의사결정을 내리는 기준 또는 절차를 의미한다."
-        }
-      ]
-    },
-    {
-      "id": "room_08",
-      "index": 8,
-      "name": "가설검정 핵심용어",
-      "summary": "가설검정 절차와 관련된 구체적 용어 및 검정법 중심으로 구성됨",
-      "kept_count": 17,
-      "meta": {
-        "coherence_flag": "coherent"
-      },
-      "kept": [
+          "id": "ent_모수_추정",
+          "title": "모수 추정",
+          "type": "STATISTICAL METHOD",
+          "sequence": 9,
+          "source_offset": 9479,
+          "offset_confidence": "fine",
+          "summary": "모집단의 모수를 표본 데이터를 바탕으로 추측하는 방법론.",
+          "description": "모집단의 모수를 표본 데이터를 바탕으로 추측하는 방법론. 추정값과 정확도를 제시하며, 점추정과 구간추정을 포함한다.",
+          "related": [
+            "ent_점추정",
+            "ent_구간추정"
+          ]
+        },
         {
           "id": "ent_귀무가설",
           "title": "귀무가설",
           "type": "HYPOTHESIS",
-          "sequence": 1,
+          "sequence": 10,
           "source_offset": 9530,
           "offset_confidence": "fine",
           "summary": "귀무가설은 가설검정에서 검증 대상이 되는 기본 가설로, 보통 '효과 없음' 또는 '차이 없음'이라는 내용을 포함한다.",
           "description": "귀무가설은 가설검정에서 검증 대상이 되는 기본 가설로, 보통 '효과 없음' 또는 '차이 없음'이라는 내용을 포함한다. 이는 검정에서 기본 가정으로 설정되며, 연구나 실험에서 효과나 차이가 존재하지 않는다는 전제를 담고 있다. 귀무가설의 기각 여부는 연구 결과의 결론을 결정하며, 통계적 유의수준(예: 5%)과 연계되어 '귀무가설이 참임에도 불구하고 이를 기각할 확률'을 허용하는 개념을 포함한다. 따라서 귀무가설은 통계적 추론에서 핵심적인 역할을 하며, 이를 통해 연구자는 실제로 유의미한 효과나 차이가 존재하는지 판단할 수 있다.",
-          "related": [
-            "ent_1종_오류_type_i_error"
-          ]
+          "related": []
         },
         {
           "id": "ent_대립가설",
           "title": "대립가설",
           "type": "HYPOTHESIS",
-          "sequence": 2,
+          "sequence": 11,
           "source_offset": 9577,
           "offset_confidence": "fine",
           "summary": "대립가설은 귀무가설에 반대되는 가설로, 연구자가 증명하거나 주장하려는 실제 효과나 차이가 존재함을 나타낸다.",
           "description": "대립가설은 귀무가설에 반대되는 가설로, 연구자가 증명하거나 주장하려는 실제 효과나 차이가 존재함을 나타낸다. 가설 검정 과정에서 귀무가설과 함께 설정되어 비교 및 판단의 대상이 되며, 효과나 차이가 존재함을 주장하는 대안적 가설이다.",
-          "related": [
-            "ent_2종_오류_type_ii_error"
-          ]
+          "related": []
         },
         {
           "id": "ent_유의수준_결정",
           "title": "유의수준 결정",
           "type": "DECISION CRITERIA",
-          "sequence": 3,
+          "sequence": 12,
           "source_offset": 9650,
           "offset_confidence": "fine",
           "summary": "가설검정 과정에서 귀무가설을 기각하기 위한 기준 확률값을 정하는 단계이다.",
@@ -1330,7 +1313,7 @@
           "id": "ent_검정_통계량",
           "title": "검정 통계량",
           "type": "STATISTICAL PARAMETER",
-          "sequence": 4,
+          "sequence": 13,
           "source_offset": 9658,
           "offset_confidence": "fine",
           "summary": "가설 검정 시 표본 데이터를 요약하여 계산된 값으로, 통계적 판단의 기준이 된다.",
@@ -1341,7 +1324,7 @@
           "id": "ent_검정통계량",
           "title": "검정통계량",
           "type": "STATISTICAL PARAMETER",
-          "sequence": 5,
+          "sequence": 14,
           "source_offset": 9658,
           "offset_confidence": "fine",
           "summary": "가설검정에서 표본 데이터로부터 계산되는 통계량으로, 귀무가설 기각 여부를 결정하는 기준값 역할을 한다.",
@@ -1352,7 +1335,7 @@
           "id": "ent_기각_채택_결정",
           "title": "기각/채택 결정",
           "type": "DECISION CRITERIA",
-          "sequence": 6,
+          "sequence": 15,
           "source_offset": 9667,
           "offset_confidence": "fine",
           "summary": "가설검정에서 계산된 검정통계량과 유의수준을 바탕으로 귀무가설을 기각하거나 채택하는 최종 결정 단계이다.",
@@ -1360,138 +1343,35 @@
           "related": []
         },
         {
-          "id": "ent_1종_오류_type_i_error",
-          "title": "1종 오류 (TYPE I ERROR)",
-          "type": "ERROR TYPE",
-          "sequence": 7,
-          "source_offset": 9828,
-          "offset_confidence": "fallback",
-          "summary": "귀무가설이 참임에도 불구하고 잘못 기각하는 오류이다.",
-          "description": "귀무가설이 참임에도 불구하고 잘못 기각하는 오류이다. 잘못된 긍정(False Positive) 결과를 초래하며, 예시는 새로운 진통제가 효과 없는데 효과가 있다고 결론내리는 경우이다.",
-          "related": [
-            "ent_귀무가설"
-          ]
-        },
-        {
-          "id": "ent_2종_오류_type_ii_error",
-          "title": "2종 오류 (TYPE II ERROR)",
-          "type": "ERROR TYPE",
-          "sequence": 8,
-          "source_offset": 9828,
-          "offset_confidence": "fallback",
-          "summary": "대립가설이 참임에도 불구하고 귀무가설을 기각하지 않는 오류이다.",
-          "description": "대립가설이 참임에도 불구하고 귀무가설을 기각하지 않는 오류이다. 잘못된 부정(False Negative) 결과를 초래하며, 예시는 새로운 진통제가 더 효과가 있는데 효과가 없다고 판단하는 경우이다.",
-          "related": [
-            "ent_대립가설"
-          ]
-        },
-        {
-          "id": "ent_p_value",
-          "title": "P-VALUE",
-          "type": "STATISTICAL PARAMETER",
-          "sequence": 9,
-          "source_offset": 9828,
-          "offset_confidence": "fallback",
-          "summary": "귀무가설 하에서 관측된 데이터와 같거나 더 극단적인 결과가 발생할 확률이다.",
-          "description": "귀무가설 하에서 관측된 데이터와 같거나 더 극단적인 결과가 발생할 확률이다. 기준인 유의수준과 비교하여 가설 기각 여부를 결정한다.",
-          "related": []
-        },
-        {
-          "id": "ent_t_검정_t_test",
-          "title": "T-검정 (T-TEST)",
-          "type": "STATISTICAL TEST",
-          "sequence": 10,
-          "source_offset": 9828,
-          "offset_confidence": "fallback",
-          "summary": "두 그룹의 평균을 비교하여 차이가 유의미한지 검정하는 방법이다.",
-          "description": "두 그룹의 평균을 비교하여 차이가 유의미한지 검정하는 방법이다. 단일, 독립 표본, 대응 표본 t-검정 등이 있으며, 임상 실험이나 학급 성적 비교 등에 활용된다.",
-          "related": []
-        },
-        {
-          "id": "ent_독립성_검정_test_of_independence",
-          "title": "독립성 검정 (TEST OF INDEPENDENCE)",
-          "type": "STATISTICAL TEST",
-          "sequence": 11,
-          "source_offset": 9828,
-          "offset_confidence": "fallback",
-          "summary": "두 범주형 변수 간에 독립적인지 여부를 검정한다.",
-          "description": "두 범주형 변수 간에 독립적인지 여부를 검정한다. 예로는 성별과 흡연 여부 간 관계 확인에 사용된다.",
-          "related": []
-        },
-        {
-          "id": "ent_동질성_검정_test_of_homogeneity",
-          "title": "동질성 검정 (TEST OF HOMOGENEITY)",
-          "type": "STATISTICAL TEST",
-          "sequence": 12,
-          "source_offset": 9828,
-          "offset_confidence": "fallback",
-          "summary": "여러 표본이 동일한 분포를 따르는지 검정하는 방법이다.",
-          "description": "여러 표본이 동일한 분포를 따르는지 검정하는 방법이다. 보통 두 개 이상의 범주형 변수를 비교할 때 이용되며, 지역별 질병 발생률 비교가 예시이다.",
-          "related": []
-        },
-        {
-          "id": "ent_이원_분산_분석_two_way_anova",
-          "title": "이원 분산 분석 (TWO-WAY ANOVA)",
-          "type": "STATISTICAL TEST",
-          "sequence": 13,
-          "source_offset": 9828,
-          "offset_confidence": "fallback",
-          "summary": "두 요인에 대해 여러 그룹의 평균 차이를 동시에 검정하는 분산 분석이다.",
-          "description": "두 요인에 대해 여러 그룹의 평균 차이를 동시에 검정하는 분산 분석이다. 예컨대 학급과 성별에 따른 평균 성적 비교에 활용된다.",
-          "related": []
-        },
-        {
-          "id": "ent_일원_분산_분석_one_way_anova",
-          "title": "일원 분산 분석 (ONE-WAY ANOVA)",
-          "type": "STATISTICAL TEST",
-          "sequence": 14,
-          "source_offset": 9828,
-          "offset_confidence": "fallback",
-          "summary": "한 요인에 대해 여러 그룹의 평균 차이를 검정하는 분산 분석이다.",
-          "description": "한 요인에 대해 여러 그룹의 평균 차이를 검정하는 분산 분석이다. 여러 학급의 평균 성적 비교 등이 예시이다.",
-          "related": []
-        },
-        {
-          "id": "ent_적합도_검정_goodness_of_fit_test",
-          "title": "적합도 검정 (GOODNESS OF FIT TEST)",
-          "type": "STATISTICAL TEST",
-          "sequence": 15,
-          "source_offset": 9828,
-          "offset_confidence": "fallback",
-          "summary": "관찰된 빈도와 기대 빈도의 일치 여부를 검정하며, 하나의 범주형 변수를 대상으로 한다.",
-          "description": "관찰된 빈도와 기대 빈도의 일치 여부를 검정하며, 하나의 범주형 변수를 대상으로 한다. 주사위 굴리기 결과 검증에 활용된다.",
-          "related": []
-        },
-        {
-          "id": "ent_카이제곱_검정_chi_square_test",
-          "title": "카이제곱 검정 (CHI-SQUARE TEST)",
-          "type": "STATISTICAL TEST",
+          "id": "ent_채택_결정",
+          "title": "채택 결정",
+          "type": "DECISION CRITERIA",
           "sequence": 16,
-          "source_offset": 9828,
-          "offset_confidence": "fallback",
-          "summary": "범주형 데이터의 빈도 차이 및 변수 간 독립성을 검정하는 방법이다.",
-          "description": "범주형 데이터의 빈도 차이 및 변수 간 독립성을 검정하는 방법이다. 적합도 검정, 독립성 검정, 동질성 검정으로 세분화되어 주사위 결과, 성별과 흡연 여부 등 사례에 적용된다.",
+          "source_offset": 9670,
+          "offset_confidence": "fine",
+          "summary": "가설 검정에서 P-value가 유의수준보다 크거나 같을 때 귀무가설을 채택하는 판단 기준이다.",
+          "description": "가설 검정에서 P-value가 유의수준보다 크거나 같을 때 귀무가설을 채택하는 판단 기준이다.",
           "related": []
         },
         {
-          "id": "ent_분산_분석_anova",
-          "title": "분산 분석 (ANOVA)",
-          "type": "STATISTICAL TEST",
+          "id": "ent_임상_실험",
+          "title": "임상 실험",
+          "type": "STATISTICAL METHOD",
           "sequence": 17,
-          "source_offset": 11023,
+          "source_offset": 9912,
           "offset_confidence": "fine",
-          "summary": "세 그룹 이상의 평균 차이를 검정하는 방법으로, 일원 분산 분석과 이원 분산 분석이 있다.",
-          "description": "세 그룹 이상의 평균 차이를 검정하는 방법으로, 일원 분산 분석과 이원 분산 분석이 있다. 예로 여러 학급 간 평균 성적 비교, 학급 및 성별에 따른 평균 성적 비교 등에 쓰인다.",
+          "summary": "통계학적 연구 방법 중 하나로, 실험 대상 집단을 여러 그룹으로 나누어 특정 처치(예: 진통제 투약)를 시행하고 그 효과를 비교 분석하는 절차이다.",
+          "description": "통계학적 연구 방법 중 하나로, 실험 대상 집단을 여러 그룹으로 나누어 특정 처치(예: 진통제 투약)를 시행하고 그 효과를 비교 분석하는 절차이다.",
           "related": []
         }
       ],
       "demoted": [
         {
-          "id": "ent_모수_추정",
-          "title": "모수 추정",
-          "type": "STATISTICAL METHOD",
-          "summary": "모집단의 모수를 표본 데이터를 바탕으로 추측하는 방법론.",
-          "description": "모집단의 모수를 표본 데이터를 바탕으로 추측하는 방법론. 추정값과 정확도를 제시하며, 점추정과 구간추정을 포함한다."
+          "id": "ent_통계적_의사결정",
+          "title": "통계적 의사결정",
+          "type": "DECISION CRITERIA",
+          "summary": "통계 분석 결과를 바탕으로 의사결정을 내리는 기준 또는 절차를 의미한다.",
+          "description": "통계 분석 결과를 바탕으로 의사결정을 내리는 기준 또는 절차를 의미한다."
         },
         {
           "id": "ent_통계적_추론",
@@ -1508,12 +1388,187 @@
           "description": "가설검정의 초기 단계로, 검증하고자 하는 귀무가설과 대립가설을 설정하는 과정이다."
         },
         {
-          "id": "ent_채택_결정",
-          "title": "채택 결정",
-          "type": "DECISION CRITERIA",
-          "summary": "가설 검정에서 P-value가 유의수준보다 크거나 같을 때 귀무가설을 채택하는 판단 기준이다.",
-          "description": "가설 검정에서 P-value가 유의수준보다 크거나 같을 때 귀무가설을 채택하는 판단 기준이다."
+          "id": "ent_데이터_수집",
+          "title": "데이터 수집",
+          "type": "STATISTICAL METHOD",
+          "summary": "연구나 실험에서 분석을 위해 필요한 자료를 체계적으로 모으는 과정이다.",
+          "description": "연구나 실험에서 분석을 위해 필요한 자료를 체계적으로 모으는 과정이다."
         },
+        {
+          "id": "ent_평균_진통_수치",
+          "title": "평균 진통 수치",
+          "type": "STATISTICAL MEASURE",
+          "summary": "각 환자 그룹에서 수집된 진통 정도를 수치화한 데이터의 평균값으로, 그룹 간 효과 비교의 주요 지표로 사용된다.",
+          "description": "각 환자 그룹에서 수집된 진통 정도를 수치화한 데이터의 평균값으로, 그룹 간 효과 비교의 주요 지표로 사용된다."
+        }
+      ]
+    },
+    {
+      "id": "room_07",
+      "index": 7,
+      "name": "통계검정과 오류",
+      "summary": "통계검정 방법과 오류 유형, 의사결정 기준 중심으로 구체적 명칭들이 잘 모여 있음",
+      "kept_count": 14,
+      "meta": {
+        "coherence_flag": "coherent"
+      },
+      "kept": [
+        {
+          "id": "ent_1종_오류_type_i_error",
+          "title": "1종 오류 (TYPE I ERROR)",
+          "type": "ERROR TYPE",
+          "sequence": 1,
+          "source_offset": 9828,
+          "offset_confidence": "fallback",
+          "summary": "귀무가설이 참임에도 불구하고 잘못 기각하는 오류이다.",
+          "description": "귀무가설이 참임에도 불구하고 잘못 기각하는 오류이다. 잘못된 긍정(False Positive) 결과를 초래하며, 예시는 새로운 진통제가 효과 없는데 효과가 있다고 결론내리는 경우이다.",
+          "related": []
+        },
+        {
+          "id": "ent_2종_오류_type_ii_error",
+          "title": "2종 오류 (TYPE II ERROR)",
+          "type": "ERROR TYPE",
+          "sequence": 2,
+          "source_offset": 9828,
+          "offset_confidence": "fallback",
+          "summary": "대립가설이 참임에도 불구하고 귀무가설을 기각하지 않는 오류이다.",
+          "description": "대립가설이 참임에도 불구하고 귀무가설을 기각하지 않는 오류이다. 잘못된 부정(False Negative) 결과를 초래하며, 예시는 새로운 진통제가 더 효과가 있는데 효과가 없다고 판단하는 경우이다.",
+          "related": []
+        },
+        {
+          "id": "ent_p_value",
+          "title": "P-VALUE",
+          "type": "STATISTICAL PARAMETER",
+          "sequence": 3,
+          "source_offset": 9828,
+          "offset_confidence": "fallback",
+          "summary": "귀무가설 하에서 관측된 데이터와 같거나 더 극단적인 결과가 발생할 확률이다.",
+          "description": "귀무가설 하에서 관측된 데이터와 같거나 더 극단적인 결과가 발생할 확률이다. 기준인 유의수준과 비교하여 가설 기각 여부를 결정한다.",
+          "related": []
+        },
+        {
+          "id": "ent_t_검정_t_test",
+          "title": "T-검정 (T-TEST)",
+          "type": "STATISTICAL TEST",
+          "sequence": 4,
+          "source_offset": 9828,
+          "offset_confidence": "fallback",
+          "summary": "두 그룹의 평균을 비교하여 차이가 유의미한지 검정하는 방법이다.",
+          "description": "두 그룹의 평균을 비교하여 차이가 유의미한지 검정하는 방법이다. 단일, 독립 표본, 대응 표본 t-검정 등이 있으며, 임상 실험이나 학급 성적 비교 등에 활용된다.",
+          "related": []
+        },
+        {
+          "id": "ent_단일_표본_t_검정_one_sample_t_test",
+          "title": "단일 표본 T-검정 (ONE-SAMPLE T-TEST)",
+          "type": "STATISTICAL TEST",
+          "sequence": 5,
+          "source_offset": 9828,
+          "offset_confidence": "fallback",
+          "summary": "특정 값과 한 그룹의 평균을 비교하는 t-검정 방법이다.",
+          "description": "특정 값과 한 그룹의 평균을 비교하는 t-검정 방법이다. 예로는 학급 평균이 특정 점수인지 확인하는 경우이다.",
+          "related": []
+        },
+        {
+          "id": "ent_대응_표본_t_검정_paired_sample_t_test",
+          "title": "대응 표본 T-검정 (PAIRED SAMPLE T-TEST)",
+          "type": "STATISTICAL TEST",
+          "sequence": 6,
+          "source_offset": 9828,
+          "offset_confidence": "fallback",
+          "summary": "같은 그룹 내 두 상황 간 평균 차이를 비교하는 t-검정 방법이다.",
+          "description": "같은 그룹 내 두 상황 간 평균 차이를 비교하는 t-검정 방법이다. 예로는 다이어트 전후 체중 비교가 있다.",
+          "related": []
+        },
+        {
+          "id": "ent_독립_표본_t_검정_independent_two_sample_t_test",
+          "title": "독립 표본 T-검정 (INDEPENDENT TWO-SAMPLE T-TEST)",
+          "type": "STATISTICAL TEST",
+          "sequence": 7,
+          "source_offset": 9828,
+          "offset_confidence": "fallback",
+          "summary": "두 독립된 그룹 간 평균 차이를 비교하는 t-검정 방법으로, 예를 들어 남학생과 여학생 성적 비교 시 사용된다.",
+          "description": "두 독립된 그룹 간 평균 차이를 비교하는 t-검정 방법으로, 예를 들어 남학생과 여학생 성적 비교 시 사용된다.",
+          "related": []
+        },
+        {
+          "id": "ent_독립성_검정_test_of_independence",
+          "title": "독립성 검정 (TEST OF INDEPENDENCE)",
+          "type": "STATISTICAL TEST",
+          "sequence": 8,
+          "source_offset": 9828,
+          "offset_confidence": "fallback",
+          "summary": "두 범주형 변수 간에 독립적인지 여부를 검정한다.",
+          "description": "두 범주형 변수 간에 독립적인지 여부를 검정한다. 예로는 성별과 흡연 여부 간 관계 확인에 사용된다.",
+          "related": []
+        },
+        {
+          "id": "ent_동질성_검정_test_of_homogeneity",
+          "title": "동질성 검정 (TEST OF HOMOGENEITY)",
+          "type": "STATISTICAL TEST",
+          "sequence": 9,
+          "source_offset": 9828,
+          "offset_confidence": "fallback",
+          "summary": "여러 표본이 동일한 분포를 따르는지 검정하는 방법이다.",
+          "description": "여러 표본이 동일한 분포를 따르는지 검정하는 방법이다. 보통 두 개 이상의 범주형 변수를 비교할 때 이용되며, 지역별 질병 발생률 비교가 예시이다.",
+          "related": []
+        },
+        {
+          "id": "ent_이원_분산_분석_two_way_anova",
+          "title": "이원 분산 분석 (TWO-WAY ANOVA)",
+          "type": "STATISTICAL TEST",
+          "sequence": 10,
+          "source_offset": 9828,
+          "offset_confidence": "fallback",
+          "summary": "두 요인에 대해 여러 그룹의 평균 차이를 동시에 검정하는 분산 분석이다.",
+          "description": "두 요인에 대해 여러 그룹의 평균 차이를 동시에 검정하는 분산 분석이다. 예컨대 학급과 성별에 따른 평균 성적 비교에 활용된다.",
+          "related": []
+        },
+        {
+          "id": "ent_일원_분산_분석_one_way_anova",
+          "title": "일원 분산 분석 (ONE-WAY ANOVA)",
+          "type": "STATISTICAL TEST",
+          "sequence": 11,
+          "source_offset": 9828,
+          "offset_confidence": "fallback",
+          "summary": "한 요인에 대해 여러 그룹의 평균 차이를 검정하는 분산 분석이다.",
+          "description": "한 요인에 대해 여러 그룹의 평균 차이를 검정하는 분산 분석이다. 여러 학급의 평균 성적 비교 등이 예시이다.",
+          "related": []
+        },
+        {
+          "id": "ent_적합도_검정_goodness_of_fit_test",
+          "title": "적합도 검정 (GOODNESS OF FIT TEST)",
+          "type": "STATISTICAL TEST",
+          "sequence": 12,
+          "source_offset": 9828,
+          "offset_confidence": "fallback",
+          "summary": "관찰된 빈도와 기대 빈도의 일치 여부를 검정하며, 하나의 범주형 변수를 대상으로 한다.",
+          "description": "관찰된 빈도와 기대 빈도의 일치 여부를 검정하며, 하나의 범주형 변수를 대상으로 한다. 주사위 굴리기 결과 검증에 활용된다.",
+          "related": []
+        },
+        {
+          "id": "ent_카이제곱_검정_chi_square_test",
+          "title": "카이제곱 검정 (CHI-SQUARE TEST)",
+          "type": "STATISTICAL TEST",
+          "sequence": 13,
+          "source_offset": 9828,
+          "offset_confidence": "fallback",
+          "summary": "범주형 데이터의 빈도 차이 및 변수 간 독립성을 검정하는 방법이다.",
+          "description": "범주형 데이터의 빈도 차이 및 변수 간 독립성을 검정하는 방법이다. 적합도 검정, 독립성 검정, 동질성 검정으로 세분화되어 주사위 결과, 성별과 흡연 여부 등 사례에 적용된다.",
+          "related": []
+        },
+        {
+          "id": "ent_분산_분석_anova",
+          "title": "분산 분석 (ANOVA)",
+          "type": "STATISTICAL TEST",
+          "sequence": 14,
+          "source_offset": 11023,
+          "offset_confidence": "fine",
+          "summary": "세 그룹 이상의 평균 차이를 검정하는 방법으로, 일원 분산 분석과 이원 분산 분석이 있다.",
+          "description": "세 그룹 이상의 평균 차이를 검정하는 방법으로, 일원 분산 분석과 이원 분산 분석이 있다. 예로 여러 학급 간 평균 성적 비교, 학급 및 성별에 따른 평균 성적 비교 등에 쓰인다.",
+          "related": []
+        }
+      ],
+      "demoted": [
         {
           "id": "ent_거짓_부정_false_negative_fn",
           "title": "거짓 부정 (FALSE NEGATIVE, FN)",
@@ -1527,27 +1582,6 @@
           "type": "STATISTICAL CONCEPT",
           "summary": "실제 효과가 없으나 효과가 있다고 잘못 판단한 경우로, 1종 오류와 관련된다.",
           "description": "실제 효과가 없으나 효과가 있다고 잘못 판단한 경우로, 1종 오류와 관련된다."
-        },
-        {
-          "id": "ent_단일_표본_t_검정_one_sample_t_test",
-          "title": "단일 표본 T-검정 (ONE-SAMPLE T-TEST)",
-          "type": "STATISTICAL TEST",
-          "summary": "특정 값과 한 그룹의 평균을 비교하는 t-검정 방법이다.",
-          "description": "특정 값과 한 그룹의 평균을 비교하는 t-검정 방법이다. 예로는 학급 평균이 특정 점수인지 확인하는 경우이다."
-        },
-        {
-          "id": "ent_대응_표본_t_검정_paired_sample_t_test",
-          "title": "대응 표본 T-검정 (PAIRED SAMPLE T-TEST)",
-          "type": "STATISTICAL TEST",
-          "summary": "같은 그룹 내 두 상황 간 평균 차이를 비교하는 t-검정 방법이다.",
-          "description": "같은 그룹 내 두 상황 간 평균 차이를 비교하는 t-검정 방법이다. 예로는 다이어트 전후 체중 비교가 있다."
-        },
-        {
-          "id": "ent_독립_표본_t_검정_independent_two_sample_t_test",
-          "title": "독립 표본 T-검정 (INDEPENDENT TWO-SAMPLE T-TEST)",
-          "type": "STATISTICAL TEST",
-          "summary": "두 독립된 그룹 간 평균 차이를 비교하는 t-검정 방법으로, 예를 들어 남학생과 여학생 성적 비교 시 사용된다.",
-          "description": "두 독립된 그룹 간 평균 차이를 비교하는 t-검정 방법으로, 예를 들어 남학생과 여학생 성적 비교 시 사용된다."
         },
         {
           "id": "ent_두_그룹_비교",
@@ -1592,27 +1626,6 @@
           "description": "임상 실험에서 연구 대상자들을 특정 기준으로 나누어 구성한 집단으로, 보통 두 그룹(새로운 진통제 투여군과 기존 진통제 투여군)으로 구분된다."
         },
         {
-          "id": "ent_임상_실험",
-          "title": "임상 실험",
-          "type": "STATISTICAL METHOD",
-          "summary": "통계학적 연구 방법 중 하나로, 실험 대상 집단을 여러 그룹으로 나누어 특정 처치(예: 진통제 투약)를 시행하고 그 효과를 비교 분석하는 절차이다.",
-          "description": "통계학적 연구 방법 중 하나로, 실험 대상 집단을 여러 그룹으로 나누어 특정 처치(예: 진통제 투약)를 시행하고 그 효과를 비교 분석하는 절차이다."
-        },
-        {
-          "id": "ent_데이터_수집",
-          "title": "데이터 수집",
-          "type": "STATISTICAL METHOD",
-          "summary": "연구나 실험에서 분석을 위해 필요한 자료를 체계적으로 모으는 과정이다.",
-          "description": "연구나 실험에서 분석을 위해 필요한 자료를 체계적으로 모으는 과정이다."
-        },
-        {
-          "id": "ent_평균_진통_수치",
-          "title": "평균 진통 수치",
-          "type": "STATISTICAL MEASURE",
-          "summary": "각 환자 그룹에서 수집된 진통 정도를 수치화한 데이터의 평균값으로, 그룹 간 효과 비교의 주요 지표로 사용된다.",
-          "description": "각 환자 그룹에서 수집된 진통 정도를 수치화한 데이터의 평균값으로, 그룹 간 효과 비교의 주요 지표로 사용된다."
-        },
-        {
           "id": "ent_범주형_변수",
           "title": "범주형 변수",
           "type": "DATA TYPE",
@@ -1622,8 +1635,8 @@
       ]
     },
     {
-      "id": "room_09",
-      "index": 9,
+      "id": "room_08",
+      "index": 8,
       "name": "상관계수 종류와 기준",
       "summary": "상관계수와 상관관계 강도 기준을 구체적 명칭으로 명확히 구분함",
       "kept_count": 8,
@@ -1871,6 +1884,18 @@
       "description": "이항 분포는 여러 개의 베르누이 시행 결과를 나타내는 이산 확률 분포이다."
     },
     {
+      "source": "ent_점추정",
+      "target": "ent_모수_추정",
+      "weight": 9.0,
+      "description": "점추정은 모수 추정 방법 중 하나로, 모수를 단일값으로 추정하는 구체적 기법이다."
+    },
+    {
+      "source": "ent_구간추정",
+      "target": "ent_모수_추정",
+      "weight": 9.0,
+      "description": "구간추정은 모수 추정의 한 유형으로, 모수가 포함될 확률적 구간을 제시한다."
+    },
+    {
       "source": "ent_신뢰구간",
       "target": "ent_신뢰수준",
       "weight": 10.0,
@@ -1899,18 +1924,6 @@
       "target": "ent_분산",
       "weight": 10.0,
       "description": "표준편차는 분산의 제곱근으로, 데이터 산포도를 나타내는 주요 지표이다."
-    },
-    {
-      "source": "ent_1종_오류_type_i_error",
-      "target": "ent_귀무가설",
-      "weight": 9.0,
-      "description": "1종 오류는 귀무가설이 참임에도 잘못 기각하는 오류로, 가설 검정 과정에서 발생한다."
-    },
-    {
-      "source": "ent_2종_오류_type_ii_error",
-      "target": "ent_대립가설",
-      "weight": 9.0,
-      "description": "2종 오류는 대립가설이 참임에도 귀무가설을 기각하지 않는 오류로, 가설 검정과 관련된다."
     },
     {
       "source": "ent_상관계수",
