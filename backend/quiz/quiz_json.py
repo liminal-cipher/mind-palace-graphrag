@@ -13,7 +13,9 @@
 """
 from __future__ import annotations
 
-from fastapi import APIRouter
+from pathlib import Path
+
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from backend.quiz.quiz_generator import EvidenceBuilder, generate_quizzes
@@ -34,28 +36,61 @@ _builders: dict[str, EvidenceBuilder] = {}
 DEFAULT_SNAPSHOT = SNAPSHOT_DIR.name  # "korean_history"
 
 
-def _builder_for(snapshot: str | None) -> EvidenceBuilder:
-    """스냅샷 키로 빌더를 고른다. 미지정/미등록이면 기본 데모(korean_history)로 폴백.
+def _resolve_snapshot_dir(key: str) -> tuple[str, Path] | None:
+    """스냅샷 키를 (정규키, parquet 디렉터리)로 해석한다. 못 찾으면 None.
 
-    기본 키는 테스트 페이지와 같은 빌더를 공유하고, 임의의 다른 등록 스냅샷만 여기서
-    snapshots/<키> 를 추가 로드한다. 데모 안정성을 위해 없는 키는 막지 않고 데모로 떨군다.
+    1) serve 레지스트리(STATE): 쇼케이스 키 + 라이브 잡(job_id) + alias 를 모두 포함한다.
+       라이브 잡은 rag 스테이지가 job_id 를 키로 serve 에 register 하므로(같은 프로세스,
+       통합 app), 여기서 그 snapshot_dir 을 그대로 얻는다. serve 미가용(퀴즈 라우터 단독
+       기동 등)이면 조용히 디스크로 폴백.
+    2) 디스크 snapshots/<키>: serve warmup 전이거나 단독 기동된 쇼케이스 스냅샷.
+
+    entities.parquet 존재까지 확인해 실제로 읽을 수 있는 스냅샷만 통과시킨다.
     """
-    key = (snapshot or "").strip() or DEFAULT_SNAPSHOT
-    if key == DEFAULT_SNAPSHOT:
+    try:
+        from backend.serve import STATE, _resolve_key
+
+        rk = _resolve_key(key) or key
+        st = STATE.snapshots.get(rk)
+        if st is not None:
+            d = Path(st.snapshot_dir)
+            if not d.is_absolute():
+                d = ROOT / d
+            if (d / "entities.parquet").exists():
+                return rk, d
+    except Exception:  # noqa: BLE001  serve 미가용 등 -> 디스크 폴백
+        pass
+    d = ROOT / "snapshots" / key
+    if (d / "entities.parquet").exists():
+        return key, d
+    return None
+
+
+def _builder_for(snapshot: str | None) -> EvidenceBuilder | None:
+    """스냅샷 키로 빌더를 고른다. 미지정/기본키이면 데모(테스트 페이지와 빌더 공유).
+
+    명시 키가 해석되지 않으면 None 을 돌려준다(호출부에서 404). 데모로 조용히 떨구지
+    않는다 - 라이브 잡(사용자 업로드 PDF)이 엉뚱한 도메인 퀴즈로 보이는 걸 막는다.
+    """
+    key = (snapshot or "").strip()
+    if not key or key == DEFAULT_SNAPSHOT:
         return _get_builder()
-    snap_dir = ROOT / "snapshots" / key
-    if not snap_dir.exists():
+    resolved = _resolve_snapshot_dir(key)
+    if resolved is None:
+        return None
+    rk, snap_dir = resolved
+    if rk == DEFAULT_SNAPSHOT:          # alias(repro_run3 등)도 데모 빌더를 공유
         return _get_builder()
-    if key not in _builders:
-        _builders[key] = EvidenceBuilder(snap_dir)
-    return _builders[key]
+    if rk not in _builders:
+        _builders[rk] = EvidenceBuilder(snap_dir)
+    return _builders[rk]
 
 
 class QuizJsonRequest(BaseModel):
     topic: str = ""
     count: int = 10
     quiz_types: list[str] | None = None
-    snapshot: str | None = None   # 등록 스냅샷 키(예: korean_history, statistics). 미지정=데모
+    snapshot: str | None = None   # 등록 스냅샷 키(korean_history, statistics) 또는 라이브 잡 job_id. 미지정=데모
 
 
 @router.post("/quiz/json")
@@ -70,6 +105,11 @@ async def quiz_json(req: QuizJsonRequest):
     - mode: "llm_verified" | "fallback". fallback 도 정상 200(배지/안내용).
     """
     builder = _builder_for(req.snapshot)
+    if builder is None:
+        raise HTTPException(
+            404,
+            f"스냅샷 '{req.snapshot}' 을(를) 찾을 수 없습니다(미등록이거나 아직 준비 안 됨).",
+        )
     selected = builder.select_candidates(topic=req.topic, count=req.count)
     result = await generate_quizzes(
         selected, count=req.count, quiz_types=req.quiz_types or None, topic=req.topic,
