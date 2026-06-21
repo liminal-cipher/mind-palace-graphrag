@@ -518,12 +518,45 @@ def _validate_snapshot_path(path: str) -> Path:
     )
 
 
+def _restore_from_blob(key: str) -> Optional[_SnapshotState]:
+    """재시작/재배포로 RAM 에 없는 라이브 스냅샷을 Blob 에서 내려받아 warm 한다. showcase
+    키는 대상 아님(레포 커밋·항상 warm). 성공이면 _SnapshotState, 실패면 None. 무거운
+    다운로드+warm 이라 반드시 _executor 스레드에서 호출한다(이벤트 루프 차단 방지)."""
+    cur = STATE.snapshots.get(key)
+    if cur is not None:
+        return cur  # 다른 요청이 이미 등록/복구 중. 준비 여부는 호출부가 판단.
+    if key in SNAPSHOTS:  # showcase 는 Blob 복구 대상 아님(레포 커밋).
+        return None
+    try:
+        from orchestrator import blob as _blob, config as _cfg
+    except Exception:
+        return None
+    if not _blob.snapshot_exists(key):
+        return None
+    local = _cfg.job_dir(key) / "index_root" / "output"
+    if not (local / "lancedb").exists():
+        if _blob.download_snapshot(key, local) == 0:
+            return None
+    try:
+        snap = _validate_snapshot_path(str(local))  # var/jobs 하위 검증 통과해야 함.
+    except ValueError:
+        return None
+    st = _SnapshotState(key, str(snap))
+    STATE.snapshots[key] = st
+    logger.info("스냅샷 Blob 복구: key=%s dir=%s", key, snap)
+    _warm_one(st)
+    return st if (st.ready and not st.error) else None
+
+
 async def _run_query(
     key: str, question: str, method: Optional[str] = "auto",
 ) -> tuple[str, str, Optional[dict]]:
     """키 -> 번들 -> (라우팅된) search. /query와 /jobs/{id}/query가 공유하는 코어.
     검색은 _executor 단일 스레드에서 직렬 실행된다. (answer, mode, sources) 반환."""
     st = STATE.snapshots.get(key)
+    if st is None:
+        # 재시작/재배포로 RAM 에 없으면 Blob 에서 복구 시도(라이브 잡 한정). 무거우므로 executor.
+        st = await asyncio.get_running_loop().run_in_executor(_executor, _restore_from_blob, key)
     if st is None:
         raise HTTPException(
             status_code=404,

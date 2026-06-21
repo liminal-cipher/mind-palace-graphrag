@@ -166,3 +166,23 @@ def snapshot_exists(job_id: str) -> bool:
     except Exception:
         return False
     return False
+
+
+def delete_job(job_id: str) -> int:
+    """이 잡의 모든 Blob(images + snapshot)을 지운다. 지운 개수 반환(0=없음/미설정).
+    DELETE /jobs/{id} 시 호출해 Blob 의 무한 누적을 막는다(big-service 의 정리 정책)."""
+    container = _container()
+    if container is None:
+        return 0
+    try:
+        names = [b.name for b in container.list_blobs(name_starts_with=f"jobs/{job_id}/")]
+    except Exception:
+        return 0
+    n = 0
+    for name in names:
+        try:
+            container.delete_blob(name)
+            n += 1
+        except Exception:
+            pass  # 이미 없음 등.
+    return n
