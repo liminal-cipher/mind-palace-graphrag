@@ -16,9 +16,9 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, Response
 
-from orchestrator import config
+from orchestrator import blob, config
 from orchestrator.jobs import JobStore, State
 from orchestrator.worker import Worker
 
@@ -186,21 +186,22 @@ async def job_toc(job_id: str):
 
 @app.get("/jobs/{job_id}/images/{filename}")
 async def job_image(job_id: str, filename: str):
-    """라이브 잡이 매칭한 PNG 를 서빙한다: palace_out/images/<filename>. 프론트는 노드의
-    images[].path('images/fig_X.png')를 이 경로로 풀어 <img> 렌더. 쇼케이스의
-    /images/{name}/{file} 와 평행한 라이브 잡 전용 경로. 경로 traversal 은 resolve 후
-    images_dir 하위인지 검증해 차단한다(절대/.. 차단)."""
-    store: JobStore = app.state.store
-    job = store.get(job_id)
-    if job is None:
-        raise HTTPException(status_code=404, detail=f"job_id '{job_id}' 없음")
+    """라이브 잡이 매칭한 PNG 를 서빙한다. 로컬(palace_out/images/<filename>) 우선,
+    없으면 Blob(jobs/<job_id>/images/<filename>) 폴백 — 재시작/잡 삭제로 로컬·DB 기록이
+    사라져도 Blob 에 있으면 그림이 살아남는다(서빙을 잡 DB 와 분리). 프론트는 노드의
+    images[].path('images/fig_X.png')를 이 경로로 풀어 <img> 렌더. 경로 traversal 은
+    resolve 후 images_dir 하위인지 검증해 차단한다(절대/.. 차단)."""
     images_dir = (config.job_dir(job_id) / "palace_out" / "images").resolve()
     target = (images_dir / filename).resolve()
     if images_dir not in target.parents:
         raise HTTPException(status_code=400, detail="잘못된 이미지 경로")
-    if not target.is_file():
-        raise HTTPException(status_code=404, detail=f"이미지 '{filename}' 없음")
-    return FileResponse(target)
+    if target.is_file():
+        return FileResponse(target)
+    # 로컬에 없으면(재시작 휘발/잡 삭제) Blob 폴백 — 잡 DB 존재 여부와 무관.
+    data = blob.download_job_image(job_id, target.name)
+    if data is not None:
+        return Response(content=data, media_type="image/png")
+    raise HTTPException(status_code=404, detail=f"이미지 '{filename}' 없음")
 
 
 @app.delete("/jobs/{job_id}")
