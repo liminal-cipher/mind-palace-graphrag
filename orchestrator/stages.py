@@ -518,6 +518,16 @@ async def rag(
     snapshot_path = fresh.snapshot_path if fresh else job.snapshot_path
     # 라이브 등록 키 = job_id. serve가 그 스냅샷을 warm하면 /jobs/{job_id}/query로 답한다.
     info = _register_with_serve(job.job_id, snapshot_path)
+    # 라이브 잡 스냅샷(parquet + lancedb)을 Blob 에 영속한다 — 재시작/재배포 후 serve 가
+    # job_id 로 다시 내려받아 warm 할 수 있게(lazy 복구). 쇼케이스(레포 커밋 스냅샷)는 제외.
+    # rag_ready 전에 올려, 잡이 '챗봇 준비'로 표시될 땐 이미 영속돼 있게 한다. best-effort.
+    if fresh and not fresh.showcase_key:
+        try:
+            n = blob.upload_snapshot(job.job_id, Path(snapshot_path))
+            if n:
+                logger.info("스냅샷 Blob 업로드 job=%s: %d개 파일", job.job_id, n)
+        except Exception as e:
+            logger.warning("스냅샷 Blob 업로드 예외(무시) job=%s: %s", job.job_id, e)
     store.update(job.job_id, state=State.RAG_READY, rag_ready=True)
     # 등록 결과(합성 모델/warm 시간)는 로그로만. 잡 상태는 rag_ready로 표현된다.
     logger.info(

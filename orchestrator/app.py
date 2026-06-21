@@ -237,6 +237,12 @@ async def job_delete(job_id: str):
     removed_dir = jd.exists()
     if removed_dir:
         shutil.rmtree(jd, ignore_errors=True)
+    # Blob 에 영속된 이 잡의 산출물(images + snapshot)도 함께 정리해 무한 누적을 막는다.
+    removed_blobs = 0
+    try:
+        removed_blobs = blob.delete_job(job_id)
+    except Exception as e:
+        logger.warning("Blob 정리 예외(무시) job=%s: %s", job_id, e)
     store.delete(job_id)
-    logger.info("deleted job %s (removed_dir=%s)", job_id, removed_dir)
-    return {"deleted": job_id, "removed_dir": removed_dir}
+    logger.info("deleted job %s (removed_dir=%s, removed_blobs=%d)", job_id, removed_dir, removed_blobs)
+    return {"deleted": job_id, "removed_dir": removed_dir, "removed_blobs": removed_blobs}
