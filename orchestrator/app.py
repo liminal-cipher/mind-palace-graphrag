@@ -18,7 +18,7 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, JSONResponse, Response
 
-from orchestrator import blob, config
+from orchestrator import blob, config, cosmos_jobs
 from orchestrator.jobs import JobStore, State
 from orchestrator.worker import Worker
 
@@ -32,14 +32,21 @@ logger = logging.getLogger("orchestrator.app")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     config.ensure_dirs()
-    store = JobStore(config.DB_PATH)
+    config.load_env()  # .env 의 Cosmos 키를 환경으로(이미 설정된 값은 보존; 배포는 App Settings).
+    # Cosmos 가 설정되면 잡 상태를 영속(재시작/재배포에도 생존), 아니면 로컬 SQLite 폴백.
+    if cosmos_jobs.configured():
+        store = cosmos_jobs.CosmosJobStore()
+        store_kind = "Cosmos(영속)"
+    else:
+        store = JobStore(config.DB_PATH)
+        store_kind = f"SQLite({config.DB_PATH}, 휘발)"
     store.init_db()
     worker = Worker(store, sleep_seconds=config.STUB_STAGE_SECONDS)
     worker.start()
     worker.recover()  # 루프가 뜬 뒤 비종단 잡 복구(재큐/FAILED).
     app.state.store = store
     app.state.worker = worker
-    logger.info("오케스트레이터 준비됨. db=%s", config.DB_PATH)
+    logger.info("오케스트레이터 준비됨. 잡 스토어=%s", store_kind)
     yield
     worker.stop()
 
