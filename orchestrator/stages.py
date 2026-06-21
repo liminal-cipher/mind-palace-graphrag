@@ -28,7 +28,7 @@ import urllib.request
 from pathlib import Path
 from typing import Optional
 
-from orchestrator import config, domain_detect, entity_types, index_root
+from orchestrator import blob, config, domain_detect, entity_types, index_root
 from orchestrator.jobs import Job, JobStore, State
 
 logger = logging.getLogger("orchestrator.stages")
@@ -469,6 +469,15 @@ async def build_palace(
             )
         else:
             logger.info("이미지 매칭 완료 job=%s: %s", job.job_id, out.strip()[-300:])
+            # 매칭 이미지(palace_out/images)를 Blob 에 영속한다 — 재시작/잡 삭제로
+            # 로컬·DB 기록이 사라져도 job_id+파일명으로 서빙되게(서빙은 DB 와 분리).
+            # 미설정이면 no-op. best-effort(텍스트 체인과 무관해 잡을 죽이지 않는다).
+            try:
+                n = blob.upload_job_images(job.job_id, out_dir / "images")
+                if n:
+                    logger.info("이미지 Blob 업로드 job=%s: %d개", job.job_id, n)
+            except Exception as e:
+                logger.warning("이미지 Blob 업로드 단계 예외 job=%s: %s", job.job_id, e)
 
     store.update(
         job.job_id,
