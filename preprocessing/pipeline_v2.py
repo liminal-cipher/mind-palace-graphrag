@@ -125,13 +125,43 @@ def run_pipeline(pdf_path: str, out_dir=None, *, force_scan: bool = False, debug
     print(f"[OUT]    {out_dir}")
 
     if step1["is_scan"]:
-        # 스캔 경로: CU 추출 → 파싱 → 이미지 후처리
+        # 스캔 경로: (PII 마스킹) → CU 추출 → 파싱 → 이미지 후처리
+        #
+        # PII_MASK_SCAN=1(기본) 이면 CU 전송 전에 페이지를 마스킹한다. 로컬 OCR 로 PII
+        # 위치를 찾아 검은 박스로 가린 masked.pdf 를 CU 로 보내고, STEP3 figure 크롭도
+        # 같은 마스킹 페이지(같은 SCALE)에서 한다 → 외부(CU)와 그림 양쪽에 PII 없음.
+        # 끄려면 PII_MASK_SCAN=0 (원본 그대로 CU 전송, 기존 동작).
+        import os as _os
+
+        mask_on = _os.environ.get("PII_MASK_SCAN", "1") != "0"
+        masked_page_paths = None
+        send_pdf = pdf_path
+        if mask_on:
+            from step2_premask import premask_pdf
+
+            t = time.time()
+            pre = premask_pdf(pdf_path, out_dir)
+            masked_page_paths = pre["page_paths"]
+            send_pdf = str(pre["masked_pdf"])  # CU 로는 마스킹본을 보낸다
+            timings["STEP 2-PRE 마스킹"] = time.time() - t
+            notes.append(
+                f"PII 마스킹 ON: {pre['total_masked']}개 영역 가림 "
+                f"(CU·그림 모두 마스킹본 사용)"
+            )
+        else:
+            timings["STEP 2-PRE 마스킹"] = None
+            notes.append("PII 마스킹 OFF (원본 그대로 CU 전송)")
+
         t = time.time()
-        raw = step2_extract_cu(pdf_path, out_dir, debug=debug)
+        # 캐시키는 원본(pdf_path), 실제 업로드는 send_pdf(마스킹본).
+        raw = step2_extract_cu(pdf_path, out_dir, debug=debug, send_pdf_path=send_pdf)
         timings["STEP 2-CU API 추출"] = time.time() - t
 
         t = time.time()
-        figures = step3_parse_cu(raw, pdf_path, out_dir, debug=debug)
+        figures = step3_parse_cu(
+            raw, pdf_path, out_dir, debug=debug,
+            masked_page_paths=masked_page_paths,  # 크롭도 마스킹 페이지에서
+        )
         timings["STEP 3-CU 분리"] = time.time() - t
 
         t = time.time()
@@ -145,6 +175,22 @@ def run_pipeline(pdf_path: str, out_dir=None, *, force_scan: bool = False, debug
         timings["STEP 3-CU 분리"] = None
         timings["STEP 4 이미지 후처리"] = None
         notes.append("STEP 3/4 미적용 (디지털 경로)")
+
+    # PII 텍스트 스크럽 (STEP5=Azure LLM 전, 양쪽 경로 공통 — 방어 심층).
+    #   디지털: 텍스트가 로컬 추출이라 마스킹 대상 이미지가 없다 → 추출 텍스트에서 PII
+    #           구간을 제거해 GraphRAG/STEP5(Azure)로 PII 누출 차단(유일 차단 지점).
+    #   스캔: premask 로 이미 이미지에서 제거됐지만, OCR 오인식으로 샌 PII 를 텍스트
+    #         단계에서 한 번 더 거른다(안전망). 인물·지명은 KO_PII_EXCLUDE 로 보존.
+    #   토큰을 안 남기고 *제거* 한다 → 스캔(검은박스=텍스트 부재)과 동일, 가짜 노드 0.
+    from step2_premask import scrub_text_pii
+
+    t = time.time()
+    craw = out_dir / "txt" / "content_raw.txt"
+    if craw.is_file():
+        cleaned, n = scrub_text_pii(craw.read_text(encoding="utf-8"))
+        craw.write_text(cleaned, encoding="utf-8")
+        notes.append(f"PII 텍스트 스크럽: {n}건 제거(토큰 없음)")
+    timings["STEP 4.5 PII 스크럽"] = time.time() - t
 
     # STEP 5 — LLM 정제·캡션·목차 (스캔 여부 전달)
     t = time.time()
