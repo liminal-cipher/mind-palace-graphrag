@@ -18,6 +18,7 @@ import os
 import sys
 import time
 from pathlib import Path
+from typing import Optional
 
 import requests
 from dotenv import load_dotenv
@@ -148,9 +149,21 @@ def _poll(result_url: str, timeout: int = 900) -> dict:
 # STEP 2-CU 메인
 # ---------------------------------------------------------------------------
 
-def step2_extract_cu(pdf_path: str, out_dir: Path, debug: bool = False) -> dict:
+def step2_extract_cu(
+    pdf_path: str,
+    out_dir: Path,
+    debug: bool = False,
+    send_pdf_path: Optional[str] = None,
+) -> dict:
     """
     CU API로 PDF 분석. 캐시가 있으면 재사용.
+
+    Args:
+        pdf_path:      원본 PDF 경로. 캐시 키(버전 폴더 탐색)는 *이 이름* 기준이라,
+                       마스킹 여부와 무관하게 같은 원본은 같은 캐시를 가리킨다.
+        send_pdf_path: 실제로 CU 에 업로드할 PDF. None 이면 pdf_path 를 그대로 보낸다.
+                       PII 마스킹을 켜면 여기에 masked.pdf 경로를 넘겨, 외부로는
+                       가려진 이미지만 나가고 원본 PII 는 전송되지 않는다.
 
     Returns:
         raw_response dict (result.contents 포함 전체 응답)
@@ -161,8 +174,9 @@ def step2_extract_cu(pdf_path: str, out_dir: Path, debug: bool = False) -> dict:
         )
 
     out_dir.mkdir(parents=True, exist_ok=True)
+    upload_path = send_pdf_path or pdf_path  # 외부로 나가는 실제 파일
 
-    # 캐시 확인
+    # 캐시 확인(원본 pdf_path 기준 — 마스킹본/원본이 같은 캐시를 공유)
     cached = _find_cached_raw(pdf_path, out_dir)
     if cached:
         print(f"[STEP 2-CU] 캐시 재사용 → {cached}")
@@ -173,10 +187,12 @@ def step2_extract_cu(pdf_path: str, out_dir: Path, debug: bool = False) -> dict:
             dest.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
         return data
 
-    # API 호출
+    # API 호출 — upload_path(마스킹본 우선)를 전송한다.
     print("[STEP 2-CU] Azure API 호출 중...")
+    if upload_path != pdf_path:
+        print(f"  업로드 대상: {Path(upload_path).name} (PII 마스킹본)")
     _ensure_analyzer()
-    result_url = _submit_analyze(pdf_path)
+    result_url = _submit_analyze(upload_path)
     print(f"  Operation-Location: {result_url}")
     data = _poll(result_url)
 

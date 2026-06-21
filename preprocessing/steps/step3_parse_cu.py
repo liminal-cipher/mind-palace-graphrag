@@ -223,9 +223,16 @@ def step3_parse_cu(
     pdf_path: str,
     out_dir: Path,
     debug: bool = False,
+    masked_page_paths: dict | None = None,
 ) -> list[dict]:
     """
     raw_response.json → 이미지 크롭 + 텍스트 + 캡션 분리.
+
+    Args:
+        masked_page_paths: {page_no(1-based): Path} 마스킹된 페이지 PNG. 주어지면
+            figure 크롭을 원본 PDF 가 아니라 이 이미지에서 한다(같은 SCALE 로
+            렌더됐으므로 CU bbox 와 좌표 정합). PII 가 그림에도 안 남게 하는 핵심.
+            None 이면 기존 동작(원본 PDF 에서 크롭).
 
     Returns: figures 리스트 (figures.json 스키마)
     """
@@ -236,11 +243,18 @@ def step3_parse_cu(
 
     # ── 1. 이미지 크롭 ───────────────────────────────────────────────────────
     raw_figures = _collect_raw_figures(raw_response)
-    doc = fitz.open(pdf_path)
+    # 마스킹 페이지가 있으면 원본 PDF 를 열지 않는다(PII 누출 방지). 없으면 기존 경로.
+    doc = None if masked_page_paths else fitz.open(pdf_path)
     page_cache: dict[int, Image.Image] = {}
 
     figures: list[dict] = []
     page_img_count: dict[int, int] = {}
+
+    # 페이지 총수: 마스킹 모드는 page_paths 키 최대값, 원본 모드는 doc 길이.
+    if masked_page_paths:
+        _page_count = max(masked_page_paths) if masked_page_paths else 0
+    else:
+        _page_count = len(doc)
 
     for raw_fig in raw_figures:
         fig_id  = raw_fig.get("id", "")
@@ -253,12 +267,20 @@ def step3_parse_cu(
         page_no  = r["page"]          # 1-based
         page_idx = page_no - 1
 
-        if page_idx < 0 or page_idx >= len(doc):
+        if page_idx < 0 or page_idx >= _page_count:
             continue
 
         if page_idx not in page_cache:
-            pix = doc[page_idx].get_pixmap(matrix=fitz.Matrix(SCALE, SCALE))
-            page_cache[page_idx] = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+            if masked_page_paths:
+                # 마스킹된 페이지 이미지(같은 SCALE 로 렌더됨)를 크롭 소스로 쓴다.
+                mpath = masked_page_paths.get(page_no)
+                if mpath is None or not Path(mpath).is_file():
+                    print(f"  [page {page_no:3d}] 마스킹 이미지 없음 → 건너뜀")
+                    continue
+                page_cache[page_idx] = Image.open(mpath).convert("RGB")
+            else:
+                pix = doc[page_idx].get_pixmap(matrix=fitz.Matrix(SCALE, SCALE))
+                page_cache[page_idx] = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
 
         pil_img = page_cache[page_idx]
         bbox_px = _inch_to_px(r["bbox"], SCALE)
@@ -289,7 +311,8 @@ def step3_parse_cu(
             "sub_crops":         [],
         })
 
-    doc.close()
+    if doc is not None:
+        doc.close()
     print(f"\n[CU] 이미지 {len(figures)}개 크롭 완료")
 
     # ── 2. 본문 텍스트 추출 ──────────────────────────────────────────────────
