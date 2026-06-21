@@ -33,14 +33,21 @@ logger = logging.getLogger("orchestrator.app")
 async def lifespan(app: FastAPI):
     config.ensure_dirs()
     config.load_env()  # .env 의 Cosmos 키를 환경으로(이미 설정된 값은 보존; 배포는 App Settings).
-    # Cosmos 가 설정되면 잡 상태를 영속(재시작/재배포에도 생존), 아니면 로컬 SQLite 폴백.
+    # Cosmos 가 설정되고 초기화에 성공하면 잡 상태를 영속(재시작/재배포 생존). 미설정이거나
+    # Cosmos 초기화 실패(잘못된 자격증명 등)면 로컬 SQLite 로 폴백해 앱이 죽지 않게 한다.
+    store = None
     if cosmos_jobs.configured():
-        store = cosmos_jobs.CosmosJobStore()
-        store_kind = "Cosmos(영속)"
-    else:
+        try:
+            store = cosmos_jobs.CosmosJobStore()
+            store.init_db()
+            store_kind = "Cosmos(영속)"
+        except Exception:
+            logger.warning("Cosmos 잡 스토어 초기화 실패 → SQLite 폴백", exc_info=True)
+            store = None
+    if store is None:
         store = JobStore(config.DB_PATH)
+        store.init_db()
         store_kind = f"SQLite({config.DB_PATH}, 휘발)"
-    store.init_db()
     worker = Worker(store, sleep_seconds=config.STUB_STAGE_SECONDS)
     worker.start()
     worker.recover()  # 루프가 뜬 뒤 비종단 잡 복구(재큐/FAILED).
