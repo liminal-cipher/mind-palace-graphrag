@@ -5,6 +5,17 @@ torch==2.12.0+cpu
 torchvision==0.27.0+cpu
 doclayout-yolo==0.0.4
 opencv-python-headless==4.13.0.92
+
+# PII 마스킹: CU 전송 전 페이지 PII 를 가린다(STEP 2-PREMASK).
+# ko-pii      = 한국어 PII 검출(룰+체크섬). file extra 로 HWP/PDF 파서까지(여기선 코어만 사용).
+# paddleocr   = 로컬 OCR(글자+bbox 좌표). paddlepaddle CPU 휠 필요.
+# paddlepaddle 은 PyPI 기본 휠(CPU). App Service 메모리 경쟁 주의(B2/B3 권장, README 참조).
+# paddleocr>=3.7: 핀 없으면 2.10 으로 풀려 paddle 3.x 와 OneDNN(fused_conv2d) 충돌이
+#   난다. 3.x 는 predict()/rec_texts API(steps/step2_premask·preprocessing/ocr_paddle 전제).
+ko-pii
+paddlepaddle>=3.0
+paddleocr>=3.7
+
 aiofiles==24.1.0
 aiohappyeyeballs==2.6.2
 aiohttp==3.13.5
@@ -85,7 +96,7 @@ murmurhash==1.0.15
 nest-asyncio2==1.7.2
 networkx==3.6.1
 nltk==3.9.4
-numpy==2.4.6
+numpy>=2.1.0,<2.5.0
 onnxruntime==1.20.1
 openai==2.38.0
 overrides==7.7.0
