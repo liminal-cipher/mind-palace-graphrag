@@ -53,7 +53,19 @@ def _inch_to_px(bbox_inch: list[float], scale: float) -> list[int]:
 def _safe_crop(pil_img: Image.Image, bbox_px: list[int]) -> Image.Image:
     x0, y0, x1, y1 = bbox_px
     w, h = pil_img.size
-    return pil_img.crop((max(0, x0), max(0, y0), min(w, x1), min(h, y1)))
+    # 좌표를 정렬해 뒤집힌 bbox(x1<x0)를 바로잡고 이미지 경계로 클램프한다. 각 좌표를
+    # 따로 클램프하면 bbox 가 뒤집혔거나 이미지 밖(x0>w)일 때 right<left 가 되어 PIL
+    # crop 이 터진다(스캔 PDF 의 비정상 figure 좌표에서 잡 전체가 죽던 원인).
+    left, right = sorted((x0, x1))
+    top, bottom = sorted((y0, y1))
+    left, top = max(0, left), max(0, top)
+    right, bottom = min(w, right), min(h, bottom)
+    # 클램프 후 폭/높이가 0 이하로 무너지면 1px 로 보정해 crop 예외를 막는다.
+    if right <= left:
+        right = left + 1
+    if bottom <= top:
+        bottom = top + 1
+    return pil_img.crop((left, top, right, bottom))
 
 
 # 매 페이지 반복되는 머리말/꼬리말 장식(로고 등)은 제외한다.
