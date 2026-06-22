@@ -228,3 +228,50 @@ class CosmosJobStore:
             query=query, parameters=params, enable_cross_partition_query=True
         )
         return [_doc_to_job(d) for d in items]
+
+
+# ── LLM 사용량 기록(비용추적·사업모델 데이터) ────────────────────────────────
+USAGE = "usage"
+_usage_container_singleton = None
+
+
+def _usage_container():
+    """usage 컨테이너(pk /jobId, 없으면 생성, 캐시). 미설정/오류 시 None."""
+    global _usage_container_singleton
+    if _usage_container_singleton is not None:
+        return _usage_container_singleton
+    client = _get_client()
+    if client is None:
+        return None
+    try:
+        from azure.cosmos import PartitionKey
+
+        db = _ensure_database(client)
+        cont = db.create_container_if_not_exists(
+            id=USAGE, partition_key=PartitionKey(path="/jobId")
+        )
+        _usage_container_singleton = cont
+        return cont
+    except Exception:
+        log.warning("Cosmos usage 컨테이너 확보 실패", exc_info=True)
+        return None
+
+
+def record_usage(job_id: str, stage: str, summary: dict) -> None:
+    """잡의 LLM 사용량(stage별: indexing/chat 등)을 usage 컨테이너에 기록. best-effort
+    (미설정/오류는 조용히 무시 — 본연 동작에 영향 0). 유저 귀속은 Mindpalace_fork 가
+    잡↔유저 매핑으로 jobId 기준 집계한다(graphrag /upload 는 익명이라 userId 를 모름)."""
+    cont = _usage_container()
+    if cont is None:
+        return
+    try:
+        doc = {
+            "id": f"{job_id}:{stage}",
+            "jobId": job_id,
+            "stage": stage,
+            "ts": _now(),
+            **(summary or {}),
+        }
+        cont.upsert_item(doc)
+    except Exception:
+        log.warning("usage 기록 실패 job=%s stage=%s", job_id, stage, exc_info=True)
