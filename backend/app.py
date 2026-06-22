@@ -27,9 +27,11 @@ lifespan에서 두 서브앱 lifespan을 AsyncExitStack으로 직접 연다.
 경쟁 때문에 B2/B3 플랜을 권장한다(런북 참조). serve의 register는 내부 전용이라 orchestrator
 rag 스테이지가 같은 프로세스 안에서 http://127.0.0.1:<port> 로 호출한다(config.SERVE_URL).
 """
+import os
 from contextlib import AsyncExitStack, asynccontextmanager
 
-from fastapi import FastAPI
+import requests
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend import showcase
@@ -71,4 +73,23 @@ app.include_router(showcase.router)  # GET /palace/{name}, GET /images/{name}/{f
 app.include_router(quiz_page.router)  # GET/POST /quiz + POST /quiz/grade (테스트 페이지, 서버 채점)
 app.include_router(quiz_json.router)  # POST /quiz/json (인룸 퀴즈 JSON, quiz_page 재사용 - 추가만)
 app.include_router(mnemonic_routes.router)  # POST /mnemonic (핫스팟→학습노드 연상 장면 생성)
+
+
+@app.get("/api/speech-token")
+def speech_token():
+    """브라우저에 키 대신 10분짜리 토큰만 발급 (Azure Speech)."""
+    region = os.environ.get("AZURE_SPEECH_REGION")
+    key = os.environ.get("AZURE_SPEECH_KEY")
+    if not region or not key:
+        raise HTTPException(status_code=500, detail="speech not configured")
+    resp = requests.post(
+        f"https://{region}.api.cognitive.microsoft.com/sts/v1.0/issueToken",
+        headers={"Ocp-Apim-Subscription-Key": key},
+        timeout=10,
+    )
+    if resp.status_code != 200:
+        raise HTTPException(status_code=502, detail="speech token issue failed")
+    return {"token": resp.text, "region": region}
+
+
 app.mount("/", serve_app)
