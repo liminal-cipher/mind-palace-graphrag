@@ -13,6 +13,7 @@ quiz_generator 는 자체 사본을 유지한다(팀원 코드, 안 건드림). 
 """
 from __future__ import annotations
 
+import contextvars
 import os
 import re
 from typing import Any
@@ -21,6 +22,43 @@ from urllib.parse import parse_qsl, quote, urlencode, urlsplit, urlunsplit
 import httpx
 
 _RESPONSES_API_VERSION = "2025-04-01-preview"
+
+# 이 비동기 컨텍스트가 쓴 LLM 토큰 누적기. 요청 핸들러가 start_usage_capture()로 깔면
+# 같은 task 에서 await 되는 call_llm 들이 record_usage()로 토큰을 더한다(요청마다 격리).
+_usage_acc: contextvars.ContextVar = contextvars.ContextVar("llm_usage_acc", default=None)
+
+
+def start_usage_capture() -> dict:
+    """현재 컨텍스트에 새 누적기를 깔고 반환한다(퀴즈/mnemonic 등 토큰 집계용)."""
+    acc = {"input_tokens": 0, "output_tokens": 0, "calls": 0}
+    _usage_acc.set(acc)
+    return acc
+
+
+def record_usage(data: dict) -> None:
+    """Responses API 응답의 usage 를 현재 누적기에 더한다(누적기 없으면 무시)."""
+    acc = _usage_acc.get()
+    if acc is None:
+        return
+    u = (data or {}).get("usage") or {}
+    try:
+        acc["input_tokens"] += int(u.get("input_tokens", 0) or 0)
+        acc["output_tokens"] += int(u.get("output_tokens", 0) or 0)
+        acc["calls"] += 1
+    except Exception:
+        pass
+
+
+def usage_summary(acc: dict) -> dict:
+    """누적기 → {prompt_tokens, completion_tokens, total_tokens, calls}."""
+    inp = int((acc or {}).get("input_tokens", 0) or 0)
+    out = int((acc or {}).get("output_tokens", 0) or 0)
+    return {
+        "prompt_tokens": inp,
+        "completion_tokens": out,
+        "total_tokens": inp + out,
+        "calls": int((acc or {}).get("calls", 0) or 0),
+    }
 
 
 def get_azure_responses_url() -> str | None:
@@ -91,4 +129,5 @@ async def call_llm(input_payload: Any, max_output_tokens: int = 2400) -> str:
                    or f"Azure OpenAI 호출 실패: {response.status_code}")
         raise RuntimeError(message)
 
+    record_usage(data)  # 토큰 누적(누적기 깔려 있을 때만).
     return extract_response_text(data)

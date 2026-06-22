@@ -547,6 +547,8 @@ async def call_llm(input_payload: Any, max_output_tokens: int = 2400) -> str:
         message = (data.get("error") or {}).get("message") or f"Azure OpenAI 호출 실패: {response.status_code}"
         raise RuntimeError(message)
 
+    from backend.llm import record_usage  # 공용 누적기에 토큰 기록(누적기 깔려 있을 때만).
+    record_usage(data)
     return extract_response_text(data)
 
 

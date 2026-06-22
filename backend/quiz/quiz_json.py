@@ -18,6 +18,7 @@ from pathlib import Path
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
+from backend import llm as _llm
 from backend.quiz.quiz_generator import EvidenceBuilder, generate_quizzes
 from backend.quiz.quiz_page import (
     ROOT,
@@ -111,6 +112,7 @@ async def quiz_json(req: QuizJsonRequest):
             f"스냅샷 '{req.snapshot}' 을(를) 찾을 수 없습니다(미등록이거나 아직 준비 안 됨).",
         )
     selected = builder.select_candidates(topic=req.topic, count=req.count)
+    acc = _llm.start_usage_capture()  # 생성+검증 LLM 토큰 누적(이 요청 한정).
     result = await generate_quizzes(
         selected, count=req.count, quiz_types=req.quiz_types or None, topic=req.topic,
     )
@@ -125,4 +127,5 @@ async def quiz_json(req: QuizJsonRequest):
         "questions": questions,
         "mode": result.get("mode"),
         "warning": result.get("warning"),
+        "usage": _llm.usage_summary(acc),  # {total_tokens,...} - 프론트가 사용량 추적에 쓴다.
     }
