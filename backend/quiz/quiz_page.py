@@ -62,11 +62,17 @@ def _get_builder() -> EvidenceBuilder:
 
 
 def _store_quiz(quizzes: list[dict]) -> str:
-    """채점용으로 퀴즈를 보관하고 quiz_id를 돌려준다."""
+    """채점용으로 퀴즈를 보관하고 quiz_id를 돌려준다.
+
+    RAM(_SESSIONS) 보관에 더해 Cosmos(quiz_sessions)에도 best-effort 로 영속한다 —
+    serve 재시작/재배포 뒤에도 채점이 되도록(미설정/오류는 조용히 무시, RAM 채점엔 영향 0).
+    """
     quiz_id = uuid.uuid4().hex
     _SESSIONS[quiz_id] = quizzes
     while len(_SESSIONS) > _SESSIONS_MAX:
         del _SESSIONS[next(iter(_SESSIONS))]
+    from backend.quiz import quiz_store
+    quiz_store.save_session(quiz_id, quizzes)
     return quiz_id
 
 
@@ -180,7 +186,12 @@ async def quiz_grade(req: GradeRequest):
     같은 라우트로 처리되며, 응답에 안 푼 문제의 정답은 실리지 않아 은닉이 유지된다.
     """
     quizzes = _SESSIONS.get(req.quiz_id)
-    if quizzes is None:  # 만료/미존재(서버 재시작 시 _SESSIONS 소실)
+    if quizzes is None:  # RAM miss(서버 재시작 시 _SESSIONS 소실) → Cosmos 에서 복구 시도.
+        from backend.quiz import quiz_store
+        quizzes = quiz_store.load_session(req.quiz_id)
+        if quizzes is not None:
+            _SESSIONS[req.quiz_id] = quizzes  # 복구분을 RAM 에 재적재(다음 채점은 빠르게).
+    if quizzes is None:  # 만료/미존재(Cosmos 미설정·TTL 만료 포함)
         raise HTTPException(404, "만료됐거나 알 수 없는 quiz_id 입니다. 퀴즈를 다시 생성하세요.")
 
     results: list[dict] = []
