@@ -20,6 +20,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import os
 import shutil
 import subprocess
 import sys
@@ -508,10 +509,13 @@ def _register_with_serve(key: str, snapshot_path: str) -> dict:
     _executor 스레드에서 warm하므로 LanceDB 친화성은 serve 쪽에서 보장된다."""
     url = config.SERVE_URL.rstrip("/") + "/snapshots/register"
     payload = json.dumps({"key": key, "path": snapshot_path}).encode("utf-8")
-    req = urllib.request.Request(
-        url, data=payload, method="POST",
-        headers={"Content-Type": "application/json"},
-    )
+    headers = {"Content-Type": "application/json"}
+    # serve 를 별도 호스트로 분리 배치(SERVE_URL 이 비-loopback)한 경우의 내부 인증.
+    # 같은 컨테이너(loopback) 호출이면 serve 가 loopback 으로 허용하므로 토큰은 선택적.
+    token = os.environ.get("INTERNAL_API_TOKEN")
+    if token:
+        headers["X-Internal-Token"] = token
+    req = urllib.request.Request(url, data=payload, method="POST", headers=headers)
     try:
         with urllib.request.urlopen(req, timeout=180) as resp:
             return json.loads(resp.read().decode("utf-8"))

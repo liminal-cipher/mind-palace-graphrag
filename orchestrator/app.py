@@ -91,8 +91,9 @@ async def upload(
             detail=f"미지원 showcase '{showcase}'. 지원: {supported}.",
         )
 
-    # 공개 업로드 크기 상한. Content-Length 로 본문을 메모리에 읽기 전에 먼저 거절하고
-    # (거대 파일이 RAM 을 치기 전에 차단), 헤더가 없거나 거짓이면 실제 길이로 폴백 검증.
+    # 공개 업로드 크기 상한. Content-Length 가 있으면 본문을 받기 전에 먼저 거절한다
+    # (정직한 클라이언트 빠른 차단). 단 이 헤더는 위조·생략 가능하므로 신뢰하지 않고,
+    # 실제 차단은 아래 스트리밍 누적 검증이 담당한다.
     limit = config.MAX_UPLOAD_BYTES
     cl = request.headers.get("content-length")
     if cl is not None:
@@ -103,16 +104,7 @@ async def upload(
                     detail=f"파일이 너무 큼: 상한 {config.MAX_UPLOAD_MB}MB",
                 )
         except ValueError:
-            pass  # 헤더가 정수가 아니면 무시하고 아래 실제 길이 검증에 맡긴다.
-
-    data = await request.body()
-    if not data:
-        raise HTTPException(status_code=422, detail="빈 본문. 파일 바이트가 필요하다.")
-    if len(data) > limit:
-        raise HTTPException(
-            status_code=413,
-            detail=f"파일이 너무 큼: {len(data) // (1024 * 1024)}MB (상한 {config.MAX_UPLOAD_MB}MB)",
-        )
+            pass  # 헤더가 정수가 아니면 무시하고 아래 스트리밍 검증에 맡긴다.
 
     job_id = uuid.uuid4().hex
     run_id = job_id  # run_id == job_id.
@@ -126,7 +118,27 @@ async def upload(
     # 경로 탈출 방지: 파일명만 취한다.
     safe_name = Path(filename).name or "upload.txt"
     input_path = input_dir / safe_name
-    input_path.write_bytes(data)
+
+    # 본문을 청크로 흘려 디스크에 바로 쓰고, 누적 크기가 상한을 넘으면 즉시 중단·정리한다.
+    # request.body() 로 전체를 메모리에 적재하지 않으므로, Content-Length 를 생략/위조한
+    # 거대 본문(chunked)으로 RAM 을 고갈시키는 공격을 막는다(메모리 상한 = 청크 크기).
+    total = 0
+    try:
+        with input_path.open("wb") as fh:
+            async for chunk in request.stream():
+                total += len(chunk)
+                if total > limit:
+                    raise HTTPException(
+                        status_code=413,
+                        detail=f"파일이 너무 큼: 상한 {config.MAX_UPLOAD_MB}MB",
+                    )
+                fh.write(chunk)
+    except HTTPException:
+        shutil.rmtree(jd, ignore_errors=True)  # 부분 파일·잡 폴더 정리 후 그대로 전파.
+        raise
+    if total == 0:
+        shutil.rmtree(jd, ignore_errors=True)
+        raise HTTPException(status_code=422, detail="빈 본문. 파일 바이트가 필요하다.")
 
     store: JobStore = app.state.store
     store.create(
