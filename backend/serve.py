@@ -37,7 +37,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
@@ -563,7 +563,9 @@ async def _run_query(
             detail=f"'{key}' 미등록 (등록됨: {', '.join(STATE.snapshots) or '-'}).",
         )
     if st.error:
-        raise HTTPException(status_code=503, detail=f"'{key}' warmup 실패: {st.error}")
+        # 원시 예외 텍스트는 숨기고(내부 경로 노출 방지) 일반 메시지만. 상세는 서버 로그.
+        logger.warning("query 거절: key=%s warmup 실패 상태(error=%s)", key, st.error)
+        raise HTTPException(status_code=503, detail=f"'{key}' 준비에 실패했습니다. 잠시 후 다시 시도하세요.")
     if not st.ready or st.engine is None:
         raise HTTPException(status_code=503, detail=f"'{key}' warmup 진행 중. 잠시 후 재시도.")
 
@@ -582,10 +584,12 @@ def _snapshot_health(st: Optional[_SnapshotState], snapshot_dir: str) -> dict:
     if st is None:
         return {"status": "pending", "ready": False, "snapshot_dir": snapshot_dir}
     if st.error:
+        # 공개 엔드포인트(/health·/ready)라 원시 예외(내부 경로·스택)를 노출하지 않는다.
+        # 상세는 warmup 시 logger.exception 으로 이미 서버 로그에 남는다(운영 디버깅).
         return {
             "status": "error",
             "ready": False,
-            "error": st.error,
+            "error": "warmup 실패(서버 로그 확인)",
             "snapshot_dir": snapshot_dir,
         }
     return {
@@ -649,13 +653,32 @@ async def ready(snapshot: Optional[str] = None):
     )
 
 
+def _require_internal(request: Request) -> None:
+    """register 는 내부 전용임을 *코드로* 강제한다(주석만으론 공개 마운트 시 노출됨).
+
+    허용 조건(둘 중 하나):
+      - loopback(127.0.0.1/::1) 호출: 같은 컨테이너의 오케스트레이터 rag 스테이지.
+        App Service 외부 트래픽은 프록시 IP 로 들어와 loopback 이 아니다.
+      - INTERNAL_API_TOKEN 이 설정돼 있고 X-Internal-Token 헤더가 일치: serve 를
+        별도 호스트로 분리 배치(SERVE_URL 이 외부)했을 때의 내부 인증 경로.
+    그 외(외부 무인증 호출)는 403 으로 차단한다."""
+    token = os.environ.get("INTERNAL_API_TOKEN")
+    if token and request.headers.get("x-internal-token") == token:
+        return
+    client = request.client.host if request.client else None
+    if client in ("127.0.0.1", "::1"):
+        return
+    raise HTTPException(status_code=403, detail="register 는 내부 전용 엔드포인트입니다.")
+
+
 @app.post("/snapshots/register")
-async def register_snapshot(req: RegisterRequest):
+async def register_snapshot(req: RegisterRequest, request: Request):
     """런타임 스냅샷 등록(내부 전용). 오케스트레이터 rag 스테이지가 빌드된 잡 스냅샷을
-    여기에 register하면 /jobs/{key}/query로 답할 수 있다. 외부 노출 금지(127.0.0.1).
+    여기에 register하면 /jobs/{key}/query로 답할 수 있다. 외부 노출 금지(_require_internal).
 
     warm은 반드시 _executor 단일 스레드에서 일어난다(LanceDB 친화성 + asyncio.run
     제약). 같은 키 재등록은 멱등(덮어쓰기 -> 재빌드)."""
+    _require_internal(request)
     try:
         snap = _validate_snapshot_path(req.path)
     except ValueError as e:
