@@ -75,8 +75,12 @@ class UsageAccumulator:
             logger.debug("usage 콜백 파싱 실패", exc_info=True)
 
     def summary(self) -> dict:
+        total_tokens = sum(
+            v["prompt_tokens"] + v["completion_tokens"] for v in self.by_model.values()
+        )
         return {
             "total_cost_usd": round(self.total_cost, 6),
+            "total_tokens": total_tokens,  # 유저 표시는 $ 대신 토큰(Responsible AI).
             "calls": self.calls,
             "by_model": {
                 k: {**v, "cost": round(v["cost"], 6)} for k, v in self.by_model.items()
