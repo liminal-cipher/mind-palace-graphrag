@@ -36,6 +36,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any, Optional
 
+from orchestrator import usage as _usage
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
@@ -416,32 +417,85 @@ def _extract_sources(answer: str, bundle, max_entities: int = _SOURCE_MAX_ENTITI
         return None
 
 
-def _search_blocking(run_id: str, question: str, method: Optional[str] = "auto") -> tuple[str, str, Optional[dict]]:
+def _search_blocking(run_id: str, question: str, method: Optional[str] = "auto") -> tuple[str, str, Optional[dict], dict]:
     """전용 스레드에서 해당 스냅샷 search 한 번. 먼저 method를 local/global로 해소(auto면
     라우터)한 뒤 그 엔진으로 검색한다. warm_query와 동일하게 asyncio.run으로 코루틴을
-    돌린다(이 스레드엔 루프가 없으므로 OK). (answer, 사용한 mode)를 돌려준다."""
+    돌린다(이 스레드엔 루프가 없으므로 OK). (answer, mode, sources, usage)를 돌려준다 —
+    usage 는 이 질의가 쓴 LLM 토큰(_QUERY_USAGE 콜백이 채운다)."""
     st = STATE.snapshots[run_id]
-    mode, entity_hits = _route_mode(question, method, st)
-    eng = st.engine.engine(mode)
-    # 라우터가 찾은 엔티티를 local 컨텍스트에 강제 포함(include_entity_names). graphrag의
-    # 커뮤니티-필터 엔티티 집합에서 빠진 orphan(예: degree=0)도 이 경로로 grounded 가능.
-    cbp = getattr(eng, "context_builder_params", None)
-    inject = mode == "local" and bool(entity_hits) and isinstance(cbp, dict)
-    if inject:
-        prev = cbp.get("include_entity_names")
-        cbp["include_entity_names"] = entity_hits
+    acc = _usage.UsageAccumulator()
+    _QUERY_USAGE["acc"] = acc  # /query 직렬이라 전역 홀더 안전.
     try:
-        result = asyncio.run(eng.search(question))
-    finally:
+        mode, entity_hits = _route_mode(question, method, st)
+        eng = st.engine.engine(mode)
+        # 라우터가 찾은 엔티티를 local 컨텍스트에 강제 포함(include_entity_names). graphrag의
+        # 커뮤니티-필터 엔티티 집합에서 빠진 orphan(예: degree=0)도 이 경로로 grounded 가능.
+        cbp = getattr(eng, "context_builder_params", None)
+        inject = mode == "local" and bool(entity_hits) and isinstance(cbp, dict)
         if inject:
-            if prev is None:
-                cbp.pop("include_entity_names", None)
-            else:
-                cbp["include_entity_names"] = prev
-    answer = _localize_no_data(result.response if hasattr(result, "response") else str(result))
-    # 답변 인용을 근거(관련 개념)로 구조화. st.engine 은 dfs 를 든 LoadedEngine 번들.
-    sources = _extract_sources(answer, st.engine)
-    return answer, mode, sources
+            prev = cbp.get("include_entity_names")
+            cbp["include_entity_names"] = entity_hits
+        try:
+            result = asyncio.run(eng.search(question))
+        finally:
+            if inject:
+                if prev is None:
+                    cbp.pop("include_entity_names", None)
+                else:
+                    cbp["include_entity_names"] = prev
+        answer = _localize_no_data(result.response if hasattr(result, "response") else str(result))
+        # 답변 인용을 근거(관련 개념)로 구조화. st.engine 은 dfs 를 든 LoadedEngine 번들.
+        sources = _extract_sources(answer, st.engine)
+        return answer, mode, sources, acc.summary()
+    finally:
+        _QUERY_USAGE["acc"] = None
+
+
+# /query 가 쓴 LLM 토큰 캡처. /query 는 _executor 단일 스레드에서 직렬 처리되므로(상단 설계
+# 메모) 모듈 전역 홀더 하나로 충분하다(동시 질의 없음). 콜백은 lifespan 에서 1회 등록.
+_QUERY_USAGE: dict = {"acc": None}
+
+
+def _install_usage_logger() -> None:
+    """litellm CustomLogger 등록 — 채팅(/query) LLM 호출 토큰을 _QUERY_USAGE 의 현재
+    누적기에 적는다. graphrag_llm 은 동기·비동기(acompletion) 둘 다 쓰므로 둘 다 구현한다.
+    best-effort(미설치/오류는 조용히 무시 — 채팅 동작에 영향 0)."""
+    try:
+        import litellm
+        from litellm.integrations.custom_logger import CustomLogger
+    except Exception:
+        return
+
+    def _rec(kwargs, resp):
+        acc = _QUERY_USAGE.get("acc")
+        if acc is None:
+            return
+        try:
+            model = (kwargs or {}).get("model") or getattr(resp, "model", "?")
+            u = getattr(resp, "usage", None)
+            if u is None and isinstance(resp, dict):
+                u = resp.get("usage")
+
+            def _g(x, k):
+                if x is None:
+                    return 0
+                return x.get(k, 0) if isinstance(x, dict) else (getattr(x, k, 0) or 0)
+
+            acc.record(model, _g(u, "prompt_tokens"), _g(u, "completion_tokens"))
+        except Exception:
+            pass
+
+    class _UsageLogger(CustomLogger):
+        def log_success_event(self, kwargs, resp, start_time, end_time):
+            _rec(kwargs, resp)
+
+        async def async_log_success_event(self, kwargs, resp, start_time, end_time):
+            _rec(kwargs, resp)
+
+    try:
+        litellm.callbacks = list(getattr(litellm, "callbacks", None) or []) + [_UsageLogger()]
+    except Exception:
+        pass
 
 
 @asynccontextmanager
@@ -454,6 +508,7 @@ async def lifespan(app: FastAPI):
     전용 스레드에 던진다. warmup 예외는 키별로 _warmup_blocking 안에서 격리된다."""
     loop = asyncio.get_running_loop()
     _install_model_logger()
+    _install_usage_logger()  # /query 토큰 캡처 콜백 등록(비용추적·실시간 표시).
     _register_pending_snapshots()
     logger.info("warmup 시작(백그라운드): %d개 스냅샷 (%s)", len(SNAPSHOTS), ", ".join(SNAPSHOTS))
     app.state.warmup_future = loop.run_in_executor(_executor, _warmup_blocking)
@@ -490,6 +545,8 @@ class QueryResponse(BaseModel):
     # 나오므로 그 커뮤니티의 구성 엔티티로 펼쳐(degree 상위 N) "관련 개념"으로 내려준다
     # (정확한 사용 엔티티가 아니라 근사 superset). local 인용의 Entities()도 같이 흡수.
     sources: Optional[dict] = None
+    # 이 질의가 쓴 LLM 토큰(비용추적·실시간 표시). {total_tokens, total_cost_usd, calls, by_model}.
+    usage: Optional[dict] = None
     # related_nodes(팰리스 방 연결)는 프론트가 entities[].title 로 나중에 잇는다.
 
 
@@ -550,9 +607,10 @@ def _restore_from_blob(key: str) -> Optional[_SnapshotState]:
 
 async def _run_query(
     key: str, question: str, method: Optional[str] = "auto",
-) -> tuple[str, str, Optional[dict]]:
+) -> tuple[str, str, Optional[dict], dict]:
     """키 -> 번들 -> (라우팅된) search. /query와 /jobs/{id}/query가 공유하는 코어.
-    검색은 _executor 단일 스레드에서 직렬 실행된다. (answer, mode, sources) 반환."""
+    검색은 _executor 단일 스레드에서 직렬 실행된다. (answer, mode, sources, usage) 반환 —
+    usage 는 이 질의가 쓴 토큰(프론트 실시간 표시 + Mindpalace 유저별 누적용)."""
     st = STATE.snapshots.get(key)
     if st is None:
         # 재시작/재배포로 RAM 에 없으면 Blob 에서 복구 시도(라이브 잡 한정). 무거우므로 executor.
@@ -575,9 +633,12 @@ async def _run_query(
 
     loop = asyncio.get_running_loop()
     t0 = time.perf_counter()
-    answer, mode, sources = await loop.run_in_executor(_executor, _search_blocking, key, q, method)
-    logger.info("query [%s] mode=%s %.1fs: %s", key, mode, time.perf_counter() - t0, q[:50])
-    return answer, mode, sources
+    answer, mode, sources, query_usage = await loop.run_in_executor(_executor, _search_blocking, key, q, method)
+    logger.info(
+        "query [%s] mode=%s %.1fs %d토큰: %s",
+        key, mode, time.perf_counter() - t0, (query_usage or {}).get("total_tokens", 0), q[:50],
+    )
+    return answer, mode, sources, query_usage
 
 
 def _snapshot_health(st: Optional[_SnapshotState], snapshot_dir: str) -> dict:
@@ -722,13 +783,13 @@ async def query(req: QueryRequest):
                 f"(alias: {', '.join(ALIASES) or '-'})."
             ),
         )
-    answer, mode, sources = await _run_query(key, req.question, req.method)
-    return QueryResponse(answer=answer, snapshot=key, mode=mode, sources=sources)
+    answer, mode, sources, usage = await _run_query(key, req.question, req.method)
+    return QueryResponse(answer=answer, snapshot=key, mode=mode, sources=sources, usage=usage)
 
 
 @app.post("/jobs/{job_id}/query", response_model=QueryResponse)
 async def job_query(job_id: str, req: JobQueryRequest):
     """잡별 질의. 라이브 등록 키 = job_id이므로 키 라우팅 한 줄이다(코어 공유).
     잡 메타는 오케스트레이터(/jobs/{id}/status) 소관이고 여기선 엔진만 라우팅한다."""
-    answer, mode, sources = await _run_query(job_id, req.question, req.method)
-    return QueryResponse(answer=answer, snapshot=job_id, mode=mode, sources=sources)
+    answer, mode, sources, usage = await _run_query(job_id, req.question, req.method)
+    return QueryResponse(answer=answer, snapshot=job_id, mode=mode, sources=sources, usage=usage)
