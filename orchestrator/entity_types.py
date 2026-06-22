@@ -16,13 +16,15 @@ curated 룩업은 아직 채울 게 없다(쇼케이스는 scaffold 라 여기 �
 from __future__ import annotations
 
 import logging
+import os
 import re
 import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
 
-from orchestrator import config, index_root
+from orchestrator import config, index_root, usage
 
 logger = logging.getLogger("orchestrator.entity_types")
 
@@ -52,7 +54,7 @@ class Resolution:
     source: str  # "curated" | "discover" | "fallback:<이유>"
 
 
-def _run_prompt_tune_discover(root: Path, domain: str) -> tuple[int, str]:
+def _run_prompt_tune_discover(root: Path, domain: str, usage_log: Optional[Path] = None) -> tuple[int, str]:
     """prompt-tune discover ON 을 subprocess 로 돌린다(_run_palace 와 동형 seam).
     --output 은 graphrag 가 CWD 기준으로 resolve 하므로(--root 기준 아님) 반드시
     절대 경로(root/prompts)를 준다. 상대값이면 공유 레포 prompts/ 를 덮어써 stock
@@ -70,10 +72,12 @@ def _run_prompt_tune_discover(root: Path, domain: str) -> tuple[int, str]:
         "--chunk-size", "1200",
         "--overlap", "100",
     ]
+    env = usage.subprocess_env(os.environ, usage_log) if usage_log else None
     proc = subprocess.run(
         cmd, cwd=str(config.REPO),
         capture_output=True, text=True, encoding="utf-8",
         timeout=config.PROMPT_TUNE_TIMEOUT_S,
+        env=env,
     )
     return proc.returncode, (proc.stdout or "") + (proc.stderr or "")
 
@@ -112,9 +116,10 @@ def _apply_generic_fallback(root: Path, reason: str) -> Resolution:
     return Resolution(GENERIC_ENTITY_TYPES, f"fallback:{reason}")
 
 
-def resolve_entity_types(root: Path, domain_label: str) -> Resolution:
+def resolve_entity_types(root: Path, domain_label: str, usage_log: Optional[Path] = None) -> Resolution:
     """root(코퍼스+settings 준비됨) + 감지 도메인 라벨로 entity_types 를 확정하고
-    root 의 settings/프롬프트에 반영한다. 우선순위: curated -> discover -> generic 폴백."""
+    root 의 settings/프롬프트에 반영한다. 우선순위: curated -> discover -> generic 폴백.
+    usage_log 가 있으면 prompt-tune 서브프로세스의 LLM 토큰도 그 파일에 누적된다(비용추적)."""
     root = Path(root)
 
     # 1) curated 룩업(현재 빈 맵).
@@ -127,7 +132,7 @@ def resolve_entity_types(root: Path, domain_label: str) -> Resolution:
     # 2) discover ON (라벨이 있어야 의미 있음).
     if domain_label:
         try:
-            rc, out = _run_prompt_tune_discover(root, domain_label)
+            rc, out = _run_prompt_tune_discover(root, domain_label, usage_log)
         except subprocess.TimeoutExpired:
             # 행걸림: rc≠0 폴백과 동일하게 generic 으로 떨어진다.
             return _apply_generic_fallback(root, "timeout")

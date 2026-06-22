@@ -29,8 +29,6 @@ import urllib.request
 from pathlib import Path
 from typing import Optional
 
-import os
-
 from orchestrator import blob, config, cosmos_jobs, domain_detect, entity_types, index_root, usage
 from orchestrator.jobs import Job, JobStore, State
 
@@ -154,7 +152,7 @@ async def toc(
     # frozen_toc(커밋 목차) 도메인은 생성 안 함 -> build_palace 가 동결 목차로 rooms.
     if cfg.get("frozen_toc"):
         return
-    rc, out = await loop.run_in_executor(None, _run_palace, cfg_path, "toc")
+    rc, out = await loop.run_in_executor(None, _run_palace, cfg_path, "toc", config.job_dir(job.job_id) / "usage.jsonl")
     if rc != 0:
         logger.warning(
             "조기 toc 실패(best-effort, build_palace 가 재생성) job=%s rc=%d:\n%s",
@@ -260,18 +258,19 @@ async def _index_live(job: Job, store: JobStore) -> None:
     root = index_root.build_index_root(
         job, corpus, entity_types.GENERIC_ENTITY_TYPES,
     )
+    # 비용추적: 이 잡의 업로드 단계 LLM 토큰을 한 파일에 모은다(prompt-tune+index+palace).
+    usage_log = config.job_dir(job.job_id) / "usage.jsonl"
     # 3) entity_types 해소(curated -> discover ON -> generic 폴백). prompt-tune
     #    subprocess 를 돌리므로 executor 로. root 의 settings/프롬프트가 여기서 확정된다.
     res = await loop.run_in_executor(
-        None, entity_types.resolve_entity_types, root, effective,
+        None, entity_types.resolve_entity_types, root, effective, usage_log,
     )
     logger.info(
         "index_live job=%s domain=%s entity_types=%s (%d종)",
         job.job_id, effective or "-", res.source, len(res.entity_types),
     )
 
-    # 4) graphrag index subprocess. usage 훅으로 인덱싱 LLM 토큰을 잡 폴더에 적게 한다.
-    usage_log = config.job_dir(job.job_id) / "usage_index.jsonl"
+    # 4) graphrag index subprocess. usage 훅으로 인덱싱 LLM 토큰을 같은 usage.jsonl 에 누적.
     rc, out = await loop.run_in_executor(None, _run_index, root, usage_log)
     if rc != 0:
         raise RuntimeError(
@@ -294,15 +293,7 @@ async def _index_live(job: Job, store: JobStore) -> None:
         )
     logger.info("index_live 완료 job=%s entities=%s snapshot=%s", job.job_id, n_ent, snapshot)
     store.update(job.job_id, snapshot_path=str(snapshot))
-    # 인덱싱 LLM 사용량 집계(서브프로세스가 usage_index.jsonl 에 남긴 토큰) -> 로그 + Cosmos.
-    # 비용추적/사업모델 데이터. best-effort(미설정/오류는 인덱싱에 영향 0).
-    try:
-        acc = usage.aggregate_log(usage_log)
-        if acc.calls:
-            logger.info("인덱싱 사용량 job=%s: $%.4f (%d calls)", job.job_id, acc.total_cost, acc.calls)
-            cosmos_jobs.record_usage(job.job_id, "indexing", acc.summary())
-    except Exception as e:
-        logger.warning("인덱싱 사용량 집계 예외(무시) job=%s: %s", job.job_id, e)
+    # (LLM 사용량 집계는 파이프라인 끝 rag 단계에서 1회 — prompt-tune+index+palace 누적분 전체)
 
 
 def _rel(p: Path) -> str:
@@ -396,15 +387,19 @@ def _build_job_palace_config(job: Job, snapshot_path: str) -> tuple[Path, dict, 
     return cfg_path, cfg, seeded
 
 
-def _run_palace(config_path: Path, phase: str) -> tuple[int, str]:
+def _run_palace(config_path: Path, phase: str, usage_log: Optional[Path] = None) -> tuple[int, str]:
     """Run palace/run.py as a subprocess. palace loads LanceDB + calls Azure +
     uses asyncio internally; a subprocess isolates all that from the worker's
-    event loop (same seam serve.py uses). Returns (returncode, combined output)."""
+    event loop (same seam serve.py uses). Returns (returncode, combined output).
+    usage_log 가 있으면 usage 훅을 주입해 이 서브프로세스(toc/rooms 빌드)의 litellm 토큰을
+    그 파일에 적게 한다(인덱싱과 같은 잡 파일에 누적 -> '분석' 단계 비용 합산)."""
+    env = usage.subprocess_env(os.environ, usage_log) if usage_log else None
     proc = subprocess.run(
         [sys.executable, "-m", "palace.run",
          "--config", str(config_path), "--phase", phase],
         cwd=str(config.REPO),
         capture_output=True, text=True, encoding="utf-8",
+        env=env,
     )
     return proc.returncode, (proc.stdout or "") + (proc.stderr or "")
 
@@ -454,7 +449,7 @@ async def build_palace(
         phases = ["rooms"]
     loop = asyncio.get_running_loop()
     for phase in phases:
-        rc, out = await loop.run_in_executor(None, _run_palace, cfg_path, phase)
+        rc, out = await loop.run_in_executor(None, _run_palace, cfg_path, phase, config.job_dir(job.job_id) / "usage.jsonl")
         if rc != 0:
             raise RuntimeError(
                 f"palace {phase} 실패 (rc={rc}) job={job.job_id}:\n{out[-1500:]}"
@@ -553,6 +548,18 @@ async def rag(
         "rag 등록 완료: job=%s -> serve key=%s dir=%s synth=%s",
         job.job_id, job.job_id, snapshot_path, info.get("synthesis_model"),
     )
+    # 업로드 단계 전체 LLM 사용량 집계 -> Cosmos usage(stage="analysis"). prompt-tune+index+
+    # palace 가 같은 usage.jsonl 에 누적해둔 토큰을 끝에서 1회 합산한다. 비용추적/사업모델
+    # 데이터. best-effort(쇼케이스/미설정/오류는 스킵 — 본연 동작에 영향 0).
+    if fresh and not fresh.showcase_key:
+        try:
+            acc = usage.aggregate_log(config.job_dir(job.job_id) / "usage.jsonl")
+            if acc.calls:
+                logger.info("분석 LLM 사용량 job=%s: $%.4f (%d calls) %s",
+                            job.job_id, acc.total_cost, acc.calls, list(acc.by_model))
+                cosmos_jobs.record_usage(job.job_id, "analysis", acc.summary())
+        except Exception as e:
+            logger.warning("사용량 집계 예외(무시) job=%s: %s", job.job_id, e)
 
 
 # 워커가 순서대로 도는 STUB 파이프라인. 각 항목은 (job, store, sleep) 로 호출된다.
