@@ -18,7 +18,7 @@ import html
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, ConfigDict, Field
 
-from backend.llm import call_llm
+from backend.llm import call_llm, start_usage_capture, usage_summary
 from backend.mnemonic import prompt
 
 router = APIRouter()
@@ -56,6 +56,7 @@ class MnemonicRequest(BaseModel):
 
 class MnemonicResponse(BaseModel):
     markdown: str
+    usage: dict | None = None  # {total_tokens,...} - 프론트가 사용량 추적에 쓴다.
 
 
 @router.post("/mnemonic", response_model=MnemonicResponse)
@@ -70,6 +71,7 @@ async def create_mnemonic(req: MnemonicRequest) -> MnemonicResponse:
         "room_context": req.room_context,
     }
     messages = prompt.build_messages(fields)
+    acc = start_usage_capture()  # 이 요청의 LLM 토큰 누적.
     try:
         text = await call_llm(messages, _MAX_OUTPUT_TOKENS)
     except RuntimeError as error:
@@ -77,4 +79,4 @@ async def create_mnemonic(req: MnemonicRequest) -> MnemonicResponse:
         raise HTTPException(status_code=502, detail=str(error))
     if not text.strip():
         raise HTTPException(status_code=502, detail="LLM 이 빈 응답을 반환했습니다.")
-    return MnemonicResponse(markdown=_sanitize_markdown(text))
+    return MnemonicResponse(markdown=_sanitize_markdown(text), usage=usage_summary(acc))
