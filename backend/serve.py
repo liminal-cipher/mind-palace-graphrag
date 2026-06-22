@@ -421,81 +421,38 @@ def _search_blocking(run_id: str, question: str, method: Optional[str] = "auto")
     """전용 스레드에서 해당 스냅샷 search 한 번. 먼저 method를 local/global로 해소(auto면
     라우터)한 뒤 그 엔진으로 검색한다. warm_query와 동일하게 asyncio.run으로 코루틴을
     돌린다(이 스레드엔 루프가 없으므로 OK). (answer, mode, sources, usage)를 돌려준다 —
-    usage 는 이 질의가 쓴 LLM 토큰(_QUERY_USAGE 콜백이 채운다)."""
+    usage 는 이 질의가 쓴 LLM 토큰(graphrag SearchResult 에서 직접 읽는다)."""
     st = STATE.snapshots[run_id]
-    acc = _usage.UsageAccumulator()
-    _QUERY_USAGE["acc"] = acc  # /query 직렬이라 전역 홀더 안전.
+    mode, entity_hits = _route_mode(question, method, st)
+    eng = st.engine.engine(mode)
+    # 라우터가 찾은 엔티티를 local 컨텍스트에 강제 포함(include_entity_names). graphrag의
+    # 커뮤니티-필터 엔티티 집합에서 빠진 orphan(예: degree=0)도 이 경로로 grounded 가능.
+    cbp = getattr(eng, "context_builder_params", None)
+    inject = mode == "local" and bool(entity_hits) and isinstance(cbp, dict)
+    if inject:
+        prev = cbp.get("include_entity_names")
+        cbp["include_entity_names"] = entity_hits
     try:
-        mode, entity_hits = _route_mode(question, method, st)
-        eng = st.engine.engine(mode)
-        # 라우터가 찾은 엔티티를 local 컨텍스트에 강제 포함(include_entity_names). graphrag의
-        # 커뮤니티-필터 엔티티 집합에서 빠진 orphan(예: degree=0)도 이 경로로 grounded 가능.
-        cbp = getattr(eng, "context_builder_params", None)
-        inject = mode == "local" and bool(entity_hits) and isinstance(cbp, dict)
-        if inject:
-            prev = cbp.get("include_entity_names")
-            cbp["include_entity_names"] = entity_hits
-        try:
-            result = asyncio.run(eng.search(question))
-        finally:
-            if inject:
-                if prev is None:
-                    cbp.pop("include_entity_names", None)
-                else:
-                    cbp["include_entity_names"] = prev
-        answer = _localize_no_data(result.response if hasattr(result, "response") else str(result))
-        # 답변 인용을 근거(관련 개념)로 구조화. st.engine 은 dfs 를 든 LoadedEngine 번들.
-        sources = _extract_sources(answer, st.engine)
-        return answer, mode, sources, acc.summary()
+        result = asyncio.run(eng.search(question))
     finally:
-        _QUERY_USAGE["acc"] = None
-
-
-# /query 가 쓴 LLM 토큰 캡처. /query 는 _executor 단일 스레드에서 직렬 처리되므로(상단 설계
-# 메모) 모듈 전역 홀더 하나로 충분하다(동시 질의 없음). 콜백은 lifespan 에서 1회 등록.
-_QUERY_USAGE: dict = {"acc": None}
-
-
-def _install_usage_logger() -> None:
-    """litellm CustomLogger 등록 — 채팅(/query) LLM 호출 토큰을 _QUERY_USAGE 의 현재
-    누적기에 적는다. graphrag_llm 은 동기·비동기(acompletion) 둘 다 쓰므로 둘 다 구현한다.
-    best-effort(미설치/오류는 조용히 무시 — 채팅 동작에 영향 0)."""
-    try:
-        import litellm
-        from litellm.integrations.custom_logger import CustomLogger
-    except Exception:
-        return
-
-    def _rec(kwargs, resp):
-        acc = _QUERY_USAGE.get("acc")
-        if acc is None:
-            return
-        try:
-            model = (kwargs or {}).get("model") or getattr(resp, "model", "?")
-            u = getattr(resp, "usage", None)
-            if u is None and isinstance(resp, dict):
-                u = resp.get("usage")
-
-            def _g(x, k):
-                if x is None:
-                    return 0
-                return x.get(k, 0) if isinstance(x, dict) else (getattr(x, k, 0) or 0)
-
-            acc.record(model, _g(u, "prompt_tokens"), _g(u, "completion_tokens"))
-        except Exception:
-            pass
-
-    class _UsageLogger(CustomLogger):
-        def log_success_event(self, kwargs, resp, start_time, end_time):
-            _rec(kwargs, resp)
-
-        async def async_log_success_event(self, kwargs, resp, start_time, end_time):
-            _rec(kwargs, resp)
-
-    try:
-        litellm.callbacks = list(getattr(litellm, "callbacks", None) or []) + [_UsageLogger()]
-    except Exception:
-        pass
+        if inject:
+            if prev is None:
+                cbp.pop("include_entity_names", None)
+            else:
+                cbp["include_entity_names"] = prev
+    answer = _localize_no_data(result.response if hasattr(result, "response") else str(result))
+    # 답변 인용을 근거(관련 개념)로 구조화. st.engine 은 dfs 를 든 LoadedEngine 번들.
+    sources = _extract_sources(answer, st.engine)
+    # 사용량: graphrag SearchResult 가 토큰을 직접 제공(prompt_tokens/output_tokens). litellm
+    # 비동기 success 콜백은 asyncio.run 루프 종료와 경합해 누락되므로, 결과에서 직접 읽는다.
+    # 합성 모델(보통 gpt-5.4-mini)을 단가 기준으로 잡는다(global 답변 합성이 토큰 대부분).
+    acc = _usage.UsageAccumulator()
+    acc.record(
+        st.synthesis_model or RAG_SYNTHESIS_MODEL,
+        int(getattr(result, "prompt_tokens", 0) or 0),
+        int(getattr(result, "output_tokens", 0) or 0),
+    )
+    return answer, mode, sources, acc.summary()
 
 
 @asynccontextmanager
@@ -508,7 +465,6 @@ async def lifespan(app: FastAPI):
     전용 스레드에 던진다. warmup 예외는 키별로 _warmup_blocking 안에서 격리된다."""
     loop = asyncio.get_running_loop()
     _install_model_logger()
-    _install_usage_logger()  # /query 토큰 캡처 콜백 등록(비용추적·실시간 표시).
     _register_pending_snapshots()
     logger.info("warmup 시작(백그라운드): %d개 스냅샷 (%s)", len(SNAPSHOTS), ", ".join(SNAPSHOTS))
     app.state.warmup_future = loop.run_in_executor(_executor, _warmup_blocking)
