@@ -28,7 +28,9 @@ import urllib.request
 from pathlib import Path
 from typing import Optional
 
-from orchestrator import blob, config, domain_detect, entity_types, index_root
+import os
+
+from orchestrator import blob, config, cosmos_jobs, domain_detect, entity_types, index_root, usage
 from orchestrator.jobs import Job, JobStore, State
 
 logger = logging.getLogger("orchestrator.stages")
@@ -206,15 +208,18 @@ async def _index_scaffold(job: Job, store: JobStore, sleep_seconds: float) -> No
     store.update(job.job_id, snapshot_path=snapshot_dir)
 
 
-def _run_index(root: Path) -> tuple[int, str]:
+def _run_index(root: Path, usage_log: Optional[Path] = None) -> tuple[int, str]:
     """graphrag index 를 subprocess 로 돈다(_run_palace 와 동형 seam). LanceDB +
     Azure + 내부 asyncio 를 워커 이벤트 루프에서 격리한다. env(.env 로드분)를 상속해
-    GRAPHRAG_API_KEY/BASE 가 settings 의 ${...} 로 풀린다."""
+    GRAPHRAG_API_KEY/BASE 가 settings 의 ${...} 로 풀린다. usage_log 가 있으면 usage 훅을
+    PYTHONPATH 로 주입해 이 서브프로세스의 litellm 토큰을 그 파일(JSONL)에 적게 한다."""
     config.load_env()
+    env = usage.subprocess_env(os.environ, usage_log) if usage_log else None
     proc = subprocess.run(
         [sys.executable, "-m", "graphrag", "index", "--root", str(root)],
         cwd=str(config.REPO),
         capture_output=True, text=True, encoding="utf-8",
+        env=env,
     )
     return proc.returncode, (proc.stdout or "") + (proc.stderr or "")
 
@@ -264,8 +269,9 @@ async def _index_live(job: Job, store: JobStore) -> None:
         job.job_id, effective or "-", res.source, len(res.entity_types),
     )
 
-    # 4) graphrag index subprocess.
-    rc, out = await loop.run_in_executor(None, _run_index, root)
+    # 4) graphrag index subprocess. usage 훅으로 인덱싱 LLM 토큰을 잡 폴더에 적게 한다.
+    usage_log = config.job_dir(job.job_id) / "usage_index.jsonl"
+    rc, out = await loop.run_in_executor(None, _run_index, root, usage_log)
     if rc != 0:
         raise RuntimeError(
             f"graphrag index 실패 (rc={rc}) job={job.job_id}:\n{out[-1500:]}"
@@ -287,6 +293,15 @@ async def _index_live(job: Job, store: JobStore) -> None:
         )
     logger.info("index_live 완료 job=%s entities=%s snapshot=%s", job.job_id, n_ent, snapshot)
     store.update(job.job_id, snapshot_path=str(snapshot))
+    # 인덱싱 LLM 사용량 집계(서브프로세스가 usage_index.jsonl 에 남긴 토큰) -> 로그 + Cosmos.
+    # 비용추적/사업모델 데이터. best-effort(미설정/오류는 인덱싱에 영향 0).
+    try:
+        acc = usage.aggregate_log(usage_log)
+        if acc.calls:
+            logger.info("인덱싱 사용량 job=%s: $%.4f (%d calls)", job.job_id, acc.total_cost, acc.calls)
+            cosmos_jobs.record_usage(job.job_id, "indexing", acc.summary())
+    except Exception as e:
+        logger.warning("인덱싱 사용량 집계 예외(무시) job=%s: %s", job.job_id, e)
 
 
 def _rel(p: Path) -> str:
