@@ -17,6 +17,9 @@
       방 >= 1 + 보존 엔티티 > 0 + 쿼리 응답 비어있지 않음.
       방 이름은 라이브 TOC 가 매 실행 미세하게 흔들리는 알려진 noise 라
       이름 차이로 FAIL 처리하지 않는다(구조는 Stage B seed 로 안정적).
+  - live_bio (라이브 인덱싱): 위 느슨 기준 + snapshot=job_id 로 /quiz/json 이 200 +
+      문항을 돌려줘야 한다(챗봇 /query 는 되는데 라이브 파일 퀴즈만 404 나던 회귀 가드).
+      /quiz/json 은 통합 app 라우트라 serve:app 단독 기동이면 자동 스킵(_check_quiz 참조).
   - 공통: /query 응답이 비어있지 않아야 한다(체인 페이로프).
 
 종료 코드: 전부 PASS 면 0, 아니면 1.
@@ -40,6 +43,9 @@ from orchestrator import config as orch_config  # noqa: E402
 
 SERVE_URL = os.environ.get("SERVE_URL", "http://127.0.0.1:8000").rstrip("/")
 ORCH_URL = os.environ.get("ORCH_URL", "http://127.0.0.1:8001").rstrip("/")
+# /quiz/json 은 통합 backend(app.py)에 마운트된다(serve:app 단독엔 없다). 분리 dev 기동
+# 에선 라우트가 없어 스킵되고, 통합 app(또는 QUIZ_URL 지정) 일 때만 검증된다. 기본 SERVE_URL.
+QUIZ_URL = os.environ.get("QUIZ_URL", SERVE_URL).rstrip("/")
 
 GOLDEN_DIR = REPO / "palace" / "tests" / "golden"
 # run_id == job_id 이므로 잡 산출물 이름이 job_id 기반이다. 골든은 run_id 고정값.
@@ -157,6 +163,55 @@ def _query(job_id: str, question: str) -> str:
     )
     r.raise_for_status()
     return r.json().get("answer", "")
+
+
+def _check_quiz(job_id: str, fails: list[str], notes: list[str]) -> None:
+    """라이브 잡 스냅샷(snapshot=job_id)으로 /quiz/json 이 200 + 문항을 돌려주는지 검증.
+
+    회귀 가드: 챗봇 /query 는 STATE 미스 시 Blob 복구를 타는데 퀴즈는 안 타서, 재배포
+    뒤 라이브 파일 퀴즈만 404 로 깨지던 버그(quiz_json._resolve_snapshot_dir 에 Blob
+    복구를 추가해 수정). 여기선 라이브 잡 키로 그 해석 경로를 직접 친다.
+
+    한계: 이 스모크는 순수 클라이언트라 serve 를 재시작시킬 수 없다. 잡이 방금 같은
+    프로세스에 register 된 직후라 STATE 가 hit 하므로 Blob 복구 분기까지는 안 탄다 —
+    여기서 보장하는 건 '라이브 잡 퀴즈 해석/라우트 배선이 살아 있다'까지다(라우트 미배선
+    이나 _builder_for/_resolve_snapshot_dir 회귀는 잡는다). 완전한 재배포 후 복구 검증은
+    serve 재시작을 끼운 별도 시나리오가 필요하다.
+
+    라우트 미마운트(serve:app 단독)면 FastAPI 기본 404({"detail":"Not Found"})라 스킵.
+    스냅샷 미해결 404(detail 에 스냅샷 메시지)면 그게 회귀라 FAIL."""
+    try:
+        r = httpx.post(
+            f"{QUIZ_URL}/quiz/json",
+            json={"topic": "", "count": 3, "snapshot": job_id},
+            timeout=QUERY_TIMEOUT_S,
+        )
+    except Exception as e:  # noqa: BLE001
+        fails.append(f"/quiz/json 연결 실패: {e}")
+        return
+    if r.status_code == 404:
+        detail = ""
+        try:
+            detail = (r.json() or {}).get("detail", "")
+        except Exception:  # noqa: BLE001
+            pass
+        if detail == "Not Found":
+            notes.append("/quiz/json 라우트 미마운트(분리 dev: serve:app 단독) -> 퀴즈 검증 스킵 "
+                         "(통합 app 또는 QUIZ_URL 지정 시 검증)")
+            return
+        fails.append(f"/quiz/json 라이브 잡 404(회귀): snapshot={job_id} detail={detail!r}")
+        return
+    if r.status_code != 200:
+        fails.append(f"/quiz/json HTTP {r.status_code}")
+        return
+    body = r.json()
+    questions = body.get("questions") or []
+    notes.append(
+        f"/quiz/json OK: mode={body.get('mode')} 문항={len(questions)} "
+        f"quiz_id={'있음' if body.get('quiz_id') else '없음'}"
+    )
+    if not questions:
+        fails.append(f"/quiz/json 문항 0 (mode={body.get('mode')} warning={body.get('warning')})")
 
 
 def _palace_totals(palace: dict) -> tuple[int, int, int]:
@@ -282,6 +337,7 @@ DOMAINS = [
         "corpus": LIVE_CORPUS,
         "question": "이 자료의 핵심 개념들을 요약해줘.",
         "checker": "live",
+        "quiz": True,  # 라이브 잡 키로 /quiz/json 검증(챗봇만 되고 퀴즈는 404 나던 회귀 가드).
     },
 ]
 
@@ -325,6 +381,10 @@ def run_one(spec: dict) -> bool:
             fails.append("쿼리 응답이 비어 있음")
         else:
             notes.append(f"쿼리 응답 {len(answer)}자(non-empty)")
+
+        # 라이브 잡: 같은 스냅샷 키로 퀴즈도 되는지(챗봇/퀴즈 복구 경로 비대칭 회귀 가드).
+        if spec.get("quiz"):
+            _check_quiz(job_id, fails, notes)
 
     for n in notes:
         print(f"    - {n}")

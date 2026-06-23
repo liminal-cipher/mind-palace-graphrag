@@ -13,6 +13,7 @@
 """
 from __future__ import annotations
 
+import asyncio
 from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
@@ -49,10 +50,19 @@ def _resolve_snapshot_dir(key: str) -> tuple[str, Path] | None:
     entities.parquet 존재까지 확인해 실제로 읽을 수 있는 스냅샷만 통과시킨다.
     """
     try:
-        from backend.serve import STATE, _resolve_key
+        from backend.serve import STATE, _resolve_key, _restore_from_blob
 
         rk = _resolve_key(key) or key
         st = STATE.snapshots.get(rk)
+        if st is None:
+            # RAM miss(재시작/재배포/타 인스턴스)면 라이브 잡을 Blob 에서 복구한다 —
+            # 챗봇 /query(_run_query)와 동일 경로. 이게 없으면 재배포 때마다 라이브 파일
+            # 퀴즈만 404 로 빠지고 디스크에 항상 있는 korean_history 만 살아남는다.
+            # _restore_from_blob 은 무거운 다운로드+warm 이라 호출부(_builder_for_async)가
+            # executor 스레드에서 부른다. warm(global 엔진) 이 실패해도 STATE 엔 등록되고
+            # parquet 만 내려와 있으면 퀴즈는 가능하므로, 반환값이 아니라 STATE 를 다시 본다.
+            _restore_from_blob(rk)
+            st = STATE.snapshots.get(rk)
         if st is not None:
             d = Path(st.snapshot_dir)
             if not d.is_absolute():
@@ -87,6 +97,20 @@ def _builder_for(snapshot: str | None) -> EvidenceBuilder | None:
     return _builders[rk]
 
 
+async def _builder_for_async(snapshot: str | None) -> EvidenceBuilder | None:
+    """_builder_for 를 serve 의 _executor 에서 돈다.
+
+    Blob 복구(다운로드+warm)와 parquet 적재(EvidenceBuilder)가 모두 블로킹이라,
+    이벤트 루프를 막지 않게 오프로드한다. 챗봇 검색과 같은 _executor 라 LanceDB/검색과
+    직렬화돼 충돌도 없다. _executor 미가용(퀴즈 라우터 단독 기동 등)이면 인라인 폴백."""
+    try:
+        from backend.serve import _executor
+    except Exception:  # noqa: BLE001
+        return _builder_for(snapshot)
+    loop = asyncio.get_running_loop()
+    return await loop.run_in_executor(_executor, _builder_for, snapshot)
+
+
 class QuizJsonRequest(BaseModel):
     topic: str = ""
     count: int = 10
@@ -105,7 +129,7 @@ async def quiz_json(req: QuizJsonRequest):
       (응답 본문에 정답이 안 실려 은닉 유지).
     - mode: "llm_verified" | "fallback". fallback 도 정상 200(배지/안내용).
     """
-    builder = _builder_for(req.snapshot)
+    builder = await _builder_for_async(req.snapshot)
     if builder is None:
         raise HTTPException(
             404,
