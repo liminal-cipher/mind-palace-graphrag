@@ -693,7 +693,7 @@ async def generate_quizzes(
                 {"role": "system", "content": "너는 한국사 교사용 퀴즈 출제 도우미다. 반드시 유효한 JSON만 출력한다."},
                 {"role": "user", "content": prompt},
             ],
-            3200,
+            6000,
         )
         parsed = parse_json_object(text)
         raw_quizzes = (parsed.get("quizzes") or [])[:count]
