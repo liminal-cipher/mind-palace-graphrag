@@ -146,10 +146,17 @@ async def quiz_json(req: QuizJsonRequest):
     questions = [
         {k: v for k, v in quiz.items() if k not in _ANSWER_KEYS} for quiz in quizzes
     ]
+    # 사용된 근거(evidence)를 프론트로 내려보낸다 — 위젯이 하단 아코디언(📎 사용된 근거 N건)으로 렌더.
+    #   {kind, source, title, topic, text} 모양 그대로(정답이 아니므로 은닉 대상 아님).
+    evidence = [
+        {k: ev.get(k) for k in ("kind", "source", "title", "topic", "text")}
+        for ev in (result.get("evidence") or [])
+    ]
     return {
         "quiz_id": quiz_id,
         "questions": questions,
         "mode": result.get("mode"),
         "warning": result.get("warning"),
+        "evidence": evidence,
         "usage": _llm.usage_summary(acc),  # {total_tokens,...} - 프론트가 사용량 추적에 쓴다.
     }
