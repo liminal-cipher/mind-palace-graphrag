@@ -1,12 +1,15 @@
-# 회랑 (GraphRAG 파이프라인)
+# 회랑 (Mind Palace) · GraphRAG 파이프라인
 
-> 학습 자료(한국사 교과서, 통계 교안 등)를 1인칭 3D Mind Palace로 만드는 백엔드 시스템.
-> 
-> 자료의 TOC(목차)를 LLM이 만들고 그 섹션을 Room(방)으로 써서 개념을 배정·선별한 뒤, GraphRAG 인덱스 위에서 질의(RAG)와 쇼케이스 Palace를 서빙한다.
+> 학습 자료(한국사 교과서, 통계 교안 등)를 1인칭 3D 공간으로 만드는 백엔드 시스템. 자료의 TOC를 LLM이 만들고 그 섹션을 Room으로 써서 개념을 배정·선별한 뒤, GraphRAG 인덱스 위에서 질의(RAG)와 쇼케이스 Palace를 서빙한다.
 
-**App Repository (프론트 + BFF)**: [liminal-cipher/mind-palace](https://github.com/liminal-cipher/mind-palace) · 팀 정본: [PhrenO0/Mindpalace_Microsoft9ai_Thirdprj-](https://github.com/PhrenO0/Mindpalace_Microsoft9ai_Thirdprj-)
+![GraphRAG](https://img.shields.io/badge/GraphRAG-Microsoft-2088FF)
+![Azure OpenAI](https://img.shields.io/badge/Azure%20OpenAI-gpt--4.1--mini-412991)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi&logoColor=white)
+![Cosmos DB](https://img.shields.io/badge/Cosmos%20DB-State-0078D4?logo=microsoftazure&logoColor=white)
 
----
+Microsoft AI School 9기 3차 프로젝트 · 백엔드 5인
+
+[App Repository (프론트 + BFF)](https://github.com/liminal-cipher/mind-palace) · [팀 정본](https://github.com/PhrenO0/Mindpalace_Microsoft9ai_Thirdprj-)
 
 ## Highlights
 
