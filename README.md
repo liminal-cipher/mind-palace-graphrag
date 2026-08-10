@@ -7,7 +7,7 @@
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi&logoColor=white)
 ![Cosmos DB](https://img.shields.io/badge/Cosmos%20DB-State-0078D4?logo=microsoftazure&logoColor=white)
 
-Microsoft AI School 9기 3차 프로젝트 · 백엔드 5인
+Microsoft AI School 9기 3차 프로젝트 · 팀 고민중독 (7인) · 2026.05 ~ 06
 
 [App Repository (프론트 + BFF)](https://github.com/liminal-cipher/mind-palace) · [팀 정본](https://github.com/PhrenO0/Mindpalace_Microsoft9ai_Thirdprj-)
 
@@ -184,17 +184,17 @@ python palace/tests/compare_golden.py --run-id korean_history   # 캐시 히트 
 
 ## Team & Contributions
 
-이 저장소(회랑 GraphRAG 백엔드)는 팀원 5명이 함께 개발했다. 인덱싱과 라우팅은 여럿이 실험했고, 최종 채택은 조윤재(인덱싱)·김인준(라우팅) 구성이다.
+회랑 7인 중 이 repo의 백엔드는 아래 인원이 개발했다.
 
-| 이름 | 백엔드 기여 (이 저장소 커밋 기준) |
-|---|---|
-| 조윤재 | 아키텍처 설계, GraphRAG 인덱싱 실험·최종 채택 구성(`indexing/`, `archive/audit/`), 라이브 오케스트레이터(`orchestrator/`), Room 자동화·이미지 매칭(`palace/`), Cosmos/Blob 상태 영속성, 전 단계 토큰·비용 추적 |
-| 김인준 | BGE-M3 쿼리 라우터 구현·최종 채택(`backend/routing/`), PaddleOCR 추출 초기 탐색, Azure Speech 토큰 엔드포인트 |
-| 지경민 | PDF 전처리 파이프라인(`preprocessing/`), 캡션·이미지 분리, 퀴즈 생성·채점·근거, 검색 프롬프트 |
-| 오효석 | 전처리 PII 프리마스킹(PaddleOCR), mnemonic 라우트 |
-| 이재모 | 초기 이미지 분리·캡션, 퀴즈 원안 (초기 작업으로 이 저장소 커밋에는 대부분 미반영) |
+| 이름 | GitHub | 기여 (이 repo 커밋 기준) |
+|---|---|---|
+| 조윤재 | [@liminal-cipher](https://github.com/liminal-cipher) | 아키텍처 설계, GraphRAG 인덱싱 구성([`indexing/`](indexing) · [`archive/audit/`](archive/audit)), 라이브 오케스트레이터([`orchestrator/`](orchestrator)), 방 자동화·이미지 매칭([`palace/`](palace)), Cosmos/Blob 상태 영속성, 전 단계 토큰·비용 추적 |
+| 김인준 | [@JunK98](https://github.com/JunK98) | BGE-M3 쿼리 라우터([`backend/routing/`](backend/routing)), PaddleOCR 추출 초기 탐색, Azure Speech 토큰 엔드포인트 |
+| 지경민 | [@jen282](https://github.com/jen282) | PDF 전처리 파이프라인([`preprocessing/`](preprocessing)), 캡션·이미지 분리, 퀴즈 생성·채점·근거, 검색 프롬프트 |
+| 이재모 | [@imjml](https://github.com/imjml) | 초기 이미지 분리·캡션, 퀴즈 원안 (초기 작업으로 이 repo 커밋에는 대부분 미반영) |
+| 오효석 | [@ohyoseok92](https://github.com/ohyoseok92) | 보안 |
 
-전체 팀(7인) 구성과 프론트엔드·3D 엔진 기여는 **앱 저장소**의 `Team`/`Contributions` 섹션 참조: [liminal-cipher/mind-palace](https://github.com/liminal-cipher/mind-palace)
+프론트엔드·3D 엔진을 포함한 팀 전체 기여는 앱 repo의 `Team & Contributions` 참조: [liminal-cipher/mind-palace](https://github.com/liminal-cipher/mind-palace)
 
 ---
 
