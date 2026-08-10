@@ -4,7 +4,17 @@
 > 
 > 자료의 TOC(목차)를 LLM이 만들고 그 섹션을 Room(방)으로 써서 개념을 배정·선별한 뒤, GraphRAG 인덱스 위에서 질의(RAG)와 쇼케이스 Palace를 서빙한다.
 
-**Frontend Repository**: [Mindpalace_Microsoft9ai_Thirdprj-](https://github.com/PhrenO0/Mindpalace_Microsoft9ai_Thirdprj-)
+**App Repository (프론트 + BFF)**: [liminal-cipher/mind-palace](https://github.com/liminal-cipher/mind-palace) · 팀 정본: [PhrenO0/Mindpalace_Microsoft9ai_Thirdprj-](https://github.com/PhrenO0/Mindpalace_Microsoft9ai_Thirdprj-)
+
+---
+
+## Highlights
+
+- **라이브 E2E 파이프라인**: 업로드 → 전처리 → GraphRAG 인덱싱 → Palace 생성 → RAG 질의까지 자동 체인. 상태 게이팅(`toc_ready`/`palace_ready`/`rag_ready`)과 진행률 제공
+- **재현성**: 국사 골든 스냅샷(357 엔티티) 기준 byte-identical 캐시 검증 (`palace/tests/compare_golden.py`)
+- **선택 근거 기록**: 모델 4종 스윕(gpt-4.1·4.1-mini·5.4·5.4-mini) 후 gpt-4.1-mini 채택, 이미지 매칭 정확도 v1→v3 반복 측정, cold/warm 지연 분해 (`archive/audit/`)
+- **비용 가시화**: 질의·인덱싱 전 단계 토큰·USD 추적 (`usage.total_cost_usd`, 모델별 집계)
+- **상태 영속성**: Cosmos DB(잡·퀴즈 세션) + Blob(산출물·스냅샷). App Service 재시작에도 잡 상태 생존
 
 ---
 
@@ -171,10 +181,17 @@ python palace/tests/compare_golden.py --run-id korean_history   # 캐시 히트 
 
 ## Team & Contributions
 
-이 프로젝트(회랑 GraphRAG 백엔드)는 4명의 팀원이 협력하여 개발했다.  
-각 팀원의 구체적인 기여 내역 및 역할 분담은 **프론트엔드 레포지토리**의 `Team` 및 `Contributions` 섹션에서 자세히 확인할 수 있다.
+이 저장소(회랑 GraphRAG 백엔드)는 팀원 5명이 함께 개발했다. 인덱싱과 라우팅은 여럿이 실험했고, 최종 채택은 조윤재(인덱싱)·김인준(라우팅) 구성이다.
 
-- **Frontend Repository**: [Mindpalace_Microsoft9ai_Thirdprj-](https://github.com/PhrenO0/Mindpalace_Microsoft9ai_Thirdprj-)
+| 이름 | 백엔드 기여 (이 저장소 커밋 기준) |
+|---|---|
+| 조윤재 | 아키텍처 설계, GraphRAG 인덱싱 실험·최종 채택 구성(`indexing/`, `archive/audit/`), 라이브 오케스트레이터(`orchestrator/`), Room 자동화·이미지 매칭(`palace/`), Cosmos/Blob 상태 영속성, 전 단계 토큰·비용 추적 |
+| 김인준 | BGE-M3 쿼리 라우터 구현·최종 채택(`backend/routing/`), PaddleOCR 추출 초기 탐색, Azure Speech 토큰 엔드포인트 |
+| 지경민 | PDF 전처리 파이프라인(`preprocessing/`), 캡션·이미지 분리, 퀴즈 생성·채점·근거, 검색 프롬프트 |
+| 오효석 | 전처리 PII 프리마스킹(PaddleOCR), mnemonic 라우트 |
+| 이재모 | 초기 이미지 분리·캡션, 퀴즈 원안 (초기 작업으로 이 저장소 커밋에는 대부분 미반영) |
+
+전체 팀(7인) 구성과 프론트엔드·3D 엔진 기여는 **앱 저장소**의 `Team`/`Contributions` 섹션 참조: [liminal-cipher/mind-palace](https://github.com/liminal-cipher/mind-palace)
 
 ---
 
