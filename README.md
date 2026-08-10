@@ -205,3 +205,7 @@ python palace/tests/compare_golden.py --run-id korean_history   # 캐시 히트 
 - **재현 절차**: [docs/RUNBOOK.md](./docs/RUNBOOK.md)
 - **실험 누적 Narrative**: [docs/EXPERIMENTS.md](./docs/EXPERIMENTS.md)
 - **레포지토리 규약**: [docs/CONVENTIONS.md](./docs/CONVENTIONS.md)
+
+## Status
+
+완료. Microsoft AI School 9기 3차 프로젝트로 2026.05 ~ 06 진행. 라이브 데모는 Azure 구독이 유지되는 동안 접속 가능하다. 마지막 갱신 2026-08-11.
