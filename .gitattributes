@@ -1,0 +1,5 @@
+# Archived audit viewers are script output, not hand-written source. Marking
+# them generated keeps them out of the language statistics (they are ~19 MB of
+# HTML against ~1 MB of Python) and collapses their diffs. The files stay in
+# the repo because audit documents cite them as evidence.
+archive/**/*.html linguist-generated=true
