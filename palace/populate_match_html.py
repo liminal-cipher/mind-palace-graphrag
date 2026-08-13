@@ -1,4 +1,4 @@
-"""Populate hoirang_match_results*.html DATA (and optional DIFF) blocks.
+"""Populate image_match_accuracy_v3*.html DATA (and optional DIFF) blocks.
 
 Canonical values (score / tier / node / basis / cap_title / page / png path)
 come from the source `*_image_match_accuracy_*.md` so the HTML matches the md
@@ -11,7 +11,7 @@ Pillow so the single-file HTML stays manageable. Only the `const DATA = [...]`
 block between DATA_START and DATA_END markers is rewritten; with --diff-vs-md
 the `const DIFF = [...]` block between DIFF_START and DIFF_END is also rewritten.
 
-Default invocation populates cleaned-data v3 into hoirang_match_results.html.
+Default invocation populates cleaned-data v3 into image_match_accuracy_v3.html.
 For raw: pass --source-md, --captions, --diff-vs-md, --target-html.
 """
 from __future__ import annotations
@@ -34,7 +34,9 @@ from palace import match_images as mi
 DEFAULT_SOURCE_MD = (
     mi.REPO / 'results' / 'audit' / '2026-06-11_image_match_accuracy_v3.md'
 )
-DEFAULT_TARGET_HTML = mi.REPO / 'results' / 'audit' / 'hoirang_match_results.html'
+DEFAULT_TARGET_HTML = (
+    mi.REPO / 'results' / 'audit' / 'image_match_accuracy_v3.html'
+)
 
 
 def main() -> int:
