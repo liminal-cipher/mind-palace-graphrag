@@ -189,10 +189,10 @@ python palace/tests/compare_golden.py --run-id korean_history   # 캐시 히트 
 | 이름 | GitHub | 기여 (이 repo 커밋 기준) |
 |---|---|---|
 | 지경민 | [@jen282](https://github.com/jen282) | PDF 전처리 파이프라인([`preprocessing/`](preprocessing)), 캡션·이미지 분리, 퀴즈 생성·채점·근거, 검색 프롬프트 |
-| 이재모 | [@imjml](https://github.com/imjml) | 초기 이미지 분리·캡션, 퀴즈 원안 (초기 작업으로 이 repo 커밋에는 대부분 미반영) |
+| 이재모 | [@imjml](https://github.com/imjml) | 초기 이미지 분리·캡션(OpenCV), 시각 단서 기반 연상 장면 생성 프롬프트([`backend/mnemonic/`](backend/mnemonic)) 설계 및 테스트 |
 | 조윤재 | [@liminal-cipher](https://github.com/liminal-cipher) | 아키텍처 설계, GraphRAG 인덱싱 구성([`indexing/`](indexing) · [`archive/audit/`](archive/audit)), 라이브 오케스트레이터([`orchestrator/`](orchestrator)), 방 자동화·이미지 매칭([`palace/`](palace)), Cosmos/Blob 상태 영속성, 전 단계 토큰·비용 추적 |
-| 김인준 | [@JunK98](https://github.com/JunK98) | BGE-M3 쿼리 라우터([`backend/routing/`](backend/routing)), PaddleOCR 추출 초기 탐색, Azure Speech 토큰 엔드포인트 |
-| 오효석 | [@ohyoseok92](https://github.com/ohyoseok92) | 보안 |
+| 김인준 | [@JunK98](https://github.com/JunK98) | BGE-M3 쿼리 라우터([`backend/routing/`](backend/routing)), Azure Speech 토큰 엔드포인트, GraphRAG 인덱싱 실험(overlap200 등) |
+| 오효석 | [@ohyoseok92](https://github.com/ohyoseok92) | 백엔드 보안 아키텍처: Rate Limiting(인메모리 고정 윈도우 미들웨어), API 인증(X-API-Key) 및 내부 API 네트워크 분리 통제, 정보 노출 차단(에러 스택 마스킹) |
 
 프론트엔드·3D 엔진을 포함한 팀 전체 기여는 앱 repo의 `Team & Contributions` 참조: [liminal-cipher/mind-palace](https://github.com/liminal-cipher/mind-palace)
 
