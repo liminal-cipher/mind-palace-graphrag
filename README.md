@@ -3,7 +3,7 @@
 > 학습 자료(한국사 교과서, 통계 교안 등)를 1인칭 3D 공간으로 만드는 백엔드 시스템. 자료의 TOC를 LLM이 만들고 그 섹션을 Room으로 써서 개념을 배정·선별한 뒤, GraphRAG 인덱스 위에서 질의(RAG)와 쇼케이스 Palace를 서빙한다.
 
 ![GraphRAG](https://img.shields.io/badge/GraphRAG-Microsoft-2088FF)
-![Azure OpenAI](https://img.shields.io/badge/Azure%20OpenAI-gpt--4.1--mini-412991)
+![Azure OpenAI](https://img.shields.io/badge/Azure%20OpenAI-4.1--mini%20%7C%205.4--mini-412991)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi&logoColor=white)
 ![Cosmos DB](https://img.shields.io/badge/Cosmos%20DB-State-0078D4?logo=microsoftazure&logoColor=white)
 
@@ -15,7 +15,7 @@ Microsoft AI School 9기 3차 프로젝트 · 팀 고민중독 (7인) · 2026.05
 
 - **라이브 E2E 파이프라인**: 업로드 → 전처리 → GraphRAG 인덱싱 → Palace 생성 → RAG 질의까지 자동 체인. 상태 게이팅(`toc_ready`/`palace_ready`/`rag_ready`)과 진행률 제공
 - **재현성**: 국사 골든 스냅샷(357 엔티티) 기준 byte-identical 캐시 검증 (`palace/tests/compare_golden.py`)
-- **선택 근거 기록**: 모델 4종 스윕(gpt-4.1·4.1-mini·5.4·5.4-mini) 후 gpt-4.1-mini 채택, 이미지 매칭 정확도 v1→v3 반복 측정, cold/warm 지연 분해 (`archive/audit/`)
+- **선택 근거 기록**: GraphRAG 인덱싱 모델 4종(gpt-4.1·4.1-mini·5.4·5.4-mini)을 스윕해 gpt-4.1-mini를 채택했고, RAG 답변 합성은 별도 응답시간·비용 비교를 거쳐 gpt-5.4-mini로 분리했다. 이미지 매칭 정확도 v1→v3 반복 측정과 cold/warm 지연 분해도 `archive/audit/`에 남겼다
 - **비용 가시화**: 질의·인덱싱 전 단계 토큰·USD 추적 (`usage.total_cost_usd`, 모델별 집계)
 - **상태 영속성**: Cosmos DB(잡·퀴즈 세션) + Blob(산출물·스냅샷). App Service 재시작에도 잡 상태 생존
 
@@ -208,4 +208,4 @@ python palace/tests/compare_golden.py --run-id korean_history   # 캐시 히트 
 
 ## Status
 
-완료. Microsoft AI School 9기 3차 프로젝트로 2026.05 ~ 06 진행. 라이브 데모는 Azure 구독이 유지되는 동안 접속 가능하다. 마지막 갱신 2026-08-11.
+완료. Microsoft AI School 9기 3차 프로젝트로 2026.05 ~ 06 진행. 라이브 데모는 Azure 구독이 유지되는 동안 접속 가능하다. 마지막 갱신 2026-09-07.
