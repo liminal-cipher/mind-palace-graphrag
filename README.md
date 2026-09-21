@@ -7,7 +7,7 @@
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi&logoColor=white)
 ![Cosmos DB](https://img.shields.io/badge/Cosmos%20DB-State-0078D4?logo=microsoftazure&logoColor=white)
 
-Microsoft AI School 9기 3차 프로젝트 · 팀 고민중독 (7인) · 2026.05 ~ 06
+Microsoft AI School 9기 3차 프로젝트 · 팀 고민중독 (7인) · 2026.05.19 ~ 2026.06.25
 
 [App Repository (프론트 + BFF)](https://github.com/liminal-cipher/mind-palace) · [팀 정본](https://github.com/PhrenO0/Mindpalace_Microsoft9ai_Thirdprj-)
 
@@ -208,4 +208,4 @@ python palace/tests/compare_golden.py --run-id korean_history   # 캐시 히트 
 
 ## Status
 
-완료. Microsoft AI School 9기 3차 프로젝트로 2026.05 ~ 06 진행. 라이브 데모는 Azure 구독이 유지되는 동안 접속 가능하다. 마지막 갱신 2026-09-07.
+완료. Microsoft AI School 9기 3차 프로젝트로 2026.05.19 ~ 2026.06.25 진행. 라이브 데모는 Azure 구독이 유지되는 동안 접속 가능하다. 마지막 갱신 2026-09-21.
