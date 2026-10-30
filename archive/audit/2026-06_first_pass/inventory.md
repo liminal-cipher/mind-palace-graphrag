@@ -56,7 +56,7 @@ EXPERIMENTS.md는 "exp1 ~ exp4"를 한 묶음 (분산 측정과 LCC 실험)으�
 | 자연 편차 ±10 (30/32/40) | `archive/reports/03_repro_step3_summary.md` 표. 원시 `logs/{exp2,repro_run2,repro_run3}_results.json` + 각 snapshots의 stats.json. | 실물 있음 |
 | repro_run3 357 entities / level 0 = 40 / orphan 31 | `results/snapshots/repro_run3/{entities,communities,stats.json}` | 실물 있음 |
 | degree 상위 (조선 41 / 사림 17 / 정조 17 / 임진왜란 16 / 영조 12) | `results/snapshots/repro_run3/entities.parquet` 그리고 `archive/exp06_room_probe/report.md`의 cluster 내 degree 표 | 실물 있음 (parquet 컬럼으로 재계산 가능) |
-| orphan 31개에 측우기·자격루·앙부일구·혼천의·인지의·금속활자 등이 들어 있음 | `archive/exp06_room_probe/report.md` 의 orphan 매핑 표 | 실물 있음 |
+| orphan 31개에 측우기·자격루·앙부일구·혼천의·인지의·금속활자 등이 들어 있음 | `archive/exp06_room_probe/report.md`의 orphan 매핑 표 | 실물 있음 |
 | use_lcc=true → level 0 40→16, 112개(31%) 소실 | `archive/reports/04_use_lcc.md` + `archive/snapshots/exp4_lcc_true/{communities.parquet, missing_analysis_full.txt}` + `logs/exp4_missing_analysis.txt` | 실물 있음 |
 | community report가 baseline 963초 중 798초 (83%) | `archive/reports/00_baseline.md`. (실시간 로그는 `logs/indexing-engine.log` 또는 `logs/run_baseline.stdout`로 확인 가능) | 실물 있음 |
 | exp5 type-keep 142 / type-demote 104 / unknown 111 (전체의 31%) | `archive/exp05_stage2_merge/` 안 (`exp5_lib.py`, `type_select_test.{py,md}`, `entity_breakdown_v2.html`) | 실물 있음 (HTML 분류 결과). 정확한 수치 매칭은 다음 단계. |
@@ -70,23 +70,23 @@ EXPERIMENTS.md는 "exp1 ~ exp4"를 한 묶음 (분산 측정과 LCC 실험)으�
 | exp9 semantic 1038 / pagesplit 755 entities | `archive/exp09_rechunk/eval_{semantic,pagesplit}_run1.json` + `archive/snapshots/{semantic,pagesplit}_run1/entities.parquet` | 실물 있음 |
 | exp9 orphan 10.5% / 17.1%, max cluster 243 / 135 | `archive/exp09_rechunk/eval_{semantic,pagesplit}_run1.json` + `comparison.md` | 실물 있음 |
 | exp9 anchor should-show 8/8, should-demote 3/4 (`붕당정치` 누락) | `eval_{semantic,pagesplit}_run1.json` | 실물 있음 |
-| exp9 임진왜란 트리오: semantic split, pagesplit merge | `eval_{semantic,pagesplit}_run1.json` 의 클러스터 멤버 | 실물 있음 |
+| exp9 임진왜란 트리오: semantic split, pagesplit merge | `eval_{semantic,pagesplit}_run1.json`의 클러스터 멤버 | 실물 있음 |
 
 ### 3.2 exp10 report.md의 핵심 주장
 
 | 주장 | 실물 위치 | 상태 |
 |---|---|---|
-| repro_run3 k_base=12 크기 [51,48,45,39,34,31,24,23,20,18,13,11] | `archive/rooms/repro_run3_K10_embedding.md` 의 pipeline 섹션, K10_llm/K5 둘 다 동일. (코드 재실행으로도 결정적) | 실물 있음 |
+| repro_run3 k_base=12 크기 [51,48,45,39,34,31,24,23,20,18,13,11] | `archive/rooms/repro_run3_K10_embedding.md`의 pipeline 섹션, K10_llm/K5 둘 다 동일. (코드 재실행으로도 결정적) | 실물 있음 |
 | max_cluster_size=55에서 split 0회 (happy path) | 위 같은 pipeline 표 (k_base 와 after-split 사이즈 동일) | 실물 있음 |
 | 4 combo 최종 사이즈 | `archive/rooms/repro_run3_K10_embedding.md` `[93,82,39,34,24,23,20,18,13,11]`, K10_llm md 동일, K5_embedding `[116,106,106,18,11]`, K5_llm `[108,79,63,63,44]` | 실물 있음 |
 | 4 combo coherent 10/10 또는 5/5 | 각 `*.eval.json`의 `coherence_flags` | 실물 있음 |
-| should_show: K10 13/14 (둘 다), K5_emb 11/14, K5_llm 8/14 | `repro_run3_K{10,5}_{embedding,llm}.eval.json` 의 `should_show.hits/total` | 실물 있음 |
+| should_show: K10 13/14 (둘 다), K5_emb 11/14, K5_llm 8/14 | `repro_run3_K{10,5}_{embedding,llm}.eval.json`의 `should_show.hits/total` | 실물 있음 |
 | should_demote: K10 7/8, K5 둘 다 8/8 | 위 같은 eval json의 `should_demote.hits/total` | 실물 있음 |
 | 전수보존 357/357, forced_demote=0 (4 combo 전부) | 위 같은 eval json의 `completeness` 블록 | 실물 있음 |
 | K=10에서 embedding과 llm 두 전략 사실상 동일 | `repro_run3_K10_embedding.md` vs `K10_llm.md` 직접 비교 가능 (방 이름, 멤버 둘 다 저장됨) | 실물 있음 |
 | K=5 embedding은 측우기 등 4종을 keep, K=5 llm은 같은 4종을 의병 방에 demote | `repro_run3_K5_embedding.md` ("조선 제도·인물·문서·지명" 방의 kept에 측우기·혼천의·앙부일구·자격루) vs `K5_llm.md` (의병 방 7명만 keep, 도구 4종은 demote 쪽) | 실물 있음 |
-| 회귀: 이성계가 K=10에서 demote | `repro_run3_K10_embedding.eval.json` `should_show` 의 이성계 row (correct=false, classification=demote, room_name="임진왜란과 조선 군사") | 실물 있음 |
-| 비용 33회 호출, 실측 ~105초 | (해당 메트릭은 보존된 spec에 없음. `meta.ts` 만 보존됨.) | **실물 없음** (문서에만, 토큰/시간은 런타임 stdout이라 어디에도 저장 안 됨) |
+| 회귀: 이성계가 K=10에서 demote | `repro_run3_K10_embedding.eval.json` `should_show`의 이성계 row (correct=false, classification=demote, room_name="임진왜란과 조선 군사") | 실물 있음 |
+| 비용 33회 호출, 실측 ~105초 | (해당 메트릭은 보존된 spec에 없음. `meta.ts`만 보존됨.) | **실물 없음** (문서에만, 토큰/시간은 런타임 stdout이라 어디에도 저장 안 됨) |
 
 ### 3.3 STATUS.md (날짜 2026-06-03 기준)의 주장
 
@@ -96,9 +96,9 @@ EXPERIMENTS.md 작성 시점(이후)과 어긋날 수 있어 따로 본다.
 |---|---|---|
 | 임베딩 병합 결정적, ward가 average보다 좋음 (silhouette K=5 0.083 / K=8 0.099 / K=10 0.098) | `archive/exp05_stage2_merge/embed_silhouette_summary.json`, `embed_reliability.json`, `stage2_emb_K{5,8,10}.json`, 비교용 `stage2_emb_K8_alt_average.json` | 실물 있음 |
 | LLM partition 병합 v1 4회 시도 전부 실패 (누락/중복) | `archive/exp05_stage2_merge/llm_reliability.json` | 실물 있음 |
-| LLM partition v1 stage2 JSON은 생성 안 됨 (성공 0회) | `archive/exp05_stage2_merge/` 에 v1 stage2 파일이 없음 (v2 K5 run1/2/3만 있음). 부재가 곧 증거 | 실물 있음 (부재로 확인) |
-| 194 덩어리 (community {4,5,9,10,13,17,23,24,27,29,30,33,34} 한 덩어리 size 194) | `archive/exp05_stage2_merge/stage2_emb_K10.json` 의 멤버 리스트 + `results/snapshots/repro_run3/communities.parquet` 의 community size 합산 | 실물 있음 (parquet으로 재계산 가능, JSON에 직접 size=194는 적혀있지 않음) |
-| LLM v2 (assignment 방식)을 다음 할 일로 적시 (실제 실행됐는지 별개) | `archive/exp05_stage2_merge/stage2_llm_v2_K5_run{1,2,3}.json` + `llm_v2_reliability.json` + `exp5_llm_v2.py` + `llm_v2_raw/` 가 모두 존재 → 실행됨 | 실물 있음 (계획이 실행으로 옮겨졌고 결과까지 저장됨) |
+| LLM partition v1 stage2 JSON은 생성 안 됨 (성공 0회) | `archive/exp05_stage2_merge/`에 v1 stage2 파일이 없음 (v2 K5 run1/2/3만 있음). 부재가 곧 증거 | 실물 있음 (부재로 확인) |
+| 194 덩어리 (community {4,5,9,10,13,17,23,24,27,29,30,33,34} 한 덩어리 size 194) | `archive/exp05_stage2_merge/stage2_emb_K10.json`의 멤버 리스트 + `results/snapshots/repro_run3/communities.parquet`의 community size 합산 | 실물 있음 (parquet으로 재계산 가능, JSON에 직접 size=194는 적혀있지 않음) |
+| LLM v2 (assignment 방식)을 다음 할 일로 적시 (실제 실행됐는지 별개) | `archive/exp05_stage2_merge/stage2_llm_v2_K5_run{1,2,3}.json` + `llm_v2_reliability.json` + `exp5_llm_v2.py` + `llm_v2_raw/`가 모두 존재 → 실행됨 | 실물 있음 (계획이 실행으로 옮겨졌고 결과까지 저장됨) |
 
 ### 3.4 EXPERIMENTS.md의 "지금까지의 결정"
 
@@ -110,7 +110,7 @@ EXPERIMENTS.md 작성 시점(이후)과 어긋날 수 있어 따로 본다.
 | "방 이름·keep/demote는 LLM 한 겹 얹기" | exp7 report.md + exp10 산출 (rubric.json + stage B 코드 + room json) | 실물 있음 |
 | "type 기준이 1차 안전망, 최종은 LLM" | exp5 type_select_test, entity_breakdown_v2.html + exp10 rubric/stage B 코드 | 실물 있음 |
 | "community report 워크플로 빼면 5배 이상" | exp9 rechunk 두 run의 indexing-engine.log + comparison.md (428s, 1113s) vs baseline 963s. exp5 STATUS.md "묶기 재실행 1~2분"도 같은 결의 근거. | 실물 있음 |
-| "작업 베이스는 repro_run3 스냅샷에 고정" | `results/snapshots/repro_run3/` 가 모든 후속 실험의 입력으로 명시됨 (exp5_lib.py, exp6 probe.py, exp7 probe.py, exp8 probe.py, exp10 run_repro_run3.py 의 BASE 상수) | 실물 있음 |
+| "작업 베이스는 repro_run3 스냅샷에 고정" | `results/snapshots/repro_run3/`가 모든 후속 실험의 입력으로 명시됨 (exp5_lib.py, exp6 probe.py, exp7 probe.py, exp8 probe.py, exp10 run_repro_run3.py 의 BASE 상수) | 실물 있음 |
 | "청킹은 pagesplit이 약간 유리" | exp9 comparison.md + eval_*.json | 실물 있음 |
 | "exp9 baseline은 다른 자료라 청킹 변수만 격리되었지 자료 품질은 confound" | (문장만, 정량 분리 안 함) | **실물 없음** (자기-한계 명시) |
 
@@ -118,7 +118,7 @@ EXPERIMENTS.md 작성 시점(이후)과 어긋날 수 있어 따로 본다.
 
 ### (a) 방은 임베딩 ward 클러스터 (커뮤니티 병합보다 균형 잡히고 빌드 가능)
 - **근거 코드**: `archive/exp06_room_probe/probe.py` (직접 ward) + `archive/exp05_stage2_merge/exp5_embed.py` (community 병합 baseline)
-- **근거 결과**: `archive/exp06_room_probe/report.md` 의 "2. 크기 분포 비교" 표 (`[51,50,48,45,44,34,24,23,20,18]` vs `[160,45,35,34,18,10,8,7,5,4]`). `archive/exp05_stage2_merge/stage2_emb_K10.json` 이 community 병합 원본.
+- **근거 결과**: `archive/exp06_room_probe/report.md`의 "2. 크기 분포 비교" 표 (`[51,50,48,45,44,34,24,23,20,18]` vs `[160,45,35,34,18,10,8,7,5,4]`). `archive/exp05_stage2_merge/stage2_emb_K10.json`이 community 병합 원본.
 - **참고**: STATUS.md의 "194 덩어리" 문제도 같은 결론을 받쳐줌 (community 병합이 큰 덩어리 만들고 안 깨짐).
 - **상태**: 근거 위치 명확
 
@@ -133,10 +133,10 @@ EXPERIMENTS.md 작성 시점(이후)과 어긋날 수 있어 따로 본다.
 
 ### (c) 임베딩 병합 ≥ LLM 병합
 - **두 가지 다른 LLM 병합이 있어 헷갈리기 쉬워서 분리**:
-  - exp5 v1 "partition" LLM 병합 (40방을 K개 그룹으로 LLM이 분배): `archive/exp05_stage2_merge/llm_reliability.json` 에서 4회 전부 실패 기록. stage2 JSON 미생성. → "임베딩이 압도적으로 나음"의 강한 근거.
+  - exp5 v1 "partition" LLM 병합 (40방을 K개 그룹으로 LLM이 분배): `archive/exp05_stage2_merge/llm_reliability.json`에서 4회 전부 실패 기록. stage2 JSON 미생성. → "임베딩이 압도적으로 나음"의 강한 근거.
   - exp5 v2 "assignment" LLM 병합 (각 community에 라벨 붙이기): `stage2_llm_v2_K5_run{1,2,3}.json` + `llm_v2_reliability.json`. 결과 보존됨 (성공 여부와 임베딩 대비 비교는 다음 단계).
   - exp10의 LLM merge (cluster centroid를 LLM이 K그룹으로): K=10에선 embedding과 사실상 동일, K=5에선 사이즈 균형은 LLM이 더 좋고 앵커 보존(should_show)은 embedding이 더 좋음. 근거: `archive/rooms/repro_run3_K{10,5}_{embedding,llm}.{md,eval.json}` 4쌍.
-- **근거 코드**: `archive/exp05_stage2_merge/exp5_llm.py`, `exp5_llm_v2.py`, `archive/exp10_room_gen/room_gen.py` 의 `_merge_llm` 함수.
+- **근거 코드**: `archive/exp05_stage2_merge/exp5_llm.py`, `exp5_llm_v2.py`, `archive/exp10_room_gen/room_gen.py`의 `_merge_llm` 함수.
 - **상태**: 근거 위치 명확. "≥" 라는 부등호 자체는 어느 K에서, 어느 메트릭에서 참이고 어느 곳에선 모호한지 다음 단계에서 정리 필요.
 
 ## 한눈에 요약
@@ -161,7 +161,7 @@ EXPERIMENTS.md 작성 시점(이후)과 어긋날 수 있어 따로 본다.
   - (c) "임베딩 ≥ LLM" 은 어떤 종류의 LLM 병합(v1 partition / v2 assignment / exp10 centroid)인지에 따라 메트릭이 갈림 → 판정 단계에서 분해 필요.
 
 ### exp10 spec.json에 메타가 부족한 부분
-- final spec에 추출 시점(ts)은 들어있으나, LLM 호출 횟수·토큰·시간이 없음. 회귀 추적용으로 약함. 다음 단계에서 (a) 코드 재실행해 로그 확보 또는 (b) `room_gen.py` 에 메트릭 저장 추가 등의 선택이 있음.
+- final spec에 추출 시점(ts)은 들어있으나, LLM 호출 횟수·토큰·시간이 없음. 회귀 추적용으로 약함. 다음 단계에서 (a) 코드 재실행해 로그 확보 또는 (b) `room_gen.py`에 메트릭 저장 추가 등의 선택이 있음.
 
 ## 노트
 - 이번 패스는 존재 여부와 위치만 확인. 수치 검증, 코드 정확성 판정, 결론 입증 강도는 모두 다음 단계.

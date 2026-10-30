@@ -1,4 +1,4 @@
-"""Normalize a preprocessing result dir into the indexing/matching input contract.
+"""Normalise a preprocessing result dir into the indexing/matching input contract.
 
 preprocessing/result/<domain>_v1/ (pipeline_v2 output) -> input/<domain>/ with the
 fixed names graphrag + palace.match_images expect:
@@ -73,7 +73,7 @@ def normalize(result_dir: Path, domain: str) -> Path:
             n_img += 1
 
     n_cap = (out / "captions.md").read_text(encoding="utf-8").count("<figcaption>")
-    print(f"normalized -> {out.relative_to(REPO).as_posix()}/")
+    print(f"normalised -> {out.relative_to(REPO).as_posix()}/")
     print(f"  corpus.txt, pagesplit.txt, captions.md (figs={n_cap}), images/ ({n_img} png)")
     if n_cap != n_img:
         print(f"  [warn] caption count {n_cap} != png count {n_img} "

@@ -114,7 +114,7 @@ def assign_palace_ids(rooms_json: dict, ent_lookup: dict[str, dict]) -> dict[str
                 pid = f'ent_{normalize_title(title)}'
                 if pid in pid_to_title and pid_to_title[pid] != title:
                     raise SystemExit(
-                        f'normalized id collision: pid={pid} from titles '
+                        f'normalised id collision: pid={pid} from titles '
                         f'{pid_to_title[pid]!r} and {title!r}'
                     )
                 title_to_pid[title] = pid

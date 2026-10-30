@@ -552,7 +552,7 @@ async def call_llm(input_payload: Any, max_output_tokens: int = 2400) -> str:
     return extract_response_text(data)
 
 
-# --- quiz normalization ----------------------------------------------------
+# --- quiz normalisation ----------------------------------------------------
 
 def _is_int(value: Any) -> bool:
     return isinstance(value, int) and not isinstance(value, bool)
@@ -716,7 +716,7 @@ async def generate_quizzes(
             "evidence": selected,
             "reviews": verification["reviews"],
         }
-    except Exception as error:  # noqa: BLE001 - mirror server.js fallback behavior
+    except Exception as error:  # noqa: BLE001 - mirror server.js fallback behaviour
         return {
             "mode": "fallback",
             "warning": str(error),

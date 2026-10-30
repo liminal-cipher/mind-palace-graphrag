@@ -59,7 +59,7 @@ def build_index_root(
     summarize_prompt_src: Optional[Path] = None,
     community_graph_prompt_src: Optional[Path] = None,
 ) -> Path:
-    """잡의 격리 인덱싱 root 를 materialize 하고 그 경로를 반환한다.
+    """잡의 격리 인덱싱 root 를 materialise 하고 그 경로를 반환한다.
 
     corpus_src        업로드된 .txt (input/ 로 복사)
     entity_types      해소된 도메인 entity_types(settings 에 치환)

@@ -10,7 +10,7 @@
 
 - 스냅샷: `results/snapshots/repro_run3/` (357 엔티티, 1536-D 임베딩)
 - 임베딩: `results/snapshots/repro_run3/lancedb/entity_description` (exp10이 쓴 그것 그대로 재사용, 재계산 안 함)
-- TOC 배정: `archive/exp15_toc_chapters/entity_chapter_assignments.csv` 의 `dominant_chapter_B` 컬럼 (B 파티션 6챕터)
+- TOC 배정: `archive/exp15_toc_chapters/entity_chapter_assignments.csv`의 `dominant_chapter_B` 컬럼 (B 파티션 6챕터)
 - 챕터 정의: `archive/exp15_toc_chapters/chapter_definition.json` `partition_B`
 - 앵커: `archive/exp10_room_gen/anchors_korean_history.json` (should_show 14 + should_demote 8, alias 적용)
 

@@ -29,7 +29,7 @@ from scipy.cluster.hierarchy import fcluster, linkage
 
 # ---------------------------------------------------------------------------
 # Entity shape (dict): {id, title, type, degree, description, embedding}
-# embedding is np.ndarray float32, NOT L2-normalized at rest. Normalize at use.
+# embedding is np.ndarray float32, NOT L2-normalised at rest. Normalise at use.
 # Indices refer to position in the entities list returned by load_snapshot.
 # ---------------------------------------------------------------------------
 
@@ -78,14 +78,14 @@ def load_snapshot(path: str | Path) -> tuple[list[dict], dict]:
 
 
 def _stack_normalized(entities: list[dict], indices: list[int]) -> np.ndarray:
-    """Stack embeddings of `indices` (positions into entities) and L2-normalize."""
+    """Stack embeddings of `indices` (positions into entities) and L2-normalise."""
     mat = np.stack([entities[i]['embedding'] for i in indices]).astype(np.float32)
     norms = np.linalg.norm(mat, axis=1, keepdims=True)
     return mat / np.clip(norms, 1e-12, None)
 
 
 def base_cluster(entities: list[dict], k_base: int) -> list[list[int]]:
-    """exp6 method: L2-normalize embeddings, ward linkage with euclidean
+    """exp6 method: L2-normalise embeddings, ward linkage with euclidean
     metric (equivalent to cosine on unit vectors), cut tree to k_base clusters.
 
     Returns a list of clusters; each cluster is a list of entity indices
@@ -180,11 +180,11 @@ def merge_to_k(
 ) -> list[list[int]]:
     """Reduce `clusters` to exactly K by merging.
 
-    strategy="embedding": deterministic. Compute each cluster's L2-normalized
+    strategy="embedding": deterministic. Compute each cluster's L2-normalised
         centroid, repeatedly merge the pair with highest cosine similarity
-        until K remain. Centroid is re-normalized after each merge.
+        until K remain. Centroid is re-normalised after each merge.
 
-    strategy="llm": one LLM call. Each cluster is summarized by
+    strategy="llm": one LLM call. Each cluster is summarised by
         `representatives_per_cluster` entities chosen by degree-desc with
         type round-robin (so a few high-degree generic terms don't drown
         out the topic signal). LLM returns a mapping of cluster indices
@@ -222,7 +222,7 @@ def _merge_embedding(
 ) -> list[list[int]]:
     """Apply ward linkage on cluster centroids (cheap: len(clusters) points
     in 1536-D) and cut to K. Avoids chaining that a greedy nearest-centroid
-    merger produces, and matches the variance-minimization objective used
+    merger produces, and matches the variance-minimisation objective used
     for base_cluster on the entity level.
     """
     if len(clusters) == K:
@@ -243,7 +243,7 @@ def representatives(
     entities: list[dict],
     n: int,
 ) -> list[dict]:
-    """Pick up to n entities to summarize a cluster.
+    """Pick up to n entities to summarise a cluster.
 
     Strategy: degree-desc base order, then round-robin across `type` so a
     few high-degree generic terms (which often share one type) don't

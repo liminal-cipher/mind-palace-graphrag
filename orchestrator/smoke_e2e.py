@@ -20,7 +20,7 @@
   - live_bio (라이브 인덱싱): 위 느슨 기준 + snapshot=job_id 로 /quiz/json 이 200 +
       문항을 돌려줘야 한다(챗봇 /query 는 되는데 라이브 파일 퀴즈만 404 나던 회귀 가드).
       /quiz/json 은 통합 app 라우트라 serve:app 단독 기동이면 자동 스킵(_check_quiz 참조).
-  - 공통: /query 응답이 비어있지 않아야 한다(체인 페이로프).
+  - 공통: /query 응답이 비어있지 않아야 한다(체인 페이로드).
 
 종료 코드: 전부 PASS 면 0, 아니면 1.
 """
@@ -373,7 +373,7 @@ def run_one(spec: dict) -> bool:
         else:
             _check_statistics(api_palace, fails, notes)
 
-        # 공통: 쿼리 응답 비어있지 않은지(체인 페이로프).
+        # 공통: 쿼리 응답 비어있지 않은지(체인 페이로드).
         answer = _query(job_id, spec["question"])
         preview = answer.strip().replace("\n", " ")[:120]
         print(f"  /jobs/{job_id}/query -> {len(answer)}자: {preview}")

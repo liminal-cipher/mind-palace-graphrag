@@ -1,4 +1,4 @@
-# exp17 generalization 보고
+# exp17 generalisation 보고
 
 회랑 파이프라인이 한국사 교과서가 아닌 새 도메인(통계학 슬라이드 OCR)에서 그대로 작동하는지, 어디까지 자동으로 적응하고 어디서 수동 결정이 들어가는지 기록.
 
@@ -69,7 +69,7 @@ baseline(한국사) 동일 지표는 회차 1에 별도 측정하지 않았으�
 
 ## 2. LLM 목차 (Phase B step 4)
 
-gpt-4.1-mini, temp=0. corpus 전체를 보내고 5~6개 ordered 섹션 + 각 섹션의 verbatim `start_marker` 받음. 오프셋은 `text.find` 으로 후처리(직전 섹션 이후 첫 발견 강제). 결과는 monotonic·distinct.
+gpt-4.1-mini, temp=0. corpus 전체를 보내고 5~6개 ordered 섹션 + 각 섹션의 verbatim `start_marker` 받음. 오프셋은 `text.find`으로 후처리(직전 섹션 이후 첫 발견 강제). 결과는 monotonic·distinct.
 
 | # | 이름 | start | end | 길이 | marker | corpus 등장 횟수 |
 |---|---|---|---|---|---|---|
@@ -105,7 +105,7 @@ occurrence 가중치를 exp15의 unit 카운트(0/1 indicator)에서 **char-over
 
 ## 4. GRAPH arm 클러스터 (Phase B step 6)
 
-`archive/exp10_room_gen/room_gen.py`의 `base_cluster(K=6)` 그대로 사용. ward linkage, L2-normalized euclidean. 두 번 돌려 동일 클러스터(`two_runs_identical=True`).
+`archive/exp10_room_gen/room_gen.py`의 `base_cluster(K=6)` 그대로 사용. ward linkage, L2-normalised euclidean. 두 번 돌려 동일 클러스터(`two_runs_identical=True`).
 
 방 크기(pos 기준 재정렬 후):
 

@@ -14,4 +14,4 @@
 
 ## live는 어디에
 
-live 스냅샷(`repro_run3`, `ai_school`, `ai_school_realistic`)과 audit 리포트는 `results/`에 그대로 있다. 재현 절차는 `results/RUNBOOK.md`, 실험 누적 narrative는 `results/EXPERIMENTS.md` 참조.
+live 스냅샷(`repro_run3`, `ai_school`, `ai_school_realistic`)과 audit 리포트는 `results/`에 그대로 있다. 재현 절차는 [`docs/RUNBOOK.md`](../docs/RUNBOOK.md), 실험 누적 narrative는 [`docs/EXPERIMENTS.md`](../docs/EXPERIMENTS.md) 참조.

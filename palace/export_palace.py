@@ -104,7 +104,7 @@ def assign_palace_ids(rooms_json: dict, ent_lookup: dict[str, dict]) -> dict[str
                     continue
                 seen_titles.add(title)
                 base_pid = f'ent_{normalize_title(title)}'
-                # Distinct titles can normalize to the same id (예: 괄호 앞
+                # Distinct titles can normalise to the same id (예: 괄호 앞
                 # 공백 하나가 '_'로 접히는 '지수 분포 (...)' vs '지수 분포(...)').
                 # 죽이는 대신 숫자 접미로 분리해 각 title을 별 노드로 유지한다.
                 # 첫 title이 base_pid를 차지하고 이후 충돌자만 _2, _3을 받으므로

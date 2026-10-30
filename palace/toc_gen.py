@@ -180,7 +180,7 @@ def generate_toc(
 
     # Overflow is not clamped here. The room-count cap is enforced downstream
     # in a single node-count-aware pass (build_rooms.absorb_empty_rooms), which
-    # merges the smallest rooms into a neighbor after Stage B. The prompt still
+    # merges the smallest rooms into a neighbour after Stage B. The prompt still
     # asks for <= max_rooms sections as a soft hint; the cap is the hard
     # guarantee. A live run always reaches room generation regardless of count.
     offsets = [s['start_offset'] for s in sections]

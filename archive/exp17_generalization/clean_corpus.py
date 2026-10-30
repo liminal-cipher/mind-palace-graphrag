@@ -81,7 +81,7 @@ def clean(raw: str) -> tuple[str, dict]:
         'delta_chars': after_chars - before_chars,
         'operations': [
             'strip BOM',
-            'normalize CRLF/CR to LF',
+            'normalise CRLF/CR to LF',
             'rstrip whitespace per line',
             'collapse >=2 blank lines to 1',
             'drop trailing blank lines',

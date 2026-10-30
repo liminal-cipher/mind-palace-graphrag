@@ -19,8 +19,8 @@ git 확정: c1796e5, 32ccf1b, 0964fa2 모두 origin/main HEAD a5077cf 에 존재
 1. `store.update(job.job_id, state=State.INDEXING)`
 2. `await asyncio.sleep(sleep_seconds)` (스텁 지연)
 3. `snapshot_dir = config.SHOWCASE_SNAPSHOTS.get(job.domain)`, 없으면 `ValueError`
-4. 결정 기록 `_index_scaffold.json` 을 잡 폴더(var)에만 기록
-5. `store.update(job.job_id, snapshot_path=snapshot_dir)` 로 snapshot_path 를 프리베이크
+4. 결정 기록 `_index_scaffold.json`을 잡 폴더(var)에만 기록
+5. `store.update(job.job_id, snapshot_path=snapshot_dir)`로 snapshot_path 를 프리베이크
    dir(results/snapshots/...)로 가리킴
 
 ★ 워커는 스테이지를 위치 인자로만 호출한다: `await stage(job, self.store, self.sleep_seconds)`
@@ -36,7 +36,7 @@ git 확정: c1796e5, 32ccf1b, 0964fa2 모두 origin/main HEAD a5077cf 에 존재
 - 즉 index 가 snapshot_path 에 무엇을 쓰든 build_palace 가 그대로 소비한다. **이 한 줄
   (`store.update(snapshot_path=...)`)이 scaffold↔real 의 교체 지점**이다. 스테이지 시그니처,
   워커, build_palace 는 손 안 대도 된다.
-- `config.SHOWCASE_SNAPSHOTS` 와 `config.PALACE_CONFIGS` 는 **별개의 평행 레지스트리**
+- `config.SHOWCASE_SNAPSHOTS`와 `config.PALACE_CONFIGS`는 **별개의 평행 레지스트리**
   (config.py:33-45). build_palace 는 SHOWCASE_SNAPSHOTS 를 참조하지 않으므로 scaffold 가정이
   빌드로 새지 않는다.
 
@@ -47,12 +47,12 @@ index 는 다음을 보장해야 한다:
    `documents.parquet`, `lancedb/`. export_palace 는 추가로 `relationships.parquet` 필요.
    즉 GraphRAG 표준 출력(parquet 7종 + lancedb)을 그대로.
 2. `store.update(job.job_id, snapshot_path=<그 dir>)`.
-3. snapshot_path 는 serve 의 허용 루트 검증을 통과해야 한다. `var/jobs` 는 이미 허용 루트
+3. snapshot_path 는 serve 의 허용 루트 검증을 통과해야 한다. `var/jobs`는 이미 허용 루트
    (serve.py:61-64, `_ALLOWED_REGISTER_ROOTS`). rag 단계가 그대로 register 함(변경 불필요).
 
 ### ★ 분기 위험 (가장 중요)
-현재 "쇼케이스냐 라이브냐" 트리거는 **`/upload` 의 `domain` 쿼리 파라미터 하나**다
-(app.py:57). index 는 `job.domain` 을 SHOWCASE_SNAPSHOTS 의 키로 직접 쓴다. smoke_e2e.py 가
+현재 "쇼케이스냐 라이브냐" 트리거는 **`/upload`의 `domain` 쿼리 파라미터 하나**다
+(app.py:57). index 는 `job.domain`을 SHOWCASE_SNAPSHOTS 의 키로 직접 쓴다. smoke_e2e.py 가
 이를 못박는다: "index(scaffold) 는 업로드 내용이 아니라 domain 으로 스냅샷을 고른다"
 (smoke_e2e.py:96-102).
 
@@ -99,7 +99,7 @@ index 는 다음을 보장해야 한다:
   (proj_ai_school/settings.yaml:41-57).
 - 인덱싱 명령(STOP-1 확장에서 세션 로그로 확정, 2026-06-14_stop1_index_recipe.md 참조):
   `.venv/Scripts/python.exe -X utf8 -m graphrag index --root proj_ai_school`.
-  base_dir 가 `..` 로 시작하므로 root 를 proj_ai_school 로 주면 input/output 이 레포 루트의
+  base_dir 가 `..`로 시작하므로 root 를 proj_ai_school 로 주면 input/output 이 레포 루트의
   input/ai_school, output/ai_school 로 해소됨.
 - 출력 → 스냅샷(확정): PowerShell `Copy-Item -Recurse "output\ai_school" "results\snapshots\ai_school"`
   (기존 dst 는 Remove-Item -Recurse -Force 후 복사). parquet 7종 + lancedb + stats.json 통째.
@@ -134,14 +134,14 @@ index 는 다음을 보장해야 한다:
   prompts_tuned/extract_graph.txt:8 에 baked, settings.yaml:78 은 가독성용 사본). 즉 15종은
   손지정이 아니라 discover 산출. ([D] 권고는 "discover 는 유효하나 비용이 있어 알려진 도메인은
   curated 룩업이 더 싸다"로 근거를 갱신; 상세는 2026-06-14_stop1_index_recipe.md.)
-- proj_ai_school/ 은 .gitignore(line 16)에 있지만 6e04738 에서 텍스트 산출물만 `-f` 로
+- proj_ai_school/ 은 .gitignore(line 16)에 있지만 6e04738 에서 텍스트 산출물만 `-f`로
   force-track 됨(settings.yaml + prompts_tuned 3종). output/cache/logs/lancedb 는 계속 무시.
   → 튜닝 프롬프트가 레포에 있어 **템플릿으로 재사용 가능**.
 
 ### 인덱싱 env/설정
-- `.env` 에서 로드: `GRAPHRAG_API_KEY`, `GRAPHRAG_API_BASE`(settings.yaml 의
-  `${...}` 치환, api_version 2024-12-01-preview). palace/run.py 도 같은 `.env` 를
-  `_load_dotenv` 로 읽음(palace/run.py:60-68, 253).
+- `.env`에서 로드: `GRAPHRAG_API_KEY`, `GRAPHRAG_API_BASE`(settings.yaml 의
+  `${...}` 치환, api_version 2024-12-01-preview). palace/run.py 도 같은 `.env`를
+  `_load_dotenv`로 읽음(palace/run.py:60-68, 253).
 - 추가 필수: vector_store.vector_size 1536(위), input.type text, 청킹/클러스터 설정.
 
 ---
@@ -149,12 +149,12 @@ index 는 다음을 보장해야 한다:
 ## [C] per-job GraphRAG root 격리 (★핵심)
 
 ### 왜 레포 루트를 못 쓰나
-- 레포 루트 `settings.yaml` 은 base_dir `input`(국사 풋건) + `output`(bare 점유) +
+- 레포 루트 `settings.yaml`은 base_dir `input`(국사 풋건) + `output`(bare 점유) +
   국사 entity_types `[인물, 사건, 정책, 문물, 서적, 기관, 장소]`(settings.yaml:46-76).
   라이브 업로드가 레포 루트를 쓰면 국사 입력과 충돌하고 국사 출력을 덮어쓴다.
 
 ### 격리 root 세우기 (proj_ai_school 을 베이스로)
-job 마다 `var/jobs/<id>/index_root/` 를 세운다:
+job 마다 `var/jobs/<id>/index_root/`를 세운다:
 ```
 var/jobs/<id>/index_root/
   settings.yaml      # 템플릿 복사 + 슬롯 치환(아래)
@@ -181,10 +181,10 @@ var/jobs/<id>/index_root/
   단 base_dir 의 `..` 상대경로는 잡 root 기준으로 다시 써야 한다.
 
 ### (b) 패턴 확장
-build_palace 는 이미 per-job config 를 베이스에서 materialize 하고 출력/캐시를
-`var/jobs/<id>/` 로 격리하며 캐시를 seed 한다(`_build_job_palace_config` stages.py:116-151).
-**인덱싱 root 격리는 같은 패턴을 한 스테이지 앞에서 하는 것**이다: palace config materialize ↔
-graphrag root materialize. 쇼케이스 scaffold 는 기존 root(repo 루트 / proj_ai_school) 그대로
+build_palace 는 이미 per-job config 를 베이스에서 materialise 하고 출력/캐시를
+`var/jobs/<id>/`로 격리하며 캐시를 seed 한다(`_build_job_palace_config` stages.py:116-151).
+**인덱싱 root 격리는 같은 패턴을 한 스테이지 앞에서 하는 것**이다: palace config materialise ↔
+graphrag root materialise. 쇼케이스 scaffold 는 기존 root(repo 루트 / proj_ai_school) 그대로
 fallback 으로 둔다.
 
 ---
@@ -198,7 +198,7 @@ fallback 으로 둔다.
   그 라벨을 단일 소스로 두 곳에 먹인다:
   1. prompt-tune `--domain`(or entity_types 조건화, 아래)
   2. toc_gen `{domain}` 힌트. toc_gen 은 이미 domain 인자를 받아 시스템 프롬프트에 한 줄로
-     엮는다(toc_gen.py:44-52, 174-187). build_palace config 도 `domain` 을 그대로 운반.
+     엮는다(toc_gen.py:44-52, 174-187). build_palace config 도 `domain`을 그대로 운반.
 - 라벨은 [A]의 분기에서 **스냅샷 선택엔 절대 안 쓴다.** prompt-tune/toc 전용.
 
 ### ★ 비용 대안 (풀 튜닝 vs 가벼운 조건화)
@@ -226,12 +226,12 @@ fallback 으로 둔다.
 
 ## [E] 입력 계약
 
-- `/upload` 는 raw 본문 바이트를 `var/jobs/<id>/input/<안전파일명>` 에 그대로 쓴다
-  (app.py:60-86). 파싱/추출 없음. 파일명만 sanitize.
+- `/upload`는 raw 본문 바이트를 `var/jobs/<id>/input/<안전파일명>`에 그대로 쓴다
+  (app.py:60-86). 파싱/추출 없음. 파일명만 sanitise.
 - preprocess 는 스텁: sleep + `_preprocess.done` 터치(stages.py:42-51). **텍스트 추출 없음.**
-- GraphRAG index 는 `input.type: text` 로 input base_dir 의 `.txt` 를 기대한다
+- GraphRAG index 는 `input.type: text`로 input base_dir 의 `.txt`를 기대한다
   (settings.yaml:33-34). 입력 위치 = root 의 input base_dir.
-- ★ **(B) 시점 지원 입력 타입 = 플레인 텍스트 `.txt` 만.**
+- ★ **(B) 시점 지원 입력 타입 = 플레인 텍스트 `.txt`만.**
   - PDF/슬라이드는 인덱싱 전에 텍스트 추출(PyMuPDF / Azure Document Intelligence)이 필요.
     그 추출은 현재 **어디에도 없다**(preprocess 스텁, 업로드 핸들러도 raw 저장만).
   - 비-txt 지원 = 이미지팀 preprocess(텍스트 추출) 의존. preprocess 진짜화는 (B) 스코프 밖.
@@ -246,21 +246,21 @@ fallback 으로 둔다.
 ## [F] 실패 처리
 
 - index subprocess 실패: nonzero rc → raise(build_palace 의 `_run_palace` rc 체크와 동형,
-  stages.py:154-189). 워커 `_consume` 가 잡아 `store.fail(job_id, ...)`, **워커 루프는 생존**
+  stages.py:154-189). 워커 `_consume`가 잡아 `store.fail(job_id, ...)`, **워커 루프는 생존**
   (worker.py:92-94, "한 잡 실패가 워커를 죽이지 않게").
 - 표면화할 실패: Azure 에러(키/쿼터), 빈 추출(0 엔티티), 포맷 깨짐(비-txt raw),
   extract_graph 타임아웃, lancedb vector_size mismatch(1536 미설정 시).
 - index 자체 실패 vs 다운스트림: 엔티티 부족 → build_palace 에서 K 붕괴/char-overlap 0노드.
   toc 클램프 STOP→merge 는 8ae32f9 에서 이미 처리(중복 작업 X). index 레벨에선 인덱싱 후
   엔티티 수가 0/극소면 조기 fail or warn 하는 게이트를 두는 게 좋음(미세 결정, 구현 단계).
-- ★ 직렬 큐 확인: 워커는 단일 `asyncio.Queue` 로 한 번에 한 잡만 처리한다(worker.py:85-96).
+- ★ 직렬 큐 확인: 워커는 단일 `asyncio.Queue`로 한 번에 한 잡만 처리한다(worker.py:85-96).
   **동시 업로드는 큐로 직렬로 쌓인다. 데모 OK.** 현재 동작이 그러함을 확인.
 
 ---
 
 ## 보고 요약
 
-### index 단계 localized swap 계획
+### index 단계 localised swap 계획
 - 바꿀 파일: `orchestrator/stages.py`(index 함수 본문), `orchestrator/config.py`(라이브 root
   템플릿 경로 + 도메인→entity_types 룩업 상수), 잡 모델에 쇼케이스 신호 추가 시
   `orchestrator/jobs.py`(+`_SCHEMA`)와 `orchestrator/app.py`(업로드 트리거).
@@ -270,7 +270,7 @@ fallback 으로 둔다.
 - per-job root 격리: proj_ai_school 베이스 → `var/jobs/<id>/index_root/`(settings+input+
   prompts+output+cache), 도메인 슬롯만 치환, vector_size 1536 고정.
 - store 갱신: 인덱싱 출력 dir → `store.update(snapshot_path=var/jobs/<id>/snapshot)`. 그게
-  build_palace `cfg["snapshot"]` 으로, rag 의 register 로 그대로 흐름(seam 1줄).
+  build_palace `cfg["snapshot"]`으로, rag 의 register 로 그대로 흐름(seam 1줄).
 
 ### scaffold↔real 분기
 - 명시 쇼케이스 트리거(플래그/예약키/전용 엔드포인트)일 때만 SHOWCASE_SNAPSHOTS → scaffold.
@@ -292,12 +292,12 @@ fallback 으로 둔다.
 
 ### (b)에서 재사용 vs 새로 만들 것
 재사용:
-- subprocess seam(`_run_palace` 패턴), per-job config materialize(`_build_job_palace_config`
+- subprocess seam(`_run_palace` 패턴), per-job config materialise(`_build_job_palace_config`
   패턴), `var/jobs/<id>/` 격리, 캐시 seed 토글(SEED_PALACE_CACHE), store snapshot_path seam,
   serve register(이미 구현, var/jobs 허용 루트), proj_ai_school 을 root 템플릿,
   settings vector_size:1536 픽스, toc_gen domain 힌트(이미 배선).
 새로:
-- per-job graphrag index root materialize, 진짜 index subprocess 호출, 도메인 감지 LLM hook +
+- per-job graphrag index root materialise, 진짜 index subprocess 호출, 도메인 감지 LLM hook +
   단일 라벨, 도메인→entity_types 룩업/주입, 인덱싱 출력→snapshot 등록, 명시 쇼케이스 트리거
   (도메인 라벨과 분리), 폴백 중립 entity_types, (선택) 인덱싱 후 엔티티 게이트.
 

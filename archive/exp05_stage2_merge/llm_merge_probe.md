@@ -14,7 +14,7 @@
 ### 16회가 왜 실패했나
 `llm_reliability.json` 기준 16/16 실패 패턴:
 
-| K | run | atte mpt | missing | duplicate |
+| K | run | attempt | missing | duplicate |
 |---|---|---|---|---|
 | 5 | a | 1 | none | 22,27,29,38 |
 | 5 | a | 2 | 3,18 | none |

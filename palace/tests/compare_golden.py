@@ -147,7 +147,7 @@ def main() -> int:
 
     rows: list[dict] = []
 
-    # The TOC is a frozen input artifact (config.frozen_toc), not a
+    # The TOC is a frozen input artefact (config.frozen_toc), not a
     # regenerated output, so it is neither re-derived nor re-compared here.
     # Both golden and the run under test are produced from the same frozen
     # TOC, so only the deterministic downstream (rooms.json, palace.json)

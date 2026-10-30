@@ -47,7 +47,7 @@ def main() -> int:
     G = json.loads(g_path.read_text(encoding='utf-8'))
     L = json.loads(l_path.read_text(encoding='utf-8'))
 
-    # (1) Four artifact entities: room id + status in both runs
+    # (1) Four artefact entities: room id + status in both runs
     print('=== (1) 4대 천문기상기 (측우기·자격루·앙부일구·혼천의) ===')
     print(f'{"title":<8} {"G_room":>6} {"G_status":<9} {"L_room":>6} {"L_status":<9} {"same?":<6}')
     all_room0_demote_match = True

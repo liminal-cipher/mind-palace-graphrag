@@ -154,5 +154,3 @@ global search는 community report 요약을 모아 답하는 구조라, 어떤 r
 ## 부속 원자료
 - `archive/audit/2026-06-15_rag_global_narrow_refusal_repro_raw.json` (global 6개 응답 원본)
 - `archive/audit/2026-06-15_rag_local_narrow_repro_raw.json` (local 4개 응답 원본)
-</content>
-</invoke>

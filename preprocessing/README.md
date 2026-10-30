@@ -53,7 +53,7 @@ result/{pdf이름}_vN/  (img/ · txt/ · meta/figures.json · run_log.md · raw_
 
 | 경로       | 추출 방법    | 이미지 후처리 | 속도(예) | 비용 |
 | ---------- | ------------ | ------------- | -------- | ---- |
-| 디지털 PDF | PyMuPDF      | —             | ~40s     | 무료 |
+| 디지털 PDF | PyMuPDF      | -             | ~40s     | 무료 |
 | 스캔 PDF   | Azure CU API | doclayout-yolo| ~175s    | 유료 |
 
 ---
@@ -80,7 +80,7 @@ pipeline_v2/
     └── {pdf이름}_vN/
 ```
 
-> `pipeline_v2.py` 는 steps/ 의 함수를 import 한다. 실행 시 `steps/` 디렉토리가 함께 있어야 한다.
+> `pipeline_v2.py`는 steps/ 의 함수를 import 한다. 실행 시 `steps/` 디렉토리가 함께 있어야 한다.
 
 ---
 
@@ -93,7 +93,7 @@ pip install python-dotenv openai pymupdf pillow requests \
             doclayout-yolo torch huggingface_hub
 ```
 
-> 스캔 PDF 후처리(STEP 4)는 `doclayout-yolo` · `torch`(CPU 가능) · `huggingface_hub` 가 필요합니다.
+> 스캔 PDF 후처리(STEP 4)는 `doclayout-yolo` · `torch`(CPU 가능) · `huggingface_hub`가 필요합니다.
 > 가중치는 최초 1회 자동 다운로드됩니다. 디지털 PDF만 처리하면 이 패키지들은 불필요합니다.
 
 ### 2. 환경변수 설정
@@ -137,7 +137,7 @@ python pipeline_v2.py --pdf "../data/raw/통계기초.pdf" --debug
 | `txt/caption_raw.txt` | 매칭 전 캡션 목록 (CU 경로) |
 | `meta/step4_debug/` | STEP 4 검출 박스 시각화 (CU 경로) |
 
-> `meta/figures.json` 은 `--debug` 없이도 항상 저장됩니다(스텝 간 핸드오프).
+> `meta/figures.json`은 `--debug` 없이도 항상 저장됩니다(스텝 간 핸드오프).
 
 ---
 
@@ -160,7 +160,7 @@ result/{pdf이름}_vN/
 ```
 
 > 같은 PDF를 재실행하면 새 버전 폴더(`_v2`, `_v3`, ...)가 생성되어 기존 결과가 보존됩니다.
-> CU 경로는 이전 버전의 `raw_response.json` 을 자동 재사용합니다(분석기 설정을 바꿔 새로
+> CU 경로는 이전 버전의 `raw_response.json`을 자동 재사용합니다(분석기 설정을 바꿔 새로
 > 추출하려면 기존 `raw_response.json` 들을 비켜두고 실행).
 
 ---
@@ -169,8 +169,8 @@ result/{pdf이름}_vN/
 
 - **스캔 PDF는 `2025-11-01`(GA) CU 버전 + `enableFormula=False` 분석기**(`pdf_content_extractor_noform`, analyzerId에 하이픈 불가)를 사용합니다.
   GA는 custom 분석기에 `baseAnalyzerId:"prebuilt-document"`가 필수이고, 로컬 파일은 `:analyzeBinary`로 제출합니다.
-  figure source(bbox)는 정상 반환되어 크롭 가능합니다. 분석기 설정 변경 시 `steps/manage_analyzer.py` 로 재생성하세요.
-- **PyMuPDF 경로는 벡터 그래픽(차트 등)을 감지하지 못합니다.** 벡터 차트가 많은 문서는 `--scan` 으로 CU 경로를 쓰세요.
+  figure source(bbox)는 정상 반환되어 크롭 가능합니다. 분석기 설정 변경 시 `steps/manage_analyzer.py`로 재생성하세요.
+- **PyMuPDF 경로는 벡터 그래픽(차트 등)을 감지하지 못합니다.** 벡터 차트가 많은 문서는 `--scan`으로 CU 경로를 쓰세요.
 - doclayout-yolo는 **사진 위에 겹친 인셋이나 전면 bleed 사진**을 구조적으로 잘 분리하지 못해 일부 캡션이 누락될 수 있습니다.
 - 일부 캡션은 CU OCR 단계에서 아예 누락되어, 해당 figure는 STEP 5에서 이미지 기반으로 캡션이 생성됩니다.
 ```

@@ -13,8 +13,8 @@ GraphRAG parquet 산출물로부터 **한국사 학습 퀴즈를 생성·채점*
 - **무엇**: GraphRAG parquet(6종) → 통일된 "근거 후보" → 주제 관련도로 추림 → LLM 생성 →
   LLM 2차 검증 → (실패 시) 근거 기반 fallback. 그리고 그 결과를 **풀고 채점**하는 테스트 웹페이지.
 - **두 부분**으로 나뉜다:
-  1. **`quiz_generator.py`** — 순수 생성·검증 로직(웹/상태 없음). 안정적이고 재사용 가능.
-  2. **`quiz_page.py` + `templates/`** — FastAPI 라우터 + Jinja2 서버 렌더링 **테스트 페이지**
+  1. **`quiz_generator.py`**: 순수 생성·검증 로직(웹/상태 없음). 안정적이고 재사용 가능.
+  2. **`quiz_page.py` + `templates/`**: FastAPI 라우터 + Jinja2 서버 렌더링 **테스트 페이지**
      (생성·풀이·채점·근거 보기). "트랙 A"(최소 동작 확인용)다.
 - **현재 상태**: 테스트 페이지는 **단일 스냅샷(`snapshots/korean_history`)을 디스크에서 1회 로드**해
   동작한다. 프로덕션 통합("트랙 B": serve의 인메모리 dfs 재사용, 멀티 스냅샷, 503 게이트)은
@@ -45,7 +45,7 @@ graphrag/docs/quiz.md        # (이 문서)
 |---|---|---|---|
 | `quiz_generator.py` | parquet→후보, 선택/랭킹, LLM 생성·검증·fallback | 없음(순수) | 안정 |
 | `quiz_page.py` | 라우팅, 정답 은닉/보관, 채점, 근거 표시 정리 | FastAPI/메모리 | 테스트용 |
-| `templates/*.html` | 서버 렌더 UI + 채점/서랍 JS | — | 테스트용 |
+| `templates/*.html` | 서버 렌더 UI + 채점/서랍 JS | - | 테스트용 |
 
 > **핵심 분리 원칙**: 생성 로직(`quiz_generator`)은 웹·상태를 모른다. 웹/캐시/채점은
 > `quiz_page`가 담당한다. 프로덕션 통합 시에도 `quiz_generator`는 거의 그대로 재사용한다.
@@ -83,7 +83,7 @@ graphrag/docs/quiz.md        # (이 문서)
 
 ---
 
-## 3. 생성 로직 — `quiz_generator.py`
+## 3. 생성 로직: `quiz_generator.py`
 
 웹/상태가 없는 순수 함수 묶음. **검색 후 생성(retrieve-then-generate)** + **생성·검증 분리**가
 핵심이다. (Node.js `Quiz/server.js`에서 생성 로직만 떼어 포팅한 것.)
@@ -136,7 +136,7 @@ graphrag/docs/quiz.md        # (이 문서)
   `text`에는 `kind`별로 `빈도`/`연결 정도`/`가중치`/`중요도`/`[Data: ...]` 같은 **메타가 섞여
   들어간다** → 화면 표시 시 `quiz_page._clean_evidence_text`가 일부를 떼어낸다(§6.4).
 
-### 3.4 근거 선택 — `EvidenceBuilder.select_candidates(topic, types, count)`
+### 3.4 근거 선택: `EvidenceBuilder.select_candidates(topic, types, count)`
 
 수백~수천 후보 중 **주제 관련 근거만 추려 LLM에 줄 묶음**을 만드는 랭킹/샘플러.
 
@@ -151,7 +151,7 @@ graphrag/docs/quiz.md        # (이 문서)
 > 의도: 관련도 상위로 좁히되 내부에서 랜덤 추출 → 같은 주제라도 매번 다른 조합. `count*2`로
 > 넉넉히 뽑는 건 이후 검증에서 일부 탈락해도 문항 수를 확보하기 위함.
 
-### 3.5 퀴즈 생성 — `await generate_quizzes(selected, *, count, quiz_types, topic)`
+### 3.5 퀴즈 생성: `await generate_quizzes(selected, *, count, quiz_types, topic)`
 
 - 파라미터 정규화: `count` 1~20 clamp, `quiz_types` 기본 3종, `topic` trim.
 - `build_quiz_prompt`: 근거를 `[n] kind | source | title\n text`로 나열, 유형/개수/주제 지시,
@@ -193,13 +193,13 @@ builder = EvidenceBuilder("snapshots/korean_history")              # 디스크 �
 selected = builder.select_candidates(topic="조선 건국", count=10)
 result   = await generate_quizzes(selected, count=10, topic="조선 건국")
 ```
-- `EvidenceBuilder.__init__(self, data_dir=".")` — **현재는 디스크 경로 로드만** 지원.
-  (프로덕션 통합 시 인메모리 dfs 주입 경로 `raw=`를 추가할 예정 — §8.2. **아직 미구현**.)
+- `EvidenceBuilder.__init__(self, data_dir=".")`: **현재는 디스크 경로 로드만** 지원.
+  (프로덕션 통합 시 인메모리 dfs 주입 경로 `raw=`를 추가할 예정: §8.2. **아직 미구현**.)
 
 ### 3.7 환경변수 (LLM)
 
 `call_llm`이 읽는 값. 레포 공용 `OPEN_AI_*`(전처리 step5 와 동일 리소스/스킴)를 재사용한다
-— 별도 `AZURE_OPENAI_*` 체계를 새로 만들지 않는다. 누락/오설정이면 호출이 실패해 **조용히
+별도 `AZURE_OPENAI_*` 체계를 새로 만들지 않는다. 누락/오설정이면 호출이 실패해 **조용히
 `fallback`(단답형)으로 떨어진다**(에러가 200 응답의 `warning`으로 흡수되므로 눈치채기 어렵다).
 
 ```
@@ -214,7 +214,7 @@ OPEN_AI_DEPLOYMENT_NAME_4_1_MINI   (App Service 밑줄형 우선, 로컬 .env �
 
 ---
 
-## 4. 테스트 페이지 라우터 — `quiz_page.py`
+## 4. 테스트 페이지 라우터: `quiz_page.py`
 
 `quiz_generator`를 호출해 **form 제출만으로** 생성·풀이·채점이 되는 서버 렌더링 페이지.
 `serve.py`/`query.py`/`quiz_generator.py`는 건드리지 않는다.
@@ -223,7 +223,7 @@ OPEN_AI_DEPLOYMENT_NAME_4_1_MINI   (App Service 밑줄형 우선, 로컬 .env �
 
 | 메서드/경로 | 입력 | 출력 | 설명 |
 |---|---|---|---|
-| `GET /quiz` | — | HTML | 빈 생성 폼 |
+| `GET /quiz` | - | HTML | 빈 생성 폼 |
 | `POST /quiz` | Form: `topic`, `count`, `quiz_types[]` | HTML | 생성 + 입력 UI + 근거 서랍 렌더 |
 | `POST /quiz/grade` | JSON: `{quiz_id, answers}` | JSON | 제출 문항 채점 결과 |
 
@@ -241,14 +241,14 @@ def _get_builder():           # 첫 POST /quiz 때 1회만 디스크 로드 → 
         _builder = EvidenceBuilder(SNAPSHOT_DIR)   # snapshots/korean_history 고정
     return _builder
 ```
-- **현재는 단일 스냅샷 고정**(멀티 스냅샷/스냅샷 파라미터 없음 — 트랙 B에서 도입).
+- **현재는 단일 스냅샷 고정**(멀티 스냅샷/스냅샷 파라미터 없음: 트랙 B에서 도입).
 - 테스트용이라 캐시 락/503 warmup 게이트는 생략.
 
 ---
 
 ## 5. 채점과 정답 은닉 (저장 방식)
 
-### 5.1 정답은 어디에 저장되나 — `_SESSIONS` (프로세스 메모리)
+### 5.1 정답은 어디에 저장되나: `_SESSIONS` (프로세스 메모리)
 
 ```python
 _SESSIONS: dict[str, list[dict]] = {}   # quiz_id(uuid) -> 퀴즈 리스트(정답 포함)
@@ -260,8 +260,8 @@ _SESSIONS_MAX = 50
   `_SESSIONS[quiz_id]`에서 정답을 꺼내 대조한다.
 - 용량: 최근 50개만 **삽입 순서 FIFO**로 유지(`_store_quiz`).
 - **성격(테스트용 단순함)**:
-  - 휘발성 — 서버 재시작 시 전부 소실 → 그 전 생성분은 채점 시 **404**.
-  - 프로세스 종속 — 멀티 워커면 다른 워커엔 그 `quiz_id`가 없음(app.py 단일 워커 전제라 현재 OK).
+  - 휘발성: 서버 재시작 시 전부 소실 → 그 전 생성분은 채점 시 **404**.
+  - 프로세스 종속: 멀티 워커면 다른 워커엔 그 `quiz_id`가 없음(app.py 단일 워커 전제라 현재 OK).
   - 만료는 시간이 아니라 개수(50) 초과 시 폐기.
   > 프로덕션에선 Redis/서명 토큰(정답 해시) 등으로 교체 여지(§8.4).
 
@@ -272,14 +272,14 @@ _SESSIONS_MAX = 50
 - `view_quizzes` = `_ANSWER_KEYS`(`answerIndex/answerText/explanation/sourceIds`)를 **제거한 뷰**
   → 템플릿엔 이것만 넘겨 **페이지 소스에도 정답이 없다**.
 
-### 5.3 채점 규칙 — `_is_correct(quiz, user_answer)`
+### 5.3 채점 규칙: `_is_correct(quiz, user_answer)`
 
 - 빈 답 → 오답.
-- **단답형: 느슨 매칭(Quiz 방식)** — `user.strip() in answerText`(부분 문자열이면 정답).
+- **단답형: 느슨 매칭(Quiz 방식)**: `user.strip() in answerText`(부분 문자열이면 정답).
   예: 정답 "태조 이성계"에 "이성계"만 입력해도 정답.
 - 객관식/OX: `int(user_answer) == answerIndex`(제출값은 보기 인덱스).
 
-### 5.4 채점 라우트 — `POST /quiz/grade`
+### 5.4 채점 라우트: `POST /quiz/grade`
 
 ```python
 class GradeRequest(BaseModel):
@@ -303,7 +303,7 @@ JS는 **채점하지 않고**(비교는 서버), 서버 응답을 DOM에 **표�
 - `base.html`: `<head>` + 인라인 `<style>`(폼·퀴즈 카드·`.opts/.opt`·`.r-ok/.r-no`·근거 서랍 CSS)
   + `{% block body %}` + `{% block script %}`.
 - `quiz.html`: `base.html` 상속. GET/POST 공통 생성 폼 + `{% if result %}` 결과(입력 UI·채점
-  버튼·근거 서랍) + `{% block script %}` 인라인 채점/서랍 JS. (별도 `app.js` 서빙 없음 — 정적
+  버튼·근거 서랍) + `{% block script %}` 인라인 채점/서랍 JS. (별도 `app.js` 서빙 없음: 정적
   마운트가 없어 인라인이 가장 단순.)
 
 ### 6.2 입력 UI / 문제별·전체 채점
@@ -345,11 +345,11 @@ curl -s -X POST localhost:8000/quiz/grade \
   -d '{"quiz_id":"<생성응답의 quiz_id>","answers":{"0":"2","1":"이성계"}}'
 ```
 - 생성이 `mode=llm_verified`로 나오는지 확인(아니면 §3.7 LLM 환경변수/배포명 점검).
-- 채점이 404면 `quiz_id`가 만료(서버 재시작/50개 초과)됐을 가능성 — 다시 생성.
+- 채점이 404면 `quiz_id`가 만료(서버 재시작/50개 초과)됐을 가능성: 다시 생성.
 
 ---
 
-## 8. 프로덕션 통합 가이드 (트랙 B — 아직 미구현)
+## 8. 프로덕션 통합 가이드 (트랙 B: 아직 미구현)
 
 테스트 페이지(트랙 A)를 정식 제품으로 올릴 때의 방향. **여기 항목들은 현재 코드에 없다.**
 
@@ -397,7 +397,7 @@ def __init__(self, data_dir=None, *, raw=None):
    점유한다. 프로덕션 설계는 같은 **`POST /quiz`를 JSON API**로 쓰려 했다 → 트랙 B의
    `quiz_service.py`를 붙이면 **두 핸들러가 충돌**한다. 통합 착수 시 **둘 중 하나를 옮겨야 한다**:
    테스트 페이지를 `/quiz/ui`로, 또는 프로덕션 JSON을 `/api/quiz`로. (지금은 테스트 페이지만
-   있어 충돌 없음 — 결정은 트랙 B 시작 시점에.)
+   있어 충돌 없음: 결정은 트랙 B 시작 시점에.)
 
 2. **정답 은닉 ⇒ 서버 채점은 필수.** 정답을 클라에 안 내리는 한 채점은 서버에서만 가능하다.
    클라이언트 채점으로 바꾸면(정답을 DOM에 내려보내면) `_SESSIONS`/`/quiz/grade`가 불필요해지지만

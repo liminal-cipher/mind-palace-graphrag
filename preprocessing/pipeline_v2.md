@@ -1,7 +1,7 @@
 # 전처리 파이프라인 v2 구현 명세서
 
-> ⚠️ **수정 원칙**: 기능 변경·실험은 먼저 `steps/` 의 개별 스텝 파일에서 진행하고 검증한다.
-> `pipeline_v2.py` 는 **steps/ 의 함수를 import 하는 얇은 오케스트레이터**이므로,
+> ⚠️ **수정 원칙**: 기능 변경·실험은 먼저 `steps/`의 개별 스텝 파일에서 진행하고 검증한다.
+> `pipeline_v2.py`는 **steps/ 의 함수를 import 하는 얇은 오케스트레이터**이므로,
 > steps/ 를 고치면 통합본에도 자동 반영된다(별도 복제·동기화 불필요).
 
 ## 개요
@@ -66,7 +66,7 @@ PDF 입력
 
 ---
 
-## STEP 1 — 스캔 / 디지털 판별  (`steps/step1_detect.py`)
+## STEP 1: 스캔 / 디지털 판별  (`steps/step1_detect.py`)
 
 | 판단 기준 | 값 |
 |-----------|-----|
@@ -75,18 +75,18 @@ PDF 입력
 | 라이브러리 | PyMuPDF (`fitz`) |
 
 - 표지·목차 편향 없이 문서 중간을 대표로 사용, 2장 평균으로 단일 이상치 완화
-- `--scan` 으로 수동 강제 지정 가능
+- `--scan`으로 수동 강제 지정 가능
 - 통합 파이프라인에서 판별 결과(`is_scan`)는 STEP 5까지 전달된다
   (단계별 단독 실행 시 step5는 `--scan` 플래그로만 스캔 여부를 안다)
 
 ---
 
-## STEP 2-CU — Content Understanding API 추출 (스캔)  (`steps/step2_extract_cu.py`)
+## STEP 2-CU: Content Understanding API 추출 (스캔)  (`steps/step2_extract_cu.py`)
 
 - Azure AI Content Understanding API (`2025-11-01`, GA)
-- **Analyzer ID: `pdf_content_extractor_noform`** (analyzerId 하이픈 불가) — `enableFormula=False` 로 생성
+- **Analyzer ID: `pdf_content_extractor_noform`** (analyzerId 하이픈 불가): `enableFormula=False`로 생성
   - 한글 캡션을 LaTeX 수식(`$\lambda…$`)으로 오인식하는 문제 방지
-    (예: '시호'가 `$\lambda | \widetilde{\bar{\mathcal{G}}}$` 로 잘못 읽히던 현상 제거)
+    (예: '시호'가 `$\lambda | \widetilde{\bar{\mathcal{G}}}$`로 잘못 읽히던 현상 제거)
   - 분석기 설정 변경 시 기존 분석기를 지우고 재생성해야 반영됨 →
     `steps/manage_analyzer.py --list / --delete <id>`
 - 환경변수: `CONTENT_UNDERSTANDING_ENDPOINT`, `CONTENT_UNDERSTANDING_KEY`, `CONTENT_UNDERSTANDING_API_VER`
@@ -113,22 +113,22 @@ STEP 3-CU 의 이미지 크롭은 응답의 **`result.contents[].figures[].sourc
 
 ---
 
-## STEP 2-MU — PyMuPDF 추출 (디지털)  (`steps/step2_extract_mu.py`)
+## STEP 2-MU: PyMuPDF 추출 (디지털)  (`steps/step2_extract_mu.py`)
 
 | 항목 | 내용 |
 |------|------|
-| 이미지 감지 | `get_text("dict")` 의 type==1 블록 bbox (래스터만, 벡터 차트 불가) |
+| 이미지 감지 | `get_text("dict")`의 type==1 블록 bbox (래스터만, 벡터 차트 불가) |
 | 텍스트 추출 | 페이지별 `get_text()` + `[pageN]` 마커 |
 | 캡션 | 추출 안 함 → STEP 5에서 이미지 기반 생성 |
 | 산출 | `txt/content_raw.txt`, `img/`, `meta/figures.json`(항상 저장) |
 
 ---
 
-## STEP 3-CU — 이미지 / 텍스트 / 캡션 분리  (`steps/step3_parse_cu.py`)
+## STEP 3-CU: 이미지 / 텍스트 / 캡션 분리  (`steps/step3_parse_cu.py`)
 
 ### 3-1. 이미지 크롭
-- `figures[].source` 의 `D(page,x0,y0,…)` 인치 좌표 → PyMuPDF 페이지 렌더 후 크롭 → `img/fig_{page}_{idx}.png`
-- **헤더/꼬리말 로고 제외**: figure 가 참조하는 paragraph 의 role 이 전부 `pageHeader`/`pageFooter` 이면
+- `figures[].source`의 `D(page,x0,y0,…)` 인치 좌표 → PyMuPDF 페이지 렌더 후 크롭 → `img/fig_{page}_{idx}.png`
+- **헤더/꼬리말 로고 제외**: figure 가 참조하는 paragraph 의 role 이 전부 `pageHeader`/`pageFooter`이면
   본문 이미지가 아니므로 건너뜀(매 페이지 반복되는 기관 로고 등 ~50개 제거).
 
 ### 3-2. 본문 텍스트
@@ -138,22 +138,22 @@ STEP 3-CU 의 이미지 크롭은 응답의 **`result.contents[].figures[].sourc
 ### 3-3. 캡션 → figure 매칭 (핵심)
 캡션 출처는 셋이며 우선순위·중복 처리가 있다.
 
-1. **`figures[].caption`** (CU 구조화 캡션) — figure 에 직접 결합돼 가장 신뢰도 높음. 1순위로 사용.
-2. **`<figcaption>` 마크다운** + **본문 캡션**(`| 시·도`) — 문서 위치 순서로 페이지별 풀 구성.
+1. **`figures[].caption`** (CU 구조화 캡션): figure 에 직접 결합돼 가장 신뢰도 높음. 1순위로 사용.
+2. **`<figcaption>` 마크다운** + **본문 캡션**(`| 시·도`): 문서 위치 순서로 페이지별 풀 구성.
 3. **페이지 단위 매칭**: figure.caption 이 없는 figure 에 한해, **같은 페이지의 미사용 캡션**을 위→아래로 배정
    (전역 순서 매칭이 유발하던 페이지 간 오배정 제거).
 
 추가 처리:
-- **중복 제거**: figure.caption 과 동일한 텍스트가 `<figcaption>` 으로 풀에도 있으면 제외
+- **중복 제거**: figure.caption 과 동일한 텍스트가 `<figcaption>`으로 풀에도 있으면 제외
 - **푸터 스트립**: 캡션 끝에 붙은 러닝푸터(`쪽번호 + 로마자 단원기호 + 단원명`) 제거
-- **병합 캡션 분리**: 한 figure.caption 에 `… | 시·도 …` 형태의 별개 캡션이 `\n` 으로 묶여 있으면,
+- **병합 캡션 분리**: 한 figure.caption 에 `… | 시·도 …` 형태의 별개 캡션이 `\n`으로 묶여 있으면,
   첫 캡션만 남기고 떼어낸 캡션을 같은 페이지의 빈 figure 로 배정
   (작가표기 `| 김홍도` 등은 제외 → STEP 4 이미지 분리 로직과 충돌 방지)
-- `meta/figures.json` 은 **항상 저장**(STEP 4·5로 넘기는 필수 핸드오프)
+- `meta/figures.json`은 **항상 저장**(STEP 4·5로 넘기는 필수 핸드오프)
 
 ---
 
-## STEP 4 — 이미지 후처리 (레이아웃 모델)  (`steps/step4_cv_refine.py`, `_layout.py`)
+## STEP 4: 이미지 후처리 (레이아웃 모델)  (`steps/step4_cv_refine.py`, `_layout.py`)
 
 CU 가 크롭한 figure 의 오탐을 **doclayout-yolo** 로 정제한다. (PyMuPDF 경로는 블록 단위라 적용 안 함)
 
@@ -179,7 +179,7 @@ CU 가 크롭한 figure 의 오탐을 **doclayout-yolo** 로 정제한다. (PyMu
 
 ---
 
-## STEP 5 — LLM 정제 및 목차 추출  (`steps/step5_llm.py`, `_oai.py`)
+## STEP 5: LLM 정제 및 목차 추출  (`steps/step5_llm.py`, `_oai.py`)
 
 - 텍스트 모델 `OPEN_AI_DEPLOYMENT_NAME_4.1_MINI`, 비전 모델 `OPEN_AI_DEPLOYMENT_NAME_4O`
 - 본문/캡션은 페이지·figure 단위로 **병렬 처리**(`OAI_MAX_WORKERS`, 기본 6)
@@ -250,7 +250,7 @@ result/{pdf이름}_vN/
 - `bbox_inch`: 인치 좌표(분리 자식은 부모 crop 기준 재계산)
 - `false_positive_type`: STEP 4 처리 표식 (`A`=폐기/재크롭, `B`=분리 자식, `null`=게이트 통과/원본)
 - `caption_done`: STEP 4에서 vision 전사 완료(STEP 5 정제 스킵). 분리 자식은 독립 figure 로 승격되며,
-  `sub_crops` 는 사용하지 않는다(잔존 필드).
+  `sub_crops`는 사용하지 않는다(잔존 필드).
 
 ---
 
@@ -286,7 +286,7 @@ pipeline_v2/
 | 이미지 bbox | ✅ figure source | ✅ type==1 블록 |
 | 벡터 차트 감지 | ✅ | ❌ |
 | 캡션 | ✅ 추출 + STEP 4 전사 | ❌ → 이미지 생성 |
-| 이미지 후처리(STEP 4) | ✅ doclayout-yolo | — |
+| 이미지 후처리(STEP 4) | ✅ doclayout-yolo | - |
 | API 비용 | 유료 | 무료 |
 | 처리 속도(예) | ~175s (모델·LLM 포함) | ~40s |
 
@@ -306,18 +306,18 @@ pip install python-dotenv openai pymupdf pillow requests \
 | 환경변수 | 용도 |
 |----------|------|
 | `CONTENT_UNDERSTANDING_ENDPOINT` / `_KEY` | Azure CU API |
-| `CONTENT_UNDERSTANDING_API_VER` | CU API 버전 (**`2025-11-01`** GA — figure source/bbox 반환) |
+| `CONTENT_UNDERSTANDING_API_VER` | CU API 버전 (**`2025-11-01`** GA: figure source/bbox 반환) |
 | `OPEN_AI_ENDPOINT` / `OPEN_AI_KEY` | Azure OpenAI |
 | `OPEN_AI_DEPLOYMENT_NAME_4.1_MINI` | 텍스트 정제 모델(본문·캡션) |
 | `OPEN_AI_DEPLOYMENT_NAME_4O` | 비전 모델(캡션 전사/생성) |
-| `OAI_MAX_WORKERS` | STEP 5 병렬 요청 수 (선택, 기본 6 — 429 시 감소) |
+| `OAI_MAX_WORKERS` | STEP 5 병렬 요청 수 (선택, 기본 6: 429 시 감소) |
 
 ---
 
 ## 버전 관리 / 미결 사항
 
 - 결과 폴더 `result/{pdf이름}_vN/` 자동 증가, 재실행 시 기존 결과 보존
-- `raw_response.json` 은 이전 버전에서 자동 재사용(CU 경로)
+- `raw_response.json`은 이전 버전에서 자동 재사용(CU 경로)
 
 | 항목 | 상태 | 비고 |
 |------|------|------|

@@ -32,9 +32,9 @@ Microsoft AI School 9기 3차 프로젝트 · 팀 고민중독 (7인) · 2026.05
 | `preprocessing/` | 원본 PDF → 정제 코퍼스 (`pipeline_v2.py`, `normalize.py`, `source/`, `result/`) |
 | `snapshots/` | 빌드된 GraphRAG 인덱스 (`korean_history`=국사 골든, `statistics`) |
 | `deliverables/` | 프론트가 읽는 도메인별 산출물 (`<domain>/palace.json`, `palace_with_images.json`, `images/`) |
-| `docs/` | 분석 문서 (`RUNBOOK.md`, `EXPERIMENTS.md`, `CONVENTIONS.md`, `audit/`) |
+| `docs/` | 분석 문서 (`RUNBOOK.md`, `EXPERIMENTS.md`, `CONVENTIONS.md`) |
 | `input/` | 도메인별 정제 코퍼스 (저작물, gitignored) |
-| `archive/` | 동결된 실험·분석 (`ARCHIVED.md` 표시, 새 작업 금지) |
+| `archive/` | 동결된 실험·분석 (`audit/` 포함) (`ARCHIVED.md` 표시, 새 작업 금지) |
 | `prompts/` | 공유 프롬프트(검색 + 기본 인덱싱). 루트 `settings.yaml`은 쿼리 config |
 
 ---
@@ -106,7 +106,7 @@ curl -X POST "http://127.0.0.1:8000/orchestrator/upload?filename=corpus.txt&doma
 
 ### 1. Route Prefix Notes
 - Job 상태/Palace/이미지는 `/orchestrator/jobs/{id}/...` 형태.
-- 라이브 RAG 질의만 **prefix 없는 루트** `/jobs/{id}/query` 이다 (`serve`가 `/`에 마운트됨). `/orchestrator/jobs/{id}/query` 가 아니다.
+- 라이브 RAG 질의만 **prefix 없는 루트** `/jobs/{id}/query`이다 (`serve`가 `/`에 마운트됨). `/orchestrator/jobs/{id}/query`가 아니다.
 
 ### 2. Node Image URL Mapping
 노드의 `images[].path`는 라이브·쇼케이스 모두 `images/<file>` 형식이다(끝의 파일명만 의미를 가짐). 프론트에서 서빙 URL은 출처별로 조립해야 한다.

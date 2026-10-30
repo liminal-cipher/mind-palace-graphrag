@@ -89,7 +89,7 @@ SUMMARY_OUT = REPO / 'build_model_compare_summary.json'
 def patched_call_json(client, model, sys_p, user_p, max_retries=6):
     """Replacement for room_gen.call_json that adapts to gpt-5* (no
     temperature, reasoning_effort='low') while keeping gpt-4.1* on temp=0.
-    Same backoff behavior on transient errors as the original.
+    Same backoff behaviour on transient errors as the original.
     """
     delay = 2.0
     last_err = None

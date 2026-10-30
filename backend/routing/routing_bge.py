@@ -30,7 +30,7 @@ GLOBAL_CUE_PATTERN = re.compile(
     "\uc804\uccb4|"  # whole
     "\uc804\ubc18|"  # overall
     "\uc694\uc57d|"  # summary
-    "\uc815\ub9ac|"  # organize
+    "\uc815\ub9ac|"  # organise
     "\ud750\ub984|"  # flow
     "\ud070\\s*\ud750\ub984|"
     "\ud575\uc2ec|"  # core

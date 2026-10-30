@@ -55,7 +55,7 @@ def build_text_unit_positions(tu_df: pd.DataFrame, text: str) -> dict:
 def _surface_variants(title: str) -> list[str]:
     """Generate surface variants for fine-grained matching.
 
-    GraphRAG normalizes entity titles to upper case in some cases. For Korean
+    GraphRAG normalises entity titles to upper case in some cases. For Korean
     text the title is usually the surface form already; we try the raw title
     and a stripped/space-collapsed variant.
     """

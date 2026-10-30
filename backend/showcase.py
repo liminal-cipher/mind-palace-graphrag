@@ -32,7 +32,7 @@ router = APIRouter()
 @router.get("/palace/{name}")
 def showcase_palace(name: str):
     """동결 쇼케이스 _with_images 팰리스 JSON 을 그대로 반환. 옛 showcase_api 앱의
-    /palace/korean_history 와 동일 페이로프(프론트 기존 URL 호환)."""
+    /palace/korean_history 와 동일 페이로드(프론트 기존 URL 호환)."""
     path = SHOWCASE_PALACES.get(name)
     if path is None:
         known = ", ".join(SHOWCASE_PALACES) or "-"

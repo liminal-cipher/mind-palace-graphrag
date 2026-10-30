@@ -254,7 +254,7 @@ async def _index_live(job: Job, store: JobStore) -> None:
         if effective:
             store.update(job.job_id, domain=effective)
 
-    # 2) 격리 root materialize(초기 generic, resolve 가 확정 치환).
+    # 2) 격리 root materialise(초기 generic, resolve 가 확정 치환).
     root = index_root.build_index_root(
         job, corpus, entity_types.GENERIC_ENTITY_TYPES,
     )
@@ -315,7 +315,7 @@ def _seed_palace_cache_if_available(base: dict, cache_dir: Path) -> Optional[str
     rubric is path-keyed and Stage B is content-hash-keyed, so a wrong-domain
     seed can only miss (recompute), never cross-hit. New/unknown domains have no
     committed cache -> no seed -> cold build (real LLM). Toggle the whole
-    behavior with config.SEED_PALACE_CACHE (A<->C in one place). Returns the
+    behaviour with config.SEED_PALACE_CACHE (A<->C in one place). Returns the
     seeded source path (for logging) or None."""
     if not config.SEED_PALACE_CACHE:
         return None
@@ -350,7 +350,7 @@ def _default_palace_base(job: Job) -> dict:
 
 
 def _build_job_palace_config(job: Job, snapshot_path: str) -> tuple[Path, dict, Optional[str]]:
-    """Materialize a per-job palace config from the domain base, overriding all
+    """Materialise a per-job palace config from the domain base, overriding all
     outputs/caches into var/jobs/<id>/ and pointing at the job's fresh snapshot.
     corpus/domain/node_budget/n_runs/model/room bounds and frozen_toc
     (korean_history only) are kept from the base, so the domain branch (frozen

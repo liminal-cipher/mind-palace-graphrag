@@ -10,7 +10,7 @@ GraphRAG 검색 호출의 cold (CLI `graphrag query` 매번 새 프로세스) vs
 | 2. settings.yaml + .env load + pydantic validation | ~0.5s | 0 |
 | 3. parquet 6종 read (DataReader) | ~2~3s | 0 |
 | 4. LanceDB 3 store open | ~1~2s | 0 |
-| 5. 검색 엔진 빌드 (LLM client + tokenizer + context builder) | ~1~3s | 0 |
+| 5. 검색 엔진 빌드 (LLM client + tokeniser + context builder) | ~1~3s | 0 |
 | 6. 첫 LLM 호출 overhead (Azure TLS handshake + LiteLLM warmup) | ~2~5s | 0 |
 | 7. 실제 검색 (LLM + retrieval) | (warm 측정값과 동일) | 그 자체 |
 

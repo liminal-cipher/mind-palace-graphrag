@@ -87,7 +87,7 @@ serve 헬스. **항상 200**(콜드 시작에 헬스 프로브가 컨테이너�
 ```
 `sources` 스키마는 아래 부록 참고(인용 없으면 `null`).
 
-### `POST /jobs/{job_id}/query` (라이브 잡) — 루트 경로 주의
+### `POST /jobs/{job_id}/query` (라이브 잡): 루트 경로 주의
 요청 body:
 ```json
 {"question": "...", "method": "auto"}
@@ -188,7 +188,7 @@ GraphRAG parquet로 한국사 학습 퀴즈 생성 + 서버 채점.
 - `object`(필수): 핫스팟 라벨. 프론트가 3D 씬 스캔 결과의 `object`를 그대로 보낸다.
 - `nodeName`·`nodeDescription`(필수): 그 핫스팟에 매칭된 학습 노드의 이름(개념)과 설명(요약).
 - `keywords`·`markerPosition`·`detectedClass`·`roomContext`(선택): 있으면 장면이 풍부해진다.
-- **시각적 특징/연상은 프론트가 보내지 않는다** — LLM 이 `object`(+`detectedClass`)로 직접 추론.
+- **시각적 특징/연상은 프론트가 보내지 않는다**: LLM 이 `object`(+`detectedClass`)로 직접 추론.
 
 응답:
 ```json
@@ -212,7 +212,7 @@ GraphRAG parquet로 한국사 학습 퀴즈 생성 + 서버 채점.
   "entities_total": 20
 }
 ```
-- `provenance`: `cited`(local — 답변이 직접 인용한 엔티티/관계, **정확**) · `chunk`(basic — 인용 청크의 엔티티) · `related`(global — 인용 커뮤니티 구성 개념 degree 상위, **근사**).
+- `provenance`: `cited`(local: 답변이 직접 인용한 엔티티/관계, **정확**) · `chunk`(basic: 인용 청크의 엔티티) · `related`(global: 인용 커뮤니티 구성 개념 degree 상위, **근사**).
 - `cited` 우선 정렬, degree 순, 상위 N(`RAG_SOURCE_MAX_ENTITIES`, 기본 12)까지. `reports`는 실제 인용된 커뮤니티 리포트(global). 인용 없으면 `sources=null`.
 - 프론트는 `entities[].title`로 팰리스 노드와 잇는다("관련 방").
 

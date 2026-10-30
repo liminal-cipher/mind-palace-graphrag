@@ -2,7 +2,7 @@
 
 Deterministic, no LLM, no network. Covers the two fallback guarantees added to
 the live upload path:
-  - _apply_generic_fallback neutralizes ALL three type-bearing prompts
+  - _apply_generic_fallback neutralises ALL three type-bearing prompts
     (extract_graph / summarize_descriptions / community_report_graph), not just
     extract_graph, so a non-Korean upload taking the fallback loses the stock
     "한국사 전문가/historian/조선" tone in every index prompt.

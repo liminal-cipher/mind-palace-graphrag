@@ -1,5 +1,5 @@
 """exp17 Phase B steps 5-9: build TOC arm + GRAPH arm + ordering + LLM
-rubric + keep/demote + blind comparison artifacts.
+rubric + keep/demote + blind comparison artefacts.
 
 Both arms produce 6 rooms over the same 119-entity snapshot. Room
 membership is deterministic; entity_type is not used for clustering,
@@ -399,12 +399,12 @@ def convert_toc_to_common_schema(
 
 
 def absorb_empty_rooms(rooms_json: dict) -> dict:
-    """Merge kept-empty rooms into a non-empty neighbor (next section first,
+    """Merge kept-empty rooms into a non-empty neighbour (next section first,
     fall back to previous). Deterministic and order-preserving.
 
     - Empty room = `len(room['kept']) == 0`.
     - All empty rooms snapshot their indices up front so cascading absorbs
-      target the original neighbor, not a freshly-emptied one.
+      target the original neighbour, not a freshly-emptied one.
     - The empty room's demoted list is appended (preserving its order) to
       the target's demoted list.
     - Each absorbed room contributes a record under the target's
@@ -547,7 +547,7 @@ def compute_metrics(
             'graph': {
                 'deterministic': True,
                 'two_runs_identical': graph_identical,
-                'note': 'ward linkage on L2-normalized embeddings, fcluster maxclust.',
+                'note': 'ward linkage on L2-normalised embeddings, fcluster maxclust.',
             },
             'keep_demote': {
                 'temp': 0,
@@ -637,7 +637,7 @@ def main() -> None:
     print('applying keep/demote to GRAPH arm...')
     graph_spec = apply_keep_demote(graph_spec, entities, rubric, client)
 
-    print('writing artifacts...')
+    print('writing artefacts...')
     blind, key = build_blind(toc_spec, graph_spec)
     metrics = compute_metrics(toc_spec, graph_spec, identical, n_ent)
 

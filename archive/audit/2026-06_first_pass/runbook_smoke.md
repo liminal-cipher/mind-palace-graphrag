@@ -49,7 +49,7 @@ CWD 가정: 모든 명령은 repo 루트에서 실행. `.env`에 `GRAPHRAG_API_K
 
 **RUNBOOK 수정 권장 1**: exp5 표에서 `exp5_embed.py`와 `type_select_test.py`에 붙은 `LLM $` 표기는 잘못. 둘 다 LLM 호출 없음 (전자는 precomputed lancedb 임베딩 read-only, 후자는 grep 결과 API 호출 0건). 비용 0. `LLM $` 제거 권장.
 
-**RUNBOOK 수정 권장 2**: `archive/exp05_stage2_merge/COMMANDS.md`의 "처음부터 재현하는 원래 명령" 블록은 "CWD = `archive/exp05_stage2_merge/`" 라고 적었지만, 4 스크립트 모두 `Path('results/snapshots/repro_run3')`로 repo 루트 기준 상대경로를 씀. `archive/exp05_stage2_merge/`에서 실행하면 `archive/exp05_stage2_merge/results/snapshots/repro_run3` 를 찾다 실패함. CWD를 repo 루트로 고치거나 `cd results/exp5` 후 `../../` 접두를 붙이도록 정정해야 함. RUNBOOK 본문이 CWD=repo 루트라고 적어 둔 점은 맞음, COMMANDS.md만 어긋남.
+**RUNBOOK 수정 권장 2**: `archive/exp05_stage2_merge/COMMANDS.md`의 "처음부터 재현하는 원래 명령" 블록은 "CWD = `archive/exp05_stage2_merge/`" 라고 적었지만, 4 스크립트 모두 `Path('results/snapshots/repro_run3')`로 repo 루트 기준 상대경로를 씀. `archive/exp05_stage2_merge/`에서 실행하면 `archive/exp05_stage2_merge/results/snapshots/repro_run3`를 찾다 실패함. CWD를 repo 루트로 고치거나 `cd results/exp5` 후 `../../` 접두를 붙이도록 정정해야 함. RUNBOOK 본문이 CWD=repo 루트라고 적어 둔 점은 맞음, COMMANDS.md만 어긋남.
 
 ### exp6: 직접 ward vs community 병합
 
@@ -69,7 +69,7 @@ CWD 가정: 모든 명령은 repo 루트에서 실행. `.env`에 `GRAPHRAG_API_K
 - `build_inputs.py`: `py_compile` PASS. 입력 `input/history_joseon_semantic.json`, `input/history_joseon_pagesplit.txt` 존재 확인. 결정적이라 추가로 돌릴 필요 없음 (`proj_{semantic,pagesplit}/input/`에 산출 이미 존재).
 - `run_verify.py`: 실제 실행 PASS. "semantic text_units=105, pagesplit=50, 둘 다 통과" 출력.
 - `run_full.py`: 계단 4 (실행 금지). `py_compile` PASS. `os.chdir(REPO)`로 CWD 보정. RUNBOOK이 ±10 흔들림과 community_reports 부재를 명시.
-- `eval_run.py --label semantic_run1` 실제 실행: 동작은 하지만 **CLI 시그니처가 RUNBOOK과 다름**. 실제 코드는 `targets = sys.argv[1:]`인 positional. `--label semantic_run1` 을 주면 `--label`을 라벨로 보고 `results/snapshots/--label` 스냅샷을 찾다가 `★ snapshot missing: results/snapshots/--label` 경고 한 줄 출력 후 `semantic_run1`로 넘어감. 평가 결과는 나오지만 노이즈와 혼동 유발.
+- `eval_run.py --label semantic_run1` 실제 실행: 동작은 하지만 **CLI 시그니처가 RUNBOOK과 다름**. 실제 코드는 `targets = sys.argv[1:]`인 positional. `--label semantic_run1`을 주면 `--label`을 라벨로 보고 `results/snapshots/--label` 스냅샷을 찾다가 `★ snapshot missing: results/snapshots/--label` 경고 한 줄 출력 후 `semantic_run1`로 넘어감. 평가 결과는 나오지만 노이즈와 혼동 유발.
 
 **RUNBOOK 수정 권장 3**: exp9의 마지막 두 줄
 ```

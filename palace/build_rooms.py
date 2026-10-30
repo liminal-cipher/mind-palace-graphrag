@@ -346,14 +346,14 @@ def absorb_empty_rooms(
     A room is *undersized* when its kept (displayed) node count is below
     ``min_room_nodes``. While any room is undersized, or the room count exceeds
     ``max_rooms``, the smallest-total room (ties broken by reading order, i.e.
-    the lowest index) is merged into its preceding neighbor; the first room,
+    the lowest index) is merged into its preceding neighbour; the first room,
     having no predecessor, merges into its successor instead. Both kept and
     demoted members move (keep ∪ demote conserved), the earlier room's members
     first so pos_first_fine order is kept (export re-sorts kept by source_offset
     regardless). The absorbing room keeps its own name and summary; the absorbed
     room's are dropped. No new titles or summaries are generated.
 
-    Because the victim is always the global smallest, the absorbing neighbor is
+    Because the victim is always the global smallest, the absorbing neighbour is
     never smaller than it. This single loop supersedes the earlier empty-only
     absorption and the TOC-level overflow clamp. When no room is undersized and
     the count is already within ``max_rooms`` the input is returned untouched

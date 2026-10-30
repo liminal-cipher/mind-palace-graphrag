@@ -217,7 +217,7 @@ def compute_metrics(toc_spec, graph_spec, anchors_show, anchors_demote, graph_id
             'graph': {
                 'deterministic': True,
                 'two_runs_identical': graph_identical,
-                'note': 'ward linkage on L2-normalized embeddings, fcluster maxclust. No randomness.',
+                'note': 'ward linkage on L2-normalised embeddings, fcluster maxclust. No randomness.',
             },
         },
     }

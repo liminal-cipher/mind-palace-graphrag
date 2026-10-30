@@ -18,7 +18,7 @@ OCR 자체가 이미 깨끗한 편: 비어 보이는 한 줄짜리 단락 사이
 확정 변경:
 - `cluster_graph.use_lcc: true → false`
 - `extract_graph_nlp:` 블록 통째로 제거 (LLM extract_graph 사용, 미사용 블록)
-- `workflows:` 에서 `extract_covariates` 제거 (claims disabled). `create_communities`는 보존.
+- `workflows:`에서 `extract_covariates` 제거 (claims disabled). `create_communities`는 보존.
 - `extract_graph.entity_types: [개념, 기법, 분포, 지표, 사례, 인물]` (단일 단어, 코퍼스 주제 맞춤)
 - `extract_graph.prompt: "prompts/extract_graph.txt"` (이 프로젝트 루트의 로컬 폴더로 격리)
 - `summarize_descriptions.prompt: "prompts/summarize_descriptions.txt"` (동일)

@@ -2,7 +2,7 @@
 
 Deterministic, no LLM, no snapshot. Asserts the confirmed merge rules:
   - undersized = total nodes (kept + demoted) < min_room_nodes
-  - merge the smallest room (tie -> earliest) into its preceding neighbor;
+  - merge the smallest room (tie -> earliest) into its preceding neighbour;
     the first room merges into its successor instead
   - keep ∪ demote conserved; earlier room's members first
   - absorber keeps its own name/summary; absorbed dropped
@@ -88,7 +88,7 @@ def test_empty_room_absorbed_into_preceding():
 
 
 def test_one_node_room_merges_into_preceding_not_successor():
-    """The key behavior change: undersized rooms go to the PRECEDING neighbor."""
+    """The key behaviour change: undersized rooms go to the PRECEDING neighbour."""
     before = rj([mk(0, ['a', 'b'], ['p']), mk(1, [], ['x']), mk(2, ['c', 'd'], [])])
     after = absorb_empty_rooms(before, min_room_nodes=2, max_rooms=10)
     assert len(after['rooms']) == 2

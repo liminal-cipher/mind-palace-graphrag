@@ -87,7 +87,7 @@ def detect_joined_caption(caption: str) -> list[tuple[str, str]]:
     """Return [(title, caption_for_embedding), ...].
 
     Title is the first bar-split segment with trailing parenthetical stripped
-    (used for name-match tokenization). Embedding side keeps the full caption.
+    (used for name-match tokenisation). Embedding side keeps the full caption.
 
     Detects "titleA | author titleB | author" pattern (3 bar parts where
     last part is short and middle part has a space). Otherwise single entry.
@@ -166,7 +166,7 @@ def cosine(a: np.ndarray, b: np.ndarray) -> float:
 
 
 def tokenize_caption(text: str) -> list[str]:
-    """Whitespace tokenizer for Korean captions.
+    """Whitespace tokeniser for Korean captions.
 
     No 조사 stripping; caller pairs this with prefix matching so trailing
     particles ride along (e.g., caption token '호패법을' still triggers a

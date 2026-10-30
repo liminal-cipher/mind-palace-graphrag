@@ -15,7 +15,7 @@
 
 ## 인덱스
 
-- 정본: `results/EXPERIMENTS.md`. 모든 실험을 한 곳에서 훑을 수 있는 narrative. 새 실험 끝나면 여기 한 섹션 추가.
+- 정본: [`docs/EXPERIMENTS.md`](EXPERIMENTS.md). 모든 실험을 한 곳에서 훑을 수 있는 narrative. 새 실험 끝나면 여기 한 섹션 추가.
 - 보조: `archive/reports/INDEX.md` (구 체계, exp1~5 보고서 매핑). 새 실험은 여기 안 추가, EXPERIMENTS.md만 갱신.
 
 ## 스냅샷

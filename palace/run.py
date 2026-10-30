@@ -20,12 +20,12 @@ Config schema (paths are repo-relative):
     max_rooms           int    upper bound on TOC sections (default 10;
                                falls back to legacy K field if present)
     min_room_nodes      int    (optional) rooms with fewer total nodes
-                               (kept + demoted) are merged into a neighbor
+                               (kept + demoted) are merged into a neighbour
                                (default 2)
     assignment          str    (optional) entity->section placement:
                                "fine_pos" (default) = first-occurrence offset
                                containment; "chunk_overlap" = legacy chunk-span
-                               argmax (pins pre-fine-pos behavior)
+                               argmax (pins pre-fine-pos behaviour)
     node_budget         int    keep cap per room
     n_runs              int    Stage B passes per room (1 = single pass)
     model               str    Azure deployment name
@@ -141,7 +141,7 @@ def phase_toc(cfg: dict, repo: Path) -> None:
 
 def phase_rooms(cfg: dict, repo: Path) -> None:
     # Frozen-TOC mode: when frozen_toc is set, downstream reads that fixed
-    # artifact instead of a freshly generated TOC. This keeps the golden
+    # artefact instead of a freshly generated TOC. This keeps the golden
     # byte-reproducible even though phase toc (LLM) is non-deterministic.
     # Live uploads omit frozen_toc and regenerate the TOC every run.
     frozen = cfg.get('frozen_toc')
@@ -231,7 +231,7 @@ def phase_rooms(cfg: dict, repo: Path) -> None:
     min_room_nodes = cfg.get('min_room_nodes', 2)
     print(
         f'merging undersized rooms (<{min_room_nodes} nodes) and capping at '
-        f'{max_rooms} (smallest-first, into preceding neighbor)...'
+        f'{max_rooms} (smallest-first, into preceding neighbour)...'
     )
     rooms_json = absorb_empty_rooms(
         rooms_json, min_room_nodes=min_room_nodes, max_rooms=max_rooms,
